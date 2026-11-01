@@ -10,7 +10,7 @@ import (
 func TestNewShowCmd(t *testing.T) {
 	h := newHarness(t)
 	addr, _ := h.doc()
-	if out := h.must("show", addr+"@1"); !strings.Contains(out, "BODY\n#1 LABEL Q42 \"Douglas Adams\"@en\n") {
+	if out := h.must("show", addr+"/0x00000001.geul"); !strings.Contains(out, "BODY\n#1 LABEL Q42 \"Douglas Adams\"@en\n") {
 		t.Fatal(out)
 	}
 	if out := h.must("show", "versions", addr); !strings.HasPrefix(out, "1\t") {

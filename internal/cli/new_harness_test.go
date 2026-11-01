@@ -13,5 +13,5 @@ import (
 func newHarness(t *testing.T) *harness {
 	data := t.TempDir()
 	os.MkdirAll(filepath.Join(data, ".well-known", "geul"), 0o755)
-	return &harness{t: t, data: data, conf: t.TempDir(), cwd: data, env: map[string]string{"GEULSTORE": "dir"}}
+	return &harness{t: t, data: data, conf: t.TempDir(), cwd: data, env: map[string]string{"GEULSTORE": "dir", "GEULPROXY": "off"}}
 }

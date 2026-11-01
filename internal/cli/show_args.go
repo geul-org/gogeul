@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// showArgs accepts `<문서>`, a file, or `versions <문서>`. `versions` alone is
+// showArgs accepts a 공표 주소, a file, or `versions <문서>`. `versions` alone is
 // an ordinary first argument, so a file of that name is still `./versions`.
 func showArgs(_ *cobra.Command, args []string) error {
 	switch {
@@ -17,6 +17,6 @@ func showArgs(_ *cobra.Command, args []string) error {
 	case len(args) == 2 && args[0] == "versions":
 		return nil
 	default:
-		return errors.New("geul show takes one DOCUMENT[@VERSION] or FILE, or versions DOCUMENT")
+		return errors.New("geul show takes one ADDRESS or FILE, or versions DOCUMENT")
 	}
 }

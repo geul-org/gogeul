@@ -43,11 +43,12 @@ func TestAppShowNoListing(t *testing.T) {
 		fail bool
 	}{
 		{[]string{"show", addr}, false},
-		{[]string{"show", addr + "@1"}, false},
+		{[]string{"show", addr + "/0x00000001.geul"}, false},
+		{[]string{"show", addr + "/versions.geul"}, false},
 		{[]string{"show", draft}, false},
 		{[]string{"show", "versions", addr}, false},
 		{[]string{"show", missing}, true},
-		{[]string{"show", addr + "@9"}, true},
+		{[]string{"show", addr + "/0x00000009.geul"}, true},
 		{[]string{"show", "versions", missing}, true},
 	} {
 		reads, err := h.metered(set, c.args...)

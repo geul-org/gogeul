@@ -35,7 +35,7 @@ Browse an archive:
 geul ls                                  # Issuers in the data folder
 geul ls geul.org                         # documents of one Issuer
 geul show geul.org/triple                # one document, latest version, one record per line
-geul show geul.org/triple@2               # a given version
+geul show geul.org/triple/0x00000002.geul  # a given version
 geul show ./d.geul                       # a local file
 geul show versions geul.org/triple       # versions: number, time, content hash
 ```

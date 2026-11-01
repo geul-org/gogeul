@@ -6,8 +6,6 @@ import (
 	"context"
 	"fmt"
 	"sort"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 // resolve builds the dependency graph of the document (resolve.Resolver)
@@ -19,17 +17,10 @@ func (a *app) resolve(arg string) error {
 	if err != nil {
 		return err
 	}
-	cfg, err := resolve.ConfigFromEnv(a.cfg.Get)
-	if err == nil {
-		cfg, err = packSources(cfg, a.cfg.Get("GEULPACK"))
-	}
+	r, err := a.resolver()
 	if err != nil {
 		return err
 	}
-	if d, err := a.dir(); err == nil {
-		cfg.Proxy = append([]resolve.Entry{{Name: "file://" + d.Root, Source: d}}, cfg.Proxy...)
-	}
-	r := resolve.Resolver{Config: cfg}
 	g, err := r.Resolve(context.Background(), b)
 	if err != nil {
 		return err

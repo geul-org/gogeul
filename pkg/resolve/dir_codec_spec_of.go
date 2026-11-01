@@ -1,4 +1,4 @@
-//ff:func feature=resolve type=resolver control=iteration dimension=1
+//ff:func feature=resolve type=resolver control=sequence
 //ff:what Dir.codecSpecOf — the codec specs one codec spec document's latest version declares
 package resolve
 
@@ -15,9 +15,5 @@ func (d Dir) codecSpecOf(target core.Word) (codecspec.Spec, error) {
 		return nil, err
 	}
 	doc, _ := inspect.Decode(b)
-	body := make([]core.Record, len(doc.Body))
-	for i, e := range doc.Body {
-		body[i] = e.Record
-	}
-	return codecspec.Collect(body), nil
+	return specOfDoc(doc), nil
 }

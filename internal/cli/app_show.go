@@ -4,10 +4,10 @@ package cli
 
 import "fmt"
 
-// show reads the one document (readDoc) and prints its lines, laid out by the
+// show finds the one document (findDoc) and prints its lines, laid out by the
 // specs of the codecs it uses (docSpec), or them as JSON.
 func (a *app) show(arg string) error {
-	b, err := a.readDoc(arg)
+	b, err := a.findDoc(arg)
 	if err != nil {
 		return err
 	}
