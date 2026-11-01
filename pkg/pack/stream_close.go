@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=sequence
-//ff:what Stream.Close — finish the last data pack, the P and H layers and the index objects, write the manifest and latest.txt, remove the working folder
+//ff:what Stream.Close — save the start, finish the last data pack, the P and H layers and the index objects (saving progress after each), write the manifest and latest.txt, remove the working folder
 package pack
 
 import (
@@ -15,29 +15,26 @@ import (
 // inventory, the P layer (pLayer) and the H layer (hLayer) are finished, the
 // open index object is closed, and the manifest of generation 1 (no previous
 // manifest) is written, then latest.txt, last. The working folder is removed.
-// A stream with no record is an error.
+// A stream with no record is an error. Close saves its progress as it goes
+// (closeBegin, closeLayers): when it stops (an error, or the process is
+// killed) ResumeStream and Close again go on from the last save and write
+// the same bytes; a stop between latest.txt and the removal only repeats
+// the last writes. Its memory does not grow with the number of H runs.
 func (s *Stream) Close() (BuildResult, error) {
 	if s.st.Count == 0 && len(s.st.Named) == 0 {
 		return BuildResult{}, errors.New("geul/pack: a stream with no record makes no set")
 	}
 	named, err := sortedNamed(s.st.Named)
-	if err == nil && s.st.Data.Num >= 0 {
-		err = s.finishData()
-	}
-	var pl, hl []layer
 	if err == nil {
-		pl, err = s.pLayer()
+		err = s.closeBegin()
 	}
 	if err == nil {
-		hl, err = s.hLayer()
-	}
-	if err == nil && s.st.Index.Num >= 0 {
-		err = s.closeObject(s.index, s.st.Index, kindIndex, nil)
+		err = s.closeLayers()
 	}
 	if err != nil {
 		return BuildResult{}, err
 	}
-	mb := encodeManifest(s.manifest(named, pl, hl))
+	mb := encodeManifest(s.manifest(named, layersOf(s.st.Close.P), layersOf(s.st.Close.H)))
 	sum := sha256.Sum256(mb)
 	name := hex.EncodeToString(sum[:])
 	if err := writeFileSync(filepath.Join(s.out, "m", name+".gpm"), mb); err != nil {

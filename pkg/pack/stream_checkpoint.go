@@ -8,9 +8,13 @@ package pack
 // from the last checkpoint; records put after it are put again by the caller.
 // meta is the caller's progress (what it has put, its own files' sizes),
 // saved in the same atomic write so the two never disagree (Stream.Meta).
-// Checkpoints do not change the bytes the stream writes.
+// Checkpoints do not change the bytes the stream writes. Once Close has
+// begun only meta is saved: the records are all in already.
 func (s *Stream) Checkpoint(meta []byte) error {
 	s.st.Meta = meta
+	if s.st.Close.Phase > closeNone {
+		return s.saveState()
+	}
 	if err := s.spill(); err != nil {
 		return err
 	}

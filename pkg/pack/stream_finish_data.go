@@ -17,6 +17,6 @@ func (s *Stream) finishData() error {
 	if err != nil {
 		return err
 	}
-	s.data, s.st.Data, s.st.Inv, s.st.Paths = nil, streamOpen{Num: -1}, nil, nil
+	s.data, s.st.Data, s.st.Inv, s.st.Paths, s.dsum = nil, streamOpen{Num: -1}, nil, nil, nil
 	return nil
 }

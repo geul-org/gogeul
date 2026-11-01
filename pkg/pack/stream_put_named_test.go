@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=sequence
-//ff:what TestStreamPutNamed — a named record joins the pack's path table and NAMED without an h/ key; a P path and a failed place are errors
+//ff:what TestStreamPutNamed — a closing stream acknowledges a held path and refuses a new one; a named record joins the pack's path table and NAMED without an h/ key; a P path and a failed place are errors
 package pack
 
 import "testing"
@@ -13,6 +13,14 @@ func TestStreamPutNamed(t *testing.T) {
 	if err := s.PutNamed("0x00010000/0x5100000000000001/versions.geul", r); err == nil {
 		t.Fatal("P path: want error")
 	}
+	s.st.Close.Phase = closeStarted
+	if err := s.PutNamed("0x00010000/documents.geul", r); err != nil || len(s.st.Named) != 1 {
+		t.Fatalf("closing, held path: %v", err)
+	}
+	if err := s.PutNamed("issuers.geul", r); err == nil {
+		t.Fatal("closing, new path: want error")
+	}
+	s.st.Close.Phase = closeNone
 	s.data.Close()
 	if err := s.PutNamed("issuers.geul", r); err == nil {
 		t.Fatal("place failure: want error")

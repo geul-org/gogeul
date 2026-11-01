@@ -2,7 +2,10 @@
 //ff:what Stream — a pack set written in one pass from records fed in key order, with bounded memory and checkpoints
 package pack
 
-import "os"
+import (
+	"hash"
+	"os"
+)
 
 // Stream writes the first generation of a pack set from P records fed in
 // ascending key order (Put) and a few named records (PutNamed), for archives
@@ -13,7 +16,11 @@ import "os"
 // the stream closes. Memory therefore holds one P leaf, one H run, one data
 // pack's inventory and the first keys of the written blocks, not the records.
 // Checkpoint saves everything needed to go on (ResumeStream) after a crash;
-// the bytes written do not depend on when checkpoints happen.
+// the bytes written do not depend on when checkpoints happen. Close saves
+// its own progress the same way, so a stopped Close goes on after
+// ResumeStream; its memory does not grow with the number of runs.
+// dsum and isum hash the open data pack and index object as they are
+// written (streamOpen.Sum).
 type Stream struct {
 	out   string
 	o     StreamOptions
@@ -23,4 +30,6 @@ type Stream struct {
 	data  *os.File
 	index *os.File
 	hbuf  []hEntry
+	dsum  hash.Hash
+	isum  hash.Hash
 }

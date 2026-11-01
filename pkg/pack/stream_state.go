@@ -1,5 +1,5 @@
 //ff:type feature=pack type=model
-//ff:what streamState — what a Stream checkpoints: target generation, objects, open object offsets, inventory, written block heads, pending leaf, H runs, named records, last key
+//ff:what streamState — what a Stream checkpoints: target generation, objects, open object offsets, inventory, written block heads, pending leaf, H runs, named records, last key, Close's progress
 package pack
 
 // streamState is the part of a Stream that a checkpoint saves (gob). Objects
@@ -11,7 +11,8 @@ package pack
 // leaf being filled. Runs are the spilled sorted H runs (RunCount names the
 // next). Named are the named records written. Last is the last P key put and
 // Count how many P records there are. Meta is the caller's own progress,
-// saved with the same checkpoint (Checkpoint, Stream.Meta).
+// saved with the same checkpoint (Checkpoint, Stream.Meta). Close is how far
+// Close has come (streamClose).
 type streamState struct {
 	Gen      uint64
 	Created  int64
@@ -32,4 +33,5 @@ type streamState struct {
 	Count    int64
 	Res      BuildResult
 	Meta     []byte
+	Close    streamClose
 }

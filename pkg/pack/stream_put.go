@@ -12,13 +12,17 @@ import (
 // v ≥ 1 version v (§3.4) — and, when r is a document, under
 // `h/<r.Hash>.geul` too (flags bit0: the bytes are shared, never copied).
 // Keys must come in strictly ascending order (Issuer number, document ID,
-// slot) and the Issuer must be one of StreamOptions.Issuers.
+// slot) and the Issuer must be one of StreamOptions.Issuers. Once Close has
+// begun (a resumed stream whose Close stopped) closedPut answers instead.
 func (s *Stream) Put(issuer []core.Word, doc uint64, slot uint32, r StreamRecord) error {
 	num, ok := s.inum[core.FormatID(issuer)]
 	if !ok {
 		return fmt.Errorf("geul/pack: Issuer %s is not one of the stream's", core.FormatID(issuer))
 	}
 	key := pKey(num, doc, slot)
+	if s.st.Close.Phase > closeNone {
+		return s.closedPut(key)
+	}
 	if s.st.Count > 0 && key <= s.st.Last {
 		return fmt.Errorf("geul/pack: %s/0x%016x slot %d is not after the previous record", core.FormatID(issuer), doc, slot)
 	}

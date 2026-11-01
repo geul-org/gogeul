@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=sequence
-//ff:what TestStreamCheckpoint — held keys spill, the state with meta is saved; a spill, a sync or a save that fails is an error
+//ff:what TestStreamCheckpoint — a closing stream saves only the meta; held keys spill, the state with meta is saved; a spill, a sync or a save that fails is an error
 package pack
 
 import (
@@ -37,5 +37,16 @@ func TestStreamCheckpoint(t *testing.T) {
 	}
 	if err := s.Checkpoint(nil); err != nil {
 		t.Fatalf("all synced: %v", err)
+	}
+	cl := streamTestNew(t, nil)
+	streamTestPut(t, cl, 1, 1)
+	cl.st.Close.Phase = closeStarted
+	cl.data.Close() // a closing checkpoint syncs nothing
+	if err := cl.Checkpoint([]byte("later")); err != nil || len(cl.hbuf) == 0 {
+		t.Fatalf("closing: %v", err)
+	}
+	b, _ := os.ReadFile(filepath.Join(cl.out, streamDir, streamStateFile))
+	if st := streamTestState(t, b); string(st.Meta) != "later" || st.Close.Phase != closeStarted {
+		t.Fatalf("closing meta %q", st.Meta)
 	}
 }

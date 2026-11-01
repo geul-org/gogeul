@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=iteration dimension=1
-//ff:what TestStreamEncode — a document compresses and carries its content hash; Stored keeps bytes raw; incompressible bytes stay raw; non-documents have no hash; a failing codec fails
+//ff:what TestStreamEncode — a closing stream leaves records raw; a document compresses and carries its content hash; Stored keeps bytes raw; incompressible bytes stay raw; non-documents have no hash; a failing codec fails
 package pack
 
 import (
@@ -27,6 +27,11 @@ func TestStreamEncode(t *testing.T) {
 	}
 	if r, err := streamTestNew(t, nil).Encode(noise); err != nil || r.Enc != encRaw || r.HashOK {
 		t.Fatalf("noise: %+v %v", r, err)
+	}
+	cl := streamTestNew(t, failCodec{})
+	cl.st.Close.Phase = closeStarted
+	if r, err := cl.Encode(doc); err != nil || r.Enc != encRaw || !r.HashOK {
+		t.Fatalf("closing: %+v %v", r.Enc, err)
 	}
 	if _, err := streamTestNew(t, failCodec{}).Encode(doc); err == nil {
 		t.Fatal("failing codec: want error")

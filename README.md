@@ -182,7 +182,7 @@ Records in a pack archive are stored raw or as zstd frames ([klauspost/compress]
 - Reading does not depend on the setting; compressed records are always read.
 - klauspost/compress maps zstd levels to four speeds; 11 and above run at its best setting.
 - Each set gets at most one dictionary (about 110 KiB), trained deterministically from sampled records (the same samples give the same bytes). It is kept only when it saves more than its own size; later generations reuse it, and `pack compact` trains a new one.
-- Very large sets (Wikidata) are written in one pass with `pack.Stream`: records in key order go straight into data packs, P leaves are written as they fill, H keys are sorted in spilled runs and merged at the end, and `Checkpoint`/`ResumeStream` survive a crash. Memory does not grow with the number of documents.
+- Very large sets (Wikidata) are written in one pass with `pack.Stream`: records in key order go straight into data packs, P leaves are written as they fill, H keys are sorted in spilled runs and merged at the end, and `Checkpoint`/`ResumeStream` survive a crash at any point, including inside `Close`, with the same bytes as an uninterrupted run (`pkg/pack/README.md`). Memory does not grow with the number of runs.
 - Up to 4 records are compressed at once. Inputs shorter than 256 bytes are not compressed.
 - Measured on Wikidata Q1–Q10000, zstd stores 0.336 of the raw size with a dictionary and 0.393 without.
 

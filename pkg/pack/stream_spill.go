@@ -3,7 +3,6 @@
 package pack
 
 import (
-	"fmt"
 	"path/filepath"
 	"sort"
 )
@@ -18,7 +17,7 @@ func (s *Stream) spill() error {
 		return nil
 	}
 	sort.Slice(s.hbuf, func(i, j int) bool { return hEntryLess(s.hbuf[i], s.hbuf[j]) })
-	name := fmt.Sprintf("run-%06d", s.st.RunCount)
+	name := runName(s.st.RunCount)
 	buf := make([]byte, 0, len(s.hbuf)*hEntrySize)
 	for _, e := range s.hbuf {
 		buf = appendHEntry(buf, e)

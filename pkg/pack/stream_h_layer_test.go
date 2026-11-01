@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=iteration dimension=1
-//ff:what TestStreamHLayer — runs merge into one layer counting distinct keys, a repeated key keeps its later record; no keys give no layer; a spill, a run, a merge or a leaf write that fails is an error
+//ff:what TestStreamHLayer — runs merge into one layer counting distinct keys, a repeated key keeps its later record; no keys give no layer; a started pass goes on without spilling; a spill, a merge down, a pass start, a run, a merge or a leaf write that fails is an error
 package pack
 
 import (
@@ -44,6 +44,22 @@ func TestStreamHLayer(t *testing.T) {
 	cut.st.Runs = []string{"run-cut"}
 	if _, err := cut.hLayer(); err == nil {
 		t.Fatal("cut run: want error")
+	}
+	md := streamTestNew(t, nil)
+	md.st.Runs, md.o.MergeRuns = []string{"run-a", "run-b", "run-c"}, 2
+	if _, err := md.hLayer(); err == nil {
+		t.Fatal("merge failure: want error")
+	}
+	hs := streamTestNew(t, nil)
+	os.MkdirAll(filepath.Join(hs.out, streamDir, streamHeadsFile, "x"), 0o755)
+	if _, err := hs.hLayer(); err == nil {
+		t.Fatal("start failure: want error")
+	}
+	again := streamTestNew(t, nil)
+	again.hbuf = []hEntry{k1}
+	again.hStart()
+	if ls, err := again.hLayer(); err != nil || ls != nil || len(again.st.Runs) != 0 {
+		t.Fatal("pass already started: held keys are not spilled again")
 	}
 	bad := streamTestNew(t, failCodec{})
 	for i := 0; i < 5; i++ {

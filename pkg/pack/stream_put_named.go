@@ -6,10 +6,15 @@ import "fmt"
 
 // PutNamed stores r at the named path (§3.4, e.g. `<Issuer>/documents.geul`),
 // in the open data pack's path table. A path may be put once; NAMED is
-// sorted when the stream closes. A named record does not serve h/.
+// sorted when the stream closes. A named record does not serve h/. Once
+// Close has begun, a path it holds is acknowledged without storing
+// (closedPutNamed).
 func (s *Stream) PutNamed(path string, r StreamRecord) error {
 	if parsePath(path).space != spaceNamed {
 		return fmt.Errorf("geul/pack: %q is not a named path", path)
+	}
+	if s.st.Close.Phase > closeNone {
+		return s.closedPutNamed(path)
 	}
 	loc, err := s.place(r.Bytes, r.Enc)
 	if err != nil {

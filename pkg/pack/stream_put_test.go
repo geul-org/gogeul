@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=sequence
-//ff:what TestStreamPut — records in key order fill leaves and spill H runs; an unknown Issuer, a key not after the last, a failed leaf write, place or spill are errors; a record without hash adds no H key
+//ff:what TestStreamPut — a closing stream acknowledges earlier keys and refuses later ones; records in key order fill leaves and spill H runs; an unknown Issuer, a key not after the last, a failed leaf write, place or spill are errors; a record without hash adds no H key
 package pack
 
 import (
@@ -36,6 +36,15 @@ func TestStreamPut(t *testing.T) {
 	os.RemoveAll(filepath.Join(full.out, streamDir))
 	if err := full.Put([]core.Word{1, 0}, 0x5100000000000003, 1, r); err == nil {
 		t.Fatal("leaf write failure: want error")
+	}
+	cl := streamTestNew(t, nil)
+	streamTestPut(t, cl, 1, 2)
+	cl.st.Close.Phase = closeStarted
+	if err := cl.Put([]core.Word{1, 0}, 0x5100000000000001, 1, StreamRecord{}); err != nil || cl.Count() != 4 {
+		t.Fatalf("closing, earlier key: %v", err)
+	}
+	if err := cl.Put([]core.Word{1, 0}, 0x5100000000000003, 0, StreamRecord{}); err == nil {
+		t.Fatal("closing, later key: want error")
 	}
 	sp := streamTestNew(t, nil)
 	streamTestPut(t, sp, 1, 3)
