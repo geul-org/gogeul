@@ -1,0 +1,21 @@
+//ff:func feature=cli type=command control=sequence
+//ff:what TestAppShowNoSpec — a codec without a published spec is shown generically, not refused
+package cli
+
+import (
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+func TestAppShowNoSpec(t *testing.T) {
+	h := newHarness(t)
+	addr, _ := h.doc()
+	with := h.must("show", addr)
+	os.RemoveAll(filepath.Join(h.data, ".well-known", "geul", "0x0000", "0x000000000000100a"))
+	out := h.must("show", addr)
+	if strings.Contains(out, "normal") || !strings.Contains(out, "TRIPLE") || out == with {
+		t.Fatal(out)
+	}
+}

@@ -34,8 +34,10 @@ Browse an archive:
 ```sh
 geul ls                                  # Issuers in the data folder
 geul ls geul.org                         # documents of one Issuer
-geul log geul.org/triple                 # versions: number, time, content hash
-geul show geul.org/triple                # one record per line
+geul show geul.org/triple                # one document, latest version, one record per line
+geul show geul.org/triple@2               # a given version
+geul show ./d.geul                       # a local file
+geul show versions geul.org/triple       # versions: number, time, content hash
 ```
 
 Write and publish a document under a self-issued Issuer:
@@ -132,7 +134,7 @@ The CLI lives in `cmd/geul` and `internal/`.
 
 | Group | Commands |
 |---|---|
-| Read and check | `ls`, `log`, `show`, `cat`, `hash`, `diff`, `blame`, `grep`, `check [--archive]`, `resolve` |
+| Read and check | `ls`, `show`, `show versions`, `cat`, `hash`, `diff`, `blame`, `grep`, `check [--archive]`, `resolve` |
 | Edit a draft file | `new`, `open`, `add`, `def`, `set`, `rm [--force]`, `meta [--unset]` |
 | Publish | `publish [--amend] [--name]`, `name`, `delta`, `deprecate`, `tombstone` |
 | Issuers and settings | `issuer new\|ls\|show`, `env [-w\|-u]` |

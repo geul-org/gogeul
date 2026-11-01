@@ -1,17 +1,17 @@
 //ff:func feature=cli type=command control=iteration dimension=1
-//ff:what app.show — print a document's HEAD lines, BODY, and BODY lines
+//ff:what app.show — print one document's HEAD lines, BODY, and BODY lines, with only the codec specs it uses
 package cli
 
 import "fmt"
 
-// show reads the document (readDoc) and prints its lines (linesOf), or them
-// as JSON.
+// show reads the one document (readDoc) and prints its lines, laid out by the
+// specs of the codecs it uses (docSpec), or them as JSON.
 func (a *app) show(arg string) error {
 	b, err := a.readDoc(arg)
 	if err != nil {
 		return err
 	}
-	ls, err := a.linesOf(b)
+	ls, err := linesWith(b, a.docSpec(b))
 	if err != nil {
 		return err
 	}

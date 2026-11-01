@@ -17,7 +17,7 @@ func TestAppPublish(t *testing.T) {
 	if out := h.must("publish", draft, "--amend"); !strings.HasPrefix(out, "1 0x") {
 		t.Fatal(out)
 	}
-	if out := h.must("log", addr); strings.Count(out, "\n") != 2 {
+	if out := h.must("show", "versions", addr); strings.Count(out, "\n") != 2 {
 		t.Fatal(out)
 	}
 	if out := h.must("publish", draft); !strings.HasPrefix(out, "1 0x") || !strings.Contains(out, "already published") {

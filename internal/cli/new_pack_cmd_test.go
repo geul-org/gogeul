@@ -20,7 +20,7 @@ func TestNewPackCmd(t *testing.T) {
 	}
 	h.must("add", draft, "ALIAS", "Q42", `"D. Adams"@en`)
 	h.must("publish", draft)
-	if log := h.must("log", addr); !strings.Contains(log, "\n3\t") {
+	if log := h.must("show", "versions", addr); !strings.Contains(log, "\n3\t") {
 		t.Fatal(log)
 	}
 	h.must("pack", "compact")

@@ -11,7 +11,7 @@ func TestNewTombstoneCmd(t *testing.T) {
 	h := newHarness(t)
 	addr, _ := h.doc()
 	h.must("tombstone", addr+"@1", "--reason", "2")
-	if out := h.must("log", addr); !strings.Contains(out, "deleted") {
+	if out := h.must("show", "versions", addr); !strings.Contains(out, "deleted") {
 		t.Fatal(out)
 	}
 	if _, err := h.run("", "tombstone", addr+"@2"); err == nil {

@@ -11,7 +11,7 @@ func TestNewDeprecateCmd(t *testing.T) {
 	h := newHarness(t)
 	addr, _ := h.doc()
 	h.must("deprecate", addr+"@1")
-	if out := h.must("log", addr); !strings.Contains(out, "deprecated") {
+	if out := h.must("show", "versions", addr); !strings.Contains(out, "deprecated") {
 		t.Fatal(out)
 	}
 	if _, err := h.run("", "deprecate", addr); err == nil {

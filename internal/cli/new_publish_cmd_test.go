@@ -18,7 +18,7 @@ func TestNewPublishCmd(t *testing.T) {
 		t.Fatal(out)
 	}
 	h.must("publish", draft, "--amend")
-	if out := h.must("log", addr); !strings.HasPrefix(out, "1\t") || strings.Count(out, "\n") != 2 {
+	if out := h.must("show", "versions", addr); !strings.HasPrefix(out, "1\t") || strings.Count(out, "\n") != 2 {
 		t.Fatal(out)
 	}
 }

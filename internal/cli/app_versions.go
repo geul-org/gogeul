@@ -1,5 +1,5 @@
 //ff:func feature=cli type=command control=iteration dimension=1
-//ff:what app.log — print a document's versions with time, hash and state, then its NEXT-LOCAL-ID
+//ff:what app.versions — print one document's versions with time, hash and state, then its NEXT-LOCAL-ID
 package cli
 
 import (
@@ -7,10 +7,10 @@ import (
 	"fmt"
 )
 
-// log prints one line per version (resolve.Dir.Log): version, publication
+// versions prints one line per version (resolve.Dir.Log): version, publication
 // time (UTC), content hash, and deprecated or deleted; then NEXT-LOCAL-ID.
-// JSON is logJSONOf.
-func (a *app) log(addr string) error {
+// JSON is versionsJSONOf.
+func (a *app) versions(addr string) error {
 	k, err := a.key(addr)
 	if err != nil {
 		return err
@@ -23,11 +23,11 @@ func (a *app) log(addr string) error {
 	if err != nil {
 		return err
 	}
-	if done, err := a.json(logJSONOf(h)); done {
+	if done, err := a.json(versionsJSONOf(h)); done {
 		return err
 	}
 	for _, e := range h.Entries {
-		fmt.Fprintf(a.out, "%d\t%s\t0x%s%s\n", e.Version, logTime(e.At), hex.EncodeToString(e.Hash[:]), stateOf(e.VersionEntry))
+		fmt.Fprintf(a.out, "%d\t%s\t0x%s%s\n", e.Version, versionTime(e.At), hex.EncodeToString(e.Hash[:]), stateOf(e.VersionEntry))
 	}
 	fmt.Fprintf(a.out, "NEXT-LOCAL-ID %d\n", h.Next)
 	return nil
