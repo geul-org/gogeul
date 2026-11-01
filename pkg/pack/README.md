@@ -69,8 +69,27 @@
 
 측정: `TestStreamCloseMemory`의 힙 최고치는 런 100개·1000개에서 약 74·78 MiB, `MergeRuns` 8에서 약 11 MiB다(옛 코드는 런당 1 MiB). 위키데이터 복구 실행(런 1,220개)의 `Close` 구간 RSS는 1분 표본으로 254–360 MB였다. 죽은 실행은 4.7 GB였다.
 
-조절 손잡이는 `StreamOptions.MergeRuns`다. 합쳐진 런은 세트가 끝날 때까지 `Spent`로 디스크에 남으므로 런 한 벌만큼 디스크를 더 쓴다.
-
 합치는 순서는 출력을 바꾸지 않는다. `hEntryLess`가 전순서이고, 같은 키는 마지막 패스에서만 정리한다.
 
-`Close`가 메모리를 스스로 감시하지는 않는다. 메모리 때문에 죽어도 잃는 것은 `saveLeaves` 잎 또는 합치기 한 번이고, 재개하면 된다.
+조절 손잡이는 세 가지다.
+
+- `StreamOptions.MergeRuns`: 합치기 폭의 위 한도다. 합쳐진 런은 세트가 끝날 때까지 `Spent`로 디스크에 남으므로 런 한 벌만큼 디스크를 더 쓴다.
+- `StreamOptions.MergeWidth`: 합치기마다 폭을 묻는다(2…`MergeRuns`로 자른다). 호출자가 메모리 예산에 맞춘 폭을 준다. 한 입력이 드는 메모리는 `MergeRunMemory`다. 폭이 좁으면 패스가 늘어 디스크와 시간을 더 쓰지만 출력은 같다.
+- `Zstd.SetWorkers`: 레코드를 넣는 동안 인코더 수를 바꾼다. 인코더는 차례로 쓰이므로 활성 작업자만 줄여서는 메모리가 줄지 않는다. 출력은 같다.
+
+## 마무리 멈추기
+
+`Close`는 메모리를 스스로 재지 않는다. 대신 `StreamOptions.Pace`가 안전 지점마다 불린다. gogeul은 누가 왜 멈추는지 모른다.
+
+| phase | 불리는 곳 | 멈출 때 잃는 것 |
+|---|---|---|
+| `close:data` | 마지막 데이터 pack 저장 뒤 | 없음 |
+| `close:p` | P 층 저장 뒤 | 없음 |
+| `close:merge` | 합치기마다, 합치기 안에서 `paceEntries` 항목마다 | 그 합치기 한 번(쓰던 런은 `ResumeStream`이 지운다) |
+| `close:h` | H 잎을 쓸 때마다 | 없음(`hSave`로 위치를 저장하고 돌아온다) |
+| `close:tree` | 첫 내부 층의 묶음마다 | 마지막 저장 뒤의 잎과 묶음(`saveLeaves` 잎 이내) |
+| `close:index` | H 층 저장 뒤 | 없음 |
+
+`Pace`가 오류를 돌려주면 `Close`는 `ErrStopped`이면서 그 오류인 값을 돌려준다(`errors.Is`·`errors.As` 둘 다 된다). `ResumeStream`과 `Close`를 다시 부르면 이어지고 같은 바이트가 나온다. `Pace`는 막아 둘 수도 있다.
+
+호출자의 `Meta`는 `Close` 전에 마지막으로 저장한 값이다. 재개할 때 모든 레코드가 들어갔음을 알려면 `Close` 직전에 `Checkpoint`를 한 번 부른다.

@@ -7,12 +7,17 @@ const (
 	// Each open run holds a runBufSize read buffer, so the merge holds
 	// MergeRuns × runBufSize (64 MiB) whatever the number of runs.
 	DefaultMergeRuns = 64
+	// MergeRunMemory is what one input of an H run merge holds (StreamOptions.MergeWidth).
+	MergeRunMemory = runBufSize
 	// runBufSize is the read buffer of one H run during a merge (and the write
 	// buffer of a merged run or the H head file).
 	runBufSize = 1 << 20
 	// hSaveLeaves is how many H leaves Close writes between two saves of its
 	// position, so a stop loses at most that much work (about a million keys).
 	hSaveLeaves = 1024
+	// paceEntries is how many entries a run merge handles between two calls of
+	// StreamOptions.Pace (about 3 MB of run).
+	paceEntries = 1 << 16
 	// hEntrySize is the bytes of one H run entry: key 32, object 4, offset 8, length 8, encoding 1.
 	hEntrySize = 53
 	// streamDir is a Stream's working folder inside the set folder.

@@ -5,7 +5,8 @@ package pack
 // closeLayers does what Close's saved progress lacks, in order, saving
 // after each: the open data pack is closed (finishData), the P layer built
 // (pLayer, kept in streamClose.P), the H layer built (hLayer, which saves
-// within, kept in streamClose.H) and the open index object closed.
+// within, kept in streamClose.H) and the open index object closed. Each saved
+// step is a safe point (Stream.pace).
 func (s *Stream) closeLayers() error {
 	if s.st.Data.Num >= 0 {
 		if err := s.finishData(); err != nil {
@@ -14,6 +15,9 @@ func (s *Stream) closeLayers() error {
 		if err := s.closeSave(); err != nil {
 			return err
 		}
+	}
+	if err := s.pace("close:data"); err != nil {
+		return err
 	}
 	if s.st.Close.Phase < closePDone {
 		pl, err := s.pLayer()
@@ -25,6 +29,9 @@ func (s *Stream) closeLayers() error {
 			return err
 		}
 	}
+	if err := s.pace("close:p"); err != nil {
+		return err
+	}
 	if s.st.Close.Phase < closeHDone {
 		hl, err := s.hLayer()
 		if err != nil {
@@ -34,6 +41,9 @@ func (s *Stream) closeLayers() error {
 		if err := s.closeSave(); err != nil {
 			return err
 		}
+	}
+	if err := s.pace("close:index"); err != nil {
+		return err
 	}
 	if s.st.Index.Num < 0 {
 		return nil

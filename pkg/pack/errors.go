@@ -6,6 +6,9 @@ var (
 	// ErrCorrupt means pack bytes break the format or fail an integrity check
 	// (object or manifest SHA-256, zstd checksum, content hash, truncation).
 	ErrCorrupt = errors.New("geul/pack: corrupt")
+	// ErrStopped means StreamOptions.Pace stopped a Close at a safe point:
+	// ResumeStream and Close go on from there.
+	ErrStopped = errors.New("geul/pack: Close stopped")
 	// ErrUnsupported means valid bytes this implementation cannot read (a
 	// compressed zstd block without a zstd codec).
 	ErrUnsupported = errors.New("geul/pack: unsupported")

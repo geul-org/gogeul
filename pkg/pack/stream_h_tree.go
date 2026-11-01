@@ -9,7 +9,8 @@ import "io"
 // at most HFanout) tree gets them all; otherwise the first level is written
 // HFanout heads at a time read from f, and tree goes on over that level,
 // which holds one head per HFanout leaves. So at most max(HRoot, HFanout)
-// heads are in memory (all of them only with HRoot 0, a root over all).
+// heads are in memory (all of them only with HRoot 0, a root over all). Each
+// group is a safe point; a stop goes back to the pass's last save.
 func (s *Stream) hTree(f io.ReaderAt, count int64) (block, error) {
 	fanout, rootMax := s.o.Build.HFanout, s.o.Build.HRoot
 	if rootMax == 0 || count <= int64(rootMax) || count <= int64(fanout) {
@@ -21,6 +22,9 @@ func (s *Stream) hTree(f io.ReaderAt, count int64) (block, error) {
 	}
 	var next []streamKV
 	for i := int64(0); i < count; i += int64(fanout) {
+		if err := s.pace("close:tree"); err != nil {
+			return block{}, err
+		}
 		g, err := readHeads(f, i, min(int64(fanout), count-i))
 		if err != nil {
 			return block{}, err

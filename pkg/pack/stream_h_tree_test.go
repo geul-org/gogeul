@@ -1,9 +1,10 @@
 //ff:func feature=pack type=writer control=iteration dimension=1
-//ff:what TestStreamHTree — heads that fit the root are grouped by tree; more are grouped from the file a fanout at a time first, giving the same root as tree over them all; a short head file and a failing block write are errors
+//ff:what TestStreamHTree — heads that fit the root are grouped by tree; more are grouped from the file a fanout at a time first, giving the same root as tree over them all; a short head file, a failing block write and a Pace stop are errors
 package pack
 
 import (
 	"bytes"
+	"errors"
 	"testing"
 )
 
@@ -34,5 +35,10 @@ func TestStreamHTree(t *testing.T) {
 	}
 	if _, err := streamTestNew(t, failCodec{}).hTree(bytes.NewReader(file), 10); err == nil {
 		t.Fatal("failing block: want error")
+	}
+	stopped := streamTestNew(t, nil)
+	stopped.o.Pace = func(string) error { return errors.New("stop") }
+	if _, err := stopped.hTree(bytes.NewReader(file), 10); !errors.Is(err, ErrStopped) {
+		t.Fatalf("Pace stop: %v", err)
 	}
 }

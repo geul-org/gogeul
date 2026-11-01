@@ -1,8 +1,9 @@
 //ff:func feature=pack type=writer control=iteration dimension=1
-//ff:what TestStreamCloseLayers — every step runs and saves once (a done step is skipped); a failing data pack, P layer, H layer, index object or save after any step is an error
+//ff:what TestStreamCloseLayers — every step runs and saves once (a done step is skipped); a failing data pack, P layer, H layer, index object or save after any step, and a Pace stop between steps, are errors
 package pack
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -19,8 +20,25 @@ func TestStreamCloseLayers(t *testing.T) {
 		t.Fatalf("all done: %v", err)
 	}
 	closed := func() *os.File { f, _ := os.Open(os.DevNull); f.Close(); return f }
-	lock := func(s *Stream) { p := filepath.Join(s.out, streamDir, streamStateFile); os.RemoveAll(p); os.MkdirAll(filepath.Join(p, "x"), 0o755) }
+	lock := func(s *Stream) {
+		p := filepath.Join(s.out, streamDir, streamStateFile)
+		os.RemoveAll(p)
+		os.MkdirAll(filepath.Join(p, "x"), 0o755)
+	}
+	stopAt := func(phase string) func(*Stream) {
+		return func(s *Stream) {
+			s.o.Pace = func(p string) error {
+				if p == phase {
+					return errors.New("stop")
+				}
+				return nil
+			}
+		}
+	}
 	cases := map[string]func(*Stream){
+		"stop after data": stopAt("close:data"),
+		"stop after P":    stopAt("close:p"),
+		"stop after H":    stopAt("close:index"),
 		"data pack":       func(s *Stream) { s.o.Build.Codec = failCodec{} },
 		"save after data": func(s *Stream) { s.index = closed() },
 		"P layer":         func(s *Stream) { s.finishData(); s.o.Build.Codec = failCodec{} },

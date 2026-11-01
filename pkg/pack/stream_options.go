@@ -1,5 +1,5 @@
 //ff:type feature=pack type=writer
-//ff:what StreamOptions — a Stream's block sizes, codec, dictionary samples, Issuers, run size and merge width
+//ff:what StreamOptions — a Stream's block sizes, codec, dictionary samples, Issuers, run size, merge width and Close's pace hooks
 package pack
 
 // StreamOptions tune a Stream. Build gives the pack and block sizes, the
@@ -16,6 +16,14 @@ package pack
 // buffers however many runs the stream spilled. It does not change the bytes
 // written. saveLeaves is how many H leaves Close writes between saves (below
 // 1: hSaveLeaves; tests make it small).
+//
+// Pace, when set, is called at Close's safe points with the phase Close is in
+// (close:data, close:p, close:merge, close:h, close:tree, close:index); it may
+// block. An error stops Close there: what was done is saved, Close returns an
+// error that is both ErrStopped and Pace's error, and ResumeStream and Close
+// go on and write the same bytes. MergeWidth, when set, is asked before each
+// merge how many runs it may read at once (clamped to 2…MergeRuns), so the
+// merge can follow a memory budget that changes while Close runs.
 type StreamOptions struct {
 	Build      BuildOptions
 	Issuers    []string
@@ -23,5 +31,7 @@ type StreamOptions struct {
 	RunEntries int
 	Created    int64
 	MergeRuns  int
+	Pace       func(phase string) error
+	MergeWidth func() int
 	saveLeaves int
 }
