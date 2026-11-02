@@ -9,7 +9,7 @@ func (r *Reader) applyShare(ctx context.Context, st map[string]Loc, e invEntry, 
 	if e.flags&flagHash == 0 {
 		return nil
 	}
-	p, err := r.hashPath(ctx, l)
+	p, err := r.HashPath(ctx, l)
 	if err != nil {
 		return err
 	}

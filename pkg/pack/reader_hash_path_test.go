@@ -14,13 +14,13 @@ func TestReaderHashPath(t *testing.T) {
 	obj, o := objBytes(kindData, append(doc, 1, 2), nil)
 	r := newReader(memStore{objectName(o): obj}, Options{}, &manifest{objects: []object{o}}, "")
 	h, _ := contentHash(doc)
-	if p, err := r.hashPath(ctx, Loc{Off: 64, Len: uint64(len(doc))}); err != nil || p != hPath(string(h[:])) {
+	if p, err := r.HashPath(ctx, Loc{Off: 64, Len: uint64(len(doc))}); err != nil || p != hPath(string(h[:])) {
 		t.Fatal(p, err)
 	}
-	if _, err := r.hashPath(ctx, Loc{Off: 64 + uint64(len(doc)), Len: 2}); !errors.Is(err, ErrCorrupt) {
+	if _, err := r.HashPath(ctx, Loc{Off: 64 + uint64(len(doc)), Len: 2}); !errors.Is(err, ErrCorrupt) {
 		t.Fatal(err)
 	}
-	if _, err := r.hashPath(ctx, Loc{Obj: 9}); !errors.Is(err, ErrCorrupt) {
+	if _, err := r.HashPath(ctx, Loc{Obj: 9}); !errors.Is(err, ErrCorrupt) {
 		t.Fatal(err)
 	}
 }

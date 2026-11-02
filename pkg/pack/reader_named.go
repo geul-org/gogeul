@@ -14,5 +14,5 @@ func (r *Reader) named(ctx context.Context, path string) ([]byte, error) {
 	if i == len(ns) || ns[i].path != path {
 		return nil, notFound(path)
 	}
-	return r.record(ctx, ns[i].loc)
+	return r.Record(ctx, ns[i].loc)
 }

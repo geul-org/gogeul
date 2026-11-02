@@ -16,5 +16,5 @@ func (r *Reader) Lookup(ctx context.Context, issuer string, doc uint64, slot uin
 	if err != nil {
 		return nil, err
 	}
-	return r.record(ctx, l)
+	return r.Record(ctx, l)
 }

@@ -17,7 +17,7 @@ func (r *Reader) Hash(ctx context.Context, h [32]byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	b, err := r.record(ctx, l)
+	b, err := r.Record(ctx, l)
 	if err != nil {
 		return nil, err
 	}

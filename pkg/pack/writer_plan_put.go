@@ -19,7 +19,7 @@ func (w *writer) planPut(path string) (*put, error) {
 	}
 	w.sums[path] = sha256.Sum256(data)
 	if l, ok := w.base[path]; ok {
-		old, err := w.prev.record(w.ctx, l)
+		old, err := w.prev.Record(w.ctx, l)
 		if err != nil {
 			return nil, err
 		}

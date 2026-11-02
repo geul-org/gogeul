@@ -1,11 +1,11 @@
 //ff:func feature=pack type=resolver control=sequence
-//ff:what Reader.record — a record's original bytes: one range read, then unframe by encoding
+//ff:what Reader.Record — a record's original bytes by location: one range read, then unframe by encoding
 package pack
 
 import "context"
 
-// record reads and restores the record at l.
-func (r *Reader) record(ctx context.Context, l Loc) ([]byte, error) {
+// Record reads and restores the record at l.
+func (r *Reader) Record(ctx context.Context, l Loc) ([]byte, error) {
 	b, err := r.raw(ctx, kindData, l)
 	if err != nil {
 		return nil, err

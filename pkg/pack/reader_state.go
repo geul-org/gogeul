@@ -9,11 +9,8 @@ import "context"
 // must equal what the layers answer (V3).
 func (r *Reader) State(ctx context.Context) (map[string]Loc, error) {
 	st := map[string]Loc{}
-	for i, o := range r.m.objects {
-		if o.kind != kindData {
-			continue
-		}
-		if err := r.applyPack(ctx, st, uint32(i)); err != nil {
+	for _, obj := range r.DataPacks() {
+		if err := r.applyPack(ctx, st, obj); err != nil {
 			return nil, err
 		}
 	}
