@@ -93,3 +93,11 @@
 `Pace`가 오류를 돌려주면 `Close`는 `ErrStopped`이면서 그 오류인 값을 돌려준다(`errors.Is`·`errors.As` 둘 다 된다). `ResumeStream`과 `Close`를 다시 부르면 이어지고 같은 바이트가 나온다. `Pace`는 막아 둘 수도 있다.
 
 호출자의 `Meta`는 `Close` 전에 마지막으로 저장한 값이다. 재개할 때 모든 레코드가 들어갔음을 알려면 `Close` 직전에 `Checkpoint`를 한 번 부른다.
+
+## 출처로 읽기
+
+`pkg/resolve`가 이 패키지를 import한다. 반대 방향은 없다. `GEULPROXY`의 `file://`와 `https://`는 `resolve`가 `Open`과 `FileStore`·`HTTPStore`로 세트를 직접 열고, 세트가 있는지는 `latest.txt`로만 판별한다(`pkg/resolve` README "저장 형태 판별"). 같은 `Reader`가 무압축 세트와 zstd 세트를 읽으므로 형태를 구별하지 않는다.
+
+- `ErrNotFound`·`ErrVerify`는 이 패키지가 정의하고 `resolve.ErrNotFound`·`resolve.ErrVerify`는 같은 값이다.
+- `Open`의 `ErrNotFound`는 "여기에 세트가 없다"(`latest.txt`가 없거나 고정한 매니페스트가 없다)뿐이다. `latest.txt`가 가리키는 매니페스트가 없으면 `ErrCorrupt`다.
+- `Archive`는 세트만 안다. 세트 옆의 낱개 파일은 `resolve.Dir{Root, Store}`가 읽는다.

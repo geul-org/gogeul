@@ -6,8 +6,6 @@ import (
 	"context"
 	"errors"
 	"sort"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 // Has reports whether path is live in r (index only; no record is read).
@@ -27,7 +25,7 @@ func (r *Reader) Has(ctx context.Context, path string) (bool, error) {
 		i := sort.Search(len(r.m.named), func(i int) bool { return r.m.named[i].path >= path })
 		return i < len(r.m.named) && r.m.named[i].path == path, nil
 	}
-	if errors.Is(err, resolve.ErrNotFound) {
+	if errors.Is(err, ErrNotFound) {
 		return false, nil
 	}
 	return err == nil, err

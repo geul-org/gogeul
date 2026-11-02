@@ -3,6 +3,14 @@ package pack
 import "errors"
 
 var (
+	// ErrNotFound means a place does not have the path, document or object (404,
+	// 410, a missing file). pkg/resolve names this same value resolve.ErrNotFound:
+	// resolution moves on to the next source.
+	ErrNotFound = errors.New("geul: not found")
+	// ErrVerify means bytes do not match what names them (a content hash, a
+	// version list, a Key). pkg/resolve names this same value resolve.ErrVerify:
+	// resolution never falls through to another source on it.
+	ErrVerify = errors.New("geul: verification failed")
 	// ErrCorrupt means pack bytes break the format or fail an integrity check
 	// (object or manifest SHA-256, zstd checksum, content hash, truncation).
 	ErrCorrupt = errors.New("geul/pack: corrupt")

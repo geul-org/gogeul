@@ -6,12 +6,15 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"fmt"
 )
 
 // Open opens one generation of the pack set in s. The manifest's SHA-256 must
 // be its name and, when read through latest.txt, its generation the one
-// latest.txt names and at least o.MinGeneration.
+// latest.txt names and at least o.MinGeneration. Only a missing latest.txt (or
+// pinned manifest) is ErrNotFound; a latest.txt whose manifest is missing is
+// ErrCorrupt, so "no set here" and "a broken set" stay apart.
 func Open(ctx context.Context, s Store, o Options) (*Reader, error) {
 	name, gen := o.Manifest, uint64(0)
 	if name == "" {
@@ -24,6 +27,9 @@ func Open(ctx context.Context, s Store, o Options) (*Reader, error) {
 		}
 	}
 	b, err := s.ReadAll(ctx, "m/"+name+".gpm")
+	if errors.Is(err, ErrNotFound) && gen != 0 {
+		return nil, corrupt("latest.txt names a missing manifest")
+	}
 	if err != nil {
 		return nil, err
 	}

@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestHTTPStoreReadAll(t *testing.T) {
@@ -32,7 +30,7 @@ func TestHTTPStoreReadAll(t *testing.T) {
 	if _, err := s.ReadAll(ctx, "boom"); err == nil {
 		t.Fatal("500")
 	}
-	if _, err := s.ReadAll(ctx, "none"); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := s.ReadAll(ctx, "none"); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 }

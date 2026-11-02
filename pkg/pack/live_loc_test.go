@@ -5,15 +5,13 @@ package pack
 import (
 	"errors"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestLiveLoc(t *testing.T) {
 	if l, err := liveLoc(Loc{Off: 3}, "p"); err != nil || l.Off != 3 {
 		t.Fatal(err)
 	}
-	if _, err := liveLoc(Loc{Enc: encGone}, "p"); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := liveLoc(Loc{Enc: encGone}, "p"); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 }

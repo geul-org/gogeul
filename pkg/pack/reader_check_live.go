@@ -5,8 +5,6 @@ package pack
 import (
 	"context"
 	"errors"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 // checkLive judges one leaf entry of kr during anyLive's walk. gone holds
@@ -16,7 +14,7 @@ func (r *Reader) checkLive(ctx context.Context, kr keyRange, gone map[string]boo
 		return nil
 	}
 	_, err := r.find(ctx, kr.layers, k, kr.path(k))
-	if errors.Is(err, resolve.ErrNotFound) {
+	if errors.Is(err, ErrNotFound) {
 		return nil
 	}
 	if err != nil {

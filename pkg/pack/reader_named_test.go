@@ -7,8 +7,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestReaderNamed(t *testing.T) {
@@ -19,7 +17,7 @@ func TestReaderNamed(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, p := range []string{"0x0000/x.geul", "zzz"} {
-		if _, err := r.named(ctx, p); !errors.Is(err, resolve.ErrNotFound) {
+		if _, err := r.named(ctx, p); !errors.Is(err, ErrNotFound) {
 			t.Fatal(p, err)
 		}
 	}

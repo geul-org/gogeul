@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestHTTPStoreGet(t *testing.T) {
@@ -32,7 +30,7 @@ func TestHTTPStoreGet(t *testing.T) {
 	}
 	resp.Body.Close()
 	for _, n := range []string{"gone", "none"} {
-		if _, err := s.get(ctx, n); !errors.Is(err, resolve.ErrNotFound) {
+		if _, err := s.get(ctx, n); !errors.Is(err, ErrNotFound) {
 			t.Fatal(n, err)
 		}
 	}

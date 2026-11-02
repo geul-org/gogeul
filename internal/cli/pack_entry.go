@@ -13,9 +13,10 @@ import (
 	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
-// packEntry opens item (read-only) and names the source `pack+<item>`.
+// packEntry opens item (read-only) and names the source `pack+<item>`. Only a
+// data folder has a Root: loose files beside its sets read too.
 func packEntry(item string) (resolve.Entry, error) {
-	ctx, name := context.Background(), "pack+"+item
+	ctx, name, root := context.Background(), "pack+"+item, ""
 	var a *pack.Archive
 	var err error
 	_, setErr := os.Stat(filepath.Join(item, "latest.txt"))
@@ -27,11 +28,12 @@ func packEntry(item string) (resolve.Entry, error) {
 		a, err = pack.OpenRemote(ctx, pack.FileStore{Root: item}, pack.Options{})
 	case pack.IsPacked(wk):
 		a, err = pack.OpenDir(ctx, wk, packOptions())
+		root = item
 	default:
 		err = fmt.Errorf("GEULPACK %q: no pack set or pack archive there", item)
 	}
 	if err != nil {
 		return resolve.Entry{}, err
 	}
-	return resolve.Entry{Name: name, Source: resolve.Dir{Root: item, Store: a}}, nil
+	return resolve.Entry{Name: name, Source: resolve.Dir{Root: root, Store: a}}, nil
 }

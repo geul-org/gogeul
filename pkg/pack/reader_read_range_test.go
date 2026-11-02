@@ -6,8 +6,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestReaderReadRange(t *testing.T) {
@@ -17,7 +15,7 @@ func TestReaderReadRange(t *testing.T) {
 		t.Fatal(err)
 	}
 	_, err := r.readRange(context.Background(), object{kind: kindData}, 64, 2)
-	if !errors.Is(err, ErrCorrupt) || errors.Is(err, resolve.ErrNotFound) {
+	if !errors.Is(err, ErrCorrupt) || errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 }

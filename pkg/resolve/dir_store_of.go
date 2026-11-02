@@ -1,11 +1,15 @@
-//ff:func feature=resolve type=resolver control=sequence
-//ff:what Dir.store — the Dir's Store: the one set, else the directory tree under Root
+//ff:func feature=resolve type=resolver control=selection
+//ff:what Dir.store — the Dir's Store: the directory tree under Root, the given Store, or that Store over the loose files under Root
 package resolve
 
-// store returns d.Store or a dirStore over `<Root>/.well-known/geul/`.
+// store returns the Dir's reading and writing side (see Dir).
 func (d Dir) store() Store {
-	if d.Store != nil {
+	switch {
+	case d.Store == nil:
+		return dirStore{root: d.file("")}
+	case d.Root == "":
 		return d.Store
+	default:
+		return overlay{stored: d.Store, loose: dirStore{root: d.file("")}}
 	}
-	return dirStore{root: d.file("")}
 }

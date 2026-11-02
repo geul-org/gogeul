@@ -1,5 +1,5 @@
 //ff:func feature=cli type=helper control=sequence
-//ff:what openTree — the archive tree under a root (pack sets or directory) for serve and build
+//ff:what openTree — the archive tree under a root (directory, pack sets, or pack sets with loose files beside them) for serve and build
 package cli
 
 import (
@@ -20,5 +20,5 @@ func openTree(root string) (resolve.Store, string, error) {
 	if err != nil {
 		return nil, wk, err
 	}
-	return a, wk, nil
+	return resolve.Dir{Root: root, Store: a}.Tree(), wk, nil
 }

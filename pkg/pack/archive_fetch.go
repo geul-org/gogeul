@@ -5,8 +5,6 @@ package pack
 import (
 	"context"
 	"errors"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 // fetch searches the sets for name (staged changes not included).
@@ -16,7 +14,7 @@ func (a *Archive) fetch(name string) ([]byte, bool, error) {
 		if err == nil {
 			return b, true, nil
 		}
-		if !errors.Is(err, resolve.ErrNotFound) {
+		if !errors.Is(err, ErrNotFound) {
 			return nil, false, err
 		}
 	}

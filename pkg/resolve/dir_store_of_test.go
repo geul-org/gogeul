@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=sequence
-//ff:what TestDirStoreOf — the given Store, else a directory store at <Root>/.well-known/geul; publishing and reading work over a non-directory Store
+//ff:what TestDirStoreOf — the given Store (over the loose files when a Root is given too), else a directory store at <Root>/.well-known/geul; publishing and reading work over a non-directory Store
 package resolve
 
 import (
@@ -17,6 +17,11 @@ func TestDirStoreOf(t *testing.T) {
 	d := Dir{Store: m}
 	if _, ok := d.store().(mapStore); !ok {
 		t.Fatal("given store")
+	}
+	if o, ok := (Dir{Root: "r", Store: m}).store().(overlay); !ok || o.loose.root != filepath.Join("r", ".well-known", "geul") {
+		t.Fatal("a Store with a Root")
+	} else if _, ok := o.stored.(mapStore); !ok {
+		t.Fatal("the stored side")
 	}
 	if err := d.write("0x0001/a.geul", []byte("x")); err != nil {
 		t.Fatal(err)

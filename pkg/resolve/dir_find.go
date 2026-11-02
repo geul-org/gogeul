@@ -9,8 +9,9 @@ import (
 )
 
 // Find reads the document at addr, a 공표 주소 (GEUL-ORG) relative to
-// `.well-known/geul/`, which may be written in full. The Store is the data
-// folder or a pack set, so both are found the same way, one key at a time:
+// `.well-known/geul/`, which may be written in full. Every storage form (a
+// tree of files, raw and zstd pack sets, locally or over HTTP) is found the
+// same way, one key at a time:
 //
 //	issuers.geul
 //	h/<내용 해시>.geul

@@ -5,7 +5,7 @@ package pack
 import "context"
 
 // Fetch returns the bytes of path (relative to `.well-known/geul/`), or an
-// error wrapping resolve.ErrNotFound when this generation does not have it.
+// error wrapping ErrNotFound when this generation does not have it.
 func (r *Reader) Fetch(ctx context.Context, path string) ([]byte, error) {
 	ref := parsePath(path)
 	switch ref.space {

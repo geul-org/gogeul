@@ -163,11 +163,11 @@ Each setting is read from a command-line flag, then the environment variable, th
 | `GEULFORMAT` | Output format: `text` (default) or `json`. |
 | `GEULISSUER` | Issuer prefixed to the document ID given to `geul new` without one. |
 | `GEULSTORE` | `dir` makes a new data folder a directory archive instead of a pack archive. |
-| `GEULPROXY` | Ordered source list for resolving IMPORTs, separated by `,` or `\|`. Items: `https://...`, `file://<folder>`, `registry`, and `off` (stop here). A source that lacks a document passes to the next; an item followed by `\|` also passes on any other error. Default: `https://geul.org,registry`. A `file://` folder holding a pack archive is read as one. Plain `http://` is rejected. |
+| `GEULPROXY` | Ordered source list for resolving IMPORTs, separated by `,` or `\|`. Items: `https://...`, `file://<folder>`, `registry`, and `off` (stop here). A source that lacks a document passes to the next; an item followed by `\|` also passes on any other error. Default: `https://geul.org,registry`. `file://` and `https://` sources read `.geul` files, raw pack sets and zstd pack sets, told apart by `latest.txt` as they are read; Issuers may be stored differently within one source. Plain `http://` is rejected. |
 | `GEULPACK` | Pack sources read before `GEULPROXY`, comma-separated: `https://` set addresses, local set folders, or data folders holding a pack archive. |
 | `GEULPRIVATE` | Comma-separated `<Issuer>/<doc>` patterns (`*` allowed) of documents never requested from geul.org or `registry`. |
 
-`geul resolve` uses the data folder first, then `GEULPACK`, then `GEULPROXY`. Private keys of self-issued Issuers are kept in `<user config dir>/geul/keys/`, outside the data folder. `geul env` also lists names reserved for features not implemented yet (`GEULCACHE`, `GEULREMOTE`, `GEULLOG`, `GEULNOLOG`, `GEULINSECURE`, `GEULWORK`).
+`geul resolve` uses the data folder first, then `GEULPACK`, then `GEULPROXY`. A data folder may also keep pack sets and `.geul` files side by side; a path in both reads from the pack set. Private keys of self-issued Issuers are kept in `<user config dir>/geul/keys/`, outside the data folder. `geul env` also lists names reserved for features not implemented yet (`GEULCACHE`, `GEULREMOTE`, `GEULLOG`, `GEULNOLOG`, `GEULINSECURE`, `GEULWORK`).
 
 ### Compression
 

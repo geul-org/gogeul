@@ -5,8 +5,6 @@ package pack
 import (
 	"crypto/sha256"
 	"errors"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 // verifyPaths checks the path contract (§3.1) on the new generation r.
@@ -21,7 +19,7 @@ func (w *writer) verifyPaths(r *Reader) error {
 		}
 	}
 	for _, d := range w.dels {
-		if _, err := r.Fetch(w.ctx, d); !errors.Is(err, resolve.ErrNotFound) {
+		if _, err := r.Fetch(w.ctx, d); !errors.Is(err, ErrNotFound) {
 			return corrupt("verify: deleted path still served: " + d)
 		}
 	}

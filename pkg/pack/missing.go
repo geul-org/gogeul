@@ -1,5 +1,5 @@
 //ff:func feature=pack type=helper control=sequence
-//ff:what missing — a file-not-found error as resolve.ErrNotFound, other errors unchanged
+//ff:what missing — a file-not-found error as ErrNotFound, other errors unchanged
 package pack
 
 import (

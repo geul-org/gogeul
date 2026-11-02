@@ -1,12 +1,14 @@
 package resolve
 
-import "errors"
+import "github.com/geul-org/gogeul/pkg/pack"
 
 var (
 	// ErrNotFound means a source does not have the document or version (404, 410,
-	// a missing file). Resolution moves on to the next source.
-	ErrNotFound = errors.New("geul/resolve: not found")
+	// a missing file). Resolution moves on to the next source. It is
+	// pack.ErrNotFound, the one value every storage form reports.
+	ErrNotFound = pack.ErrNotFound
 	// ErrVerify means fetched bytes do not match the version list or the Key.
-	// Resolution never falls through to another source on it.
-	ErrVerify = errors.New("geul/resolve: verification failed")
+	// Resolution never falls through to another source on it. It is
+	// pack.ErrVerify.
+	ErrVerify = pack.ErrVerify
 )

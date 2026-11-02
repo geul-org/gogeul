@@ -10,8 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestHTTPStoreReadRange(t *testing.T) {
@@ -27,7 +25,7 @@ func TestHTTPStoreReadRange(t *testing.T) {
 	if b, err := s.ReadRange(ctx, "f", 2, 0); err != nil || len(b) != 0 || c.ranges != 1 {
 		t.Fatal(err)
 	}
-	if _, err := s.ReadRange(ctx, "none", 0, 1); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := s.ReadRange(ctx, "none", 0, 1); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 	if _, err := s.ReadRange(ctx, "f", 9, 3); err == nil {

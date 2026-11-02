@@ -1,5 +1,5 @@
 //ff:func feature=cli type=helper control=sequence
-//ff:what TestAppDocSpec — only the codecs the document uses; the language registry though no top-level record has its codec; same lines as all specs; empty without a data folder, on bad bytes and on a broken spec
+//ff:what TestAppDocSpec — only the codecs the document uses; the language registry though no top-level record has its codec; same lines as all specs; empty without a data folder, on bad bytes, on a broken spec and on a bad source list
 package cli
 
 import (
@@ -52,5 +52,9 @@ func TestAppDocSpec(t *testing.T) {
 	h.cwd = t.TempDir()
 	if len(h.app(io.Discard).docSpec(b)) != 0 {
 		t.Fatal("no data folder: want empty")
+	}
+	h.env["GEULPROXY"] = "http://plain"
+	if len(h.app(io.Discard).docSpec(b)) != 0 {
+		t.Fatal("bad source list: want empty")
 	}
 }

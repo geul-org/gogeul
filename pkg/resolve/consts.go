@@ -15,4 +15,12 @@ const (
 	namesFile = "documents.geul"
 	// issuersFile is geul.org's Issuer name index (GEUL-ORG Issuer 이름).
 	issuersFile = "issuers.geul"
+	// geulIssuer is the GEUL Issuer, whose folder holds the paths outside every
+	// Issuer when an archive is kept as one set per Issuer (pack.Split).
+	geulIssuer = "0x0000"
+	// setLatest, setManifests and setObjects are the entries of a pack set
+	// folder. They are storage, not published paths.
+	setLatest    = "latest.txt"
+	setManifests = "m"
+	setObjects   = "o"
 )

@@ -8,8 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestFileStoreReadAll(t *testing.T) {
@@ -19,7 +17,7 @@ func TestFileStoreReadAll(t *testing.T) {
 	if b, err := s.ReadAll(context.Background(), "latest.txt"); err != nil || string(b) != "x" {
 		t.Fatal(err)
 	}
-	if _, err := s.ReadAll(context.Background(), "none"); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := s.ReadAll(context.Background(), "none"); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 }

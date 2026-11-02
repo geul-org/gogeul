@@ -12,7 +12,6 @@ import (
 	"testing"
 
 	"github.com/geul-org/gogeul/pkg/core"
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestStream(t *testing.T) {
@@ -88,7 +87,7 @@ func TestStream(t *testing.T) {
 	if err != nil || len(paths) != len(want) || paths[0] != want[0] || paths[len(paths)-1] != want[len(want)-1] {
 		t.Fatalf("paths %d want %d %v", len(paths), len(want), err)
 	}
-	if _, err := r.Fetch(ctx, pPath("0x00010000", 0x5100000000000000|41, 1)); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := r.Fetch(ctx, pPath("0x00010000", 0x5100000000000000|41, 1)); !errors.Is(err, ErrNotFound) {
 		t.Fatalf("missing: %v", err)
 	}
 	if objs := len(r.m.objects); objs < 4 {

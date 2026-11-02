@@ -15,7 +15,7 @@
                                                     ▼
                               문서별 버전 선택(IMPORT 고정 > 잠금 > 최신)
                                                     ▼
-                        Path ─▶ Source(아카이브·HTTP·메모리) ─▶ 바이트
+                        Path ─▶ Source(파일·pack·zstd pack, 로컬·HTTP) ─▶ 바이트
                                                     │ 내용 해시 검증, 잠금 기록
                                                     ▼
                         Graph: 문서 + 의존 문서 (재귀) ─▶ Target(Reference) ─▶ 대상 레코드
@@ -67,7 +67,7 @@ type Config struct { // 설계 전체. 지금은 Proxy·Private만 있다(구현
 }
 type Entry struct {
 	Name        string // 적힌 그대로. Node.Source에 남는다
-	Source      Source // https:// → HTTP, file:// → Dir, registry → Registry
+	Source      Source // https://·file:// → Dir(저장 형태는 읽을 때 판별), registry → Registry
 	Public      bool   // https://geul.org, registry. Private 문서는 건너뛴다
 	Fallthrough bool   // 뒤 구분자가 | 이면 어떤 오류에도 다음 출처로
 	Off         bool   // off: 여기서 멈춘다
@@ -91,12 +91,43 @@ type Source interface {
 
 | 구현 | 출처 항목 | 내용 |
 |---|---|---|
-| `Dir` | `file://<디렉터리>` | 로컬 디렉터리의 `.well-known/geul/`. 덤프·미러·캐시가 모두 이 구조다. `Publish`로 문서를 공표한다: 버전 배정, 문서와 `h/` 사본 저장, 새 목록 문서(`PUBLICATION` 덧붙임, `PARENT` = 직전 목록) 저장, 직전 목록은 `h/`에 남는다. |
-| `HTTP` | `https://<기준>` | 기준 주소의 `.well-known/geul/`. 평문 `http://`는 `GEULINSECURE`가 생기기 전까지 받지 않는다. |
+| `Dir` | `file://<디렉터리>`, `https://<기준>` | 아카이브 하나. `Root`만 주면 디렉터리 트리 `<Root>/.well-known/geul/`이고, `Store`를 주면 그 Store를 읽는다. `Root`와 `Store`를 함께 주면 Store가 없는 경로를 `Root`의 낱개 파일에서 읽는다. `Publish`로 문서를 공표한다: 버전 배정, 문서와 `h/` 사본 저장, 새 목록 문서(`PUBLICATION` 덧붙임, `PARENT` = 직전 목록) 저장, 직전 목록은 `h/`에 남는다. 출처 목록의 항목은 읽기 전용이다. |
+| `HTTP` | (`https://`의 낱개 GET) | 기준 주소의 `.well-known/geul/<경로>`를 한 번 GET 한다. 평문 `http://`는 `GEULINSECURE`가 생기기 전까지 받지 않는다. |
 | `Registry` | `registry` | geul.org 등록부에서 Issuer의 기준 주소를 받아 `HTTP`로 받는다. 등록부 API가 정해지기 전까지 모든 조회가 '없음'이다. |
 | `Memory` | (테스트) | 경로 → 바이트 맵. |
 
 - 오류 분류: `404`·`410`은 "없음"(다음 출처로), 그 밖은 "고장"(구분자가 `|`일 때만 다음 출처로). `Dir`의 파일 없음은 "없음"이다.
+
+## 저장 형태 판별
+
+출처 목록의 `file://`와 `https://`는 어디서든 낱개 `.geul` 파일, 무압축 pack 세트, zstd pack 세트를 읽는다. 형태는 적지 않는다. 항목을 파싱할 때는 아무것도 읽지 않고, 읽을 때 찾는다(`site`). 데이터 폴더는 `pack.OpenDir`로 연 `Archive`가 맡고 규칙은 같다.
+
+경로 하나를 찾는 순서는 다음과 같다. `pack.Archive`의 읽기 순서를 따르고, 맨 뒤에 낱개 파일이 붙는다.
+
+| 경로 | 찾는 곳 |
+|---|---|
+| `<Issuer>/…` | `<Issuer>/latest.txt`의 세트 → 맨 위 `latest.txt`의 세트 → 낱개 파일 |
+| `h/…`, `issuers.geul` | 맨 위 세트 → `0x0000` 세트 → 그 밖의 세트 → 낱개 파일 |
+
+- **세트의 판별은 `latest.txt`뿐이다.** `latest.txt`가 없으면(파일 없음, `404`·`410`) 세트가 없는 것이다. 있는데 읽히지 않거나 가리키는 매니페스트가 없으면 고장이다. 고장난 세트를 낱개 파일로 덮지 않으며, `,` 뒤에서는 거기서 멈추고 `|` 뒤에서는 다음 출처로 간다. 다른 Issuer의 세트가 고장나도 이 Issuer의 조회는 영향을 받지 않는다.
+- **혼재.** 경로마다 찾으므로 Issuer별로 세트와 파일을 섞을 수 있고, 같은 Issuer의 세트 옆에 낱개 문서를 둘 수도 있다. 둘 다 있는 경로는 세트가 이긴다.
+- **그 밖의 세트**는 폴더면 Issuer 폴더를 나열해 찾는다. 서버는 나열이 없으므로 `issuers.geul`이 묶은 Issuer와 이미 연 세트만 본다. `issuers.geul`이 묶지 않은 Issuer의 `h/` 사본은 그 Issuer를 한 번 읽은 뒤에 찾는다. `PARENT` 사슬은 목록을 읽을 때 세트가 열리므로 영향이 없다.
+- 세트는 한 번 열면 그 출처 값이 사는 동안 그 세대로 읽는다. '없음'도 기억하고, 고장은 기억하지 않는다.
+- 나열(`Issuers`, `Documents`, `Tree`)은 로컬에서만 된다. 원격은 오류다. 출처 목록 항목에 쓰기는 거부한다.
+- `Dir.Fetch`는 Store가 `Source`이면 호출자의 context를 넘긴다. 그래서 `Find`·`At`·`Resolver`가 세 형태에서 같은 코드로 돈다.
+
+원격 비용(`httptest` 위 공표 표본으로 측정, 위키데이터 세트는 문서 약 9,600개):
+
+| 조회 | 요청 | 받은 바이트 |
+|---|---|---|
+| 첫 문서(세트 열기 포함, Q42) | 6: `latest.txt` 1, 매니페스트 1, 색인 Range 1, 사전 Range 1, 목록·문서 Range 2 | 158,743 |
+| 같은 세트의 다음 문서 | Range 1~2 | 문서 크기 |
+| 세트에 없는 문서 | 낱개 GET 1(`404`), 처음이면 맨 위 `latest.txt` 1 | 수백 |
+| 낱개 파일 트리 | Issuer마다 처음 한 번 탐침 2(`<Issuer>/latest.txt`, `latest.txt`), 뒤로 문서당 GET 1 | 문서 크기 |
+
+전체 세트를 받지 않는다. `o/`의 객체는 언제나 Range로만 읽고, 서버가 Range를 무시하고 `200`을 주면 `pack.ErrRange`로 거부한다(고장). 힙은 매니페스트, 사전, 디렉터리 블록 캐시(세트당 최대 `pack.DefaultCacheBlocks`)다.
+
+`pkg/resolve`가 `pkg/pack`을 import한다. `file://`와 `https://`가 등록이나 주입 없이 이 패키지만으로 세 형태를 읽게 하려는 것이다. `pkg/pack`은 `pkg/resolve`에 의존하지 않고, `ErrNotFound`·`ErrVerify`는 `pkg/pack`이 정의해 `resolve`가 같은 값으로 이름을 붙인다.
 
 ## 위치 해석
 
@@ -177,6 +208,7 @@ func (g *Graph) Target(from *Node, ref core.Record) (*Node, inspect.Entry, error
 | Key, DocKey, 주소(`versionPath`, `listPath`, `hashPath`, `FormatVersion`) | `key*.go`, `doc_key.go`, `*_path.go`, `format_version.go` |
 | 버전 목록 문서(edge/PUBLICATION): 읽기·쓰기, DEPRECATION·TOMBSTONE 반영 | `version_entry.go`, `version_log.go`, `decode_version_list.go`, `encode_version_list.go`, `apply_list_record.go`, `add_publication.go`, `mark_version.go`, `pick_version.go` |
 | Source: `Memory`, `Dir`(+`Publish`), `HTTP`, `Registry`(빈 구현) | `memory*.go`, `dir*.go`, `http*.go`, `registry*.go` |
+| 저장 형태 판별: 세트를 열며 찾는 `site`, Store 옆의 낱개 파일 `overlay` | `site*.go`, `local_site.go`, `remote_site.go`, `sub_store*.go`, `overlay*.go` |
 | 설정: `ConfigFromEnv`(GEULPROXY 기본 `https://geul.org,registry`, GEULPRIVATE), `Pattern` | `config*.go`, `parse_entry.go`, `parse_proxy.go`, `*pattern*.go` |
 | `Resolver.Fetch`: 출처 순서, `,`/`\|`, Private 건너뛰기, `off`, 검증 실패는 즉시 중단 | `resolver_fetch.go`, `fetch_from.go`, `verify_doc.go` |
 | `Resolver.Resolve`: IMPORT-DOC 재귀, 각 IMPORT를 자기 판본에 바인딩, (문서, 버전)마다 Node 하나 | `resolver_resolve.go`, `resolver_collect.go`, `selection*.go`, `node_key.go`, `link_imports.go` |
@@ -198,7 +230,7 @@ func (g *Graph) Target(from *Node, ref core.Record) (*Node, inspect.Entry, error
 geul.org가 서비스되기 전까지 geul.org 웹사이트 저장소의 `artifacts/geul/.well-known/geul/`을 공표 트리로 쓴다. `GEULPROXY=file://<geul-dev>/draft/geul-org/artifacts/geul,off`로 가리킨다. 기본값은 그대로 `https://geul.org`다.
 
 - 지금은 Issuer `0x0000`(geul.org)의 코덱 명세·용어 정의 문서와 Issuer `0x00010000`(wikidata.geul.org)의 위키데이터 문서가 Issuer별 pack 세트로 들어 있다.
-- `pkg/pack`의 `TestOpenDirResolve`가 이 트리를 읽는다. 이 모듈만 따로 받았거나 트리에 pack 세트가 없으면 건너뛴다.
+- `TestResolvePublished`, `TestDirFindPublished`가 이 트리를 `GEULPROXY`로 읽는다(뒤의 것은 같은 트리를 HTTP Range로도 읽어 대조한다). 이 모듈만 따로 받았거나 트리에 pack 세트가 없으면 건너뛴다.
 - 공표는 이 트리를 데이터 폴더로 한 `geul publish`, 또는 `resolve.Dir{Root: "<geul-dev>/draft/geul-org/artifacts/geul", Store: <pack.OpenDir로 연 세트>}.Publish(bytes)`로 한다.
 
 ## 범위 밖

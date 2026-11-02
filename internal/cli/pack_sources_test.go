@@ -1,5 +1,5 @@
 //ff:func feature=cli type=helper control=sequence
-//ff:what TestPackSources — packed file:// folders read through their archive, GEULPACK items first; bad items and broken archives fail
+//ff:what TestPackSources — GEULPACK items come before the GEULPROXY ones, which stay as written and open nothing until read; bad items fail
 package cli
 
 import (
@@ -23,14 +23,8 @@ func TestPackSources(t *testing.T) {
 	})
 	set := filepath.Join(h.data, ".well-known", "geul", "0x0000")
 	cfg, err := packSources(cfg, " "+set+" ,,")
-	if err != nil || len(cfg.Proxy) != 4 || cfg.Proxy[0].Name != "pack+"+set {
+	if err != nil || len(cfg.Proxy) != 4 || cfg.Proxy[0].Name != "pack+"+set || cfg.Proxy[1].Name != "file://"+h.data {
 		t.Fatal(cfg.Proxy, err)
-	}
-	if d := cfg.Proxy[1].Source.(resolve.Dir); d.Store == nil {
-		t.Fatal("packed file:// folder")
-	}
-	if d := cfg.Proxy[2].Source.(resolve.Dir); d.Store != nil {
-		t.Fatal("plain file:// folder")
 	}
 	if _, err := packSources(resolve.Config{}, t.TempDir()); err == nil {
 		t.Fatal("bad GEULPACK item")
@@ -42,7 +36,7 @@ func TestPackSources(t *testing.T) {
 		}
 		return ""
 	})
-	if _, err := packSources(cfg, ""); err == nil {
-		t.Fatal("broken archive")
+	if _, err := packSources(cfg, ""); err != nil {
+		t.Fatal("a broken GEULPROXY folder fails when it is read, so `|` can pass it:", err)
 	}
 }

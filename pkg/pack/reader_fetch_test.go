@@ -1,5 +1,5 @@
 //ff:func feature=pack type=resolver control=iteration dimension=1
-//ff:what TestReaderFetch — every fixture path reads back its file's bytes through P, H and named; others are NotFound; Reader is a resolve.Source
+//ff:what TestReaderFetch — every fixture path reads back its file's bytes through P, H and named; others are NotFound
 package pack
 
 import (
@@ -7,12 +7,9 @@ import (
 	"context"
 	"errors"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestReaderFetch(t *testing.T) {
-	var _ resolve.Source = (*Reader)(nil)
 	ctx := context.Background()
 	_, out := built(t, small())
 	r := opened(t, out)
@@ -24,7 +21,7 @@ func TestReaderFetch(t *testing.T) {
 		}
 	}
 	for _, p := range []string{"0x0000/0x0000000000000009/versions.geul", "h/0x" + string(bytes.Repeat([]byte("0"), 64)) + ".geul", "none.geul"} {
-		if _, err := r.Fetch(ctx, p); !errors.Is(err, resolve.ErrNotFound) {
+		if _, err := r.Fetch(ctx, p); !errors.Is(err, ErrNotFound) {
 			t.Fatal(p, err)
 		}
 	}

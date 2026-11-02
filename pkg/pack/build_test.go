@@ -11,8 +11,6 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestBuild(t *testing.T) {
@@ -49,7 +47,7 @@ func TestBuild(t *testing.T) {
 	if b, _ := r.Fetch(ctx, "issuers.geul"); string(b) != "changed" {
 		t.Fatal(string(b))
 	}
-	if _, err := r.Fetch(ctx, v1); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := r.Fetch(ctx, v1); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 	if b, err := r.Fetch(ctx, "0x0000/0x0000000000000860/0x00000001.geul"); err != nil || !bytes.Equal(b, fixtureFile(t, "0x0000/0x0000000000000860/0x00000001.geul")) {

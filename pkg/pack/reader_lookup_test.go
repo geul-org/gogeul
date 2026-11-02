@@ -7,8 +7,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestReaderLookup(t *testing.T) {
@@ -19,10 +17,10 @@ func TestReaderLookup(t *testing.T) {
 	if err != nil || !bytes.Equal(b, fixtureFile(t, "0x0000/0x0000000000000845/versions.geul")) {
 		t.Fatal(err)
 	}
-	if _, err := r.Lookup(ctx, "0x0001", 0x845, 0); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := r.Lookup(ctx, "0x0001", 0x845, 0); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
-	if _, err := r.Lookup(ctx, "0x0000", 0x846, 0); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := r.Lookup(ctx, "0x0000", 0x846, 0); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 	r.m.pLayers = []layer{{blk: block{kind: blkPLeaf, keys: []string{pKey(0, 1, 0)}, locs: []Loc{{Obj: 99}}}}}

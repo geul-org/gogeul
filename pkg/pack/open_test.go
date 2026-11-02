@@ -1,5 +1,5 @@
 //ff:func feature=pack type=resolver control=iteration dimension=1
-//ff:what TestOpen — latest.txt and pinned opens; missing or bad latest, missing, renamed, unparsable or mismatched manifests, rollback and bad roots fail
+//ff:what TestOpen — latest.txt and pinned opens; missing or bad latest, a latest.txt naming a missing manifest (ErrCorrupt, not NotFound), missing, renamed, unparsable or mismatched manifests, rollback and bad roots fail
 package pack
 
 import (
@@ -11,8 +11,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestOpen(t *testing.T) {
@@ -29,14 +27,17 @@ func TestOpen(t *testing.T) {
 	if _, err := Open(ctx, s, Options{MinGeneration: 2}); !errors.Is(err, ErrRollback) {
 		t.Fatal(err)
 	}
-	if _, err := Open(ctx, FileStore{Root: t.TempDir()}, Options{}); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := Open(ctx, FileStore{Root: t.TempDir()}, Options{}); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
-	if _, err := Open(ctx, s, Options{Manifest: strings.Repeat("0", 64)}); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := Open(ctx, s, Options{Manifest: strings.Repeat("0", 64)}); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 	m := memStore{latestFile: []byte("x")}
 	if _, err := Open(ctx, m, Options{}); !errors.Is(err, ErrCorrupt) {
+		t.Fatal(err)
+	}
+	if _, err := Open(ctx, memStore{latestFile: []byte("1 " + strings.Repeat("0", 64) + "\n")}, Options{}); !errors.Is(err, ErrCorrupt) || errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 	mb, _ := os.ReadFile(filepath.Join(out, "m", r.ManifestName()+".gpm"))

@@ -6,8 +6,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-
-	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestReaderFind(t *testing.T) {
@@ -19,10 +17,10 @@ func TestReaderFind(t *testing.T) {
 	if l, err := r.find(ctx, ls, "a", "p"); err != nil || l.Off != 70 {
 		t.Fatal(l, err)
 	}
-	if _, err := r.find(ctx, ls, "b", "p"); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := r.find(ctx, ls, "b", "p"); !errors.Is(err, ErrNotFound) {
 		t.Fatal("hidden", err)
 	}
-	if _, err := r.find(ctx, ls, "c", "p"); !errors.Is(err, resolve.ErrNotFound) {
+	if _, err := r.find(ctx, ls, "c", "p"); !errors.Is(err, ErrNotFound) {
 		t.Fatal("absent", err)
 	}
 	bad := []layer{{blk: block{kind: blkHInner, keys: []string{"a"}, locs: []Loc{{Obj: 9}}}}}
