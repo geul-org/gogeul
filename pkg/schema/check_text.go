@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=selection
-//ff:what checkText — V5: UTF-8 validity for text (a leading U+FEFF is a character), non-empty ASCII for URI, language tags, EDTF and GEDCOM-DATE; V6 for EDTF
+//ff:what checkText — any bytes for OPAQUE-BYTES; V5: UTF-8 validity for text (a leading U+FEFF is a character), non-empty ASCII for URI, language tags, EDTF and GEDCOM-DATE; V6 for EDTF
 package schema
 
 import (
@@ -10,12 +10,14 @@ import (
 
 // checkText applies V5 to the bytes of a byte-string Value whose even codec is
 // even (UTF8-TEXT, URI, LANGUAGE-BCP47-CODE, EDTF, GEDCOM-DATE), then V6 to
-// EDTF. The EDTF and GEDCOM date grammars are not checked yet (README 미결정).
+// EDTF. OPAQUE-BYTES takes any bytes, none included. The EDTF and GEDCOM date grammars are not checked yet (README 미결정).
 // A text may start with U+FEFF (EF BB BF): it is a character kept as written,
 // not a BOM.
 func checkText(r rec, even uint16, b []byte) []Fact {
 	text := even == core.CodecUTF8TextEven
 	switch {
+	case even == core.CodecOpaqueBytesEven:
+		return nil
 	case text && !utf8.Valid(b):
 		return []Fact{factAt("V5", Error, r, "Payload", "well-formed UTF-8", "invalid UTF-8")}
 	case text:

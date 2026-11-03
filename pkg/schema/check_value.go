@@ -38,6 +38,10 @@ func checkValue(r rec) []Fact {
 		return checkBytes(r)
 	case c == core.CodecUTF8LanguageTextEven, c == core.CodecUTF8LanguageTextEven|1:
 		return checkLanguageText(r)
+	case c == core.CodecOpaqueBytesEven, c == core.CodecOpaqueBytesEven|1:
+		return checkBytes(r)
+	case c == core.CodecBitVector:
+		return checkBitVector(r)
 	default:
 		return []Fact{factAt("V1", Warn, r, "Codec", "배정된 직접 코드", fmt.Sprintf("0x%02X (예약)", c))}
 	}
