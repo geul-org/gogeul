@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=sequence
-//ff:what TestStreamPut — a closing stream acknowledges earlier keys and refuses later ones; records in key order fill leaves and spill H runs; an unknown Issuer, a key not after the last, a failed leaf write, place or spill are errors; a record without hash adds no H key
+//ff:what TestStreamPut — a closing stream acknowledges earlier keys and refuses later ones; records in key order fill leaves and spill H runs; an unknown Issuer, a key not after the last, a reserved list document ID, a failed leaf write, place or spill are errors; a record without hash adds no H key
 package pack
 
 import (
@@ -21,6 +21,9 @@ func TestStreamPut(t *testing.T) {
 	}
 	if err := s.Put([]core.Word{0, 1}, 0x5100000000000006, 1, StreamRecord{}); err == nil {
 		t.Fatal("same key: want error")
+	}
+	if err := s.Put([]core.Word{0, 1}, core.DocIDDocs, 0, StreamRecord{}); err == nil {
+		t.Fatal("reserved list ID: want error")
 	}
 	if err := s.Put([]core.Word{0, 1}, 0x5100000000000007, 0, StreamRecord{Bytes: []byte("x")}); err != nil || len(s.hbuf) != 5 {
 		t.Fatalf("no hash: %v", err)
