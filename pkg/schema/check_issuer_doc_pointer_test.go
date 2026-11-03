@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckIssuerDocPointer — R5: ISSUER-, DOC- and CODEC-POINTER Issuers of 2/4/16 WORD in canonical width pass; 1 WORD, odd widths and zero-padded Issuers fail
+//ff:what TestCheckIssuerDocPointer — R5: ISSUER-, DOC- and CODEC-POINTER Issuers of 2/4/16 WORD in canonical width pass; the list ID F…F under Issuer 0x00000000 passes; 1 WORD, odd widths, zero-padded Issuers and F…F under another Issuer fail
 package schema
 
 import (
@@ -28,6 +28,8 @@ func TestCheckIssuerDocPointer(t *testing.T) {
 		{ref(doc, 0, 0, 0xFFFF, 0, 0, 1, 0, 1), doc, ""},
 		{ref(doc, 0, 0, 0xFFFF, 0, 0, 1, 0, 0), doc, ""},
 		{ref(doc, 0, 0, 0, 0, 0, 0, 0, 1), doc, ""},
+		{ref(doc, 0, 0, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0, 1), doc, ""},
+		{ref(doc, 0, 2, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0, 1), doc, "R5"},
 		{ref(doc, 0, 0xFFFF, 0, 0, 1, 0, 1), doc, "R5"},
 		{ref(doc, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1), doc, "R5"},
 		{ref(cdc, 0, 0, 0, 0x0B80, 0, 0), cdc, ""},

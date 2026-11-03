@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=sequence
-//ff:what TestCheckDocID — an EXTERNAL-ISSUER-*(Issuer, document, 0) passes; a raw payload fails M2
+//ff:what TestCheckDocID — a DOC-POINTER and a CODEC-POINTER DOC-ID pass; a raw payload and the reserved list ID F…F fail M2
 package schema
 
 import (
@@ -13,5 +13,13 @@ func TestCheckDocID(t *testing.T) {
 	raw := core.Record{Kind: core.KindMeta, Codec: core.MetaDocID, Payload: make([]core.Word, 5)}
 	if checkDocID(recOf(ok)) != nil || rulesOf(checkDocID(recOf(raw))) != "M2" {
 		t.Fatal("wrong")
+	}
+	list, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0xffff, 0xffff, 0xffff, 0xffff})
+	if rulesOf(checkDocID(recOf(list))) != "M2" {
+		t.Fatal("reserved list ID as DOC-ID")
+	}
+	codec, _ := core.EncodeDocIDCodec([]core.Word{0, 0}, 0x0AA0)
+	if checkDocID(recOf(codec)) != nil {
+		t.Fatal("codec document")
 	}
 }
