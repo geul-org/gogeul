@@ -10,9 +10,11 @@ import (
 )
 
 // publishAt stores b (content hash h) at k as the next version of document
-// doc of Issuer issuer (the PUBLICATION's DOC-POINTER): `<k>/<버전 ID>.geul`, `h/<내용 해시>.geul`, and a new version list
+// doc of Issuer issuer (the PUBLICATION's DOC-POINTER): `<k>/<버전 ID>.geul`
+// (k is `<Issuer>/docs/<문서 ID>` or `<Issuer>/codecs/<코덱 ID>`),
+// `<Issuer>/hashes/<내용 해시>.geul`, and a new version list
 // `<k>/versions.geul` that keeps the previous records, appends a PUBLICATION
-// and points PARENT at the previous list, which stays under `h/`. Content
+// and points PARENT at the previous list, which stays under `hashes/`. Content
 // already in the list returns that entry and writes nothing. A document that
 // reuses a dropped LOCAL ID is refused (retiredID), and so is a codec
 // document declaring another codec than the versions already at k (sameCodec).

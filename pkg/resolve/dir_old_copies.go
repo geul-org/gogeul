@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=iteration dimension=1
-//ff:what Dir.oldCopies — the h/ hashes a version list reaches: its versions, itself and every earlier list by PARENT
+//ff:what Dir.oldCopies — the hashes/ copies a version list reaches: its versions, itself and every earlier list by PARENT
 package resolve
 
 import "context"

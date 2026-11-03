@@ -11,10 +11,10 @@ import (
 
 // Publish stores the document b in the local tree as the publisher does
 // (GEUL-ORG 공표 주소, edge/PUBLICATION): it identifies the document by its
-// DOC-ID, gives it the next version ID, writes `<Issuer>/<문서 ID>/<버전 ID>.geul`
-// and `h/<내용 해시>.geul`, and writes a new version list document
-// (`<Issuer>/<문서 ID>/versions.geul`) that keeps the previous records, appends
-// a PUBLICATION and points PARENT at the previous list, which stays under `h/`.
+// DOC-ID, gives it the next version ID, writes `<Issuer>/docs/<문서 ID>/<버전 ID>.geul`
+// and `<Issuer>/hashes/<내용 해시>.geul`, and writes a new version list document
+// (`<Issuer>/docs/<문서 ID>/versions.geul`) that keeps the previous records, appends
+// a PUBLICATION and points PARENT at the previous list, which stays under `hashes/`.
 // Publishing content already in the list returns that entry and writes nothing.
 func (d Dir) Publish(b []byte) (VersionEntry, error) {
 	ws, err := core.ReadWords(b)

@@ -4,13 +4,13 @@
 
 | 경로 | 어디에 | 문서 지정 | 버전 |
 |---|---|---|---|
-| `IMPORT-DOC-*` + `EXTERNAL-POINTER-*` | HEAD에서 가져오고 BODY에서 IMPORT ID로 가리킨다 | IMPORT ID → Key | 고정 가능 |
+| `IMPORT-DOC` + `EXTERNAL-POINTER-*` | HEAD에서 가져오고 BODY에서 IMPORT ID로 가리킨다 | IMPORT ID → Key | 고정 가능 |
 | `EXTERNAL-ISSUER-*` (지시선언) | BODY의 Reference 한 개로 완결 | Reference 안의 Issuer + 문서 ID | 최신 |
 
 규칙의 출처는 명세 `OVERVIEW`(IMPORT, Reference), `ISSUER`(가져오기), `GEUL-ORG`(ID 표기, 공표 주소, 위치 해석)다.
 
 ```
-.geul ──inspect.Decode──▶ HEAD의 IMPORT-DOC-*  ─┐
+.geul ──inspect.Decode──▶ HEAD의 IMPORT-DOC  ─┐
                        └▶ BODY의 EXTERNAL-ISSUER-* ─┤ Key(Issuer, 문서 ID, 버전 ID)
                                                     ▼
                               문서별 버전 선택(IMPORT 고정 > 잠금 > 최신)
@@ -35,7 +35,7 @@
 
 | 출처 | 레이아웃 | Key |
 |---|---|---|
-| `IMPORT-DOC` (Meta TAG `0x1E4L`) | IMPORT ID + 대상 포인터(DOC-POINTER 또는 CODEC-POINTER) | 그대로 |
+| `IMPORT-DOC` (Meta TAG `0x1E4L`) | 대상 포인터(DOC-POINTER 또는 CODEC-POINTER) + IMPORT ID(문법 0x1E4L 순서) | 그대로 |
 | `EXTERNAL-ISSUER-*` (Reference TAG `0x02FL`·`0x034L`·`0x039L`, 5Q 체계 9~11) | TAG + Issuer + 문서 ID(4) + LOCAL ID(나머지) | 버전 ID 0(최신) |
 
 - `EXTERNAL-ISSUER-*`는 BODY의 독립 Reference일 수도, Edge Payload에 내장된 Reference일 수도 있다. 독립 레코드는 코덱북 없이 모은다. 내장된 것은 `inspect.Layout`이 Record로 표시한 부분 중 Kind가 Reference인 것을 모은다. 레이아웃을 모르는 Edge 안의 참조는 찾지 못하며 미해결 목록에 그 Edge를 남긴다.
@@ -96,11 +96,11 @@ type Source interface {
 }
 ```
 
-- 해석기는 최신 주소(`<문서 ID>.geul`, 302)를 쓰지 않는다. 버전 목록을 받아 버전을 고르고 그 정본 주소를 받는다. 그래서 `Dir`과 `HTTP`가 같은 순서로 동작하고, 받은 내용은 언제나 목록의 내용 해시로 검증된다.
+- 해석기는 최신 별칭(`latest.geul`, 저장하지 않는 별칭이고 리다이렉트 없이 그 버전의 바이트를 낸다)을 쓰지 않는다. 버전 목록을 받아 버전을 고르고 그 정본 주소를 받는다. 그래서 `Dir`과 `HTTP`가 같은 순서로 동작하고, 받은 내용은 언제나 목록의 내용 해시로 검증된다.
 
 | 구현 | 출처 항목 | 내용 |
 |---|---|---|
-| `Dir` | `file://<디렉터리>`, `https://<기준>` | 아카이브 하나. `Root`만 주면 디렉터리 트리 `<Root>/.well-known/geul/`이고, `Store`를 주면 그 Store를 읽는다. `Root`와 `Store`를 함께 주면 Store가 없는 경로를 `Root`의 낱개 파일에서 읽는다. `Publish`로 문서를 공표한다: 버전 배정, 문서와 `h/` 사본 저장, 새 목록 문서(`PUBLICATION` 덧붙임, `PARENT` = 직전 목록) 저장, 직전 목록은 `h/`에 남는다. 출처 목록의 항목은 읽기 전용이다. |
+| `Dir` | `file://<디렉터리>`, `https://<기준>` | 아카이브 하나. `Root`만 주면 디렉터리 트리 `<Root>/.well-known/geul/`이고, `Store`를 주면 그 Store를 읽는다. `Root`와 `Store`를 함께 주면 Store가 없는 경로를 `Root`의 낱개 파일에서 읽는다. `Publish`로 문서를 공표한다: 버전 배정, 문서(`<Issuer>/docs/<문서 ID>/<버전 ID>.geul`)와 `<Issuer>/hashes/` 사본 저장, 새 목록 문서(`PUBLICATION` 덧붙임, `PARENT` = 직전 목록) 저장, 직전 목록은 `hashes/`에 남는다. 출처 목록의 항목은 읽기 전용이다. |
 | `HTTP` | (`https://`의 낱개 GET) | 기준 주소의 `.well-known/geul/<경로>`를 한 번 GET 한다. 평문 `http://`는 `GEULINSECURE`가 생기기 전까지 받지 않는다. |
 | `Registry` | `registry` | geul.org 등록부에서 Issuer의 기준 주소를 받아 `HTTP`로 받는다. 등록부 API가 정해지기 전까지 모든 조회가 '없음'이다. |
 | `Memory` | (테스트) | 경로 → 바이트 맵. |
@@ -152,10 +152,10 @@ Key 하나를 받는 순서(GEUL-ORG 위치 해석 순서).
 
 ## 버전 선택
 
-각 `IMPORT-DOC-*`은 자기가 고정한 판본에 바인딩된다. 새 버전은 호환을 약속하지 않으므로(OVERVIEW 계보 개정) 그래프 전체에서 버전을 하나로 합치지 않는다. 같은 문서의 여러 판본이 한 그래프에 함께 있을 수 있고, Node는 (문서, 버전)마다 하나다.
+각 `IMPORT-DOC`은 자기가 고정한 판본에 바인딩된다. 새 버전은 호환을 약속하지 않으므로(OVERVIEW 계보 개정) 그래프 전체에서 버전을 하나로 합치지 않는다. 같은 문서의 여러 판본이 한 그래프에 함께 있을 수 있고, Node는 (문서, 버전)마다 하나다.
 
 1. 작업공간의 `use`·`replace`가 맞으면 그것.
-2. `IMPORT-DOC-*`이 버전을 고정했으면 그 버전.
+2. `IMPORT-DOC`이 버전을 고정했으면 그 버전.
 3. 고정이 없으면 잠금 기록의 버전.
 4. 잠금도 없으면 최신을 받고(버전 로그로 확인), 받은 버전 ID와 내용 해시를 잠금에 남긴다.
 5. 시점 T를 정한 해석(`asOf`)이면 최신 대신 T에 시행 중인 판본을 고른다(`EFFECTIVE-FROM`·`EFFECTIVE-UNTIL`, 조문별로는 대상 Edge에 붙은 QUALIFIER P580·P582).
@@ -165,7 +165,7 @@ Key 하나를 받는 순서(GEUL-ORG 위치 해석 순서).
 
 ## 검증
 
-- **내용 해시**: 여는 레코드(`DOC-*`)부터 `END` 직전까지의 SHA-256이다. 검증 클래스(`100`) Meta는 계산에서 빼고, 여는 레코드의 Length와 폭은 뺀 길이에 맞춰 다시 계산한다(ISSUER 서명 절).
+- **내용 해시**: 여는 레코드(`DOC-*`)부터 `END` 직전까지의 SHA-256이다. 검증 Meta(섹션 15 `C ≥ 5`, TAG WORD `≥ 0x1E50`, `core.IsValidationMeta`)는 계산에서 빼고, 여는 레코드의 Length와 폭은 뺀 길이에 맞춰 다시 계산한다(ISSUER 서명 절).
 - **버전 ID → 내용 해시 대응**: 잠금 기록에 있으면 그것을 쓴다. 없으면 받은 출처의 버전 목록에서 얻고 `Log`로 확인한 뒤 잠금에 남긴다(Go `go.sum`). `NoLog`에 맞거나 `Log`가 nil이면 출처의 버전 목록을 믿고 잠금에 남기며 경고한다.
 - 받은 바이트의 내용 해시가 대응과 같아야 한다. 다르면 거부한다. 잠금과 버전 목록이 다르면 거부한다(같은 버전 ID, 다른 내용).
 - 받은 문서의 `DOC-ID`는 Key의 Issuer·문서 ID와 같아야 한다.
@@ -206,7 +206,7 @@ func (g *Graph) Target(from *Node, ref core.Record) (*Node, inspect.Entry, error
 
 ## 의존성 해석
 
-- 문서는 HEAD의 `IMPORT-DOC-*`으로 의존 문서를 적는다(Go `require`).
+- 문서는 HEAD의 `IMPORT-DOC`으로 의존 문서를 적는다(Go `require`).
 - 새 버전은 호환을 약속하지 않는다. 같은 문서를 여러 버전으로 요구하면 각 판본을 따로 받아 각 IMPORT에 바인딩한다. 최소 버전 선택은 쓰지 않는다.
 - 버전 ID로 고정한 가져오기는 재현된다. 버전 ID가 0이면 잠금 기록이 재현을 맡는다.
 
@@ -253,5 +253,4 @@ geul.org가 서비스되기 전까지 geul.org 웹사이트 저장소의 `artifa
 - geul.org 등록부 조회 API(Issuer ID → 기준 주소).
 - 위치 제공 Issuer를 HEAD에 적는 Meta(서명키 조회처와 같은 방식).
 - Issuer 이름 레이블과 alias, 도메인 이름 주소(GEUL-ORG 도메인 이름)를 Key로 바꾸는 입력을 받을지.
-- 텍스트 표현과 콘텐츠 협상(`Accept`에 따라 바이너리, 텍스트, HTML 보기).
 - 덤프 주기와 형식.

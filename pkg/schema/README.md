@@ -25,7 +25,7 @@
 | F2 | Length가 레코드의 전체 WORD 수와 같고, 레코드가 입력 안에 들어간다. |
 | F3 | 1~14 WORD는 직접 길이, 그보다 긴 레코드는 `1110`(전체 16~65535; 15는 확장 WORD를 빼면 14라 직접 길이), 그 위는 `1111`(전체 65537 이상; 65536은 `1110`으로 65535)이다. 더 넓은 표현은 비정규로 거부한다(문법 record.md 정규형). |
 | F4 | TAG WORD 접두사가 `000`이다. 그 밖은 Error다(v1 디코더는 `000`이 아닌 TAG WORD를 거부한다, 문법 overview). |
-| F5 | Codec이 ISSUER-2/4/16WORD(Value TAG `0x09DL`~`0x09FL`, Edge TAG `0x1BDL`~`0x1BFL`)면 TAG 뒤에 그 폭의 Issuer와 코덱 번호 2 WORD가 있다. Issuer는 값이 들어가는 가장 짧은 폭이다. Reference의 REFERENCE-ISSUER(TAG `0x05DL`~`0x05FL`)는 Payload가 그 Issuer의 것이다. |
+| F5 | Codec이 ISSUER-2/4/16WORD(Value TAG `0x09DL`~`0x09FL`, Edge TAG `0x1BDL`~`0x1BFL`)면 TAG 뒤에 그 폭의 Issuer와 코덱 번호 2 WORD가 있다. Issuer는 값이 들어가는 가장 짧은 폭이다. Reference의 REFERENCE-ISSUER(TAG `0x05DL`~`0x05FL`)도 같은 확장(Issuer, 코덱 번호)이다(문법 record.md, reference-issuer.md). EDGE-ISSUER는 그 뒤에 Edge Id가 온다. |
 
 ### D 문서 구조 (OVERVIEW 구조)
 
@@ -70,9 +70,9 @@
 | E2 | Edge Id는 문서 안에서 중복되지 않는다. HEAD Edge와 BODY는 한 번호 공간이다. |
 | E4 | core 내장 Codec은 레이아웃이 맞다. `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`(Edge Id 뒤 22·6·7 WORD), `DECLARE`·`FIELD`·`ENUM`·`CODEC`(edge/DECLARE·FIELD·ENUM·CODEC). |
 | E5 | CODEC의 필드는 같은 문서의 FIELD이고, 한 필드에 같은 대상을 두 번 두지 않으며, 날값 필드(폭 ≥ 1)에는 CODEC이 하나뿐이고 와일드카드(LLLL `1111`)나 자리 표지(`0000`·`0010`·`0020`)가 아니다. 자리 표지 대상만 있는 필드는 없다(edge/CODEC 선택 필드와 자리 표지). 대상 WORD는 LLLL `0000`이거나 `1111` 와일드카드다(E4). |
-| E6 | (Warn) Object가 NO-VALUE(`0x0002`)인 TRIPLE과 같은 Subject·Predicate·rank, 같은 QUALIFIER 묶음(Property=Value)의 TRIPLE이 다른 Object(값 또는 UNKNOWN-VALUE)를 가지면 경고한다. 거부하지 않는다(위키데이터에도 있는 상태, 읽는 쪽이 rank로 고른다). TRIPLE·QUALIFIER는 문법이 고정한 레이아웃으로 자른다. |
-| E7 | TRIPLE·QUALIFIER의 Predicate·Subject(Property·Target)에는 Reference Codec `0000`(자리 표지)이 오지 않고, Object(Value)에는 `0x0001` UNKNOWN-VALUE·`0x0002` NO-VALUE만 온다(ABSENT·예약 표지·Payload 있는 Codec `0000`은 Error). 두 Codec의 필드는 문법이 고정하므로 1층에서 본다. 다른 Codec 필드의 표지 수용은 규격 문서(2층) 몫이다. |
-| E8 | 근거 Edge `SOURCE`(`0x20`, edge/SOURCE): Edge Id 뒤에 대상·원천 레코드 둘뿐이다. 대상은 LOCAL Reference이고 `0`(문서 전체)이거나 BODY의 Edge Id다. 원천은 Reference이고, 자리 표지는 `0x0000` ABSENT와 `0x0001` UNKNOWN-VALUE만 받는다(Value·NO-VALUE·예약 표지는 Error). 대상이 `0`인 `SOURCE`와 HEAD `SOURCE`를 대상으로 하는 `QUALIFIER`가 BODY에 있으면 Error다(HEAD에 둔다). 레이아웃을 문법이 고정하므로 1층에서 본다. |
+| E6 | (Warn) Object가 NO-VALUE(`0x0020`)인 TRIPLE과 같은 Subject·Predicate·rank, 같은 QUALIFIER 묶음(Property=Value)의 TRIPLE이 다른 Object(값 또는 UNKNOWN-VALUE)를 가지면 경고한다. 거부하지 않는다(위키데이터에도 있는 상태, 읽는 쪽이 rank로 고른다). TRIPLE·QUALIFIER는 문법이 고정한 레이아웃으로 자른다. |
+| E7 | TRIPLE·QUALIFIER의 Predicate·Subject(Property·Target)에는 자리 표지(Reference `0x000L`~`0x002L`)가 오지 않고, Object(Value)에는 `0x0010` UNKNOWN-VALUE·`0x0020` NO-VALUE만 온다(ABSENT·Payload 있는 표지 코드는 Error). 두 Codec의 필드는 문법이 고정하므로 1층에서 본다. 다른 Codec 필드의 표지 수용은 규격 문서(2층) 몫이다. |
+| E8 | 근거 Edge `SOURCE`(`0x20`, edge/SOURCE): Edge Id 뒤에 대상·원천 레코드 둘뿐이다. 대상은 LOCAL Reference이고 `0`(문서 전체)이거나 BODY의 Edge Id다. 원천은 Reference이고, 자리 표지는 `0x0000` ABSENT와 `0x0010` UNKNOWN-VALUE만 받는다(Value·NO-VALUE·Payload 있는 표지는 Error). 대상이 `0`인 `SOURCE`와 HEAD `SOURCE`를 대상으로 하는 `QUALIFIER`가 BODY에 있으면 Error다(HEAD에 둔다). 레이아웃을 문법이 고정하므로 1층에서 본다. |
 | E9 | ENUM(edge/ENUM)의 필드는 같은 문서의 고정 폭 날값 FIELD(폭 1~65534, 나머지 날값 `0xFFFF`에는 ENUM 없음)이고, 코드값은 정확히 그 폭이며, 한 필드에서 같은 코드값을 두 번 선언하지 않는다. 디코딩되지 않는 ENUM은 E4다. |
 | E10 | TRIPLE·QUALIFIER(문법 0x0AAL·0x0ABL)는 Edge Id 뒤 완전한 레코드 셋이다. TRIPLE의 Predicate·Subject는 Reference이고 Object 뒤에 Rank가 정확히 1 WORD이며 `0`(normal)·`1`(preferred)·`2`(deprecated)뿐이다. QUALIFIER의 Target은 LOCAL Reference이고 Value를 읽은 커서가 Edge 끝과 맞는다. Object·Value는 Reference 또는 Value 레코드다(자리 표지는 E7). QUALIFIER Property의 Kind는 보지 않는다(문법 본문은 Reference, 필드 표는 자리 표지 말고 아무 레코드). |
 | E11 | DECLARE(문법 0x0BBL)의 대상 WORD는 Codec 자리(접두사 `000`, LLLL `0000`, 아니면 E4)이고 한 문서에서 같은 대상(Issuer 코덱은 Issuer·코덱 번호까지)을 두 번 선언하지 않는다. FIELD(0x0BCL)의 DECLARE는 같은 문서의 DECLARE이고, DECLARE마다 나머지 날값(`0xFFFF`)은 하나이며 그 뒤 필드는 고정 폭 날값뿐이다. |
@@ -83,7 +83,7 @@
 | 규칙 | 내용 |
 |---|---|
 | M2 | `DOC-ID`는 하나이고, Payload는 `DOC-POINTER`(Issuer, 문서 ID, 버전 0) Reference 하나다(문서 ID `0`은 용어 정의 색인 문서로 허용). 코덱 문서는 `CODEC-POINTER`(Issuer, 코덱 ID, 버전 0)다. 문서 ID `0xFFFFFFFFFFFFFFFF`는 오지 않는다(목록 문서는 DOC-ID가 없다, 문법 0x1C7L). |
-| M3 | `IMPORT-DOC`: Payload는 `DOC-POINTER` Reference 하나와 그 뒤의 IMPORT ID다. IMPORT ID가 최소 폭이고 문서 안에서 중복되지 않는다. |
+| M3 | `IMPORT-DOC`: Payload는 `DOC-POINTER`(코덱 문서는 `CODEC-POINTER`) Reference 하나와 그 뒤의 IMPORT ID다(문법 0x1E4L). IMPORT ID가 최소 폭이고 문서 안에서 중복되지 않는다. |
 | M4 | `SPEC-VERSION`·`PROFILE`·`DEFAULT-LANGUAGE`은 각각 하나다. `SPEC-VERSION`의 Payload는 내장 Value 없이 가장 짧은 폭의 unsigned 정수다(v1 = `0x0001`). 나머지는 내장 Value가 해당 형식이다. |
 | M5 | `EFFECTIVE-FROM`·`EFFECTIVE-UNTIL`은 각각 하나이고 GREGORIAN-DATE 또는 POSIX-TIMESTAMP-SECONDS다. 둘 다 있으면 FROM이 UNTIL보다 앞선다. |
 | M6 | `PARENT`는 SHA-256-DIGEST Value 하나다. M4~M6이 검사하는 Meta의 내장 Value는 V 규칙도 통과한다. 그 밖의 Meta Payload는 2층이다. |
@@ -136,7 +136,7 @@ type Options struct {
 ```
 
 - Error가 하나라도 있으면 Fail, Warn만 있으면 Review, 없으면 Pass다.
-- Warn은 경고 규칙(F4 Standard 접두사, M4 모르는 SPEC-VERSION, E6 NO-VALUE 모순)이 낸다. `Strict`이면 Error다. 배정되지 않은 코드를 예약(Warn)으로 보고하던 규칙(V1, E3, M1, R1의 빈칸과 Payload 있는 표지)은 지웠다(migration.md §1.1 112). 빈 코드는 코덱 조회(404)에서 드러나고, 변환 검증은 migvalid `new-unassigned`가 맡는다.
+- Warn은 경고 규칙(M4 모르는 SPEC-VERSION, E6 NO-VALUE 모순)이 낸다. F4는 Error뿐이다. `Strict`이면 Error다. 배정되지 않은 코드를 예약(Warn)으로 보고하던 규칙(V1, E3, M1, R1의 빈칸과 Payload 있는 표지)은 지웠다(migration.md §1.1 112). 빈 코드는 코덱 조회(404)에서 드러나고, 변환 검증은 migvalid `new-unassigned`가 맡는다.
 
 ## 원칙
 

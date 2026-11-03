@@ -13,9 +13,9 @@ import (
 // Overwrite stores the document b as version 1 of its DOC-ID, replacing any
 // earlier versions, for development while formats still change and a version
 // per run would pile up (Publish keeps every version). It writes
-// `<Issuer>/<문서 ID>/0x00000001.geul`, `h/<내용 해시>.geul` and a version list
+// `<Issuer>/docs/<문서 ID>/0x00000001.geul`, `<Issuer>/hashes/<내용 해시>.geul` and a version list
 // with that one PUBLICATION and no PARENT, then removes the document's other
-// version files (removeOtherVersions) and the `h/` copies the old version
+// version files (removeOtherVersions) and the `hashes/` copies the old version
 // list reached: its versions, itself and its earlier lists by PARENT
 // (oldCopies, removeCopies). A version list that does not decode is replaced
 // and its copies, unknown, are left.

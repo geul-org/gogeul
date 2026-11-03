@@ -6,14 +6,14 @@
 
 - 프레이밍: TAG WORD와 Length 확장만으로 레코드 경계를 자른다. 스키마가 필요 없다.
 - TAG WORD `000K KKKC CCCC LLLL`(migration1 plan2, §1.1 106·107·109): KKKK는 섹션(`w >> 9`, 32칸), C는 섹션 안 5비트 오프셋(`(w >> 4) & 0x1F`)이다. Kind는 섹션 구간 하나로 판정한다(`KindOf`: Reference `w < 0x0600`, Value `< 0x0A00`, Edge `< 0x1C00`, Meta 나머지). Codec은 Kind 영역 안 번호(`Record.Codec uint16` = 9비트 코드 − 영역 시작; Reference `0x00`~`0x5F`, Value·Meta `0x00`~`0x3F`, Edge `0x00`~`0x11F`)이고, `TargetWord`/`SplitTarget`이 (Kind, Codec) ↔ CODEC 대상 WORD를 바꾼다.
-- ISSUER 코드는 영역마다 마지막 셋(2/4/16 WORD, `IssuerWidth`). Value·Edge는 TAG 뒤 Issuer + 코덱 번호 2 WORD(`Record.Format uint32`, `FormatWords`), Reference의 REFERENCE-ISSUER는 Payload가 Issuer의 것이다. Issuer는 2/4/16 WORD 정규형(`IssuerCanonical`), 더 넓은 0 채움은 같은 Issuer(`IssuerNormal`).
+- ISSUER 코드는 영역마다 마지막 셋(2/4/16 WORD, `IssuerWidth`). Reference·Value·Edge 모두 TAG([Length]) 뒤 Issuer + 코덱 번호 2 WORD(`Record.Format uint32`, `FormatWords`)이고 그 뒤가 Payload다(EDGE-ISSUER는 Payload 첫 요소가 Edge Id, 문법 record.md·reference-issuer.md). Issuer는 2/4/16 WORD 정규형(`IssuerCanonical`), 더 넓은 0 채움은 같은 Issuer(`IssuerNormal`).
 - Reference Codec: 섹션 0 엔티티(자리 표지 0~2, 빈칸 3·4, 5Q 체계 1~5 `0x05`~`0x1D`, 빈칸 `0x1E`·`0x1F`), 섹션 1 EXTERNAL(체계 6~11 `0x20`~`0x3D`, 빈칸 `0x3E`·`0x3F`), 섹션 2(ISSUER-POINTER `0x40`, DOC-POINTER `0x41`, CODEC-POINTER `0x42`, 빈칸 `0x43`~`0x5C`, REFERENCE-ISSUER `0x5D`~`0x5F`). 5Q 코드의 체계와 Quantifier는 섹션 안 C로 읽는다(`RefScheme`·`RefQuantifier`: 섹션 0 체계 C/5, 섹션 1 체계 6 + C/5, Quantifier C%5).
 - 목록 예약 문서 ID: `DocIDIssuers`(Issuer 목록 `issuers/` 하나, §1.1 101).
 - 문서 구조: `DOC-*`, HEAD(Meta, 문서 전체 SOURCE와 그 QUALIFIER — `HeadEdge`), BODY, `END`. 필드 폭은 Codec과 Length가 정한다(문서 단위 폭 선언 없음).
 - 모델: Reference, Value, Edge, Meta. 모르는 레코드는 원본 WORD를 그대로 보존한다.
-- 읽기: `Decode(bytes) → Doc, warns, err`
+- 읽기: `ReadWords(bytes) → []Word`, `SplitDocument(words) → Document`(HEAD·BODY 레코드), 레코드는 `DecodeRecord`. 첫 오류에서 멈춘다(위반을 모두 모으는 검사는 `pkg/schema`).
 - 쓰기: 빌더가 ID와 Length를 정하고 정규형(가장 짧은 폭) 바이트로 쓴다.
-- 내용 해시: 검증 클래스 레코드를 뺀 SHA-256(OVERVIEW 계보). 버전 ID(2 WORD 순번)는 공표처가 배정하며 core가 계산하지 않는다.
+- 내용 해시: 검증 Meta(섹션 15 `C ≥ 5`, `IsValidationMeta`)를 뺀 SHA-256(문법 document.md). 버전 ID(2 WORD 순번)는 공표처가 배정하며 core가 계산하지 않는다.
 
 ## 구현된 것
 
@@ -39,9 +39,9 @@
 
 - 외부 의존과 네트워크 I/O가 없다.
 - 디코딩은 IMPORT를 조회하지 않는다. 풀리지 않은 외부 참조는 IMPORT ID와 대상 ID만 가진 채 둔다.
-- 쓰기와 읽기를 함께 만들고 `Decode(Encode(x)) == x` 왕복으로 검증한다.
+- 쓰기와 읽기를 함께 만들고 `DecodeRecord(EncodeRecord(x)) == x` 왕복으로 검증한다.
 
 ## 보류
 
 - 서명: 검증 클래스 레코드(`SIGNATURE`)는 해석하지 않고 보존만 한다. 내용 해시 계산에서 빼는 규칙만 지킨다.
-- 정규형 규칙(폭, Length 확장 조건, 레코드 순서)이 정해지기 전에는 원본 바이트 보존 왕복으로 검증한다.
+- 정규형(문법 record.md "정규형": 가장 짧은 Length·정수 폭, 빈 HEAD면 BODY 생략)은 인코더가 지키고, 디코더는 Length 확장 비정규형을 거부한다. 문서 단위 정규형 위반(빈 HEAD 뒤 BODY 등)은 `pkg/schema`가 보고한다.

@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=iteration dimension=1
-//ff:what Dir.removeCopies — deletes the h/ copies of the given hashes, keeping some and ignoring missing ones
+//ff:what Dir.removeCopies — deletes the hashes/ copies of the given hashes, keeping some and ignoring missing ones
 package resolve
 
 import (

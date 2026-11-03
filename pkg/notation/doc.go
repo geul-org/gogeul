@@ -14,7 +14,7 @@
 //	0x0000/0x…0806#3      EXTERNAL-ISSUER-* (Issuer document's LOCAL)
 //	"text", "text"@en     UTF8-TEXT, UTF8-LANGUAGE-TEXT (language LANGUAGE-BCP47-CODE)
 //	"text"@@pt-BR         UTF8-LANGUAGE-TEXT whose language is a LANGUAGE-SHORT-CODE,
-//	                      by its GEUL Language Registry tag (the 0848 codec spec's ENUM);
+//	                      by its GEUL Language Registry tag (the ENUM of codec 0x000007A0's spec);
 //	                      "text"@@0x4130 is the code itself (written so without the registry)
 //	<https://…>           URI
 //	1.20, -3, 12e2        SIGNED-DECIMAL, digits as written

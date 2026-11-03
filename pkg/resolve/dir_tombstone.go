@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=sequence
-//ff:what Dir.Tombstone — delete one published version: a TOMBSTONE with its reason, then its version file and h/ copy are removed
+//ff:what Dir.Tombstone — delete one published version: a TOMBSTONE with its reason, then its version file and hashes/ copy are removed
 package resolve
 
 import (
@@ -11,7 +11,7 @@ import (
 
 // Tombstone appends a TOMBSTONE of version v with reason (사유 범주,
 // LICENSE-GEUL-ORG 제5조) to the version list of document doc of issuer and
-// removes the version's file and its `h/` copy: a deleted version is not
+// removes the version's file and its `<Issuer>/hashes/` copy: a deleted version is not
 // served (edge/PUBLICATION). A version another stored version is a diff of
 // is refused (basedOn) so no live version loses its base.
 func (d Dir) Tombstone(issuer, doc []core.Word, v uint32, reason uint16) error {

@@ -16,7 +16,7 @@ d, err := inspect.Decode(b) // Document{Head, Body, Profile, Toulmin}
 | Data | 레코드 |
 |---|---|
 | `Value` | HEAD의 SPEC-VERSION(UNSIGNED-INTEGER로 표시)·PROFILE·DEFAULT-LANGUAGE, BODY의 독립 Value |
-| `DocID`, `ImportDoc` | DOC-ID, IMPORT-DOC-* (버전 ID 2 WORD, 0이면 최신) |
+| `DocID`, `ImportDoc` | DOC-ID, IMPORT-DOC (버전 ID 2 WORD, 0이면 최신) |
 | `Source`, `toulmin.TextPacket`, `ControlPacket`, `NodePacket`, `EdgePacket` | PROFILE이 `tangeul-1.x`일 때의 TOULMIN 레코드 |
 
 - **무손실 원칙.** TOULMIN 레코드는 다시 인코딩한 결과가 원래 워드와 같을 때만 `Data`를 채운다. 그 밖에는 `Data`가 nil이고 원본 레코드만 남는다.
