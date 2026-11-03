@@ -5,6 +5,10 @@
 ## 범위
 
 - 프레이밍: TAG WORD와 Length 확장만으로 레코드 경계를 자른다. 스키마가 필요 없다.
+- TAG WORD `000K KKCC CCCC LLLL`(migration1): Kind는 KKK 표(`KindOf`: 000 Reference, 001 Value, 010~110 Edge, 111 Meta), Codec은 영역 안 번호(`Record.Codec uint16`; Reference·Value·Meta `0x00`~`0x3F`, Edge `0x00`~`0x13F`), `TargetWord`/`SplitTarget`이 (Kind, Codec) ↔ CODEC 대상 WORD를 바꾼다.
+- ISSUER 코드는 영역마다 마지막 셋(2/4/16 WORD, `IssuerWidth`). Value·Edge는 TAG 뒤 Issuer + 코덱 번호 2 WORD(`Record.Format uint32`, `FormatWords`), Reference의 REFERENCE-ISSUER는 Payload가 Issuer의 것이다. Issuer는 2/4/16 WORD 정규형(`IssuerCanonical`), 더 넓은 0 채움은 같은 Issuer(`IssuerNormal`).
+- Reference C: 자리 표지 0~2, ISSUER-POINTER 3, DOC-POINTER 4, 5Q 체계 `0x05`~`0x3B`(`RefScheme`·`RefQuantifier`), CODEC-POINTER `0x3C`, REFERENCE-ISSUER `0x3D`~`0x3F`.
+- 목록 예약 문서 ID: `DocIDIssuers`·`DocIDDocs`·`DocIDCodecs`(`IsListDocID`).
 - 문서 구조: `DOC-*`, HEAD(Meta, 문서 전체 SOURCE와 그 QUALIFIER — `HeadEdge`), BODY, `END`. 필드 폭은 Codec과 Length가 정한다(문서 단위 폭 선언 없음).
 - 모델: Reference, Value, Edge, Meta. 모르는 레코드는 원본 WORD를 그대로 보존한다.
 - 읽기: `Decode(bytes) → Doc, warns, err`
@@ -18,12 +22,14 @@
 | `record.go`, `encode_record.go`, `decode_record.go` | 레코드 하나: TAG WORD, Length(확장 포함, 정규형 검사), ISSUER 확장, Payload |
 | `wrap_document.go`, `split_document.go` | DOC 컨테이너: 가장 좁은 DOC-* 로 감싸기, HEAD/BODY/END 나누기와 배치 검사 |
 | `*_value.go`, `*_language_text.go`, `*_coordinate.go`, `encode_posix_seconds.go` | Value: 바이트 Value(UTF8-TEXT·URI·BCP47 등 홀짝 쌍), UNSIGNED-INTEGER, SIGNED-/UNSIGNED-DECIMAL, GREGORIAN-DATE·POSIX-TIMESTAMP-SECONDS, UTF8-LANGUAGE-TEXT, COORDINATE-EARTH·GEO |
-| `*_doc_pointer.go`, `*_issuer_pointer.go`, `encode_doc_id.go`, `*_spec_version.go` | DOC-POINTER·ISSUER-POINTER Reference, Meta DOC-ID·SPEC-VERSION |
+| `*_doc_pointer.go`, `*_issuer_pointer.go`, `*_codec_pointer.go`, `*_target_pointer.go`, `encode_doc_id*.go`, `decode_doc_id_codec.go`, `*_spec_version.go` | DOC-·ISSUER-·CODEC-POINTER Reference, 문서·코덱 대상 포인터, Meta DOC-ID(코덱 문서는 CODEC-POINTER)·SPEC-VERSION |
 | `*_publication.go`, `publication_tail.go`, `*_bind.go` | 버전 목록 Edge(PUBLICATION·DEPRECATION·TOMBSTONE), BIND |
 | `*_declare.go`, `*_field_decl.go`, `*_enum_decl.go`, `*_codec_decl.go`, `codec_matches.go` | Codec 규격 어휘 DECLARE·FIELD·ENUM·CODEC, CODEC 대상 대조 |
 | `encode_id.go`, `decode_id.go`, `width*.go`, `min_width.go` | 고정 폭(1/2/4/8 WORD) 필드와 폭 코드 (DOC-* 길이, TOULMIN SPAN) |
 | `ref_codec.go`, `encode_local_ref.go`, `decode_local_ref.go` | Reference Codec, LOCAL Reference (Edge Id·문서 안 언급) |
-| `meta_codec.go`, `value_codec.go`, `codec_issuer.go`, `import_issuer_width.go` | 사용하는 Meta·Value·ISSUER 코드, IMPORT-DOC-* Issuer 폭 |
+| `kind*.go`, `tag_*.go`, `split_target.go`, `target_word.go`, `codec_max.go` | KKK 표, 영역 시작 TAG, (Kind, Codec) ↔ TAG·대상 WORD |
+| `meta_codec.go`, `value_codec.go`, `edge_codec.go`, `codec_issuer.go`, `issuer_*.go`, `list_doc_id.go` | 사용하는 Meta·Value·Edge·ISSUER 코드, Issuer 폭·정규형, 목록 예약 ID |
+| `testdata/migration1/` | 기준 벡터(`vector.tsv`, `gen12.json`, `t12_*.md`). 시험 기대값은 코드 상수가 아니라 이 표에서 온다 |
 | `content_hash.go`, `strip_validation.go` | 내용 해시: 검증 클래스 Meta를 빼고 DOC-* 길이를 다시 계산한 뒤 END 직전까지의 SHA-256 |
 
 - toulmin(`draft/toulmin`, 브랜치 `geul-t002`)이 이 패키지를 import해 `.geul`을 읽고 쓴다.

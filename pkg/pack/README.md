@@ -2,6 +2,19 @@
 
 `pack.Stream`은 아주 큰 세트의 첫 세대를 한 번에 쓴다(위키데이터 1.2억 문서, 175 GB). 이 문서는 스트림이 마무리(`Close`) 중을 포함해 어느 순간에 멈춰도 이어 갈 수 있는 이유와, 마무리 중 메모리를 묶는 것을 적는다. 객체 형식은 geul-dev 설계 노트 `files/pack/README.md` §4·§6.1에 있고, 여기 내용은 형식의 어떤 바이트도 바꾸지 않는다.
 
+## 경로 공간 (migration.md §3.13)
+
+세트가 담는 경로는 공표 주소의 저장 꼴뿐이다. 그 밖의 경로는 쓰기(`Writer.Put`, `Stream`)에서 거부하고 읽기에서 `ErrNotFound`다.
+
+| 공간 | 경로 | 쓰기 |
+|---|---|---|
+| P | `<I>/docs/<D>/<V>.geul`, `<I>/docs/<D>/versions.geul` | `Stream.Put(issuer, doc, slot, r)`(slot 0 = versions.geul) |
+| H | `<I>/hashes/<H>.geul` | 문서와 같은 바이트, 주인 Issuer는 세트의 유일 Issuer 또는 문서의 DOC-ID·버전 목록 포인터 |
+| 이름 | `issuers/…`, `<I>/docs/<V>.geul`·`versions.geul`(문서 목록), `<I>/codecs/…`(코덱 목록·코덱) | `Stream.PutNamed`, `Writer.Put` |
+
+- `<I>`는 8·16·64자리 0 채움 표기를 같은 Issuer로 읽고, 쓸 때는 발급 폭 자릿수로 정규화한다. `<D>` 16자리, `<V>`·`<C>` 8자리, 소문자 16진만 받는다.
+- `latest.geul`은 저장하지 않는다(별칭, `resolve.FetchAddr`). 목록 예약 문서 ID(`core.IsListDocID`)는 `<I>/docs/<D>/` 꼴로 저장하지 않는다.
+
 ## 약속
 
 첫 `Checkpoint` 뒤 어느 시점에 프로세스를 죽이더라도, `ResumeStream`을 부르고 `Meta`가 말하는 나머지를 다시 넣고 `Close`를 부르면 끊김 없는 실행과 바이트까지 같은 세트가 나온다. 객체 이름이 내용 해시이므로 같은 객체를 다시 써도 해가 없다.

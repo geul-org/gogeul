@@ -38,7 +38,10 @@ geul show geul.org/triple                # one document, latest version, one rec
 geul show geul.org/triple/0x00000002.geul  # a given version
 geul show ./d.geul                       # a local file
 geul show versions geul.org/triple       # versions: number, time, content hash
+geul get https://geul.org/.well-known/geul/0x00000000/docs/0x0000000000000001/latest.geul > d.geul  # raw bytes of a 공표 주소
 ```
+
+Names (`geul.org`, `triple`) are resolved by the CLI through the `BIND` records of the Issuer list and the document list; they are not 공표 주소. `geul get` takes only the 16 address forms below.
 
 Write and publish a document under a self-issued Issuer:
 
@@ -52,7 +55,7 @@ geul publish d.geul --name adams
 geul show me/adams
 ```
 
-Codec names and fields (`LABEL`, `TRIPLE`, `normal`, ...) come from the codec spec documents of the GEUL Issuer (`0x0000`, geul.org) in the data folder. Without them, `add` cannot read such lines and `show` prints those records as raw words.
+Codec names and fields (`LABEL`, `TRIPLE`, `normal`, ...) come from the codec spec documents of the GEUL Issuer (`0x00000000`, geul.org) in the data folder. Without them, `add` cannot read such lines and `show` prints those records as raw words.
 
 View it in a browser, or bake it for a static host:
 
@@ -134,7 +137,7 @@ The CLI lives in `cmd/geul` and `internal/`.
 
 | Group | Commands |
 |---|---|
-| Read and check | `ls`, `show`, `show versions`, `cat`, `hash`, `diff`, `blame`, `grep`, `check [--archive]`, `resolve` |
+| Read and check | `ls`, `show`, `show versions`, `get`, `cat`, `hash`, `diff`, `blame`, `grep`, `check [--archive]`, `resolve` |
 | Edit a draft file | `new`, `open`, `add`, `def`, `set`, `rm [--force]`, `meta [--unset]` |
 | Publish | `publish [--amend] [--name]`, `name`, `delta`, `deprecate`, `tombstone` |
 | Issuers and settings | `issuer new\|ls\|show`, `env [-w\|-u]` |
@@ -147,7 +150,18 @@ Changes are compared by Edge Id, not by line. Run `geul <command> --help` for de
 
 A data folder's `.well-known/geul/` is stored in one of two formats. Both are read the same way (`resolve.Store`).
 
-- **Directory archive**: one file per public path (`<Issuer>/<doc>/versions.geul`, `<Issuer>/<doc>/<version>.geul`, `h/<content hash>.geul`, name indexes). This is the layout a web host serves.
+- **Directory archive**: one file per 공표 주소. This is the layout a web host serves.
+
+  | | latest (alias) | version | version list |
+  |---|---|---|---|
+  | Issuer list | `issuers/latest.geul` | `issuers/<V>.geul` | `issuers/versions.geul` |
+  | codec list | `<I>/codecs/latest.geul` | `<I>/codecs/<V>.geul` | `<I>/codecs/versions.geul` |
+  | document list | `<I>/docs/latest.geul` | `<I>/docs/<V>.geul` | `<I>/docs/versions.geul` |
+  | codec | `<I>/codecs/<C>/latest.geul` | `<I>/codecs/<C>/<V>.geul` | `<I>/codecs/<C>/versions.geul` |
+  | document | `<I>/docs/<D>/latest.geul` | `<I>/docs/<D>/<V>.geul` | `<I>/docs/<D>/versions.geul` |
+  | content hash | | `<I>/hashes/<H>.geul` | |
+
+  `<I>` is the Issuer in 8, 16 or 64 lowercase hex digits (written at its issued width; zero-padded wider spellings read as the same Issuer), `<D>` 16 digits, `<C>` and `<V>` 8 digits, `<H>` 64 digits. `latest.geul` is never stored: it is the newest version in `versions.geul` that is neither deprecated nor deleted. The lists are versioned documents under the reserved document IDs `0xffffffffffffffff` (`issuers`, Issuer `0x00000000`), `0xfffffffffffffffe` (`docs`) and `0xfffffffffffffffd` (`codecs`). Any other path is refused.
 - **Pack archive**: immutable content-named objects (`m/<sha256>.gpm` manifests, `o/<sha256>.gpx` indexes, `o/<sha256>.gpk` data packs) and `latest.txt`, the only mutable file. There is one set per Issuer (`<Issuer>/latest.txt`), or one set at the top (`pack build --single`). The same objects can be read from a local folder or a CDN with one HTTP Range request per read.
 
 A new, empty data folder is written as a pack archive; a directory archive that already has files stays a directory archive. Commands that write to a pack archive add a new generation per changed set after the command succeeds.

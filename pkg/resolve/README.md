@@ -31,26 +31,36 @@
 
 ## 주소
 
-`Key{Issuer, Doc, Version}`는 두 곳에서 만든다. Issuer 폭은 Codec 하위 2비트가 정하고(1/2/4/16 WORD), 문서 ID는 4 WORD, 버전 ID는 2 WORD 순번이며 0이면 최신이다.
+`Key{Issuer, Doc, Version}`는 두 곳에서 만든다. Issuer 폭은 2/4/16 WORD, 문서 ID는 4 WORD(코덱은 2 WORD 코덱 ID), 버전 ID는 2 WORD 순번이며 0이면 최신이다.
 
 | 출처 | 레이아웃 | Key |
 |---|---|---|
-| `IMPORT-DOC-*` (Meta `0x60`~`0x63`) | IMPORT ID + Issuer + 문서 ID + 버전 ID | 그대로 |
-| `EXTERNAL-ISSUER-*` (Reference `01xx`) | TAG + Issuer + 문서 ID(4) + LOCAL ID(나머지) | 버전 ID 0(최신) |
+| `IMPORT-DOC` (Meta C `0x24`, TAG `0x1E4L`) | IMPORT ID + 대상 포인터(DOC-POINTER 또는 CODEC-POINTER) | 그대로 |
+| `EXTERNAL-ISSUER-*` (Reference C `0x2D`·`0x32`·`0x37`, 5Q 체계 9~11) | TAG + Issuer + 문서 ID(4) + LOCAL ID(나머지) | 버전 ID 0(최신) |
 
 - `EXTERNAL-ISSUER-*`는 BODY의 독립 Reference일 수도, Edge Payload에 내장된 Reference일 수도 있다. 독립 레코드는 코덱북 없이 모은다. 내장된 것은 `inspect.Layout`이 Record로 표시한 부분 중 Kind가 Reference인 것을 모은다. 레이아웃을 모르는 Edge 안의 참조는 찾지 못하며 미해결 목록에 그 Edge를 남긴다.
 - Quantifier가 Variable이면 대상은 그 문서의 LOCAL 변수다. 해석 방법은 같다.
 
-ID는 소문자 `0x` + 소문자 hex, 자릿수 = 폭 × 4로 적는다. 앞의 0을 생략하지 않으므로 자릿수가 폭이다.
+### 공표 주소 (migration.md §3.13)
 
-| Key | 경로 (`<기준>/.well-known/geul/` 아래) | 성질 |
-|---|---|---|
-| 버전 고정 | `<Issuer>/<문서 ID>/<버전 ID>.geul` | 불변, 정본. 영구 캐시 |
-| 최신 | `<Issuer>/<문서 ID>.geul` | 가변. 서버는 302로 정본 주소에 보낸다 |
-| 내용 해시만 | `h/<내용 해시>.geul` | 불변 |
-| 버전 목록 | `<Issuer>/<문서 ID>/versions.geul` | 가변, 공표처 서명 (edge/PUBLICATION) |
+ID는 소문자 `0x` + 소문자 hex, 자릿수 = 폭 × 4다. 문서 ID는 16자리, 코덱 ID는 8자리, 버전 ID는 8자리다. 쓸 때 Issuer는 발급 폭 자릿수(2 WORD 8자리, 4 WORD 16자리, 16 WORD 64자리)로 쓰고, 읽을 때는 8·16·64자리 0 채움 표기를 같은 Issuer로 받는다(`ParseAddr`가 정규화).
 
-예: `IMPORT-DOC-1WORD #1 0x0001 0x…0002 (버전 0)` → `geul.org/.well-known/geul/0x0001/0x0000000000000002.geul`
+주소는 다음 16가지뿐이다(`<기준>/.well-known/geul/` 아래). 그 밖의 꼴, 이름 주소(`geul.org/triple`), 도메인 정규화는 공표 주소가 아니다(`ParseAddr` 오류, 조회 404). 이름은 CLI·해석기가 목록의 `BIND`로 ID로 바꾼다(`Dir.Find`).
+
+| 대상 | 최신 | 버전 | 버전 목록 | 함수 |
+|---|---|---|---|---|
+| Issuer 목록 | `issuers/latest.geul` | `issuers/<V>.geul` | `issuers/versions.geul` | `Issuers`, `IssuersVersions` |
+| 코덱 목록 | `<I>/codecs/latest.geul` | `<I>/codecs/<V>.geul` | `<I>/codecs/versions.geul` | `Codecs`, `CodecsVersions` |
+| 문서 목록 | `<I>/docs/latest.geul` | `<I>/docs/<V>.geul` | `<I>/docs/versions.geul` | `Docs`, `DocsVersions` |
+| 코덱 | `<I>/codecs/<C>/latest.geul` | `<I>/codecs/<C>/<V>.geul` | `<I>/codecs/<C>/versions.geul` | `Codec`, `CodecVersions` |
+| 문서 | `<I>/docs/<D>/latest.geul` | `<I>/docs/<D>/<V>.geul` | `<I>/docs/<D>/versions.geul` | `Doc`, `DocVersions` |
+| 내용 해시 | | `<I>/hashes/<H>.geul` | | `Hash` |
+
+- `ParseAddr`는 `file://…`, `https://…`, `.well-known/geul/…`, 맨 경로를 받아 `Addr`로, `Addr.Path()`는 저장 경로로 바꾼다. `Fetch(ctx, src, 주소 문자열)`·`FetchAddr`가 바이트를 낸다.
+- `latest.geul`은 저장하지 않는 별칭이다. 문서·코덱·목록 모두 `versions.geul`에서 폐기 권고·삭제가 아닌 가장 높은 버전을 찾아 그 바이트를 낸다(리다이렉트 없음).
+- 목록은 버전 1부터이고 예약 문서 ID로 버전 목록을 갖는다: `issuers` `0xffffffffffffffff`(Issuer `0x00000000`), `docs` `0xfffffffffffffffe`, `codecs` `0xfffffffffffffffd`(`core.DocIDIssuers`·`DocIDDocs`·`DocIDCodecs`). 목록 `versions.geul`의 `PUBLICATION`은 `DOC-POINTER(Issuer, 예약 ID, 버전)`다. 예약 ID는 `<I>/docs/<D>/` 주소로 받지 않는다. 공표는 `Dir.PublishList`, 문서 목록의 이름 묶기는 `Dir.Name`이 새 버전을 낸다.
+- 코덱 문서의 `DOC-ID`는 `CODEC-POINTER(Issuer, 코덱 ID, 버전 0)`이고 `<I>/codecs/<C>/`에 놓인다(`Dir.PublishCodec`). 코덱 목록 `<I>/codecs/` 자체는 아직 만들지 않는다(변환 도구 몫).
+- 옛 경로(`issuers.geul`, `documents.geul`, `h/`, `<I>/<문서 ID>/`, `<I>/<문서 ID>.geul`)는 읽지도 쓰지도 않는다.
 
 ## 설정
 
@@ -106,12 +116,12 @@ type Source interface {
 
 | 경로 | 찾는 곳 |
 |---|---|
-| `<Issuer>/…` | `<Issuer>/latest.txt`의 세트 → 맨 위 `latest.txt`의 세트 → 낱개 파일 |
-| `h/…`, `issuers.geul` | 맨 위 세트 → `0x0000` 세트 → 그 밖의 세트 → 낱개 파일 |
+| `<Issuer>/…`(`hashes/` 포함) | `<Issuer>/latest.txt`의 세트 → 맨 위 `latest.txt`의 세트 → 낱개 파일 |
+| `issuers/…` | 맨 위 세트 → `0x00000000` 세트 → 그 밖의 세트 → 낱개 파일 |
 
 - **세트의 판별은 `latest.txt`뿐이다.** `latest.txt`가 없으면(파일 없음, `404`·`410`) 세트가 없는 것이다. 있는데 읽히지 않거나 가리키는 매니페스트가 없으면 고장이다. 고장난 세트를 낱개 파일로 덮지 않으며, `,` 뒤에서는 거기서 멈추고 `|` 뒤에서는 다음 출처로 간다. 다른 Issuer의 세트가 고장나도 이 Issuer의 조회는 영향을 받지 않는다.
 - **혼재.** 경로마다 찾으므로 Issuer별로 세트와 파일을 섞을 수 있고, 같은 Issuer의 세트 옆에 낱개 문서를 둘 수도 있다. 둘 다 있는 경로는 세트가 이긴다.
-- **그 밖의 세트**는 폴더면 Issuer 폴더를 나열해 찾는다. 서버는 나열이 없으므로 `issuers.geul`이 묶은 Issuer와 이미 연 세트만 본다. `issuers.geul`이 묶지 않은 Issuer의 `h/` 사본은 그 Issuer를 한 번 읽은 뒤에 찾는다. `PARENT` 사슬은 목록을 읽을 때 세트가 열리므로 영향이 없다.
+- **그 밖의 세트**는 폴더면 Issuer 폴더를 나열해 찾는다. 서버는 나열이 없으므로 Issuer 목록(`issuers/latest.geul`)이 묶은 Issuer와 이미 연 세트만 본다. `PARENT` 사슬은 목록을 읽을 때 세트가 열리므로 영향이 없다.
 - 세트는 한 번 열면 그 출처 값이 사는 동안 그 세대로 읽는다. '없음'도 기억하고, 고장은 기억하지 않는다.
 - 나열(`Issuers`, `Documents`, `Tree`)은 로컬에서만 된다. 원격은 오류다. 출처 목록 항목에 쓰기는 거부한다.
 - `Dir.Fetch`는 Store가 `Source`이면 호출자의 context를 넘긴다. 그래서 `Find`·`At`·`Resolver`가 세 형태에서 같은 코드로 돈다.
@@ -134,12 +144,12 @@ type Source interface {
 Key 하나를 받는 순서(GEUL-ORG 위치 해석 순서).
 
 1. **작업공간**: `replace`가 맞으면 그 대상, `use` 문서의 `DOC-ID`가 맞으면 그 파일. 결과 Node에 `Replaced`를 표시한다.
-2. **캐시(`Dir`)**: 버전을 고정한 Key와 `h/` 경로만. 불변 주소라서 먼저 본다.
+2. **캐시(`Dir`)**: 버전을 고정한 Key와 `<I>/hashes/` 경로만. 불변 주소라서 먼저 본다.
 3. **출처 목록**: `Proxy`를 차례로. `Private`에 맞으면 `https://geul.org` 항목과 `registry`를 건너뛴다. `off`에서 멈춘다.
 4. **버전 로그**: 최신을 받았으면 `Log`로 확인한다. `NoLog`에 맞거나 `Log`가 nil이면 건너뛴다. 로그에 닿지 못하면 실패다.
 
 - 16 WORD Issuer는 등록부가 없어 `registry`가 404를 준다. 출처 목록이나 작업공간으로 찾는다.
-- 받은 정본은 캐시에 `<Issuer>/<문서 ID>/<버전 ID>.geul`과 `h/<내용 해시>.geul`로 넣는다. 작업공간 문서는 캐시에 넣지 않는다.
+- 받은 정본은 캐시에 `<I>/docs/<문서 ID>/<버전 ID>.geul`과 `<I>/hashes/<내용 해시>.geul`로 넣는다. 작업공간 문서는 캐시에 넣지 않는다.
 
 ## 버전 선택
 
@@ -222,15 +232,14 @@ func (g *Graph) Target(from *Node, ref core.Record) (*Node, inspect.Entry, error
 3. 상한(깊이·문서 수·크기). 순환은 같은 Key를 한 번만 받으므로 끝나며, 거부하지 않는다.
 4. `core`에 지시·지시선언 Reference 디코드(Issuer·문서 ID·IMPORT ID·LOCAL ID 분리). 지금은 LOCAL만 있다.
 5. 참조 수집(독립 Reference + `inspect.Layout`의 내장 Reference), `EXTERNAL-ISSUER-*` 해석, `Target`.
-- 문서 이름 주소(`/<Issuer>/<문서 이름>/…`, 버전 목록의 `BIND`). 목록이 문서마다 있어 Issuer 단위 이름 색인이 정해진 뒤 구현한다.
 6. 버전 목록 서명·`PARENT` 사슬 확인, `Registry` 조회(그 API·형식이 정해진 뒤).
 
 ## 임시 공표 위치
 
 geul.org가 서비스되기 전까지 geul.org 웹사이트 저장소의 `artifacts/geul/.well-known/geul/`을 공표 트리로 쓴다. `GEULPROXY=file://<geul-dev>/draft/geul-org/artifacts/geul,off`로 가리킨다. 기본값은 그대로 `https://geul.org`다.
 
-- 지금은 Issuer `0x0000`(geul.org)의 코덱 명세·용어 정의 문서와 Issuer `0x00010000`(wikidata.geul.org)의 위키데이터 문서가 Issuer별 pack 세트로 들어 있다.
-- `TestResolvePublished`, `TestDirFindPublished`가 이 트리를 `GEULPROXY`로 읽는다(뒤의 것은 같은 트리를 HTTP Range로도 읽어 대조한다). 이 모듈만 따로 받았거나 트리에 pack 세트가 없으면 건너뛴다.
+- migration1 뒤에는 Issuer `0x00000000`(geul.org)의 규격 세트와 Issuer `0x00000001`(wikidata.geul.org)의 위키데이터 세트가 Issuer별 pack 세트로 들어간다(5·6단계 변환 산출물).
+- `TestResolvePublished`, `TestDirFindPublished`가 이 트리를 `GEULPROXY`로 읽는다(뒤의 것은 같은 트리를 HTTP Range로도 읽어 대조한다). 이 모듈만 따로 받았거나 `0x00000000/latest.txt`(뒤의 것은 `0x00000001/latest.txt`도)가 없으면 건너뛴다. 전체 세트를 훑지 않고 점 조회만 한다.
 - 공표는 이 트리를 데이터 폴더로 한 `geul publish`, 또는 `resolve.Dir{Root: "<geul-dev>/draft/geul-org/artifacts/geul", Store: <pack.OpenDir로 연 세트>}.Publish(bytes)`로 한다.
 
 ## 범위 밖

@@ -25,7 +25,7 @@
 | F2 | Length가 레코드의 전체 WORD 수와 같고, 레코드가 입력 안에 들어간다. |
 | F3 | 1~14 WORD는 직접 길이, 15~65535는 `1110`, 그 위는 `1111`이다. 더 넓은 표현은 비정규로 거부한다. |
 | F4 | TAG WORD 접두사가 `000`(Proposal)이다. `001`(Standard)은 아직 배정이 없어 Warn, 그 밖은 Error다. |
-| F5 | Codec이 ISSUER-1/2/4/16WORD(Value·Edge)면 Codec 확장 TAG에 그 폭의 Issuer와 형식 번호 1 WORD가 있다. Issuer는 값이 들어가는 가장 짧은 폭이다. |
+| F5 | Codec이 ISSUER-2/4/16WORD(Value C `0x3D`~`0x3F`, Edge C `0x13D`~`0x13F`)면 TAG 뒤에 그 폭의 Issuer와 코덱 번호 2 WORD가 있다. Issuer는 값이 들어가는 가장 짧은 폭이다. Reference의 REFERENCE-ISSUER(C `0x3D`~`0x3F`)는 Payload가 그 Issuer의 것이다. |
 
 ### D 문서 구조 (OVERVIEW 구조)
 
@@ -40,11 +40,11 @@
 
 | 규칙 | 내용 |
 |---|---|
-| R1 | Quantifier `101`~`111`은 예약이다. Codec `0000`은 자리 표지 묶음이라 하위 3비트가 Quantifier가 아니라 표지 번호다. 레코드 자리(HEAD·BODY)의 자리 표지 `0x0000`~`0x0002`는 Error(표지는 그것을 받는 레코드 필드 안에서만 쓴다), 예약 표지 `0x0003`~`0x0007`과 Payload가 있는 Codec `0000`은 예약(Warn)이다. |
+| R1 | C `0`~`2`는 자리 표지 ABSENT·UNKNOWN-VALUE·NO-VALUE(WORD `0x0000`·`0x0010`·`0x0020`)다. 레코드 자리(HEAD·BODY)의 자리 표지는 Error(표지는 그것을 받는 레코드 필드 안에서만 쓴다), Payload가 있는 표지 C는 예약(Warn)이다. 5Q 체계(C `0x05`~`0x3B`)는 체계 C/5, Quantifier C%5다. |
 | R2 | 대상 ID는 가장 짧은 폭이다. 값 0은 `0x0000` 1 WORD이고, 그 밖에는 선행 `0x0000` WORD가 없다. |
 | R3 | `EXTERNAL-POINTER-*`: IMPORT ID가 들어가는 가장 좁은 Codec이고, 그 IMPORT ID를 배정한 `IMPORT-DOC`이 HEAD에 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). |
-| R4 | `EXTERNAL-ISSUER-*`: Issuer 폭이 Codec과 맞고 값이 들어가는 가장 짧은 폭이며, 문서 ID 4 WORD 뒤에 대상 ID가 1 WORD 이상 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). 문서 ID `0`은 Issuer의 용어 정의 색인 문서다. |
-| R5 | `ISSUER-POINTER`·`DOC-POINTER`: Quantifier는 `000`이다. Issuer 폭(Length에서 고정 필드를 뺀 나머지)은 1·2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서다. |
+| R4 | `EXTERNAL-ISSUER-*`(체계 9~11, 2/4/16 WORD): Issuer 폭이 체계와 맞고 값이 들어가는 가장 짧은 폭이며, 문서 ID 4 WORD 뒤에 대상 ID가 1 WORD 이상 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). 문서 ID `0`은 Issuer의 용어 정의 색인 문서다. |
+| R5 | `ISSUER-POINTER`(C 3)·`DOC-POINTER`(C 4)·`CODEC-POINTER`(C `0x3C`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`·`…FE`·`…FD`는 목록(issuers·docs·codecs) 예약 ID다. |
 
 ### V Value (OVERVIEW Value)
 
@@ -91,7 +91,7 @@
 
 ### P 버전 목록 문서 (edge/PUBLICATION)
 
-`DOC-ID`가 없고 BODY가 `PUBLICATION`으로 시작하는 문서(`<Issuer>/<문서 ID>/versions.geul`)에 적용한다. 목록이 다루는 문서는 첫 `PUBLICATION`의 문서 ID다.
+`DOC-ID`가 없고 BODY가 `PUBLICATION`으로 시작하는 문서(`<I>/docs/<D>/versions.geul`, `<I>/codecs/<C>/versions.geul`, 목록의 `versions.geul`)에 적용한다. 목록이 다루는 문서는 첫 `PUBLICATION`의 문서 ID다.
 
 | 규칙 | 내용 |
 |---|---|
