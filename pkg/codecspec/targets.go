@@ -15,8 +15,10 @@ import (
 var languageTag = core.TargetWord(core.KindValue, core.CodecLanguageShortCode) | 1
 
 // Targets lists what decoding records needs from the codec specs: the target
-// word of each record (Spec.Of; ISSUER records are not looked up, and the
-// slot markers have no spec), and the LANGUAGE-SHORT-CODE
+// word of each record (Spec.Of: each code by its own codec document, a 5Q
+// code included; ISSUER records are not looked up yet, and the slot markers
+// are left out because their codec documents hold a DECLARE and no FIELD),
+// and the LANGUAGE-SHORT-CODE
 // codec when a payload may carry a language code, since Spec.Languages names
 // it though that record is not a top-level record. Sorted, without repeats.
 func Targets(records []core.Record) []core.Word {

@@ -1,5 +1,5 @@
 //ff:func feature=codecspec type=decoder control=sequence
-//ff:what TestTargets — each direct codec once and sorted, quantified Reference folded to its head; ISSUER records and slot markers left out; the language registry when a payload holds a LANGUAGE-SHORT-CODE
+//ff:what TestTargets — each direct codec once and sorted, a quantified Reference by its own code; ISSUER records and slot markers left out; the language registry when a payload holds a LANGUAGE-SHORT-CODE
 package codecspec
 
 import (
@@ -18,7 +18,7 @@ func TestTargets(t *testing.T) {
 		{Kind: core.KindReference, Codec: 0x00},
 		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 1}},
 	})
-	want := []core.Word{core.TargetWord(core.KindReference, 0x05), core.TargetWord(core.KindEdge, 0x0A)}
+	want := []core.Word{core.TargetWord(core.KindReference, 0x08), core.TargetWord(core.KindEdge, 0x0A)}
 	if !slices.Equal(got, want) {
 		t.Fatalf("got %#x want %#x", got, want)
 	}
