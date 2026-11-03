@@ -18,7 +18,7 @@ func TestDecodeWith(t *testing.T) {
 		t.Fatal("missing count: want error")
 	}
 	pos = 0
-	if _, err := decodeWith([]core.Word{0x0890, 0, 2}, &pos); err == nil {
+	if _, err := decodeWith([]core.Word{0x0401, 0}, &pos); err == nil {
 		t.Fatal("non-integer count: want error")
 	}
 	pos = 0

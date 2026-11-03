@@ -28,7 +28,7 @@ func TestDecodeClaimObject(t *testing.T) {
 	}{
 		{[]core.Word{0x1000}, ObjNum},
 		{[]core.Word{0x0840}, ObjNum},
-		{[]core.Word{0x0982, 1, 0, 0}, ObjNum},
+		{[]core.Word{0x0423, 1, 0, 0}, ObjNum},
 		{nil, 3},
 	}
 	for i, b := range bad {

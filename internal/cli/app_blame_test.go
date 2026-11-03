@@ -22,8 +22,8 @@ func TestAppBlame(t *testing.T) {
 	if out := h.must("blame", addr, "--format", "json"); !strings.Contains(out, `"changed": 2`) {
 		t.Fatal(out)
 	}
-	id, _ := core.EncodeDocID([]core.Word{0}, []core.Word{0, 0, 0, 9})
-	noEdgeID := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0141, 1}}
+	id, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0, 0, 0, 9})
+	noEdgeID := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0421, 1}}
 	odd, _ := core.EncodeDocument([]core.Record{id}, []core.Record{noEdgeID})
 	(resolve.Dir{Root: h.data}).Publish(odd)
 	if _, err := h.run("", "blame", "0x00000000/0x0000000000000009"); err == nil {

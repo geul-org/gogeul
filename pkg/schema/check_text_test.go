@@ -21,6 +21,8 @@ func TestCheckText(t *testing.T) {
 		{core.CodecUTF8TextEven, "x\xef\xbb\xbf", ""},
 		{core.CodecUTF8TextEven, "\xef\xbb\xbf\xff", "V5"},
 		{core.CodecURIEven, "http://x", ""},
+		{core.CodecOpaqueBytesEven, "", ""},
+		{core.CodecOpaqueBytesEven, "\xff\x00", ""},
 		{core.CodecURIEven, "", "V5"},
 		{core.CodecLanguageBCP47Even, "ko KR", "V5"},
 		{core.CodecEDTFEven, "1974", ""},

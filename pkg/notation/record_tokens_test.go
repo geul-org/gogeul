@@ -14,7 +14,7 @@ func TestRecordTokens(t *testing.T) {
 	if got, ok := recordTokens(ws); !ok || got[0] != "0x00000000/0x0000000000000001" {
 		t.Fatal(got)
 	}
-	for _, x := range [][]core.Word{{0x0B86}, {0x0002}, {0x0051, 3, 0x0001}, nil} {
+	for _, x := range [][]core.Word{{0x0B86}, {0x0002}, {0x0051, 3, 0x0001}, {0x0000}, {0x0010}, nil} {
 		if _, ok := recordTokens(x); ok {
 			t.Errorf("%04X: want false", x)
 		}

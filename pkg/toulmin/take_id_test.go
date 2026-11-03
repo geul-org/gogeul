@@ -18,7 +18,7 @@ func TestTakeID(t *testing.T) {
 		t.Fatal("truncated: want error")
 	}
 	pos = 0
-	if _, err := TakeID([]core.Word{0x0802, 1}, &pos); err == nil || pos != 0 {
+	if _, err := TakeID([]core.Word{0x0421, 1}, &pos); err == nil || pos != 0 {
 		t.Fatal("Value record: want error")
 	}
 }
