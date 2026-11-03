@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=iteration dimension=1
-//ff:what Resolver.CodecSpecs — the codec specs of the given targets, each found under the GEUL Issuer 0x00000000 by its TAG through the source list
+//ff:what Resolver.CodecSpecs — the codec specs of the given targets, each found under the GEUL Issuer 0x00000000 by its TAG through the source list; a DECLARE of another Kind is an error
 package resolve
 
 import (
@@ -13,7 +13,9 @@ import (
 // CodecSpecs fetches the newest spec document of each target by its address
 // (codecDocID, GEUL-ORG 규격 문서의 위치) through the source list, so a spec
 // missing from the first source comes from the next. A target no source has
-// is left out, so its records read generically. Any other error stops it.
+// is left out, so its records read generically. A document declaring a codec
+// of another Kind than the target is an error (checkDeclareKind, §1.1 103).
+// Any other error stops it.
 func (r *Resolver) CodecSpecs(ctx context.Context, targets []core.Word) (codecspec.Spec, error) {
 	s := codecspec.Spec{}
 	for _, t := range targets {
@@ -22,6 +24,9 @@ func (r *Resolver) CodecSpecs(ctx context.Context, targets []core.Word) (codecsp
 			continue
 		}
 		if err != nil {
+			return nil, err
+		}
+		if err := checkDeclareKind(n.Doc, core.KindOf(t)); err != nil {
 			return nil, err
 		}
 		s = s.Merge(specOfDoc(n.Doc))

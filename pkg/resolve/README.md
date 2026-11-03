@@ -58,6 +58,7 @@ ID는 소문자 `0x` + 소문자 hex, 자릿수 = 폭 × 4다. 문서 ID는 16�
 - `latest.geul`은 저장하지 않는 별칭이다. 문서·코덱·Issuer 목록 모두 `versions.geul`에서 폐기 권고·삭제가 아닌 가장 높은 버전을 찾아 그 바이트를 낸다(리다이렉트 없음).
 - 목록은 `issuers/` 하나다. 버전 1부터이고 예약 문서 ID `0xffffffffffffffff`(Issuer `0x00000000`, `core.DocIDIssuers`)로 버전 목록을 갖는다. `versions.geul`의 `PUBLICATION`은 `DOC-POINTER(0x00000000, 예약 ID, 버전)`다. 예약 ID는 `<I>/docs/<D>/` 주소로 받지 않는다. 공표는 `Dir.PublishList`다. `<I>/docs/`·`<I>/codecs/` 목록은 없다(§1.1 101). `Dir.Documents`는 저장 폴더(pack 인벤토리)에서 문서·코덱 ID를 나열한다.
 - 코덱 문서의 `DOC-ID`는 `CODEC-POINTER(Issuer, 코덱 ID, 버전 0)`이고 `<I>/codecs/<C>/`에 놓인다(`Dir.PublishCodec`).
+- Issuer는 코덱 ID를 Kind와 상관없이 자기 `codecs/` 안에서 겹치지 않게 배정한다(§1.1 103). 그래서 두 가지를 기계로 검사한다. 해석: 레코드로 찾은 코덱 문서의 `DECLARE` 대상 Kind가 레코드 Kind와 다르면 오류(`checkDeclareKind`, `Dir.CodecSpecs`·`Resolver.CodecSpecs`). 공표: 같은 Issuer·같은 코덱 ID에 이미 있는(삭제되지 않은) 버전과 `DECLARE` 대상 TAG가 다르면 거부(`Dir.sameCodec`, `Publish`·`PublishCodec`).
 - 옛 경로(`issuers.geul`, `documents.geul`, `h/`, `<I>/<문서 ID>/`, `<I>/<문서 ID>.geul`)는 읽지도 쓰지도 않는다.
 
 ## 설정

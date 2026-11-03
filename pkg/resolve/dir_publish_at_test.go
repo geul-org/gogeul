@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=iteration dimension=1
-//ff:what TestDirPublishAt — versions at an address with any document ID; a republish returns the entry, the next chains; exhausted, broken-list, unwritable and a dropped LOCAL ID used again fail
+//ff:what TestDirPublishAt — versions at an address with any document ID; a republish returns the entry, the next chains; another codec at the codec ID, exhausted, broken-list, unwritable and a dropped LOCAL ID used again fail
 package resolve
 
 import (
@@ -30,6 +30,12 @@ func TestDirPublishAt(t *testing.T) {
 	if e, err := d.publishAt(k, []core.Word{0, 0}, doc, b2, h2); err != nil || e.Version != 2 {
 		t.Fatalf("second: %+v %v", e, err)
 	}
+	b3 := codecDocOf(0x05A0, 4)
+	ws3, _ := core.ReadWords(b3)
+	h3, _ := core.ContentHash(ws3)
+	if _, err := d.publishAt(k, []core.Word{0, 0}, doc, b3, h3); err == nil {
+		t.Fatal("another codec at the same codec ID: want refusal (§1.1 103)")
+	}
 	ek, eDoc := sampleKeyOf(7), []core.Word{0xffff, 0, 0, 7}
 	for i, v := range [][]byte{edgeDoc(7, "a", "b"), edgeDoc(7, "a"), edgeDoc(7, "a", "B")} {
 		ws, _ := core.ReadWords(v)
@@ -39,6 +45,7 @@ func TestDirPublishAt(t *testing.T) {
 		}
 	}
 	full := codecKey(0x09A0)
+	d.write(versionPath(full, math.MaxUint32), b)
 	d.write(listPath(full), encodeVersionList([]core.Record{core.EncodePublication(core.Publication{Codec: core.EdgePublication, EdgeID: 1, Issuer: []core.Word{0, 0}, Doc: doc, Version: math.MaxUint32})}, nil, 0, 0))
 	if _, err := d.publishAt(full, []core.Word{0, 0}, doc, b, h); err == nil {
 		t.Fatal("exhausted: want error")

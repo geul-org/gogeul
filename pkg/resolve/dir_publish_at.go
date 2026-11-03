@@ -14,7 +14,8 @@ import (
 // `<k>/versions.geul` that keeps the previous records, appends a PUBLICATION
 // and points PARENT at the previous list, which stays under `h/`. Content
 // already in the list returns that entry and writes nothing. A document that
-// reuses a dropped LOCAL ID is refused (retiredID).
+// reuses a dropped LOCAL ID is refused (retiredID), and so is a codec
+// document declaring another codec than the versions already at k (sameCodec).
 func (d Dir) publishAt(k DocKey, issuer, doc []core.Word, b []byte, h [32]byte) (VersionEntry, error) {
 	lg, err := d.readList(k, core.FormatID(doc))
 	if err != nil {
@@ -22,6 +23,9 @@ func (d Dir) publishAt(k DocKey, issuer, doc []core.Word, b []byte, h [32]byte) 
 	}
 	if e, ok := findHash(lg.Entries, h); ok {
 		return e, nil
+	}
+	if err := d.sameCodec(k, doc, lg, b); err != nil {
+		return VersionEntry{}, err
 	}
 	if err := d.retiredID(k, lg, b); err != nil {
 		return VersionEntry{}, err
