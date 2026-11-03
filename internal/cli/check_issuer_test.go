@@ -18,7 +18,7 @@ func TestCheckIssuer(t *testing.T) {
 	if _, err := checkIssuer(d, "bad"); err == nil {
 		t.Fatal("bad ID: want error")
 	}
-	if _, err := checkIssuer(d, "0x00010000"); err == nil {
+	if _, err := checkIssuer(d, "0x00010002"); err == nil {
 		t.Fatal("missing folder: want error")
 	}
 }

@@ -11,14 +11,14 @@ import (
 func TestFormatReference(t *testing.T) {
 	doc, _ := core.EncodeDocPointer([]core.Word{0, 0}, []core.Word{0, 0, 0, 0x806}, []core.Word{0, 2})
 	latest, _ := core.EncodeDocPointer([]core.Word{0, 0}, []core.Word{0, 0, 0, 0x806}, []core.Word{0, 0})
-	is, _ := core.EncodeIssuerPointer([]core.Word{1, 0})
+	is, _ := core.EncodeIssuerPointer([]core.Word{1, 2})
 	ext := core.Record{Kind: core.KindReference, Codec: core.CodecExternalIssuer2Word, Payload: []core.Word{0, 0, 1, 0, 0, 1, 2}}
 	cases := map[string]core.Record{
 		"#7":                              core.EncodeLocalRef(7),
 		"Q42":                             {Kind: core.KindReference, Codec: core.CodecWikidataQID, Payload: []core.Word{42}},
 		"0x00000000/0x0000000000000806@2": doc,
 		"0x00000000/0x0000000000000806":   latest,
-		"ISSUER-POINTER(0x00010000)":      is,
+		"ISSUER-POINTER(0x00010002)":      is,
 		"0x00000000/0x0001000000000001#2": ext,
 	}
 	for want, r := range cases {

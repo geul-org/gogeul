@@ -29,9 +29,9 @@ func TestBakerDir(t *testing.T) {
 	if err := b.dir("none/"); err == nil {
 		t.Fatal("missing source: want error")
 	}
-	os.Mkdir(filepath.Join(out, "0x0000"), 0o755)
-	os.Mkdir(filepath.Join(out, "0x0000", "index.json"), 0o755)
-	if err := b.dir("0x0000/"); err == nil {
+	os.Mkdir(filepath.Join(out, "0x00000000"), 0o755)
+	os.Mkdir(filepath.Join(out, "0x00000000", "index.json"), 0o755)
+	if err := b.dir("0x00000000/"); err == nil {
 		t.Fatal("blocked json: want error")
 	}
 }

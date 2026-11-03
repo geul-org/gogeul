@@ -26,7 +26,7 @@ func TestBakerDoc(t *testing.T) {
 	if err := b.doc("h/none.geul"); err == nil {
 		t.Fatal("missing: want error")
 	}
-	if err := b.doc("0x0000/x/0x00000001.geul"); err == nil {
+	if err := b.doc("0x00000000/x/0x00000001.geul"); err == nil {
 		t.Fatal("no output directory: want error")
 	}
 	os.WriteFile(filepath.Join(src, "h", "bad.geul"), []byte{1, 2}, 0o644)

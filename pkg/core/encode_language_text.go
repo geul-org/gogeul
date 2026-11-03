@@ -5,8 +5,8 @@ package core
 // EncodeLanguageText builds a UTF8-LANGUAGE-TEXT Value (value/text
 // UTF8-LANGUAGE-TEXT): its Payload is the language Value record lang
 // (LANGUAGE-SHORT-CODE or LANGUAGE-BCP47-CODE, TAG included) followed by text
-// packed two bytes per WORD, and the codec is 0x4B when text has an odd number
-// of bytes (the last low byte 0x00), else 0x4A. The caller passes a valid
+// packed two bytes per WORD, and the codec is the odd member when text has an odd number
+// of bytes (the last low byte 0x00), else the even one. The caller passes a valid
 // language record and UTF-8 text; schema checks both (V7).
 func EncodeLanguageText(lang Record, text []byte) Record {
 	l, _ := EncodeRecord(lang)

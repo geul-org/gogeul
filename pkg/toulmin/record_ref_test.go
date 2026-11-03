@@ -18,7 +18,7 @@ func TestRecordRef(t *testing.T) {
 	bad := []core.Record{
 		{Kind: core.KindValue},
 		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 1}},
-		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{1, 0}},
+		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{1, 2}},
 		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer4Word, Issuer: []core.Word{0, 1, 0, 0}},
 	}
 	for i, b := range bad {
