@@ -19,6 +19,9 @@ func TestReaderHash(t *testing.T) {
 	if _, err := r.Hash(ctx, "0x00000000", [32]byte{1}); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
+	if _, err := r.Hash(ctx, "0x00000002", h); !errors.Is(err, ErrNotFound) {
+		t.Fatal("another Issuer's hashes/:", err)
+	}
 	other, _ := r.find(ctx, r.m.pLayers, pKey(0, 0x860, 1), "")
 	r.m.hLayers = []layer{{blk: block{kind: blkHLeaf, keys: []string{string(h[:]), string([]byte{0xff, 31: 0})}, locs: []Loc{other, {Obj: 99}}}}}
 	if _, err := r.Hash(ctx, "0x00000000", h); !errors.Is(err, ErrCorrupt) || !errors.Is(err, ErrVerify) {

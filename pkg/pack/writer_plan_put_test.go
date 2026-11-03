@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=iteration dimension=1
-//ff:what TestWriterPlanPut — invalid paths, Get errors, unreadable previous records, unchanged (nil) and changed puts
+//ff:what TestWriterPlanPut — invalid paths, a Get error, unreadable previous records, unchanged (nil) and changed puts
 package pack
 
 import (
@@ -18,6 +18,9 @@ func TestWriterPlanPut(t *testing.T) {
 		if _, err := w.planPut(p); err == nil {
 			t.Fatal(len(p))
 		}
+	}
+	if _, err := w.planPut("issuers/0x00000002.geul"); err == nil {
+		t.Fatal("Get error: want error")
 	}
 	if pu, err := w.planPut("issuers/0x00000001.geul"); pu != nil || err != nil {
 		t.Fatal(pu, err)
