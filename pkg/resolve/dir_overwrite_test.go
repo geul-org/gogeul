@@ -17,7 +17,7 @@ func TestDirOverwrite(t *testing.T) {
 	k := sampleKey(1, 0).DocKey()
 	b := sampleDoc(1, "A dev")
 	before, _ := d.readList(k, k.Doc)
-	olds := d.oldCopies(before, k.Doc)
+	olds := d.oldCopies(before, k)
 	e, err := d.Overwrite(b)
 	if err != nil || e.Version != 1 {
 		t.Fatalf("%+v %v", e, err)
@@ -30,11 +30,11 @@ func TestDirOverwrite(t *testing.T) {
 		t.Fatalf("old copies %d", len(olds))
 	}
 	for _, h := range olds {
-		if _, err := os.Stat(d.file(hashPath(h))); !os.IsNotExist(err) {
+		if _, err := os.Stat(d.file(hashPath(geulIssuer, h))); !os.IsNotExist(err) {
 			t.Fatalf("old copy %x left: %v", h[:4], err)
 		}
 	}
-	if _, err := os.Stat(d.file(hashPath(e.Hash))); err != nil {
+	if _, err := os.Stat(d.file(hashPath(geulIssuer, e.Hash))); err != nil {
 		t.Fatalf("new copy: %v", err)
 	}
 	got, _ := d.Fetch(context.Background(), versionPath(k, 1))
@@ -55,7 +55,7 @@ func TestDirOverwrite(t *testing.T) {
 	if after, _ := d.Fetch(context.Background(), listPath(k)); string(after) != string(again) {
 		t.Fatal("rerun changed the list")
 	}
-	for _, bad := range [][]byte{{1}, core.PutWords(core.WrapDocument([]core.Word{0x180E})), core.PutWords(core.WrapDocument([]core.Word{0x180E, 0x180F}))} {
+	for _, bad := range [][]byte{{1}, core.PutWords(core.WrapDocument([]core.Word{0x1C30})), core.PutWords(core.WrapDocument([]core.Word{0x1C30, 0x1C40}))} {
 		if _, err := d.Overwrite(bad); err == nil {
 			t.Fatal("bad document: want error")
 		}

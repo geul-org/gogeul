@@ -7,5 +7,5 @@ import (
 )
 
 func sampleKey(id core.Word, v uint32) Key {
-	return Key{Issuer: []core.Word{0}, Doc: []core.Word{0xffff, 0, 0, id}, Version: v}
+	return Key{Issuer: []core.Word{0, 0}, Doc: []core.Word{0xffff, 0, 0, id}, Version: v}
 }

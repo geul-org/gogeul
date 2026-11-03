@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=iteration dimension=1
-//ff:what Resolver.CodecSpecs — the codec specs of the given targets, each found under the GEUL Issuer 0x0000 by its TAG through the source list
+//ff:what Resolver.CodecSpecs — the codec specs of the given targets, each found under the GEUL Issuer 0x00000000 by its TAG through the source list
 package resolve
 
 import (
@@ -17,7 +17,7 @@ import (
 func (r *Resolver) CodecSpecs(ctx context.Context, targets []core.Word) (codecspec.Spec, error) {
 	s := codecspec.Spec{}
 	for _, t := range targets {
-		n, err := r.Fetch(ctx, Key{Issuer: []core.Word{0}, Doc: codecDocID(t)})
+		n, err := r.Fetch(ctx, Key{Issuer: []core.Word{0, 0}, Doc: codecDocID(t)})
 		if errors.Is(err, ErrNotFound) {
 			continue
 		}

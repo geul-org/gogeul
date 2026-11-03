@@ -23,7 +23,7 @@ func (d Dir) Tombstone(issuer, doc []core.Word, v uint32, reason uint16) error {
 	if err != nil {
 		return err
 	}
-	for _, p := range []string{versionPath(k, v), hashPath(e.Hash)} {
+	for _, p := range []string{versionPath(k, v), hashPath(k.Issuer, e.Hash)} {
 		if err := d.store().Remove(p); err != nil && !errors.Is(err, fs.ErrNotExist) {
 			return err
 		}

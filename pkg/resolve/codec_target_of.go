@@ -1,20 +1,21 @@
-//ff:func feature=resolve type=decoder control=sequence
-//ff:what codecTargetOf — the target word a GEUL Issuer document ID stands for when it is a codec spec document ID
+//ff:func feature=resolve type=helper control=sequence
+//ff:what codecTargetOf — the target word of a GEUL direct codec ID (8 hex digits): high word 0, a TAG with L=0 that is not a slot marker
 package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// codecTargetOf reads a GEUL Issuer document ID in canonical hex and returns
-// its target word when it is a codec spec document ID (codecDocID): three
-// 0x0000 words, then a Kind·Codec word with LLLL = 0 that is not 0.
-func codecTargetOf(docHex string) (core.Word, bool) {
-	b, ok := parseHexID(docHex, 4)
+// codecTargetOf reads a codec ID in canonical hex (8 digits) and returns its
+// target word when it is a GEUL direct codec ID (codecDocID): high word 0, then
+// a TAG of prefix 000 with LLLL 0000 that is not a slot marker (0x0000,
+// 0x0010, 0x0020 have no codec document).
+func codecTargetOf(idHex string) (core.Word, bool) {
+	b, ok := parseHexID(idHex, 2)
 	if !ok {
 		return 0, false
 	}
 	ws, _ := core.ReadWords(b)
-	t := ws[3]
-	if ws[0]|ws[1]|ws[2] != 0 || t == 0 || t&0x0780 != 0 {
+	t := ws[1]
+	if ws[0] != 0 || t&0xE00F != 0 || core.IsSlotMarkerWord(t) {
 		return 0, false
 	}
 	return t, true

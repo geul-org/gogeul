@@ -26,19 +26,19 @@ func TestDirPublish(t *testing.T) {
 	if e, err := d.Publish(sampleDoc(1, "A v1")); err != nil || e.Version != 1 {
 		t.Fatalf("republish: %+v %v", e, err)
 	}
-	if b, err := d.Fetch(context.Background(), hashPath(lg.Entries[1].Hash)); err != nil || len(b) == 0 {
+	if b, err := d.Fetch(context.Background(), hashPath(geulIssuer, lg.Entries[1].Hash)); err != nil || len(b) == 0 {
 		t.Fatalf("hash path: %v", err)
 	}
-	if b, err := d.Fetch(context.Background(), hashPath(lg.Hash)); err != nil || len(b) == 0 {
+	if b, err := d.Fetch(context.Background(), hashPath(geulIssuer, lg.Hash)); err != nil || len(b) == 0 {
 		t.Fatalf("list kept under h/: %v", err)
 	}
 	if _, err := d.Publish([]byte{1}); err == nil {
 		t.Fatal("odd bytes: want error")
 	}
-	if _, err := d.Publish(core.PutWords(core.WrapDocument([]core.Word{0x180E}))); err == nil {
+	if _, err := d.Publish(core.PutWords(core.WrapDocument([]core.Word{0x1C30}))); err == nil {
 		t.Fatal("no END: want error")
 	}
-	if _, err := d.Publish(core.PutWords(core.WrapDocument([]core.Word{0x180E, 0x180F}))); err == nil {
+	if _, err := d.Publish(core.PutWords(core.WrapDocument([]core.Word{0x1C30, 0x1C40}))); err == nil {
 		t.Fatal("unnamed: want error")
 	}
 	if err := d.write(listPath(sampleKey(4, 0).DocKey()), listDocOf(4, VersionEntry{Version: math.MaxUint32})); err != nil {

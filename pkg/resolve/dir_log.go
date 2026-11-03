@@ -10,7 +10,7 @@ import (
 
 // Log reads the version list of document doc of issuer and returns its
 // versions in order, each with the RECORDED-AT of the list that first carried
-// its PUBLICATION (reached by PARENT through `h/`), and the list's
+// its PUBLICATION (reached by PARENT through `<Issuer>/hashes/`), and the list's
 // NEXT-LOCAL-ID. A document never published is ErrNotFound.
 func (d Dir) Log(issuer, doc []core.Word) (History, error) {
 	k := Key{Issuer: issuer, Doc: doc}.DocKey()
@@ -22,7 +22,7 @@ func (d Dir) Log(issuer, doc []core.Word) (History, error) {
 		return History{}, ErrNotFound
 	}
 	b, _ := d.Fetch(context.Background(), listPath(k))
-	ts := d.listTimes(b, len(lg.Records)+1)
+	ts := d.listTimes(k.Issuer, b, len(lg.Records)+1)
 	h := History{Next: lg.Next}
 	for j, r := range lg.Records {
 		p, err := core.DecodePublication(r)

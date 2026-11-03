@@ -9,7 +9,7 @@ import (
 
 func TestSiteReadDir(t *testing.T) {
 	root := packedRoot(t, formsTree(t), false, nil)
-	if err := (Dir{Root: root}).write("0x0009/0x0000000000000001/versions.geul", []byte("x")); err != nil {
+	if err := (Dir{Root: root}).write("0x00000009/docs/0x0000000000000001/versions.geul", []byte("x")); err != nil {
 		t.Fatal(err)
 	}
 	ents, err := localSite(root).ReadDir(".")
@@ -20,7 +20,7 @@ func TestSiteReadDir(t *testing.T) {
 	for _, e := range ents {
 		names = append(names, e.Name())
 	}
-	if !slices.Equal(names, []string{"0x0000", "0x0001", "0x0009", "h", "issuers.geul"}) {
+	if !slices.Equal(names, []string{"0x00000000", "0x00000002", "0x00000009", "issuers"}) {
 		t.Fatal(names)
 	}
 	s, _ := served(t, root)

@@ -21,7 +21,7 @@ func TestRemoteSite(t *testing.T) {
 		t.Fatal(err)
 	}
 	seen, _ := m.take()
-	if len(seen) < 3 || seen[0] != "0x0000/latest.txt " || !strings.HasPrefix(seen[1], "0x0000/m/") {
+	if len(seen) < 3 || seen[0] != "0x00000000/latest.txt " || !strings.HasPrefix(seen[1], "0x00000000/m/") {
 		t.Fatal(seen)
 	}
 	for _, r := range seen[2:] {
@@ -35,11 +35,11 @@ func TestRemoteSite(t *testing.T) {
 	if seen, _ = m.take(); len(seen) != 1 || !strings.Contains(seen[0], " bytes=") {
 		t.Fatal("a second document in the set is one range:", seen)
 	}
-	if _, err := s.Fetch(ctx, "0x0000/0xffff000000000009/versions.geul"); !errors.Is(err, ErrNotFound) {
+	if _, err := s.Fetch(ctx, "0x00000000/docs/0xffff000000000009/versions.geul"); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 	seen, _ = m.take()
-	if len(seen) != 2 || seen[0] != "latest.txt " || seen[1] != "0x0000/0xffff000000000009/versions.geul " {
+	if len(seen) != 2 || seen[0] != "latest.txt " || seen[1] != "0x00000000/docs/0xffff000000000009/versions.geul " {
 		t.Fatal("a miss asks for the top set once and the loose file:", seen)
 	}
 	s, m = served(t, tree.Root)
@@ -49,7 +49,7 @@ func TestRemoteSite(t *testing.T) {
 		}
 	}
 	seen, _ = m.take()
-	if len(seen) != 5 || seen[0] != "0x0000/latest.txt " || seen[1] != "latest.txt " {
+	if len(seen) != 5 || seen[0] != "0x00000000/latest.txt " || seen[1] != "latest.txt " {
 		t.Fatal(seen)
 	}
 	s, m = served(t, packedRoot(t, tree, false, nil))

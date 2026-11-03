@@ -9,17 +9,21 @@ import (
 )
 
 func TestDocOf(t *testing.T) {
-	ref := func(c uint8, p ...core.Word) core.Record {
-		return core.Record{Kind: core.KindReference, Codec: c << 3, Payload: p}
+	ref := func(c uint16, p ...core.Word) core.Record {
+		return core.Record{Kind: core.KindReference, Codec: c, Payload: p}
 	}
-	if d, ok := docOf(ref(core.RefDocPointer, 1, 0x20, 0xffff, 0, 0, 3, 0, 0)); !ok || d != (DocKey{Issuer: "0x00010020", Doc: "0xffff000000000003"}) {
+	if d, ok := docOf(ref(core.CodecDocPointer, 1, 0x20, 0xffff, 0, 0, 3, 0, 0)); !ok || d != (DocKey{Issuer: "0x00010020", Doc: "0xffff000000000003"}) {
 		t.Fatalf("got %+v %v", d, ok)
 	}
+	if d, ok := docOf(ref(core.CodecCodecPointer, 0, 0, 0, 0x0980, 0, 0)); !ok || d != (DocKey{Issuer: "0x00000000", Doc: "0x00000980"}) {
+		t.Fatalf("codec: %+v %v", d, ok)
+	}
 	for i, r := range []core.Record{
-		ref(core.RefDocPointer, 0, 0xffff, 0, 0, 3, 0, 1),
-		ref(core.RefExternalIssuer1Word, 0, 0xffff, 0, 0, 3, 0),
-		ref(core.RefIssuerPointer, 0),
-		{Kind: core.KindValue, Codec: core.RefDocPointer << 3, Payload: []core.Word{0, 0xffff, 0, 0, 3, 0, 0}},
+		ref(core.CodecDocPointer, 0, 0, 0xffff, 0, 0, 3, 0, 1),
+		ref(core.CodecExternalIssuer2Word, 0, 0, 0xffff, 0, 0, 3, 0),
+		ref(core.CodecIssuerPointer, 0, 0),
+		ref(core.CodecCodecPointer, 0, 0, 0, 0x0980, 0, 1),
+		{Kind: core.KindValue, Codec: core.CodecDocPointer, Payload: []core.Word{0, 0, 0xffff, 0, 0, 3, 0, 0}},
 	} {
 		if _, ok := docOf(r); ok {
 			t.Fatalf("bad %d: want false", i)

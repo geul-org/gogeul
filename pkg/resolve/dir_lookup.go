@@ -8,8 +8,8 @@ import (
 )
 
 // Lookup resolves s, `<Issuer>/<문서>[@<버전>]`, to a Key. The Issuer is a
-// canonical ID or a name of `issuers.geul` (GEUL-ORG Issuer 이름), the
-// document a canonical 4-word ID or a name of the Issuer's `documents.geul`
+// Issuer ID (8, 16 or 64 hex digits) or a name of the Issuer list (GEUL-ORG Issuer 이름), the
+// document a canonical 4-word ID or a name of the Issuer's document list
 // (GEUL-ORG 문서 이름), and the version decimal or 2-word hex; no version is 0
 // (newest).
 func (d Dir) Lookup(s string) (Key, error) {

@@ -7,11 +7,11 @@ import (
 )
 
 func TestMatchAny(t *testing.T) {
-	d := DocKey{Issuer: "0x0000", Doc: "0xffff000000000001"}
-	if !matchAny([]Pattern{{Issuer: "0x0001"}, {Issuer: "0x0000"}}, d) {
+	d := DocKey{Issuer: "0x00000000", Doc: "0xffff000000000001"}
+	if !matchAny([]Pattern{{Issuer: "0x00000002"}, {Issuer: "0x00000000"}}, d) {
 		t.Fatal("want match")
 	}
-	if matchAny([]Pattern{{Issuer: "0x0001"}}, d) || matchAny(nil, d) {
+	if matchAny([]Pattern{{Issuer: "0x00000002"}}, d) || matchAny(nil, d) {
 		t.Fatal("want no match")
 	}
 }

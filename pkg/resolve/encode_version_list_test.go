@@ -9,7 +9,7 @@ import (
 )
 
 func TestEncodeVersionList(t *testing.T) {
-	rec := core.EncodePublication(core.Publication{Codec: core.EdgePublication, EdgeID: 1, Issuer: []core.Word{0}, Doc: []core.Word{0, 0, 0, 1}, Version: 1})
+	rec := core.EncodePublication(core.Publication{Codec: core.EdgePublication, EdgeID: 1, Issuer: []core.Word{0, 0}, Doc: []core.Word{0, 0, 0, 1}, Version: 1})
 	first, _ := inspect.Decode(encodeVersionList([]core.Record{rec}, nil, 5, 0))
 	if len(first.Head) != 2 || first.Head[0].Name != "SPEC-VERSION" || first.Head[1].Name != "RECORDED-AT" || len(first.Body) != 1 {
 		t.Fatalf("first: %+v", first.Head)

@@ -9,14 +9,14 @@ import (
 )
 
 func TestResolverCodecSpecs(t *testing.T) {
-	const tag = core.Word(0x1018)
+	const tag = core.Word(0x0980)
 	published := Dir{Root: t.TempDir()}
 	if _, err := published.PublishCodec(codecDocOf(tag, 4, 2)); err != nil {
 		t.Fatal(err)
 	}
 	empty := Dir{Root: t.TempDir()}
 	r := Resolver{Config: Config{Proxy: []Entry{{Name: "data", Source: empty}, {Name: "geul.org", Source: published}}}}
-	s, err := r.CodecSpecs(t.Context(), []core.Word{tag, 0x1019})
+	s, err := r.CodecSpecs(t.Context(), []core.Word{tag, 0x0990})
 	if err != nil || s[tag] == nil || len(s) != 1 {
 		t.Fatalf("%+v %v", s, err)
 	}

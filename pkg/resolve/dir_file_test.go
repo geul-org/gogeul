@@ -8,7 +8,7 @@ import (
 )
 
 func TestDirFile(t *testing.T) {
-	if f := (Dir{Root: "/r"}).file("0x0000/0x0000000000000001/versions.geul"); f != filepath.FromSlash("/r/.well-known/geul/0x0000/0x0000000000000001/versions.geul") {
+	if f := (Dir{Root: "/r"}).file("0x00000000/docs/0x0000000000000001/versions.geul"); f != filepath.FromSlash("/r/.well-known/geul/0x00000000/docs/0x0000000000000001/versions.geul") {
 		t.Fatalf("got %q", f)
 	}
 }

@@ -43,11 +43,11 @@ func (d Dir) Overwrite(b []byte) (VersionEntry, error) {
 	}
 	rec := core.EncodePublication(core.Publication{Codec: core.EdgePublication, EdgeID: 1, Issuer: id.Issuer, Doc: id.Doc, Version: 1, Hash: h})
 	list := encodeVersionList([]core.Record{rec}, nil, time.Now().Unix(), next)
-	if err := d.writeAll(map[string][]byte{versionPath(k, 1): b, hashPath(h): b, hashPath(listHash(list)): list, listPath(k): list}); err != nil {
+	if err := d.writeAll(map[string][]byte{versionPath(k, 1): b, hashPath(k.Issuer, h): b, hashPath(k.Issuer, listHash(list)): list, listPath(k): list}); err != nil {
 		return VersionEntry{}, err
 	}
 	if err := d.removeOtherVersions(k); err != nil {
 		return VersionEntry{}, err
 	}
-	return VersionEntry{Version: 1, Hash: h}, d.removeCopies(d.oldCopies(old, k.Doc), map[[32]byte]bool{h: true, listHash(list): true})
+	return VersionEntry{Version: 1, Hash: h}, d.removeCopies(k.Issuer, d.oldCopies(old, k), map[[32]byte]bool{h: true, listHash(list): true})
 }

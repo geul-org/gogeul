@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=selection
-//ff:what Dir.namesOf — an Issuer's documents.geul split into HEAD and BODY with its name map; all empty when the index does not exist
+//ff:what Dir.namesOf — an Issuer's document list split into HEAD and BODY with its name map; all empty when the index does not exist
 package resolve
 
 import (

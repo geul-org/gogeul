@@ -14,9 +14,9 @@ func TestSiteOpened(t *testing.T) {
 	if got := s.opened(); len(got) != 0 {
 		t.Fatal(got)
 	}
-	s.set(ctx, "0x0000")
+	s.set(ctx, "0x00000000")
 	s.set(ctx, "")
-	if got := s.opened(); !slices.Equal(got, []string{"0x0000"}) {
+	if got := s.opened(); !slices.Equal(got, []string{"0x00000000"}) {
 		t.Fatal(got)
 	}
 }

@@ -11,7 +11,7 @@ import (
 
 func TestDirMark(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	issuer, doc := []core.Word{0}, []core.Word{0xffff, 0, 0, 7}
+	issuer, doc := []core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}
 	d.Publish(edgeDoc(7, "a"))
 	if _, err := d.mark(issuer, doc, 1, core.EdgeDeprecation, 0); err != nil {
 		t.Fatal(err)
@@ -26,12 +26,12 @@ func TestDirMark(t *testing.T) {
 	if _, err := d.mark(issuer, doc, 1, core.EdgeDeprecation, 0); err == nil {
 		t.Fatal("deprecated twice: want error")
 	}
-	os.Chmod(d.file("h"), 0o500)
-	defer os.Chmod(d.file("h"), 0o755)
+	os.Chmod(d.file("0x00000000/hashes"), 0o500)
+	defer os.Chmod(d.file("0x00000000/hashes"), 0o755)
 	if _, err := d.mark(issuer, doc, 1, core.EdgeTombstone, 1); err == nil {
 		t.Fatal("unwritable: want error")
 	}
-	os.Chmod(d.file("h"), 0o755)
+	os.Chmod(d.file("0x00000000/hashes"), 0o755)
 	d.mark(issuer, doc, 1, core.EdgeTombstone, 1)
 	if _, err := d.mark(issuer, doc, 1, core.EdgeTombstone, 1); err == nil {
 		t.Fatal("deleted: want error")

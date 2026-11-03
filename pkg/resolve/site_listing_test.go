@@ -21,7 +21,7 @@ func TestSiteListing(t *testing.T) {
 	if _, err := s.listing(); err == nil {
 		t.Fatal("a remote listing")
 	}
-	os.WriteFile(filepath.Join(root, ".well-known", "geul", "0x0000", "latest.txt"), []byte("x"), 0o644)
+	os.WriteFile(filepath.Join(root, ".well-known", "geul", "0x00000000", "latest.txt"), []byte("x"), 0o644)
 	if _, err := localSite(root).listing(); err == nil {
 		t.Fatal("a broken set")
 	}

@@ -36,9 +36,12 @@ func TestFetchAsOf(t *testing.T) {
 	}
 	bad := Dir{Root: t.TempDir()}
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	in := enc(func() core.Record { r, _ := core.EncodeDocID([]core.Word{0}, []core.Word{0xffff, 0, 0, 5}); return r }())
+	in := enc(func() core.Record {
+		r, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 5})
+		return r
+	}())
 	in = append(in, enc(core.Record{Kind: core.KindMeta, Codec: core.MetaEffectiveFrom, Payload: enc(core.EncodeUintValue(1))})...)
-	if _, err := bad.Publish(core.PutWords(core.WrapDocument(append(in, 0x180E, 0x180F)))); err != nil {
+	if _, err := bad.Publish(core.PutWords(core.WrapDocument(append(in, 0x1C30, 0x1C40)))); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := fetchAsOf(ctx, Entry{Source: bad}, k, day(150)); !errors.Is(err, ErrVerify) {

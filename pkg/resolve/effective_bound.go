@@ -9,7 +9,7 @@ import (
 
 // effectiveBound returns the instant of doc's Meta with the given codec
 // (core.MetaEffectiveFrom or core.MetaEffectiveUntil) and whether it is present.
-func effectiveBound(doc inspect.Document, codec uint8) (timeValue, bool, error) {
+func effectiveBound(doc inspect.Document, codec uint16) (timeValue, bool, error) {
 	for _, e := range doc.Head {
 		if e.Record.Kind != core.KindMeta || e.Record.Codec != codec {
 			continue

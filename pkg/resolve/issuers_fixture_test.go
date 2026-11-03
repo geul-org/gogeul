@@ -11,10 +11,10 @@ import (
 // issuersFixture writes issuers.geul and publishes edgeDoc(7) named "seven".
 func issuersFixture(t *testing.T) Dir {
 	d := Dir{Root: t.TempDir()}
-	subj, _ := core.EncodeIssuerPointer([]core.Word{0})
+	subj, _ := core.EncodeIssuerPointer([]core.Word{0, 0})
 	b, _ := namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: subj, Name: []byte("geul.org")})
-	d.write(issuersFile, b)
+	d.write(issuersPath(), b)
 	d.Publish(edgeDoc(7, "a"))
-	d.Name([]core.Word{0}, []core.Word{0xffff, 0, 0, 7}, "seven")
+	d.Name([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}, "seven")
 	return d
 }

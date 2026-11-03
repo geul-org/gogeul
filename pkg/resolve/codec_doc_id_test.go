@@ -10,7 +10,7 @@ import (
 )
 
 func TestCodecDocID(t *testing.T) {
-	if got := codecDocID(0x1234); !slices.Equal(got, []core.Word{0, 0, 0, 0x1234}) {
+	if got := codecDocID(0x03D0); !slices.Equal(got, []core.Word{0, 0x03D0}) {
 		t.Fatalf("%04X", got)
 	}
 }

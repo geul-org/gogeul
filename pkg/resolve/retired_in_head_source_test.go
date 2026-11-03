@@ -12,14 +12,14 @@ import (
 
 func TestRetiredInHeadSource(t *testing.T) {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	doc, _ := core.EncodeDocID([]core.Word{0}, []core.Word{0xffff, 0, 0, 7})
-	src := slices.Concat(enc(core.EncodeLocalRef(3)), enc(core.EncodeLocalRef(0)), enc(core.Record{Kind: core.KindReference, Codec: core.RefWikidataQID << 3, Payload: []core.Word{2013}}))
-	in := slices.Concat(enc(doc), enc(core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: src}), []core.Word{0x180E})
+	doc, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7})
+	src := slices.Concat(enc(core.EncodeLocalRef(3)), enc(core.EncodeLocalRef(0)), enc(core.Record{Kind: core.KindReference, Codec: core.CodecWikidataQID, Payload: []core.Word{2013}}))
+	in := slices.Concat(enc(doc), enc(core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: src}), []core.Word{0x1C30})
 	for i, txt := range []string{"a", "b"} {
 		p := slices.Concat(enc(core.EncodeLocalRef(uint64(i+1))), enc(core.EncodeLocalRef(uint64(i+1))), enc(core.EncodeBytesValue(core.CodecUTF8TextEven, []byte(txt))))
 		in = append(in, enc(core.Record{Kind: core.KindEdge, Codec: core.EdgeBind, Payload: p})...)
 	}
-	next := core.PutWords(core.WrapDocument(append(in, 0x180F)))
+	next := core.PutWords(core.WrapDocument(append(in, 0x1C40)))
 	body := edgeDoc(7, "a", "b")
 	nd, err := inspect.Decode(next)
 	if err != nil || len(nd.Head) == 0 || !slices.Contains(inspect.LocalIDs(nd), 0) {

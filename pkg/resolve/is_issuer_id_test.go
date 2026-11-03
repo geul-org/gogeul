@@ -9,7 +9,7 @@ import (
 
 func TestIsIssuerID(t *testing.T) {
 	for s, want := range map[string]bool{
-		"0x0001":                       true,
+		"0x00000002":                   true,
 		"0x00000001":                   true,
 		"0x0000000000000001":           true,
 		"0x" + strings.Repeat("a", 64): true,

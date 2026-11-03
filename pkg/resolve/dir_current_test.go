@@ -13,7 +13,7 @@ import (
 
 func TestDirCurrent(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	issuer, doc := []core.Word{0}, []core.Word{0xffff, 0, 0, 7}
+	issuer, doc := []core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}
 	if b, n, err := d.Current(issuer, doc); b != nil || n != 0 || err != nil {
 		t.Fatalf("unpublished: %v %d %v", b, n, err)
 	}

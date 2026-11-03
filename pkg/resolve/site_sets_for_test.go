@@ -11,11 +11,11 @@ import (
 func TestSiteSetsFor(t *testing.T) {
 	s := localSite(packedRoot(t, formsTree(t), false, nil))
 	ctx := context.Background()
-	if got, err := s.setsFor(ctx, "0x0001/documents.geul"); err != nil || !slices.Equal(got, []string{"0x0001", ""}) {
+	if got, err := s.setsFor(ctx, "0x00000002/documents.geul"); err != nil || !slices.Equal(got, []string{"0x00000002", ""}) {
 		t.Fatal(got, err)
 	}
-	for _, p := range []string{issuersFile, "h/0x00.geul", "0x0001", "example.org/a"} {
-		if got, err := s.setsFor(ctx, p); err != nil || !slices.Equal(got, []string{"", "0x0000", "0x0001"}) {
+	for _, p := range []string{issuersPath(), "h/0x00.geul", "0x00000002", "example.org/a"} {
+		if got, err := s.setsFor(ctx, p); err != nil || !slices.Equal(got, []string{"", "0x00000000", "0x00000002"}) {
 			t.Fatal(p, got, err)
 		}
 	}

@@ -10,19 +10,19 @@ import (
 
 func TestDirNamesOf(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	if h, b, n, err := d.namesOf("0x0000/" + namesFile); err != nil || h != nil || b != nil || len(n) != 0 {
+	if h, b, n, err := d.namesOf(namesPath(geulIssuer)); err != nil || h != nil || b != nil || len(n) != 0 {
 		t.Fatalf("missing: %v", err)
 	}
 	for _, x := range [][]byte{{1}, {0, 5}} {
-		d.write("0x0000/"+namesFile, x)
-		if _, _, _, err := d.namesOf("0x0000/" + namesFile); err == nil {
+		d.write(namesPath(geulIssuer), x)
+		if _, _, _, err := d.namesOf(namesPath(geulIssuer)); err == nil {
 			t.Fatal("bad index: want error")
 		}
 	}
-	subj, _ := core.EncodeDocPointer([]core.Word{0}, []core.Word{0, 0, 0, 7}, []core.Word{0, 0})
+	subj, _ := core.EncodeDocPointer([]core.Word{0, 0}, []core.Word{0, 0, 0, 7}, []core.Word{0, 0})
 	b, _ := namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: subj, Name: []byte("seven")})
-	d.write("0x0000/"+namesFile, b)
-	if _, _, n, err := d.namesOf("0x0000/" + namesFile); err != nil || n["seven"].Doc != "0x0000000000000007" {
+	d.write(namesPath(geulIssuer), b)
+	if _, _, n, err := d.namesOf(namesPath(geulIssuer)); err != nil || n["seven"].Doc != "0x0000000000000007" {
 		t.Fatalf("%v %v", n, err)
 	}
 	if _, _, _, err := (Dir{Root: "/dev/null/x"}).namesOf("a"); err == nil {

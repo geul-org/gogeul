@@ -8,11 +8,11 @@ import (
 )
 
 func TestDeclareTarget(t *testing.T) {
-	d := core.EncodeDeclare(core.Declare{EdgeID: 1, Target: 0x1018})
-	if w, ok := declareTarget([]core.Record{core.EncodeUintValue(1), d}); !ok || w != 0x1018 {
+	d := core.EncodeDeclare(core.Declare{EdgeID: 1, Target: 0x0980})
+	if w, ok := declareTarget([]core.Record{core.EncodeUintValue(1), d}); !ok || w != 0x0980 {
 		t.Fatalf("got %04X %v", w, ok)
 	}
-	iss := core.EncodeDeclare(core.Declare{EdgeID: 2, Target: core.TargetWord(core.KindValue, core.CodecIssuer1Word), Issuer: []core.Word{1}, Format: 2})
+	iss := core.EncodeDeclare(core.Declare{EdgeID: 2, Target: core.TargetWord(core.KindValue, core.CodecValueIssuer2Word), Issuer: []core.Word{0, 2}, Format: 2})
 	for i, body := range [][]core.Record{nil, {d, d}, {iss}} {
 		if _, ok := declareTarget(body); ok {
 			t.Fatalf("bad %d: want false", i)

@@ -4,13 +4,13 @@ package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// listParent finds the PARENT Meta (0x30) in the HEAD of a version list and
+// listParent finds the PARENT Meta in the HEAD of a version list and
 // returns the previous list's content hash it holds (a SHA-256-DIGEST Value).
 // It is false when there is none or it does not read as one.
 func listParent(head []core.Record) ([32]byte, bool) {
 	var h [32]byte
 	for _, r := range head {
-		if r.Kind != core.KindMeta || r.Codec != 0x30 {
+		if r.Kind != core.KindMeta || r.Codec != core.MetaParent {
 			continue
 		}
 		v, n, err := core.DecodeRecord(r.Payload)

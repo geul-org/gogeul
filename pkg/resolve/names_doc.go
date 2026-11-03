@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=encoder control=iteration dimension=1
-//ff:what namesDoc — an Issuer's documents.geul with one more BIND: HEAD kept (SPEC-VERSION when new), BIND numbered after the highest Edge Id
+//ff:what namesDoc — an Issuer's document list with one more BIND: HEAD kept (SPEC-VERSION when new), BIND numbered after the highest Edge Id
 package resolve
 
 import (
@@ -26,10 +26,10 @@ func namesDoc(head, body []core.Record, b core.Bind) ([]byte, error) {
 		ws, _ := core.EncodeRecord(r)
 		in = append(in, ws...)
 	}
-	in = append(in, 0x180E)
+	in = append(in, core.TargetWord(core.KindMeta, core.MetaBody))
 	for _, r := range append(body, rec) {
 		ws, _ := core.EncodeRecord(r)
 		in = append(in, ws...)
 	}
-	return core.PutWords(core.WrapDocument(append(in, 0x180F))), nil
+	return core.PutWords(core.WrapDocument(append(in, core.TargetWord(core.KindMeta, core.MetaEnd)))), nil
 }

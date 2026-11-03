@@ -11,7 +11,7 @@ import (
 
 func TestDirDeprecate(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	issuer, doc := []core.Word{0}, []core.Word{0xffff, 0, 0, 7}
+	issuer, doc := []core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}
 	v1, v2 := edgeDoc(7, "a"), edgeDoc(7, "b")
 	d.Publish(v1)
 	d.Publish(v2)

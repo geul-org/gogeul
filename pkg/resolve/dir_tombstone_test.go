@@ -12,7 +12,7 @@ import (
 
 func TestDirTombstone(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	issuer, doc := []core.Word{0}, []core.Word{0xffff, 0, 0, 7}
+	issuer, doc := []core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}
 	k := sampleKeyOf(7)
 	v1, v2 := edgeDoc(7, "a"), edgeDoc(7, "a", "b")
 	e1, _ := d.Publish(v1)
@@ -26,7 +26,7 @@ func TestDirTombstone(t *testing.T) {
 	if err := d.Tombstone(issuer, doc, 1, 1); err != nil {
 		t.Fatal(err)
 	}
-	for _, p := range []string{versionPath(k, 1), hashPath(e1.Hash)} {
+	for _, p := range []string{versionPath(k, 1), hashPath(geulIssuer, e1.Hash)} {
 		if _, err := os.Stat(d.file(p)); !os.IsNotExist(err) {
 			t.Fatalf("%s kept", p)
 		}

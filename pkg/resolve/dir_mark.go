@@ -13,7 +13,7 @@ import (
 // version v of document doc to its version list, as a new list whose PARENT is
 // the old one (edge/PUBLICATION). The version must be published and not
 // deleted; deprecating twice is refused. It returns the old entry.
-func (d Dir) mark(issuer, doc []core.Word, v uint32, codec uint8, reason uint16) (VersionEntry, error) {
+func (d Dir) mark(issuer, doc []core.Word, v uint32, codec uint16, reason uint16) (VersionEntry, error) {
 	k := Key{Issuer: issuer, Doc: doc}.DocKey()
 	lg, err := d.readList(k, k.Doc)
 	if err != nil {
@@ -30,5 +30,5 @@ func (d Dir) mark(issuer, doc []core.Word, v uint32, codec uint8, reason uint16)
 	}
 	rec := core.EncodePublication(core.Publication{Codec: codec, EdgeID: uint64(len(lg.Records)) + 1, Issuer: issuer, Doc: doc, Version: v, Reason: reason})
 	list := encodeVersionList(append(lg.Records, rec), &lg.Hash, time.Now().Unix(), lg.Next)
-	return e, d.writeAll(map[string][]byte{hashPath(listHash(list)): list, listPath(k): list})
+	return e, d.writeAll(map[string][]byte{hashPath(k.Issuer, listHash(list)): list, listPath(k): list})
 }

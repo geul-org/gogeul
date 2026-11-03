@@ -13,11 +13,11 @@ import (
 // list's NEXT-LOCAL-ID on.
 func edgeDoc(id core.Word, texts ...string) []byte {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	doc, _ := core.EncodeDocID([]core.Word{0}, []core.Word{0xffff, 0, 0, id})
-	in := append(enc(doc), 0x180E)
+	doc, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, id})
+	in := append(enc(doc), 0x1C30)
 	for i, s := range texts {
 		p := slices.Concat(enc(core.EncodeLocalRef(uint64(i+1))), enc(core.EncodeLocalRef(uint64(i+1))), enc(core.EncodeBytesValue(core.CodecUTF8TextEven, []byte(s))))
 		in = append(in, enc(core.Record{Kind: core.KindEdge, Codec: core.EdgeBind, Payload: p})...)
 	}
-	return core.PutWords(core.WrapDocument(append(in, 0x180F)))
+	return core.PutWords(core.WrapDocument(append(in, 0x1C40)))
 }

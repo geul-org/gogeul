@@ -11,7 +11,7 @@ import (
 
 func TestDirLog(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	issuer, doc := []core.Word{0}, []core.Word{0xffff, 0, 0, 7}
+	issuer, doc := []core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}
 	if _, err := d.Log(issuer, doc); !errors.Is(err, ErrNotFound) {
 		t.Fatalf("unpublished: %v", err)
 	}

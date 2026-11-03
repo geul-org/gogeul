@@ -8,10 +8,10 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// recordedAt reads the RECORDED-AT Meta (0x25) of head.
+// recordedAt reads the RECORDED-AT Meta of head.
 func recordedAt(head []core.Record) time.Time {
 	for _, r := range head {
-		if r.Kind != core.KindMeta || r.Codec != 0x25 {
+		if r.Kind != core.KindMeta || r.Codec != core.MetaRecordedAt {
 			continue
 		}
 		tv, _ := metaTime(r)

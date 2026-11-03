@@ -13,15 +13,15 @@ func encodeVersionList(records []core.Record, parent *[32]byte, at int64, next u
 	in := enc(core.EncodeSpecVersion(core.SpecVersion))
 	if parent != nil {
 		h, _ := core.ReadWords(parent[:])
-		in = append(in, enc(core.Record{Kind: core.KindMeta, Codec: 0x30, Payload: enc(core.Record{Kind: core.KindValue, Codec: core.CodecSHA256Digest, Payload: h})})...)
+		in = append(in, enc(core.Record{Kind: core.KindMeta, Codec: core.MetaParent, Payload: enc(core.Record{Kind: core.KindValue, Codec: core.CodecSHA256Digest, Payload: h})})...)
 	}
-	in = append(in, enc(core.Record{Kind: core.KindMeta, Codec: 0x25, Payload: enc(core.EncodePosixSeconds(at))})...)
+	in = append(in, enc(core.Record{Kind: core.KindMeta, Codec: core.MetaRecordedAt, Payload: enc(core.EncodePosixSeconds(at))})...)
 	if next > 0 {
 		in = append(in, enc(core.EncodeNextLocalID(next))...)
 	}
-	in = append(in, 0x180E)
+	in = append(in, core.TargetWord(core.KindMeta, core.MetaBody))
 	for _, r := range records {
 		in = append(in, enc(r)...)
 	}
-	return core.PutWords(core.WrapDocument(append(in, 0x180F)))
+	return core.PutWords(core.WrapDocument(append(in, core.TargetWord(core.KindMeta, core.MetaEnd))))
 }

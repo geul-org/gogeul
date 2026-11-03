@@ -20,10 +20,10 @@ func TestEffectiveState(t *testing.T) {
 	if st, err := effectiveState(plain, day(0)); err != nil || st != stateInEffect {
 		t.Fatalf("no bounds: %v %v", st, err)
 	}
-	badMeta := func(c uint8) inspect.Document {
+	badMeta := func(c uint16) inspect.Document {
 		return inspect.Document{Head: []inspect.Entry{{Record: core.Record{Kind: core.KindMeta, Codec: c}}}}
 	}
-	for _, c := range []uint8{core.MetaEffectiveFrom, core.MetaEffectiveUntil} {
+	for _, c := range []uint16{core.MetaEffectiveFrom, core.MetaEffectiveUntil} {
 		if _, err := effectiveState(badMeta(c), day(0)); err == nil {
 			t.Fatalf("bad 0x%02X: want error", c)
 		}

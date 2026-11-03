@@ -9,9 +9,9 @@ import (
 )
 
 // listTimes walks the version list b and its earlier lists by PARENT through
-// `h/`, newest first, for at most limit lists. It stops at a list that is
+// the Issuer's `hashes/`, newest first, for at most limit lists. It stops at a list that is
 // missing or does not split.
-func (d Dir) listTimes(b []byte, limit int) []listTime {
+func (d Dir) listTimes(issuer string, b []byte, limit int) []listTime {
 	var out []listTime
 	for i := 0; i < limit && b != nil; i++ {
 		ws, err := core.ReadWords(b)
@@ -27,7 +27,7 @@ func (d Dir) listTimes(b []byte, limit int) []listTime {
 		if !ok {
 			break
 		}
-		b, _ = d.Fetch(context.Background(), hashPath(parent))
+		b, _ = d.Fetch(context.Background(), hashPath(issuer, parent))
 	}
 	return out
 }

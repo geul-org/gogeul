@@ -13,7 +13,7 @@ import (
 
 func TestDirAt(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	issuer, doc := []core.Word{0}, []core.Word{0xffff, 0, 0, 7}
+	issuer, doc := []core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}
 	v1, v2 := edgeDoc(7, "a"), edgeDoc(7, "a", "b")
 	d.Publish(v1)
 	d.Publish(v2)

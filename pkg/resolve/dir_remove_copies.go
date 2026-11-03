@@ -7,14 +7,14 @@ import (
 	"io/fs"
 )
 
-// removeCopies deletes `h/<hash>.geul` for each hash in hs that is not in
+// removeCopies deletes `<issuer>/hashes/<hash>.geul` for each hash in hs that is not in
 // keep. A copy already gone is not an error.
-func (d Dir) removeCopies(hs [][32]byte, keep map[[32]byte]bool) error {
+func (d Dir) removeCopies(issuer string, hs [][32]byte, keep map[[32]byte]bool) error {
 	for _, h := range hs {
 		if keep[h] {
 			continue
 		}
-		if err := d.store().Remove(hashPath(h)); err != nil && !errors.Is(err, fs.ErrNotExist) {
+		if err := d.store().Remove(hashPath(issuer, h)); err != nil && !errors.Is(err, fs.ErrNotExist) {
 			return err
 		}
 	}

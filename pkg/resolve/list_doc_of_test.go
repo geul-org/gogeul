@@ -10,7 +10,7 @@ func listDocOf(id core.Word, entries ...VersionEntry) []byte {
 	doc := []core.Word{0xffff, 0, 0, id}
 	var recs []core.Record
 	add := func(p core.Publication) {
-		p.EdgeID, p.Issuer, p.Doc = uint64(len(recs)+1), []core.Word{0}, doc
+		p.EdgeID, p.Issuer, p.Doc = uint64(len(recs)+1), []core.Word{0, 0}, doc
 		recs = append(recs, core.EncodePublication(p))
 	}
 	for _, e := range entries {

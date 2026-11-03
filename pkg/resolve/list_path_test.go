@@ -7,7 +7,7 @@ import (
 )
 
 func TestListPath(t *testing.T) {
-	if p := listPath(sampleKey(1, 0).DocKey()); p != "0x0000/0xffff000000000001/versions.geul" {
+	if p := listPath(sampleKey(1, 0).DocKey()); p != "0x00000000/docs/0xffff000000000001/versions.geul" {
 		t.Fatalf("got %q", p)
 	}
 }

@@ -20,11 +20,11 @@ func TestResolverFetchOrder(t *testing.T) {
 	files := "file://" + tree.Root
 	empty := "file://" + t.TempDir()
 	root := packedRoot(t, tree, false, nil)
-	if err := os.WriteFile(filepath.Join(root, ".well-known", "geul", "0x0000", "latest.txt"), []byte("x"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(root, ".well-known", "geul", "0x00000000", "latest.txt"), []byte("x"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	broken := "file://" + root
-	k := Key{Issuer: []core.Word{0}, Doc: []core.Word{0xffff, 0, 0, 7}}
+	k := Key{Issuer: []core.Word{0, 0}, Doc: []core.Word{0xffff, 0, 0, 7}}
 	for proxy, source := range map[string]string{
 		empty + "," + good:                good,
 		good + "," + files:                good,

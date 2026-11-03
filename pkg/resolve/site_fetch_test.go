@@ -19,11 +19,11 @@ func TestSiteFetch(t *testing.T) {
 	empty := t.TempDir()
 	os.MkdirAll(filepath.Join(empty, ".well-known", "geul"), 0o755)
 	broken := packedRoot(t, tree, false, nil)
-	os.WriteFile(filepath.Join(broken, ".well-known", "geul", "0x0000", "latest.txt"), []byte("<html>not a set</html>"), 0o644)
+	os.WriteFile(filepath.Join(broken, ".well-known", "geul", "0x00000000", "latest.txt"), []byte("<html>not a set</html>"), 0o644)
 	lost := packedRoot(t, tree, true, nil)
 	os.WriteFile(filepath.Join(lost, ".well-known", "geul", "latest.txt"), []byte("3 97c284befd56c339bd9b2f40bb4990b3812375e89579130233afe05b6d0da9da\n"), 0o644)
 	other := packedRoot(t, tree, false, nil)
-	os.WriteFile(filepath.Join(other, ".well-known", "geul", "0x0001", "latest.txt"), []byte("junk"), 0o644)
+	os.WriteFile(filepath.Join(other, ".well-known", "geul", "0x00000002", "latest.txt"), []byte("junk"), 0o644)
 	sites := append(bothSites(t, empty), bothSites(t, filepath.Join(empty, "absent"))...)
 	bad := append(bothSites(t, broken), bothSites(t, lost)...)
 	good := append(bothSites(t, tree.Root), bothSites(t, other)...)
@@ -31,7 +31,7 @@ func TestSiteFetch(t *testing.T) {
 		if _, err := s.Fetch(ctx, addr); !errors.Is(err, ErrNotFound) {
 			t.Fatal(err)
 		}
-		if _, err := s.Fetch(ctx, issuersFile); !errors.Is(err, ErrNotFound) {
+		if _, err := s.Fetch(ctx, issuersPath()); !errors.Is(err, ErrNotFound) {
 			t.Fatal(err)
 		}
 	}
@@ -45,8 +45,8 @@ func TestSiteFetch(t *testing.T) {
 			t.Fatal("another Issuer's broken set does not touch this one:", err)
 		}
 	}
-	file := &site{dir: filepath.Join(broken, ".well-known", "geul", "0x0000", "latest.txt")}
-	if _, err := file.Fetch(ctx, issuersFile); err == nil || errors.Is(err, ErrNotFound) {
+	file := &site{dir: filepath.Join(broken, ".well-known", "geul", "0x00000000", "latest.txt")}
+	if _, err := file.Fetch(ctx, issuersPath()); err == nil || errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 }

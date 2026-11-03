@@ -4,11 +4,11 @@ package resolve
 
 import "context"
 
-// oldCopies collects the content hashes of the `h/` copies the version list
-// lg of document doc reaches: every version it names, the list itself and,
+// oldCopies collects the content hashes of the `<Issuer>/hashes/` copies the
+// version list lg of document k reaches: every version it names, the list itself and,
 // following PARENT, every earlier list and the versions those name. An
 // earlier list that is missing or does not decode ends the chain.
-func (d Dir) oldCopies(lg versionLog, doc string) [][32]byte {
+func (d Dir) oldCopies(lg versionLog, k DocKey) [][32]byte {
 	var out [][32]byte
 	seen := map[[32]byte]bool{}
 	for lg.Present && !seen[lg.Hash] {
@@ -20,11 +20,11 @@ func (d Dir) oldCopies(lg versionLog, doc string) [][32]byte {
 		if !lg.HasParent {
 			break
 		}
-		b, err := d.Fetch(context.Background(), hashPath(lg.Parent))
+		b, err := d.Fetch(context.Background(), hashPath(k.Issuer, lg.Parent))
 		if err != nil {
 			break
 		}
-		if lg, err = decodeVersionList(b, doc); err != nil {
+		if lg, err = decodeVersionList(b, k.Doc); err != nil {
 			break
 		}
 	}

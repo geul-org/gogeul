@@ -17,17 +17,17 @@ func TestSiteFetchMixed(t *testing.T) {
 	ctx := context.Background()
 	tree := formsTree(t)
 	seven := versionPath(sampleKeyOf(7), 1)
-	other := "0x0001/0x0000000000000005"
-	sum := func(p string) string {
+	other := "0x00000002/docs/0x0000000000000005"
+	sum := func(is, p string) string {
 		b, err := tree.Fetch(ctx, p)
 		if err != nil {
 			t.Fatal(p, err)
 		}
 		ws, _ := core.ReadWords(b)
 		h, _ := core.ContentHash(ws)
-		return hashPath(h)
+		return hashPath(is, h)
 	}
-	paths := []string{issuersFile, seven, listPath(sampleKeyOf(7)), other + "/versions.geul", other + "/0x00000001.geul", sum(seven), sum(other + "/0x00000001.geul")}
+	paths := []string{issuersPath(), seven, listPath(sampleKeyOf(7)), other + "/versions.geul", other + "/0x00000001.geul", sum(geulIssuer, seven), sum("0x00000002", other+"/0x00000001.geul")}
 	copyOut := func(root, p string) {
 		b, err := tree.Fetch(ctx, p)
 		if err != nil {
@@ -40,12 +40,12 @@ func TestSiteFetchMixed(t *testing.T) {
 	// 0x0000 as a set, 0x0001 as files: the one set is rebuilt without 0x0001.
 	mixed := packedRoot(t, tree, false, nil)
 	wk := Dir{Root: mixed}.file("")
-	if err := os.RemoveAll(filepath.Join(wk, "0x0001")); err != nil {
+	if err := os.RemoveAll(filepath.Join(wk, "0x00000002")); err != nil {
 		t.Fatal(err)
 	}
 	copyOut(mixed, other+"/versions.geul")
 	copyOut(mixed, other+"/0x00000001.geul")
-	copyOut(mixed, sum(other+"/0x00000001.geul"))
+	copyOut(mixed, sum("0x00000002", other+"/0x00000001.geul"))
 	remote, meter := served(t, mixed)
 	a, err := pack.OpenDir(ctx, wk, pack.BuildOptions{})
 	if err != nil {
@@ -75,12 +75,12 @@ func TestSiteFetchMixed(t *testing.T) {
 	// A top set beside an Issuer of files.
 	top := packedRoot(t, tree, true, nil)
 	copyOut(top, listPath(sampleKeyOf(7)))
-	if err := (Dir{Root: top}).write("0x0002/0x0000000000000001/versions.geul", []byte("x")); err != nil {
+	if err := (Dir{Root: top}).write("0x00000003/docs/0x0000000000000001/versions.geul", []byte("x")); err != nil {
 		t.Fatal(err)
 	}
 	remote, _ = served(t, top)
 	for name, s := range map[string]Source{"file://": localSite(top), "https": remote} {
-		if b, err := s.Fetch(ctx, "0x0002/0x0000000000000001/versions.geul"); err != nil || string(b) != "x" {
+		if b, err := s.Fetch(ctx, "0x00000003/docs/0x0000000000000001/versions.geul"); err != nil || string(b) != "x" {
 			t.Fatalf("%s: %q %v", name, b, err)
 		}
 	}

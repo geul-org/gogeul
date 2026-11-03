@@ -9,7 +9,7 @@ import (
 )
 
 func TestNamesDoc(t *testing.T) {
-	subj, _ := core.EncodeDocPointer([]core.Word{0}, []core.Word{0, 0, 0, 7}, []core.Word{0, 0})
+	subj, _ := core.EncodeDocPointer([]core.Word{0, 0}, []core.Word{0, 0, 0, 7}, []core.Word{0, 0})
 	b, err := namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: subj, Name: []byte("a")})
 	if err != nil {
 		t.Fatal(err)
@@ -23,7 +23,7 @@ func TestNamesDoc(t *testing.T) {
 	if len(doc.Head) != 1 || len(doc2.Body) != 2 || last.EdgeID != 2 {
 		t.Fatalf("head %d body %d id %d", len(doc.Head), len(doc2.Body), last.EdgeID)
 	}
-	if _, err := namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: core.Record{Kind: core.KindEdge, Codec: 0x80}}); err == nil {
+	if _, err := namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: core.Record{Kind: core.KindEdge, Codec: 0x140}}); err == nil {
 		t.Fatal("bad subject: want error")
 	}
 }

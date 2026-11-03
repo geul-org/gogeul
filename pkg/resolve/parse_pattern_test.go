@@ -18,7 +18,7 @@ func TestParsePattern(t *testing.T) {
 			t.Fatalf("%q: %+v %v", s, p, err)
 		}
 	}
-	for _, s := range []string{"0x123", "0x00001234/0xab", "0x00001234/0x00000000000000AB"} {
+	for _, s := range []string{"0x123", "0x0001", "0x00001234/0xab", "0x00001234/0x00000000000000AB"} {
 		if _, err := parsePattern(s); err == nil {
 			t.Fatalf("%q: want error", s)
 		}

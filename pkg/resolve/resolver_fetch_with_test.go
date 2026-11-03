@@ -33,7 +33,7 @@ func TestResolverFetchWith(t *testing.T) {
 	}
 	pub := tree
 	pub.Public = true
-	r := &Resolver{Config: Config{Proxy: []Entry{pub}, Private: []Pattern{{Issuer: "0x0000"}}}}
+	r := &Resolver{Config: Config{Proxy: []Entry{pub}, Private: []Pattern{{Issuer: "0x00000000"}}}}
 	if _, err := r.fetchWith(ctx, k, fetchFrom); !errors.Is(err, ErrNotFound) {
 		t.Fatalf("private: %v", err)
 	}

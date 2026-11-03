@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=iteration dimension=1
-//ff:what Dir.Issuers — the Issuers an archive holds documents of, with their names from issuers.geul
+//ff:what Dir.Issuers — the Issuers an archive holds documents of, with their names from the Issuer list
 package resolve
 
 import (
@@ -8,13 +8,13 @@ import (
 )
 
 // Issuers lists the Issuer directories under `.well-known/geul/` (canonical
-// IDs only) in ID order, each with the names `issuers.geul` binds to it.
+// IDs only) in ID order, each with the names the Issuer list (`issuers/`) binds to it.
 func (d Dir) Issuers() ([]Named, error) {
 	ents, err := d.store().ReadDir(".")
 	if err != nil {
 		return nil, err
 	}
-	b, _ := d.Fetch(context.Background(), issuersFile)
+	b, _ := d.Fetch(context.Background(), issuersPath())
 	names, _ := ParseIssuerNames(b)
 	var out []Named
 	for _, e := range ents {

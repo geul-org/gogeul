@@ -11,16 +11,16 @@ import (
 
 func TestDirIssuerOfName(t *testing.T) {
 	d := issuersFixture(t)
-	if got, err := d.issuerOfName("0x00010000"); err != nil || !slices.Equal(got, []core.Word{1, 0}) {
+	if got, err := d.issuerOfName("0x00000001"); err != nil || !slices.Equal(got, []core.Word{0, 1}) {
 		t.Fatalf("id: %v", err)
 	}
-	if got, err := d.issuerOfName("geul.org"); err != nil || !slices.Equal(got, []core.Word{0}) {
+	if got, err := d.issuerOfName("geul.org"); err != nil || !slices.Equal(got, []core.Word{0, 0}) {
 		t.Fatalf("name: %v", err)
 	}
 	if _, err := d.issuerOfName("nobody"); err == nil {
 		t.Fatal("unknown: want error")
 	}
-	d.write(issuersFile, []byte{1})
+	d.write(issuersPath(), []byte{1})
 	if _, err := d.issuerOfName("geul.org"); err == nil {
 		t.Fatal("broken index: want error")
 	}

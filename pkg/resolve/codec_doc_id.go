@@ -1,13 +1,12 @@
 //ff:func feature=resolve type=helper control=sequence
-//ff:what codecDocID — the GEUL Issuer document ID of a codec spec document: the target word widened to 4 words
+//ff:what codecDocID — the 2-word codec ID of a GEUL direct code: its target word (TAG, L=0) as 32 bits
 package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// codecDocID returns the 4-word document ID a codec spec document has under
-// the GEUL Issuer 0x0000: the Kind·Codec target word with three 0x0000 words
-// before it (TAG 0x1234 → 0x0000000000001234). No target word is 0, since the
-// Reference codec 0000 is reserved.
+// codecDocID returns the codec ID of the direct code in target under the GEUL
+// Issuer 0x00000000 (§3.13 D24): the TAG with L=0 as 32 bits, so `0x03DL`
+// is `0x000003d0`. The Kind is part of the TAG, so codec IDs do not collide.
 func codecDocID(target core.Word) []core.Word {
-	return []core.Word{0, 0, 0, target}
+	return []core.Word{0, target}
 }

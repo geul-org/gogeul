@@ -9,11 +9,12 @@ import (
 
 func TestCodecKey(t *testing.T) {
 	for want, w := range map[string]core.Word{
-		"0x0000/0x0000000000000040": core.TargetWord(core.KindReference, core.RefExternalPointer1Word<<3),
-		"0x0000/0x0000000000000008": core.TargetWord(core.KindReference, core.CodecLocalIdentified),
-		"0x0000/0x0000000000001018": core.TargetWord(core.KindEdge, core.EdgePublication),
-		"0x0000/0x0000000000000822": core.TargetWord(core.KindValue, core.CodecPosixSeconds),
-		"0x0000/0x0000000000001830": core.TargetWord(core.KindMeta, 0x30),
+		"0x00000000/0x000001e0": core.TargetWord(core.KindReference, core.CodecExternalPointer1Word),
+		"0x00000000/0x00000050": core.TargetWord(core.KindReference, core.CodecLocal),
+		"0x00000000/0x00000980": core.TargetWord(core.KindEdge, core.EdgePublication),
+		"0x00000000/0x000004c0": core.TargetWord(core.KindValue, core.CodecPosixSeconds),
+		"0x00000000/0x00001d10": core.TargetWord(core.KindMeta, core.MetaParent),
+		"0x00000000/0x000003d0": core.TargetWord(core.KindReference, core.CodecRefIssuer2Word),
 	} {
 		if k := codecKey(w); k.Issuer+"/"+k.Doc != want {
 			t.Fatalf("%04X: %+v", w, k)

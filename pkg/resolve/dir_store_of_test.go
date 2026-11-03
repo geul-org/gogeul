@@ -23,13 +23,13 @@ func TestDirStoreOf(t *testing.T) {
 	} else if _, ok := o.stored.(mapStore); !ok {
 		t.Fatal("the stored side")
 	}
-	if err := d.write("0x0001/a.geul", []byte("x")); err != nil {
+	if err := d.write("0x00000002/a.geul", []byte("x")); err != nil {
 		t.Fatal(err)
 	}
-	if b, err := d.Fetch(context.Background(), "0x0001/a.geul"); err != nil || string(b) != "x" {
+	if b, err := d.Fetch(context.Background(), "0x00000002/a.geul"); err != nil || string(b) != "x" {
 		t.Fatal(err)
 	}
-	if err := d.removeCopies([][32]byte{{1}}, nil); err != nil {
+	if err := d.removeCopies(geulIssuer, [][32]byte{{1}}, nil); err != nil {
 		t.Fatal(err)
 	}
 }

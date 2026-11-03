@@ -10,7 +10,7 @@ import (
 
 func TestDirName(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	issuer := []core.Word{0}
+	issuer := []core.Word{0, 0}
 	a, b := []core.Word{0xffff, 0, 0, 7}, []core.Word{0xffff, 0, 0, 8}
 	if err := d.Name(issuer, a, "alpha"); err == nil {
 		t.Fatal("unpublished: want error")
@@ -32,7 +32,7 @@ func TestDirName(t *testing.T) {
 	if err := d.Name(issuer, b, "Bad Name"); err == nil {
 		t.Fatal("bad name: want error")
 	}
-	d.write("0x0000/"+namesFile, []byte{1})
+	d.write(namesPath(geulIssuer), []byte{1})
 	if err := d.Name(issuer, b, "beta"); err == nil {
 		t.Fatal("broken index: want error")
 	}

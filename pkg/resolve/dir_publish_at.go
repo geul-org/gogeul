@@ -36,7 +36,7 @@ func (d Dir) publishAt(k DocKey, issuer, doc []core.Word, b []byte, h [32]byte) 
 		parent = &lg.Hash
 	}
 	list := encodeVersionList(append(lg.Records, rec), parent, time.Now().Unix(), nextLocalID(lg.Next, b))
-	if err := d.writeAll(map[string][]byte{versionPath(k, v): b, hashPath(h): b, hashPath(listHash(list)): list, listPath(k): list}); err != nil {
+	if err := d.writeAll(map[string][]byte{versionPath(k, v): b, hashPath(k.Issuer, h): b, hashPath(k.Issuer, listHash(list)): list, listPath(k): list}); err != nil {
 		return VersionEntry{}, err
 	}
 	return VersionEntry{Version: v, Hash: h}, nil

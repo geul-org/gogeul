@@ -1,13 +1,11 @@
-//ff:func feature=resolve type=decoder control=sequence
-//ff:what isIssuerID — whether s is a canonical 1, 2, 4 or 16-word Issuer ID
+//ff:func feature=resolve type=helper control=sequence
+//ff:what isIssuerID — whether s is an Issuer ID written as 8, 16 or 64 hex digits (zero-padded forms included)
 package resolve
 
-// isIssuerID reports whether s is a canonical Issuer ID: 4, 8, 16 or 64 hex digits.
+// isIssuerID reports whether s is an Issuer ID as an address writes it: `0x`
+// and 8, 16 or 64 lowercase hex digits (2, 4 or 16 words). A shorter ID padded
+// with leading zeros to a wider form is the same Issuer (normalIssuer).
 func isIssuerID(s string) bool {
-	n := (len(s) - 2) / 4
-	if n != 1 && n != 2 && n != 4 && n != 16 {
-		return false
-	}
-	_, ok := parseHexID(s, n)
+	_, ok := normalIssuer(s)
 	return ok
 }

@@ -5,10 +5,10 @@ package resolve
 import "github.com/geul-org/gogeul/pkg/core"
 
 // docOf returns the document, as a DocKey in canonical hex, of a DOC-POINTER
-// Reference with version ID 0: a name or title binds the document, not one of
+// (or a codec's CODEC-POINTER) Reference with version ID 0: a name or title binds the document, not one of
 // its versions.
 func docOf(subj core.Record) (DocKey, bool) {
-	issuer, doc, ver, err := core.DecodeDocPointer(subj)
+	issuer, doc, ver, err := core.DecodeTargetPointer(subj)
 	if err != nil || ver[0]|ver[1] != 0 {
 		return DocKey{}, false
 	}

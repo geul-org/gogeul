@@ -10,13 +10,13 @@ import (
 
 func TestDirLookup(t *testing.T) {
 	d := issuersFixture(t)
-	for s, v := range map[string]uint32{"geul.org/seven": 0, "0x0000/0xffff000000000007@2": 2, "geul.org/seven@0x00000003": 3} {
+	for s, v := range map[string]uint32{"geul.org/seven": 0, "0x00000000/0xffff000000000007@2": 2, "0x0000000000000000/0xffff000000000007": 0, "geul.org/seven@0x00000003": 3} {
 		k, err := d.Lookup(s)
-		if err != nil || core.FormatID(k.Doc) != "0xffff000000000007" || core.FormatID(k.Issuer) != "0x0000" || k.Version != v {
+		if err != nil || core.FormatID(k.Doc) != "0xffff000000000007" || core.FormatID(k.Issuer) != "0x00000000" || k.Version != v {
 			t.Fatalf("%s: %+v %v", s, k, err)
 		}
 	}
-	for _, s := range []string{"seven", "geul.org/seven@x", "nobody/seven", "geul.org/nothing", "0x0000/0xFFFF000000000007"} {
+	for _, s := range []string{"seven", "geul.org/seven@x", "nobody/seven", "geul.org/nothing", "0x00000000/0xFFFF000000000007", "0x0000/0xffff000000000007"} {
 		if _, err := d.Lookup(s); err == nil {
 			t.Fatalf("%s: want error", s)
 		}

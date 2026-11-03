@@ -22,12 +22,12 @@ func TestFirstVersionList(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	h, _ := d.Log([]core.Word{0}, []core.Word{0xffff, 0, 0, 7})
+	h, _ := d.Log([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7})
 	got, err := FirstVersionList(b, h.Entries[0].At.Unix())
 	if err != nil || !bytes.Equal(got, want) {
 		t.Fatalf("list differs: %v", err)
 	}
-	noID := core.PutWords(core.WrapDocument([]core.Word{0x180E, 0x180F}))
+	noID := core.PutWords(core.WrapDocument([]core.Word{0x1C30, 0x1C40}))
 	for _, bad := range [][]byte{{1}, {0x12, 0x34}, noID} {
 		if _, err := FirstVersionList(bad, 0); err == nil {
 			t.Fatalf("%x: want error", bad)

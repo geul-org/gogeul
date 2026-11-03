@@ -7,7 +7,7 @@ import (
 )
 
 func TestKeyDocKey(t *testing.T) {
-	if d := sampleKey(3, 7).DocKey(); d != (DocKey{Issuer: "0x0000", Doc: "0xffff000000000003"}) {
+	if d := sampleKey(3, 7).DocKey(); d != (DocKey{Issuer: "0x00000000", Doc: "0xffff000000000003"}) {
 		t.Fatalf("got %+v", d)
 	}
 }

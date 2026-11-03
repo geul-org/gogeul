@@ -10,20 +10,20 @@ import (
 
 func TestDirCodecSpecs(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	d.PublishCodec(codecDocOf(0x1018, 4, 2))
-	d.PublishCodec(codecDocOf(0x101A, 4))
-	s, err := d.CodecSpecs([]core.Word{0x1018, 0x101C})
-	if err != nil || len(s) != 1 || len(s[0x1018]) != 2 {
+	d.PublishCodec(codecDocOf(0x0980, 4, 2))
+	d.PublishCodec(codecDocOf(0x09A0, 4))
+	s, err := d.CodecSpecs([]core.Word{0x0980, 0x101C})
+	if err != nil || len(s) != 1 || len(s[0x0980]) != 2 {
 		t.Fatalf("got %+v %v", s, err)
 	}
 	if s, err := d.CodecSpecs(nil); err != nil || len(s) != 0 {
 		t.Fatalf("no targets: %+v %v", s, err)
 	}
-	d.write(versionPath(codecKey(0x101A), 1), codecDocOf(0x101A, 9))
-	if _, err := d.CodecSpecs([]core.Word{0x1018}); err != nil {
+	d.write(versionPath(codecKey(0x09A0), 1), codecDocOf(0x09A0, 9))
+	if _, err := d.CodecSpecs([]core.Word{0x0980}); err != nil {
 		t.Fatal("another target's fault:", err)
 	}
-	if _, err := d.CodecSpecs([]core.Word{0x101A}); err == nil {
+	if _, err := d.CodecSpecs([]core.Word{0x09A0}); err == nil {
 		t.Fatal("tampered: want error")
 	}
 }

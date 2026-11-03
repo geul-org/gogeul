@@ -1,12 +1,14 @@
 //ff:func feature=pack type=helper control=iteration dimension=1
-//ff:what docIssuer — the Issuer of a document's DOC-ID (DOC-POINTER or CODEC-POINTER) in its HEAD; false when it has none
+//ff:what docIssuer — the Issuer a document belongs to: its DOC-ID's (DOC-POINTER or CODEC-POINTER), else a version list's first record's pointer; false when neither
 package pack
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// docIssuer reads the HEAD of the GEUL document b and returns the Issuer its
-// Meta DOC-ID names, a document's or a codec document's. A document without
-// DOC-ID or bytes that do not split give false.
+// docIssuer reads the GEUL document b and returns the Issuer it belongs to:
+// the one its Meta DOC-ID names (a document's or a codec document's), or for a
+// version list, which has no DOC-ID, the Issuer of its first record's pointer
+// (PUBLICATION, DEPRECATION or TOMBSTONE). Bytes that do not split, or a
+// document with neither, give false.
 func docIssuer(b []byte) ([]core.Word, bool) {
 	ws, err := core.ReadWords(b)
 	if err != nil {
@@ -17,12 +19,13 @@ func docIssuer(b []byte) ([]core.Word, bool) {
 		return nil, false
 	}
 	for _, r := range doc.Head {
-		if is, _, err := core.DecodeDocID(r); err == nil {
-			return is, true
-		}
-		if is, _, err := core.DecodeDocIDCodec(r); err == nil {
+		if is, ok := headIssuer(r); ok {
 			return is, true
 		}
 	}
-	return nil, false
+	if len(doc.Body) == 0 {
+		return nil, false
+	}
+	p, err := core.DecodePublication(doc.Body[0])
+	return p.Issuer, err == nil
 }

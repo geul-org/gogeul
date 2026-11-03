@@ -10,8 +10,8 @@ import (
 )
 
 func TestBindOrder(t *testing.T) {
-	doc, _ := core.EncodeDocPointer([]core.Word{0}, []core.Word{0, 0, 0, 7}, []core.Word{0, 0})
-	is, _ := core.EncodeIssuerPointer([]core.Word{0})
+	doc, _ := core.EncodeDocPointer([]core.Word{0, 0}, []core.Word{0, 0, 0, 7}, []core.Word{0, 0})
+	is, _ := core.EncodeIssuerPointer([]core.Word{0, 0})
 	b1, _ := core.EncodeBind(core.Bind{EdgeID: 1, Subject: doc, Name: []byte("b")})
 	b2, _ := core.EncodeBind(core.Bind{EdgeID: 2, Subject: is, Name: []byte("i")})
 	b3, _ := core.EncodeBind(core.Bind{EdgeID: 3, Subject: doc, Name: []byte("a")})

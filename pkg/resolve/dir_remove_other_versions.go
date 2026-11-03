@@ -13,7 +13,7 @@ import (
 // folder of document k except version 1 (Overwrite). The version list and
 // other files stay; a document with no folder has nothing to delete.
 func (d Dir) removeOtherVersions(k DocKey) error {
-	dir := k.Issuer + "/" + k.Doc
+	dir := docFolder(k)
 	ents, err := d.store().ReadDir(dir)
 	if errors.Is(err, fs.ErrNotExist) {
 		return nil

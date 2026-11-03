@@ -8,12 +8,12 @@ import (
 
 func TestDirCodecSpecOf(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	d.PublishCodec(codecDocOf(0x1018, 4, 2))
-	s, err := d.codecSpecOf(0x1018)
-	if err != nil || len(s[0x1018]) != 2 {
+	d.PublishCodec(codecDocOf(0x0980, 4, 2))
+	s, err := d.codecSpecOf(0x0980)
+	if err != nil || len(s[0x0980]) != 2 {
 		t.Fatal(s, err)
 	}
-	if _, err := d.codecSpecOf(0x101A); err == nil {
+	if _, err := d.codecSpecOf(0x09A0); err == nil {
 		t.Fatal("unpublished")
 	}
 }

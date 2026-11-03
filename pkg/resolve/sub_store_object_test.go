@@ -8,7 +8,7 @@ func TestSubStoreObject(t *testing.T) {
 	if got := (subStore{}).object("latest.txt"); got != "latest.txt" {
 		t.Fatal(got)
 	}
-	if got := (subStore{name: "0x0001"}).object("m/a.gpm"); got != "0x0001/m/a.gpm" {
+	if got := (subStore{name: "0x00000002"}).object("m/a.gpm"); got != "0x00000002/m/a.gpm" {
 		t.Fatal(got)
 	}
 }

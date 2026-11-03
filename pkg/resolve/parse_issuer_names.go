@@ -1,10 +1,10 @@
 //ff:func feature=resolve type=decoder control=iteration dimension=1
-//ff:what ParseIssuerNames — the name → Issuer map of an issuers.geul document (BIND records)
+//ff:what ParseIssuerNames — the name → Issuer map of the Issuer list (issuers/, BIND records)
 package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// ParseIssuerNames reads issuers.geul (GEUL-ORG Issuer 이름): every BIND whose
+// ParseIssuerNames reads the Issuer list (`issuers/`, the old issuers.geul; GEUL-ORG Issuer 이름): every BIND whose
 // Subject is ISSUER-POINTER(Issuer) maps its name to that Issuer in
 // canonical hex. Other records are ignored. A later BIND of the same name wins.
 func ParseIssuerNames(b []byte) (map[string]string, error) {

@@ -8,7 +8,8 @@ import (
 )
 
 // setsFor follows pack.Archive's read order: `<Issuer>/…` lives in that
-// Issuer's set or the top set; anything else (h/, issuers.geul) may be in any.
+// Issuer's set or the top set (its hashes/ included); anything else (issuers/)
+// may be in any.
 func (s *site) setsFor(ctx context.Context, path string) ([]string, error) {
 	first, _, nested := strings.Cut(path, "/")
 	if nested && isIssuerID(first) {

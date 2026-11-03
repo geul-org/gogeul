@@ -11,13 +11,20 @@ const (
 	geulExt = ".geul"
 	// listFile is a document's version list document (edge/PUBLICATION).
 	listFile = "versions.geul"
-	// namesFile is an Issuer's document name index (GEUL-ORG 문서 이름).
-	namesFile = "documents.geul"
-	// issuersFile is geul.org's Issuer name index (GEUL-ORG Issuer 이름).
-	issuersFile = "issuers.geul"
+	// latestFile is the reserved name of the newest version (공표 주소 latest.geul).
+	latestFile = "latest.geul"
+	// issuersDir holds geul.org's Issuer list (GEUL-ORG Issuer 이름), in place
+	// of the old issuers.geul.
+	issuersDir = "issuers"
+	// docsDir holds an Issuer's documents and its document list (in place of the
+	// old documents.geul); codecsDir its codec documents and codec list;
+	// hashesDir its documents by content hash (in place of the old h/).
+	docsDir   = "docs"
+	codecsDir = "codecs"
+	hashesDir = "hashes"
 	// geulIssuer is the GEUL Issuer, whose folder holds the paths outside every
 	// Issuer when an archive is kept as one set per Issuer (pack.Split).
-	geulIssuer = "0x0000"
+	geulIssuer = "0x00000000"
 	// setLatest, setManifests and setObjects are the entries of a pack set
 	// folder. They are storage, not published paths.
 	setLatest    = "latest.txt"

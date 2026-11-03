@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=sequence
-//ff:what site.allSets — the sets to search for a path without an Issuer: top, 0x0000, those already open, then the place's own Issuers
+//ff:what site.allSets — the sets to search for a path without an Issuer: top, 0x00000000, those already open, then the place's own Issuers
 package resolve
 
 import (
@@ -11,7 +11,7 @@ import (
 // allSets lists the top set, the GEUL Issuer's (which holds paths outside
 // every Issuer, pack.Split), the sets opened so far and the Issuers the place
 // shows. Only that last step costs anything: a folder lists them; a server
-// cannot, so the IDs `issuers.geul` binds stand in, and a set of an Issuer it
+// cannot, so the IDs the Issuer list binds stand in, and a set of an Issuer it
 // does not name is found once a `<Issuer>/…` read has opened it.
 func (s *site) allSets(ctx context.Context, path string) ([]string, error) {
 	more := s.opened()
@@ -22,8 +22,8 @@ func (s *site) allSets(ctx context.Context, path string) ([]string, error) {
 			return nil, err
 		}
 		more = append(more, ids...)
-	case path != issuersFile:
-		b, err := s.Fetch(ctx, issuersFile)
+	case path != issuersPath():
+		b, err := s.Fetch(ctx, issuersPath())
 		if err != nil && !errors.Is(err, ErrNotFound) {
 			return nil, err
 		}

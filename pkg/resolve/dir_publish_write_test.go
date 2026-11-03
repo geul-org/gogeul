@@ -13,7 +13,7 @@ func TestDirPublishWrite(t *testing.T) {
 	ws, _ := core.ReadWords(b)
 	h, _ := core.ContentHash(ws)
 	k := sampleKey(6, 0).DocKey()
-	for _, path := range []string{versionPath(k, 1), hashPath(h), listPath(k)} {
+	for _, path := range []string{versionPath(k, 1), hashPath(geulIssuer, h), listPath(k)} {
 		d := Dir{Root: t.TempDir()}
 		blockWrite(t, d, path)
 		if _, err := d.Publish(b); err == nil {

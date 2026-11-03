@@ -9,13 +9,13 @@ import (
 )
 
 func TestIssuerIDs(t *testing.T) {
-	b, err := formsTree(t).Fetch(context.Background(), issuersFile)
+	b, err := formsTree(t).Fetch(context.Background(), issuersPath())
 	if err != nil {
 		t.Fatal(err)
 	}
 	got := issuerIDs(b)
 	slices.Sort(got)
-	if !slices.Equal(got, []string{"0x0000", "0x0001"}) {
+	if !slices.Equal(got, []string{"0x00000000", "0x00000002"}) {
 		t.Fatal(got)
 	}
 	for _, junk := range [][]byte{nil, []byte("x")} {

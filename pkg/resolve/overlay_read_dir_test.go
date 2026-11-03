@@ -13,10 +13,10 @@ import (
 
 func TestOverlayReadDir(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	for _, n := range []string{"latest.txt", "m/x", "o/x", ".tmp-1", "0x0001/a", "0x0002/b", "only/c"} {
+	for _, n := range []string{"latest.txt", "m/x", "o/x", ".tmp-1", "0x00000002/a", "0x00000003/b", "only/c"} {
 		d.write(n, []byte("x"))
 	}
-	stored := mapStore{fstest.MapFS{"0x0001/z": {Data: []byte("y")}, "0x0000/z": {Data: []byte("y")}, "here/z": {Data: []byte("y")}}}
+	stored := mapStore{fstest.MapFS{"0x00000002/z": {Data: []byte("y")}, "0x00000000/z": {Data: []byte("y")}, "here/z": {Data: []byte("y")}}}
 	o := overlay{stored: stored, loose: dirStore{root: d.file("")}}
 	ents, err := o.ReadDir(".")
 	if err != nil {
@@ -26,7 +26,7 @@ func TestOverlayReadDir(t *testing.T) {
 	for _, e := range ents {
 		names = append(names, e.Name())
 	}
-	if !slices.Equal(names, []string{"0x0000", "0x0001", "0x0002", "here", "only"}) {
+	if !slices.Equal(names, []string{"0x00000000", "0x00000002", "0x00000003", "here", "only"}) {
 		t.Fatal(names)
 	}
 	for n, want := range map[string]string{"only": "c", "here": "z"} {

@@ -16,7 +16,7 @@ import (
 func TestDirSnapshotOf(t *testing.T) {
 	ctx := context.Background()
 	d := Dir{Root: t.TempDir()}
-	issuer, doc := []core.Word{0}, []core.Word{0xffff, 0, 0, 8}
+	issuer, doc := []core.Word{0, 0}, []core.Word{0xffff, 0, 0, 8}
 	k := Key{Issuer: issuer, Doc: doc}.DocKey()
 	v1, v2 := edgeDoc(8, "a"), edgeDoc(8, "a", "b")
 	e1, _ := d.Publish(v1)
@@ -45,7 +45,7 @@ func TestDirSnapshotOf(t *testing.T) {
 	}
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
 	id, _ := core.EncodeDocID(issuer, doc)
-	bad := slices.Concat(enc(id), enc(core.EncodeDeltaBase(1)), enc(core.EncodeDeltaRemove([]uint64{9})), []core.Word{0x180E, 0x180F})
+	bad := slices.Concat(enc(id), enc(core.EncodeDeltaBase(1)), enc(core.EncodeDeltaRemove([]uint64{9})), []core.Word{0x1C30, 0x1C40})
 	os.WriteFile(d.file(versionPath(k, 2)), core.PutWords(core.WrapDocument(bad)), 0o644)
 	if _, err := d.snapshotOf(ctx, k, es, e2, 0); err == nil {
 		t.Fatal("diff removing a missing Edge: want error")

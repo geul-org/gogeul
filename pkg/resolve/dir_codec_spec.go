@@ -4,15 +4,14 @@ package resolve
 
 import (
 	"github.com/geul-org/gogeul/pkg/codecspec"
-	"github.com/geul-org/gogeul/pkg/core"
 )
 
 // CodecSpec gathers the specs of the latest version of every codec spec
-// document, the GEUL Issuer documents `0x0000/<codecDocID>/` that have a
-// version list (GEUL-ORG 직접 코드 코덱북), in ID order. Other documents of
-// the Issuer are skipped. The first error stops it.
+// document, the GEUL Issuer's codecs `0x00000000/codecs/<codecDocID>/` that
+// have a version list (GEUL-ORG 직접 코드 코덱북), in ID order. Other codecs
+// of the Issuer are skipped. The first error stops it.
 func (d Dir) CodecSpec() (codecspec.Spec, error) {
-	is := core.FormatID([]core.Word{0})
+	is := geulIssuer + "/" + codecsDir
 	ents, _ := d.store().ReadDir(is)
 	s := codecspec.Spec{}
 	for _, e := range ents {
