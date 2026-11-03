@@ -1,10 +1,10 @@
 //ff:func feature=pack type=writer control=iteration dimension=1
-//ff:what streamDictOf — the dictionary a Stream trains from its samples (even train, odd test), nil when the codec takes none, the samples are too few or it saves nothing
+//ff:what streamDictOf — the dictionary a Stream trains from its samples (SHA-256 order: even train, odd test), nil when the codec takes none, the samples are too few or it saves nothing
 package pack
 
 // streamDictOf trains a dictionary (ID FirstDictID; a stream starts a set)
-// on the even samples and keeps it only when it makes the odd samples
-// smaller in total than without it. Stored, Zstd with DictSize < 0 and fewer
+// on the even samples in SHA-256 order (samplesBySum, as Write samples) and
+// keeps it only when it makes the odd ones smaller in total than without it. Stored, Zstd with DictSize < 0 and fewer
 // than dictMinSamples samples give none. The result depends only on the
 // samples and the codec settings.
 func streamDictOf(o StreamOptions) *Dict {
@@ -13,7 +13,7 @@ func streamDictOf(o StreamOptions) *Dict {
 		return nil
 	}
 	var train, test [][]byte
-	for i, b := range o.Samples {
+	for i, b := range samplesBySum(o.Samples) {
 		if i%2 == 0 {
 			train = append(train, b)
 		} else {

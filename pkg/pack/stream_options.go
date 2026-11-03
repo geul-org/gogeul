@@ -6,8 +6,10 @@ package pack
 // codec (nil is Zstd at its defaults) and the clock, as for Write; its
 // Verify, Check and Fresh are not used. Issuers lists the Issuers (canonical
 // hex) of the P records, in ISSUERS order. Samples are records a dictionary
-// is trained on (even positions) and tried on (odd positions) before the
-// first record, as Write samples a batch; fewer than 32 train none.
+// is trained on and tried on before the first record: in SHA-256 order of
+// their bytes the even ones train and the odd ones test, as Write samples a
+// batch, so the caller's order (Put order alternates version lists and
+// versions) does not decide which records train; fewer than 32 train none.
 // RunEntries is how many H keys are held before a sorted run is spilled to
 // disk (0 is DefaultRunEntries). Created is the manifest's created_at (Unix
 // seconds; 0 takes Build.Now when the stream starts). MergeRuns is how many
