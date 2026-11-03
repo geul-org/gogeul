@@ -10,10 +10,10 @@ import (
 )
 
 func TestEdgeRecord(t *testing.T) {
-	if got, err := EdgeRecord(CodecRef{Codec: CodecAttacks}, []core.Word{1}); err != nil || !reflect.DeepEqual(got, []core.Word{0x10E8, 1}) {
+	if got, err := EdgeRecord(CodecRef{Codec: CodecAttacks}, []core.Word{1}); err != nil || !reflect.DeepEqual(got, []core.Word{0x0E81, 1}) {
 		t.Fatalf("direct: %04X %v", got, err)
 	}
-	if got, err := EdgeRecord(CodecRef{Codec: 0x7C, Format: FormatText}, []core.Word{1}); err != nil || !reflect.DeepEqual(got, []core.Word{0x11FC, 0, 0xC001, 1}) {
+	if got, err := EdgeRecord(CodecRef{Codec: core.CodecEdgeIssuer2Word, Format: FormatText}, []core.Word{1}); err != nil || !reflect.DeepEqual(got, []core.Word{0x1BD5, 0, 0, 0, 0xC001, 1}) {
 		t.Fatalf("format: %04X %v", got, err)
 	}
 }

@@ -13,5 +13,5 @@ func EncodeText(p TextPacket, w Wire) ([]core.Word, error) {
 	if err != nil {
 		return nil, err
 	}
-	return EdgeRecord(CodecRef{Codec: core.CodecIssuer1Word, Format: FormatText}, body)
+	return EdgeRecord(CodecRef{Codec: core.CodecEdgeIssuer2Word, Format: FormatText}, body)
 }

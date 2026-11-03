@@ -15,7 +15,7 @@ var recordNames = map[CodecRef]string{
 }
 
 // formatNames maps the GEUL ISSUER format numbers to their spec names.
-var formatNames = map[uint16]string{
+var formatNames = map[uint32]string{
 	FormatSource: "SOURCE", FormatText: "TEXT", FormatSection: "SECTION",
 	FormatCaseBegin: "CASE-BEGIN", FormatCaseEnd: "CASE-END", FormatProse: "PROSE",
 	FormatNamespace: "NAMESPACE", FormatFunc: "FUNC", FormatField: "FIELD",

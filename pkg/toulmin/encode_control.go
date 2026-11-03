@@ -35,5 +35,5 @@ func EncodeControl(p ControlPacket, w Wire) ([]core.Word, error) {
 	if err != nil {
 		return nil, err
 	}
-	return EdgeRecord(CodecRef{Codec: core.CodecIssuer1Word, Format: f}, body)
+	return EdgeRecord(CodecRef{Codec: core.CodecEdgeIssuer2Word, Format: f}, body)
 }

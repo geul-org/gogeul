@@ -11,11 +11,11 @@ import (
 func TestDecodeClaimObject(t *testing.T) {
 	var c Claim
 	pos := 0
-	if err := decodeClaimObject([]core.Word{0x0088, 9}, &pos, ObjTID, testWire, &c); err != nil || c.ObjTID != 9 {
+	if err := decodeClaimObject([]core.Word{0x0051, 9}, &pos, ObjTID, testWire, &c); err != nil || c.ObjTID != 9 {
 		t.Fatalf("REF: %v %+v", err, c)
 	}
 	pos = 0
-	if err := decodeClaimObject([]core.Word{0x0882, 7}, &pos, ObjNum, testWire, &c); err != nil || c.ObjNum != 7 {
+	if err := decodeClaimObject([]core.Word{0x0421, 7}, &pos, ObjNum, testWire, &c); err != nil || c.ObjNum != 7 {
 		t.Fatalf("integer: %v %+v", err, c)
 	}
 	pos = 0

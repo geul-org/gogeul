@@ -15,11 +15,11 @@ import (
 func TestEncodeForce(t *testing.T) {
 	half, one := VFix(5000), VFix(10000)
 	got, err := encodeForce([]core.Word{7}, EdgePacket{Prop: PropAttacks, Force: &half})
-	if want := []core.Word{7, 0x0990, 0xFFFF, 0xFFFF, 5}; err != nil || !reflect.DeepEqual(got, want) {
+	if want := []core.Word{7, 0x0483, 0xFFFF, 0xFFFF, 5}; err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatalf("0.5: %04X %v want %04X", got, err, want)
 	}
 	got, err = encodeForce(nil, EdgePacket{Prop: PropAttacks, Force: &one})
-	if want := []core.Word{0x0990, 0, 0, 1}; err != nil || !reflect.DeepEqual(got, want) {
+	if want := []core.Word{0x0483, 0, 0, 1}; err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatalf("1: %04X %v want %04X", got, err, want)
 	}
 	neg, over := VFix(-1), VFix(10001)

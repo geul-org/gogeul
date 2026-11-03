@@ -11,17 +11,17 @@ import (
 // TestDecodeSource feeds DecodeSource malformed records.
 func TestDecodeSource(t *testing.T) {
 	src := func(p ...core.Word) core.Record {
-		return core.Record{Kind: core.KindEdge, Codec: core.CodecIssuer1Word, Issuer: []core.Word{0}, Format: FormatSource, Payload: p}
+		return core.Record{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 0}, Format: FormatSource, Payload: p}
 	}
 	bad := []core.Record{
 		{Kind: core.KindValue},
-		{Kind: core.KindEdge, Codec: core.CodecIssuer1Word, Issuer: []core.Word{0}, Format: FormatText},
+		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 0}, Format: FormatText},
 		src(),
-		src(0x0088, 1),
-		src(0x0088, 1, 0x0001),
-		src(0x0088, 1, 0),
-		src(0x0088, 1, 0, 0x0882, 1),
-		src(0x0088, 1, 0, 0x0840, 0),
+		src(0x0051, 1),
+		src(0x0051, 1, 0x0001),
+		src(0x0051, 1, 0),
+		src(0x0051, 1, 0, 0x0421, 1),
+		src(0x0051, 1, 0, 0x0840, 0),
 	}
 	for i, r := range bad {
 		if _, _, err := DecodeSource(r); err == nil {

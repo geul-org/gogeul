@@ -12,21 +12,21 @@ import (
 // past the Value, then rejects a force on SUPERSEDES, -0.5, 2 and a non-Value.
 func TestTakeForce(t *testing.T) {
 	pos := 0
-	if v, err := takeForce([]core.Word{0x0990, 0xFFFF, 0xFFFF, 5, 0x0040}, &pos, PropAttacks); err != nil || *v != 5000 || pos != 4 {
+	if v, err := takeForce([]core.Word{0x0483, 0xFFFF, 0xFFFF, 5, 0x0040}, &pos, PropAttacks); err != nil || *v != 5000 || pos != 4 {
 		t.Fatalf("0.5: %v %v pos %d", v, err, pos)
 	}
 	pos = 0
-	if v, err := takeForce([]core.Word{0x0990, 0, 0, 0}, &pos, PropAttacks); err != nil || *v != 0 {
+	if v, err := takeForce([]core.Word{0x0483, 0, 0, 0}, &pos, PropAttacks); err != nil || *v != 0 {
 		t.Fatalf("0: %v %v", v, err)
 	}
 	bad := []struct {
 		ws   []core.Word
 		prop PropCode
 	}{
-		{[]core.Word{0x0990, 0xFFFF, 0xFFFF, 5}, PropSupersedes},
-		{[]core.Word{0x0990, 0xFFFF, 0xFFFF, 0xFFFB}, PropAttacks},
-		{[]core.Word{0x0990, 0, 0, 2}, PropAttacks},
-		{[]core.Word{0x1000}, PropAttacks},
+		{[]core.Word{0x0483, 0xFFFF, 0xFFFF, 5}, PropSupersedes},
+		{[]core.Word{0x0483, 0xFFFF, 0xFFFF, 0xFFFB}, PropAttacks},
+		{[]core.Word{0x0483, 0, 0, 2}, PropAttacks},
+		{[]core.Word{0x0800}, PropAttacks},
 	}
 	for i, c := range bad {
 		pos = 0

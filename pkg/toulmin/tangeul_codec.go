@@ -2,51 +2,51 @@
 //ff:what TOULMIN codec table — the direct Edge codes and GEUL ISSUER format numbers of a .geul TANGEUL document
 package toulmin
 
-// IssuerGEUL is the 1-word GEUL Issuer (0x0000) under which the TANGEUL
-// ISSUER-format records are defined (GEUL t002 TOULMIN 코덱).
-const IssuerGEUL uint16 = 0x0000
+// IssuerGEUL is the 2-word GEUL Issuer (0x00000000) under which the TANGEUL
+// ISSUER-format records are defined (EDGE-ISSUER-2WORD, grammar TOULMIN 코덱).
+const IssuerGEUL uint32 = 0x00000000
 
-// Direct TOULMIN Edge codecs (GEUL t002 OVERVIEW Edge `11`). FROZEN.
+// Direct TOULMIN Edge codecs (Edge Codec = code - 0x80, TAG 0x0E0L~0x0FBL). FROZEN.
 const (
-	CodecCaseDeclare      uint8 = 0x60
-	CodecPredicateDeclare uint8 = 0x61
-	CodecSpecDeclare      uint8 = 0x62
-	CodecRuleDeclare      uint8 = 0x63
-	CodecCounterDeclare   uint8 = 0x64
-	CodecExceptDeclare    uint8 = 0x65
-	CodecAttacks          uint8 = 0x68
-	CodecSupersedes       uint8 = 0x69
-	CodecRun              uint8 = 0x70
-	CodecDo               uint8 = 0x71
-	CodecDoOnce           uint8 = 0x72
-	CodecUndo             uint8 = 0x73
-	CodecChecking         uint8 = 0x74
-	CodecEntry            uint8 = 0x75
-	CodecTrigger          uint8 = 0x76
+	CodecCaseDeclare      uint16 = 0x60
+	CodecPredicateDeclare uint16 = 0x61
+	CodecSpecDeclare      uint16 = 0x62
+	CodecRuleDeclare      uint16 = 0x63
+	CodecCounterDeclare   uint16 = 0x64
+	CodecExceptDeclare    uint16 = 0x65
+	CodecAttacks          uint16 = 0x68
+	CodecSupersedes       uint16 = 0x69
+	CodecRun              uint16 = 0x70
+	CodecDo               uint16 = 0x71
+	CodecDoOnce           uint16 = 0x72
+	CodecUndo             uint16 = 0x73
+	CodecChecking         uint16 = 0x74
+	CodecEntry            uint16 = 0x75
+	CodecTrigger          uint16 = 0x76
 )
 
-// TOULMIN-family format numbers under the GEUL Issuer (ISSUER-1WORD 0x7C).
-// FROZEN append-only.
+// TOULMIN codec numbers under the GEUL Issuer (EDGE-ISSUER-2WORD 0x1BDL, 2-word
+// codec number). The values are FROZEN append-only; only their width grew.
 const (
-	FormatSource       uint16 = 0xC000
-	FormatText         uint16 = 0xC001
-	FormatSection      uint16 = 0xC002
-	FormatCaseBegin    uint16 = 0xC003
-	FormatCaseEnd      uint16 = 0xC004
-	FormatProse        uint16 = 0xC005
-	FormatNamespace    uint16 = 0xC010
-	FormatFunc         uint16 = 0xC011
-	FormatField        uint16 = 0xC012
-	FormatAlias        uint16 = 0xC013
-	FormatGroup        uint16 = 0xC014
-	FormatRequires     uint16 = 0xC020
-	FormatMeans        uint16 = 0xC021
-	FormatHas          uint16 = 0xC022
-	FormatRuns         uint16 = 0xC023
-	FormatEvaluates    uint16 = 0xC024
-	FormatTriggers     uint16 = 0xC025
-	FormatUntil        uint16 = 0xC026
-	FormatSameAs       uint16 = 0xC027
-	FormatImportedFrom uint16 = 0xC028
-	FormatLabel        uint16 = 0xC029
+	FormatSource       uint32 = 0x0000C000
+	FormatText         uint32 = 0x0000C001
+	FormatSection      uint32 = 0x0000C002
+	FormatCaseBegin    uint32 = 0x0000C003
+	FormatCaseEnd      uint32 = 0x0000C004
+	FormatProse        uint32 = 0x0000C005
+	FormatNamespace    uint32 = 0x0000C010
+	FormatFunc         uint32 = 0x0000C011
+	FormatField        uint32 = 0x0000C012
+	FormatAlias        uint32 = 0x0000C013
+	FormatGroup        uint32 = 0x0000C014
+	FormatRequires     uint32 = 0x0000C020
+	FormatMeans        uint32 = 0x0000C021
+	FormatHas          uint32 = 0x0000C022
+	FormatRuns         uint32 = 0x0000C023
+	FormatEvaluates    uint32 = 0x0000C024
+	FormatTriggers     uint32 = 0x0000C025
+	FormatUntil        uint32 = 0x0000C026
+	FormatSameAs       uint32 = 0x0000C027
+	FormatImportedFrom uint32 = 0x0000C028
+	FormatLabel        uint32 = 0x0000C029
 )

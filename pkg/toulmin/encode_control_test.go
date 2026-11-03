@@ -9,11 +9,11 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// TestEncodeControl pins a SECTION record (ISSUER-1WORD, GEUL Issuer, format
-// 0xC002, Edge Id, section code) and checks every error.
+// TestEncodeControl pins a SECTION record (EDGE-ISSUER-2WORD, GEUL Issuer 0x00000000,
+// codec number 0x0000C002, Edge Id, section code) and checks every error.
 func TestEncodeControl(t *testing.T) {
 	got, err := EncodeControl(ControlPacket{ID: 3, Code: ControlSection, Arg: 5}, testWire)
-	if want := []core.Word{0x12FC, 0, 0xC002, 0x0088, 3, 5}; err != nil || !reflect.DeepEqual(got, want) {
+	if want := []core.Word{0x1BD7, 0, 0, 0, 0xC002, 0x0051, 3, 5}; err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatalf("section: %04X %v want %04X", got, err, want)
 	}
 	bad := []ControlPacket{

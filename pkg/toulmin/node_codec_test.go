@@ -2,7 +2,11 @@
 //ff:what TestNodeCodec — every node type round-trips through NodeFromCodec; unknown types fail
 package toulmin
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/geul-org/gogeul/pkg/core"
+)
 
 func TestNodeCodec(t *testing.T) {
 	for _, nt := range nodeTypes {
@@ -21,7 +25,7 @@ func TestNodeCodec(t *testing.T) {
 	if ref, _ := NodeCodec(NodeCase, RoleGeneral); ref.Codec != 0x60 || ref.Format != 0 {
 		t.Fatalf("case codec: %+v", ref)
 	}
-	if ref, _ := NodeCodec(NodeAlias, RoleGeneral); ref.Codec != 0x7C || ref.Format != FormatAlias {
+	if ref, _ := NodeCodec(NodeAlias, RoleGeneral); ref.Codec != core.CodecEdgeIssuer2Word || ref.Format != FormatAlias {
 		t.Fatalf("alias codec: %+v", ref)
 	}
 }

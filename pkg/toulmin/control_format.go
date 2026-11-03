@@ -5,7 +5,7 @@ package toulmin
 import "fmt"
 
 // ControlFormat returns the format number a framing control is written under.
-func ControlFormat(c ControlCode) (uint16, error) {
+func ControlFormat(c ControlCode) (uint32, error) {
 	switch c {
 	case ControlSection:
 		return FormatSection, nil

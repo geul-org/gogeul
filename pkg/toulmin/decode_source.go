@@ -15,7 +15,7 @@ func DecodeSource(r core.Record) (TextPacket, int, error) {
 	if err != nil {
 		return TextPacket{}, 0, err
 	}
-	if ref.Codec != core.CodecIssuer1Word || ref.Format != FormatSource {
+	if ref.Codec != core.CodecEdgeIssuer2Word || ref.Format != FormatSource {
 		return TextPacket{}, 0, errors.New("geul/toulmin: record is not the SOURCE")
 	}
 	ws, pos := r.Payload, 0

@@ -11,15 +11,15 @@ import (
 // TestDecodeText feeds DecodeText malformed records.
 func TestDecodeText(t *testing.T) {
 	txt := func(p ...core.Word) core.Record {
-		return core.Record{Kind: core.KindEdge, Codec: core.CodecIssuer1Word, Issuer: []core.Word{0}, Format: FormatText, Payload: p}
+		return core.Record{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 0}, Format: FormatText, Payload: p}
 	}
 	bad := []core.Record{
 		{Kind: core.KindValue},
 		{Kind: core.KindEdge, Codec: CodecAttacks},
 		txt(),
-		txt(0x0088, 1),
-		txt(0x0088, 1, 0x0882, 1),
-		txt(0x0088, 1, 0x0840, 0),
+		txt(0x0051, 1),
+		txt(0x0051, 1, 0x0421, 1),
+		txt(0x0051, 1, 0x0840, 0),
 	}
 	for i, r := range bad {
 		if _, err := DecodeText(r, testWire); err == nil {

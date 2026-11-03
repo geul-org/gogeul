@@ -10,11 +10,11 @@ import (
 )
 
 func TestEncodeWith(t *testing.T) {
-	want := []core.Word{0x0882, 2, 0x0088, 5, 0x0088, 6}
+	want := []core.Word{0x0421, 2, 0x0051, 5, 0x0051, 6}
 	if got := encodeWith(nil, []TID{5, 6}); !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %04X", got)
 	}
-	if got := encodeWith([]core.Word{9}, nil); !reflect.DeepEqual(got, []core.Word{9, 0x0882, 0}) {
+	if got := encodeWith([]core.Word{9}, nil); !reflect.DeepEqual(got, []core.Word{9, 0x0421, 0}) {
 		t.Fatalf("empty: %04X", got)
 	}
 }

@@ -3,6 +3,6 @@
 package toulmin
 
 // fmtRef returns the CodecRef of format number f under the GEUL Issuer.
-func fmtRef(f uint16) CodecRef {
-	return CodecRef{Codec: codecIssuer1Word, Format: f}
+func fmtRef(f uint32) CodecRef {
+	return CodecRef{Codec: codecIssuer2Word, Format: f}
 }

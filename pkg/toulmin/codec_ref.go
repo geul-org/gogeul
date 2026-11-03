@@ -2,13 +2,15 @@
 //ff:what CodecRef — where a TANGEUL record type lives: a direct Edge codec or a GEUL ISSUER format number
 package toulmin
 
+import "github.com/geul-org/gogeul/pkg/core"
+
 // CodecRef identifies a TANGEUL record type on the wire: either a direct TOULMIN
-// Edge codec (Format == 0) or the ISSUER-1WORD codec 0x7C with a GEUL format
-// number (Codec == 0x7C, Format != 0).
+// Edge codec (Format == 0) or EDGE-ISSUER-2WORD (Codec 0x13D, TAG 0x1BDL) with a
+// GEUL codec number (Format != 0).
 type CodecRef struct {
-	Codec  uint8
-	Format uint16
+	Codec  uint16
+	Format uint32
 }
 
-// codecIssuer1Word is the Edge ISSUER-1WORD codec used for every format number.
-const codecIssuer1Word uint8 = 0x7C
+// codecIssuer2Word is EDGE-ISSUER-2WORD, the codec of every GEUL codec number.
+const codecIssuer2Word uint16 = core.CodecEdgeIssuer2Word

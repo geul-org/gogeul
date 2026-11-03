@@ -10,10 +10,10 @@ import (
 )
 
 func TestPutID(t *testing.T) {
-	if got := PutID([]core.Word{9}, 3); !reflect.DeepEqual(got, []core.Word{9, 0x0088, 3}) {
+	if got := PutID([]core.Word{9}, 3); !reflect.DeepEqual(got, []core.Word{9, 0x0051, 3}) {
 		t.Fatalf("got %04X", got)
 	}
-	if got := PutID(nil, 0x10001); !reflect.DeepEqual(got, []core.Word{0x0108, 1, 1}) {
+	if got := PutID(nil, 0x10001); !reflect.DeepEqual(got, []core.Word{0x0052, 1, 1}) {
 		t.Fatalf("got %04X", got)
 	}
 }

@@ -10,7 +10,7 @@ import (
 
 func TestTakeValue(t *testing.T) {
 	pos := 0
-	if r, err := TakeValue([]core.Word{0x0882, 7}, &pos); err != nil || r.Codec != 0x02 || pos != 2 {
+	if r, err := TakeValue([]core.Word{0x0421, 7}, &pos); err != nil || r.Codec != 0x02 || pos != 2 {
 		t.Fatalf("got %+v %v pos=%d", r, err, pos)
 	}
 	pos = 0

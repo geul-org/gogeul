@@ -9,17 +9,17 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// TestEncodeNode pins a CASE-DECLARE record (TAG 0x12E0 = Edge, 6 words, codec
-// 0x60; LOCAL Edge Id; header; SPAN) and an ALIAS record under ISSUER-1WORD, and
+// TestEncodeNode pins a CASE-DECLARE record (TAG 0x0E05 = Edge 0x0E0L, 6 words;
+// LOCAL Edge Id; header; SPAN) and an ALIAS record under EDGE-ISSUER-2WORD, and
 // checks each error: unknown NodeType, every flag whose field is absent, and a
 // SPAN beyond the width.
 func TestEncodeNode(t *testing.T) {
 	got, err := EncodeNode(NodePacket{TID: 7, Type: NodeCase, Span: Span{Off: 1, Len: 2}}, testWire)
-	if want := []core.Word{0x12E0, 0x0088, 7, 0, 1, 2}; err != nil || !reflect.DeepEqual(got, want) {
+	if want := []core.Word{0x0E05, 0x0051, 7, 0, 1, 2}; err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatalf("case: %04X %v want %04X", got, err, want)
 	}
 	got, err = EncodeNode(NodePacket{TID: 1, Type: NodeAlias}, testWire)
-	if want := []core.Word{0x13FC, 0, 0xC013, 0x0088, 1, 0, 0, 0}; err != nil || !reflect.DeepEqual(got, want) {
+	if want := []core.Word{0x1BD9, 0, 0, 0, 0xC013, 0x0051, 1, 0, 0, 0}; err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatalf("alias: %04X %v want %04X", got, err, want)
 	}
 	bad := []NodePacket{

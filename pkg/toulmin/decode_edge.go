@@ -20,7 +20,7 @@ func DecodeEdge(r core.Record, w Wire) (EdgePacket, error) {
 	}
 	prop, once, ok := PropFromCodec(ref)
 	if !ok {
-		return EdgePacket{}, fmt.Errorf("geul/toulmin: record 0x%02X/0x%04X is not a LINK", ref.Codec, ref.Format)
+		return EdgePacket{}, fmt.Errorf("geul/toulmin: record 0x%03X/0x%08X is not a LINK", ref.Codec, ref.Format)
 	}
 	ws, pos := r.Payload, 0
 	p := EdgePacket{Prop: prop}

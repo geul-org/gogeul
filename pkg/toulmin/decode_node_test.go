@@ -13,40 +13,40 @@ import (
 // header role disagrees with its codec, each truncated or invalid slot, a
 // missing SPAN and a trailing word.
 func TestDecodeNode(t *testing.T) {
-	rec := func(c uint8, p ...core.Word) core.Record {
+	rec := func(c uint16, p ...core.Word) core.Record {
 		return core.Record{Kind: core.KindEdge, Codec: c, Payload: p}
 	}
 	flag := func(f NodeFlags, rest ...core.Word) core.Record {
-		return rec(CodecCaseDeclare, append([]core.Word{0x0088, 1, core.Word(f)}, rest...)...)
+		return rec(CodecCaseDeclare, append([]core.Word{0x0051, 1, core.Word(f)}, rest...)...)
 	}
 	bad := []core.Record{
 		{Kind: core.KindValue},
 		rec(CodecAttacks),
 		rec(CodecCaseDeclare),
 		rec(CodecCaseDeclare, 1),
-		rec(CodecCaseDeclare, 0x0088, 1),
-		rec(CodecCaseDeclare, 0x0088, 1, 0x1000, 0, 0),
-		rec(CodecCounterDeclare, 0x0088, 1, 0, 0, 0),
+		rec(CodecCaseDeclare, 0x0051, 1),
+		rec(CodecCaseDeclare, 0x0051, 1, 0x1000, 0, 0),
+		rec(CodecCounterDeclare, 0x0051, 1, 0, 0, 0),
 		flag(NodeFlagFunc),
-		flag(NodeFlagFunc, 0x0088, 1),
+		flag(NodeFlagFunc, 0x0051, 1),
 		flag(NodeFlagQual),
-		flag(NodeFlagQual, 0x0882, 1),
+		flag(NodeFlagQual, 0x0421, 1),
 		flag(NodeFlagQual, 0x1000),
 		flag(NodeFlagQual, 0x0900, 0, 0, 2),
 		flag(NodeFlagCheck),
 		flag(NodeFlagClaim),
-		flag(NodeFlagClaim, 0x0088, 1),
-		flag(NodeFlagClaim, 0x0088, 1, 2),
-		flag(NodeFlagClaim, 0x0088, 1, 2, 0x0088, 3),
-		rec(CodecCaseDeclare, 0x0088, 1, 0x0080|core.Word(NodeFlagClaim), 0x0088, 1, 2),
-		rec(CodecCaseDeclare, 0x0088, 1, 0x0080|core.Word(NodeFlagClaim), 0x0088, 1, 2, 0x0882),
-		rec(CodecCaseDeclare, 0x0088, 1, 0x0080|core.Word(NodeFlagClaim), 0x0088, 1, 2, 0x0840),
-		rec(CodecCaseDeclare, 0x0088, 1, 0x0080|core.Word(NodeFlagClaim), 0x0088, 1, 2, 0x0982, 1, 0, 0, 0, 0, 0),
-		rec(CodecCaseDeclare, 0x0088, 1, 0x0100|core.Word(NodeFlagClaim), 0x0088, 1, 2, 0),
-		rec(CodecCaseDeclare, 0x0088, 1, 0x0180|core.Word(NodeFlagClaim), 0x0088, 1, 2, 0, 0, 0),
+		flag(NodeFlagClaim, 0x0051, 1),
+		flag(NodeFlagClaim, 0x0051, 1, 2),
+		flag(NodeFlagClaim, 0x0051, 1, 2, 0x0051, 3),
+		rec(CodecCaseDeclare, 0x0051, 1, 0x0080|core.Word(NodeFlagClaim), 0x0051, 1, 2),
+		rec(CodecCaseDeclare, 0x0051, 1, 0x0080|core.Word(NodeFlagClaim), 0x0051, 1, 2, 0x0421),
+		rec(CodecCaseDeclare, 0x0051, 1, 0x0080|core.Word(NodeFlagClaim), 0x0051, 1, 2, 0x0840),
+		rec(CodecCaseDeclare, 0x0051, 1, 0x0080|core.Word(NodeFlagClaim), 0x0051, 1, 2, 0x0982, 1, 0, 0, 0, 0, 0),
+		rec(CodecCaseDeclare, 0x0051, 1, 0x0100|core.Word(NodeFlagClaim), 0x0051, 1, 2, 0),
+		rec(CodecCaseDeclare, 0x0051, 1, 0x0180|core.Word(NodeFlagClaim), 0x0051, 1, 2, 0, 0, 0),
 		flag(NodeFlagVerdict, 0x0840),
 		flag(NodeFlagWith),
-		flag(NodeFlagWith, 0x0882, 5, 0x0088, 1),
+		flag(NodeFlagWith, 0x0421, 5, 0x0051, 1),
 		flag(0, 0),
 		flag(0, 0, 0, 0),
 	}

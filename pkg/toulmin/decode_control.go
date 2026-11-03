@@ -17,8 +17,8 @@ func DecodeControl(r core.Record, w Wire) (ControlPacket, error) {
 		return ControlPacket{}, err
 	}
 	code, ok := ControlFromFormat(ref.Format)
-	if !ok || ref.Codec != core.CodecIssuer1Word {
-		return ControlPacket{}, fmt.Errorf("geul/toulmin: record 0x%02X/0x%04X is not a framing control", ref.Codec, ref.Format)
+	if !ok || ref.Codec != core.CodecEdgeIssuer2Word {
+		return ControlPacket{}, fmt.Errorf("geul/toulmin: record 0x%03X/0x%08X is not a framing control", ref.Codec, ref.Format)
 	}
 	ws, pos := r.Payload, 0
 	p := ControlPacket{Code: code}
