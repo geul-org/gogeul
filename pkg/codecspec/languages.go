@@ -5,11 +5,11 @@ package codecspec
 import "github.com/geul-org/gogeul/pkg/core"
 
 // languageCodec is the target word of LANGUAGE-SHORT-CODE.
-const languageCodec core.Word = 0x0848
+var languageCodec = core.TargetWord(core.KindValue, core.CodecLanguageShortCode)
 
 // Languages returns the ENUMs of the 1-WORD raw field `code` that the
-// LANGUAGE-SHORT-CODE codec spec (value/text/LANGUAGE-SHORT-CODE, document
-// 0x0000/0x0000000000000848) declares: each code in canonical hex
+// LANGUAGE-SHORT-CODE codec spec (value/text/LANGUAGE-SHORT-CODE, codec
+// 0x00000000/codecs/0x000005a0) declares: each code in canonical hex
 // (core.FormatID) to the BCP 47 tag BIND names it with. It is nil when s does
 // not declare that codec or its code field. The registry is a closed list, so
 // a code not in it is invalid, not merely unnamed.

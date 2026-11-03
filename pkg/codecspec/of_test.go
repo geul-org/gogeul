@@ -9,7 +9,7 @@ import (
 )
 
 func TestOf(t *testing.T) {
-	s := Spec{0x1018: {{Name: "doc"}}}
+	s := Spec{0x0980: {{Name: "doc"}}}
 	if fs, ok := s.Of(core.Record{Kind: core.KindEdge, Codec: core.EdgePublication}); !ok || fs[0].Name != "doc" {
 		t.Fatalf("got %+v %v", fs, ok)
 	}

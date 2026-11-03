@@ -6,14 +6,14 @@ import "testing"
 
 func TestLanguages(t *testing.T) {
 	enums := map[string]string{"0x0784": "en", "0x4130": "pt-BR"}
-	s := Spec{0x0848: {{Name: "code", Width: 1, Enums: enums}}}
+	s := Spec{0x05A0: {{Name: "code", Width: 1, Enums: enums}}}
 	if got := s.Languages(); got["0x4130"] != "pt-BR" || len(got) != 2 {
 		t.Fatalf("got %v", got)
 	}
 	if got := (Spec{}).Languages(); got != nil {
 		t.Fatalf("no spec: %v", got)
 	}
-	if got := (Spec{0x0848: {{Name: "code", Width: 2, Enums: enums}}}).Languages(); got != nil {
+	if got := (Spec{0x05A0: {{Name: "code", Width: 2, Enums: enums}}}).Languages(); got != nil {
 		t.Fatalf("2-WORD field: %v", got)
 	}
 }

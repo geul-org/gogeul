@@ -14,8 +14,8 @@ func TestAddCodecs(t *testing.T) {
 	codec := func(id, f uint64, t core.Word) core.Record {
 		return core.EncodeCodecDecl(core.CodecDecl{EdgeID: id, Field: f, Target: t})
 	}
-	addCodecs([]core.Record{codec(4, 2, 0x084A), codec(5, 2, 0x0008), codec(6, 3, 0x0803), codec(7, 3, 0x0801), codec(8, 9, 1), core.EncodeUintValue(1)}, fields)
-	if !slices.Equal(fields[2].Codecs, []core.Word{0x084A, 0x0008}) || !slices.Equal(fields[3].Codecs, []core.Word{0x0803}) {
+	addCodecs([]core.Record{codec(4, 2, 0x0580), codec(5, 2, 0x0050), codec(6, 3, 0x0430), codec(7, 3, 0x0410), codec(8, 9, 1), core.EncodeUintValue(1)}, fields)
+	if !slices.Equal(fields[2].Codecs, []core.Word{0x0580, 0x0050}) || !slices.Equal(fields[3].Codecs, []core.Word{0x0430}) {
 		t.Fatalf("%v %v", fields[2].Codecs, fields[3].Codecs)
 	}
 }

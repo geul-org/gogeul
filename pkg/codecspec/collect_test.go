@@ -11,7 +11,7 @@ import (
 func TestCollect(t *testing.T) {
 	body := append(sampleBody(),
 		core.EncodeDeclare(core.Declare{EdgeID: 11, Target: core.TargetWord(core.KindEdge, core.EdgeTombstone)}),
-		core.EncodeDeclare(core.Declare{EdgeID: 12, Target: core.TargetWord(core.KindValue, core.CodecIssuer1Word), Issuer: []core.Word{1}, Format: 2}),
+		core.EncodeDeclare(core.Declare{EdgeID: 12, Target: core.TargetWord(core.KindValue, core.CodecValueIssuer2Word), Issuer: []core.Word{0, 2}, Format: 2}),
 		core.EncodeDeclare(core.Declare{EdgeID: 13, Target: core.TargetWord(core.KindEdge, core.EdgeDeprecation)}),
 		core.EncodeFieldDecl(core.FieldDecl{EdgeID: 14, Declare: 11, Width: 9}),
 	)
