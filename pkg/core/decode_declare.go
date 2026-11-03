@@ -1,12 +1,16 @@
 //ff:func feature=core type=decoder control=sequence
-//ff:what DecodeDeclare — a DECLARE Edge as Declare
+//ff:what DecodeDeclare — a DECLARE Edge as Declare: a direct target, an ISSUER code itself (target alone) or an Issuer codec (ISSUER target, Issuer, codec number)
 package core
 
 import "fmt"
 
-// DecodeDeclare reads a DECLARE Edge (GEUL t002 docs/edge/DECLARE): the LOCAL
-// Edge Id, the target word and, for an ISSUER target, the Issuer and format
-// number (2 words). Nothing may follow.
+// DecodeDeclare reads a DECLARE Edge (grammar 0x0BBL DECLARE): the LOCAL Edge
+// Id, the target word and, for an ISSUER target followed by more words, the
+// Issuer and codec number (2 words) of the Issuer codec it declares. An ISSUER
+// target with nothing after it declares the ISSUER code itself, as GEUL's own
+// codec document of that code does (grammar 0x0BBL 유효성 "ISSUER 코드도 그
+// 코드 그대로다", migration.md §1.1 127); its Issuer is empty. Nothing else
+// may follow.
 func DecodeDeclare(r Record) (Declare, error) {
 	if r.Kind != KindEdge || r.Codec != EdgeDeclare {
 		return Declare{}, fmt.Errorf("geul/core: not a DECLARE Edge (kind %d codec 0x%02X)", r.Kind, r.Codec)
@@ -20,7 +24,7 @@ func DecodeDeclare(r Record) (Declare, error) {
 	}
 	d := Declare{EdgeID: id, Target: r.Payload[pos]}
 	pos++
-	if w := IssuerWidth(SplitTarget(d.Target)); w > 0 {
+	if w := IssuerWidth(SplitTarget(d.Target)); w > 0 && pos < len(r.Payload) {
 		if len(r.Payload) < pos+w+FormatWords {
 			return Declare{}, fmt.Errorf("geul/core: DECLARE ISSUER target needs %d Issuer words and a 2-word codec number", w)
 		}

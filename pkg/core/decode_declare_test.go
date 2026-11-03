@@ -1,5 +1,5 @@
 //ff:func feature=core type=decoder control=iteration dimension=1
-//ff:what TestDecodeDeclare — direct and ISSUER targets round-trip; other records, a missing target, short Issuer and trailing words fail
+//ff:what TestDecodeDeclare — direct targets, ISSUER codes alone and Issuer codecs round-trip; other records, a missing target, short Issuer and trailing words fail
 package core
 
 import (
@@ -14,6 +14,8 @@ func TestDecodeDeclare(t *testing.T) {
 		{EdgeID: 5, Target: TargetWord(KindValue, CodecValueIssuer2Word), Issuer: []Word{0, 7}, Format: 0xC001},
 		{EdgeID: 6, Target: TargetWord(KindReference, CodecRefIssuer4Word), Issuer: []Word{0, 1, 0, 0}, Format: 0x00010002},
 		{EdgeID: 7, Target: TargetWord(KindEdge, CodecEdgeIssuer16Word), Issuer: append(make([]Word, 11), 1, 0, 0, 0, 0), Format: 0xC000},
+		{EdgeID: 8, Target: TargetWord(KindReference, CodecRefIssuer2Word)},
+		{EdgeID: 9, Target: TargetWord(KindEdge, CodecEdgeIssuer16Word)},
 	} {
 		got, err := DecodeDeclare(EncodeDeclare(d))
 		if err != nil || !reflect.DeepEqual(got, d) {
