@@ -19,17 +19,17 @@ func TestParsePath(t *testing.T) {
 	if r := parsePath(h); r.space != spaceH || len(r.hash) != 32 || r.hash[0] != 0x0a || r.issuer != "0x00000000" {
 		t.Fatal(r)
 	}
-	for _, p := range []string{"issuers/0x00000001.geul", "issuers/versions.geul", "0x00000000/codecs/0x000003c0/0x00000001.geul", "0x00000000/codecs/0x000003c0/versions.geul"} {
+	for _, p := range []string{"issuers/0x00000001.geul", "issuers/versions.geul", "0x00000000/codecs/0x00000420/0x00000001.geul", "0x00000000/codecs/0x00000420/versions.geul"} {
 		if parsePath(p).space != spaceNamed {
 			t.Fatal(p)
 		}
 	}
 	for _, p := range []string{"0x00000000/docs/0x00000001.geul", "0x00000000/docs/versions.geul", "0x00000000/codecs/0x00000002.geul", "0x00000000/codecs/versions.geul",
 		"issuers/latest.geul", "0x00000000/docs/latest.geul", "0x00000000/docs/0x0000000000000001/latest.geul",
-		"0x00000000/codecs/0x000003c0/latest.geul", "issuers.geul", "0x0000/docs/0x00000001.geul", "h/0x" + strings.Repeat("0a", 32) + ".geul",
+		"0x00000000/codecs/0x00000420/latest.geul", "issuers.geul", "0x0000/docs/0x00000001.geul", "h/0x" + strings.Repeat("0a", 32) + ".geul",
 		"0x00000000/hashes/0x" + strings.Repeat("0A", 32) + ".geul", "0x00000000/hashes/0x" + strings.Repeat("0a", 32) + ".gel",
 		"0xZZ/docs/0x0000000000000001/versions.geul", "0x00000000/0x0000000000000001/versions.geul", "0x00000000/keys/x.geul",
-		"0x00000000/docs/0x00000000.geul", "0x00000000/docs/0xffffffffffffffff/versions.geul", "0x00000000/codecs/0x3c0/0x00000001.geul", "issuers/0x00000001.geul/x", "latest.txt"} {
+		"0x00000000/docs/0x00000000.geul", "0x00000000/docs/0xffffffffffffffff/versions.geul", "0x00000000/codecs/0x420/0x00000001.geul", "issuers/0x00000001.geul/x", "latest.txt"} {
 		if parsePath(p).space != spaceNone {
 			t.Fatal(p)
 		}

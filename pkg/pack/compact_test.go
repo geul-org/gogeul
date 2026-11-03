@@ -13,7 +13,7 @@ import (
 func TestCompact(t *testing.T) {
 	ctx := context.Background()
 	root, out := built(t, small())
-	h := "0x00000000/hashes/0x34ddc800db4e40e0bf1cd8420ec417efabfd715e89edd37bf763e71c19a659e8.geul"
+	h := "0x00000000/hashes/0x33be25e73766f819226dd801db778f61c503843d0e3a10ccb67258cd4108fe51.geul"
 	os.Remove(filepath.Join(root, ".well-known", "geul", filepath.FromSlash(h)))
 	if _, err := Build(ctx, root, out, small()); err != nil {
 		t.Fatal(err)

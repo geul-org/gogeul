@@ -13,7 +13,7 @@ func TestReaderIssuers(t *testing.T) {
 	ctx := context.Background()
 	m := &manifest{issuers: []string{"0x00000001", "0x00000000", "0x00000002", "0x00000003"},
 		pLayers: []layer{{blk: block{kind: blkPLeaf, keys: []string{pKey(0, 1, 0), pKey(1, 1, 0)}, locs: []Loc{{Off: 64}, {Off: 64}}}}},
-		named:   []namedEntry{{"0x00000002/codecs/0x000003c0/0x00000001.geul", Loc{}}}}
+		named:   []namedEntry{{"0x00000002/codecs/0x00000420/0x00000001.geul", Loc{}}}}
 	r := newReader(memStore{}, Options{}, m, "")
 	got, err := r.Issuers(ctx)
 	if err != nil || !reflect.DeepEqual(got, []string{"0x00000000", "0x00000001", "0x00000002"}) {

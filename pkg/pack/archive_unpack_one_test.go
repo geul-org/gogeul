@@ -11,7 +11,7 @@ import (
 func TestArchiveUnpackOne(t *testing.T) {
 	a, _ := testArchive(t)
 	base := t.TempDir()
-	if err := a.unpackOne(base, "0x00000000/codecs/0x000003c0/0x00000001.geul"); err != nil {
+	if err := a.unpackOne(base, "0x00000000/codecs/0x00000420/0x00000001.geul"); err != nil {
 		t.Fatal(err)
 	}
 	if err := a.unpackOne(base, "none"); err == nil {

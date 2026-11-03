@@ -16,7 +16,7 @@ func TestReaderHasUnder(t *testing.T) {
 			t.Fatal(n, ok, err)
 		}
 	}
-	for _, n := range []string{"issuers/0x00000001.geul", "zz", "0x00000000/codecs/0x000003c0/0x00000001.geul"} {
+	for _, n := range []string{"issuers/0x00000001.geul", "zz", "0x00000000/codecs/0x00000420/0x00000001.geul"} {
 		if ok, err := r.hasUnder(ctx, n, nil); err != nil || ok {
 			t.Fatal(n, ok, err)
 		}
