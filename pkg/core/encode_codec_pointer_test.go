@@ -1,5 +1,5 @@
 //ff:func feature=core type=decoder control=iteration dimension=2
-//ff:what TestCodecPointer — CODEC-POINTER 0x03CL round trips with 2/4/16-word Issuers × version 0·1; payload 6/8/20 only, not ISSUER nor quantified
+//ff:what TestEncodeCodecPointer — CODEC-POINTER 0x03CL round trips with 2/4/16-word Issuers × version 0·1; payload 6/8/20 only, not ISSUER nor quantified
 package core
 
 import (
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestCodecPointer(t *testing.T) {
+func TestEncodeCodecPointer(t *testing.T) {
 	issuers := [][]Word{{0, 0}, {0, 1, 0, 0}, append(make([]Word, 11), 1, 0, 0, 0, 0)}
 	for _, iss := range issuers {
 		for _, v := range []uint32{0, 1} {

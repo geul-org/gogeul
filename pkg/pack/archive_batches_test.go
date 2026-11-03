@@ -31,11 +31,6 @@ func TestArchiveBatches(t *testing.T) {
 	a.find("0x00000000").r.m.pLayers = []layer{{blk: block{kind: blkPInner, keys: []string{pKey(0, 0, 0)}, locs: []Loc{{Obj: 99}}}}}
 	a.WriteFile("0x00000000/docs/0x0000000000000008/versions.geul", nil)
 	if _, err := a.batches(ctx); err == nil {
-		t.Fatal("only")
-	}
-	a.find("0x00000000").r.m.hLayers = []layer{{blk: block{kind: blkHInner, keys: []string{string(make([]byte, 32))}, locs: []Loc{{Obj: 99}}}}}
-	a.puts = map[string][]byte{hPath("0x00000000", string(make([]byte, 32))): nil}
-	if _, err := a.batches(ctx); err == nil {
 		t.Fatal("target")
 	}
 }

@@ -1,5 +1,5 @@
 //ff:func feature=core type=decoder control=iteration dimension=1
-//ff:what TestTargetPointer — a 4-word ID makes a DOC-POINTER, a 2-word ID a CODEC-POINTER; both decode back; a version list record round trips with either
+//ff:what TestEncodeTargetPointer — a 4-word ID makes a DOC-POINTER, a 2-word ID a CODEC-POINTER; both decode back; a version list record round trips with either
 package core
 
 import (
@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestTargetPointer(t *testing.T) {
+func TestEncodeTargetPointer(t *testing.T) {
 	for _, id := range [][]Word{{0, 0, 0, 5}, {0, 0x0980}} {
 		r, err := EncodeTargetPointer([]Word{0, 1}, id, []Word{0, 2})
 		if err != nil {

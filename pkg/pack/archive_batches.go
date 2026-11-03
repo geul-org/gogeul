@@ -14,10 +14,6 @@ func (a *Archive) batches(ctx context.Context) (map[*packSet]*Batch, error) {
 		names = append(names, n)
 	}
 	slices.Sort(names)
-	only, err := a.only(ctx, names)
-	if err != nil {
-		return nil, err
-	}
 	out := map[*packSet]*Batch{}
 	add := func(s *packSet) *Batch {
 		if out[s] == nil {
@@ -26,7 +22,7 @@ func (a *Archive) batches(ctx context.Context) (map[*packSet]*Batch, error) {
 		return out[s]
 	}
 	for _, n := range names {
-		s, err := a.target(ctx, n, only)
+		s, err := a.target(ctx, n)
 		if err != nil {
 			return nil, err
 		}

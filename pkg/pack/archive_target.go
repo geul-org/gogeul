@@ -1,5 +1,5 @@
 //ff:func feature=pack type=writer control=sequence
-//ff:what Archive.target — the set a staged path is written to: its holder; else its Issuer's set (top set if no Issuer sets layout); else the one Issuer set of this commit (h/ copies); else home
+//ff:what Archive.target — the set a staged path is written to: its holder; else its Issuer's set (top set if no Issuer sets layout); else home
 package pack
 
 import (
@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-// target routes name. only is the single Issuer set receiving `<Issuer>/…`
-// paths in this commit, or nil.
-func (a *Archive) target(ctx context.Context, name string, only *packSet) (*packSet, error) {
+// target routes name. Every `<Issuer>/…` path, hashes/ included, goes to its
+// Issuer's set; the rest (issuers/) to home.
+func (a *Archive) target(ctx context.Context, name string) (*packSet, error) {
 	s, err := a.holder(ctx, name)
 	if err != nil || s != nil {
 		return s, err

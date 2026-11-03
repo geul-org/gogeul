@@ -1,5 +1,5 @@
 //ff:func feature=core type=decoder control=iteration dimension=1
-//ff:what TestDocIDCodec — a codec document's DOC-ID is CODEC-POINTER(Issuer, codec ID, 0); DOC-POINTER, a version and other records are rejected
+//ff:what TestEncodeDocIDCodec — a codec document's DOC-ID is CODEC-POINTER(Issuer, codec ID, 0); DOC-POINTER, a version and other records are rejected
 package core
 
 import (
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestDocIDCodec(t *testing.T) {
+func TestEncodeDocIDCodec(t *testing.T) {
 	r, err := EncodeDocIDCodec([]Word{0, 0}, 0x00000980)
 	ws, _ := EncodeRecord(r)
 	if err != nil || !slices.Equal(ws, []Word{0x1C77, 0x03C6, 0, 0, 0, 0x0980, 0, 0}) {
