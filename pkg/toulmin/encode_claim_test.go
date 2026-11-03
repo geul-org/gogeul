@@ -15,7 +15,7 @@ func TestEncodeClaim(t *testing.T) {
 		want []core.Word
 	}{
 		{Claim{Subject: 4, Predicate: 7, ObjTID: 8, Mode: 1}, []core.Word{0x0051, 4, 7, 0x0051, 8, 1}},
-		{Claim{Kind: ObjNum, ObjNum: 7}, []core.Word{0x0051, 0, 0, 0x0421, 7, 0}},
+		{Claim{Kind: ObjNum, ObjNum: 7}, []core.Word{0x0051, 0, 0, 0x0621, 7, 0}},
 		{Claim{Kind: ObjSpan, ObjSpan: Span{Off: 2, Len: 3}}, []core.Word{0x0051, 0, 0, 2, 3, 0}},
 	}
 	for _, c := range cases {

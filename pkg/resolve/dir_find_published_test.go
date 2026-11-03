@@ -37,7 +37,7 @@ func TestDirFindPublished(t *testing.T) {
 	remote := Dir{Store: s}
 	var addrs, missing []string
 	if geulErr == nil {
-		codec := "0x00000000/codecs/0x00000980"
+		codec := "0x00000000/codecs/0x00000b80"
 		v1, err := local.Find(codec + "/0x00000001.geul")
 		if err != nil {
 			t.Fatal(err)

@@ -9,7 +9,7 @@ import (
 )
 
 func TestSourceEdges(t *testing.T) {
-	tr, _, _ := core.DecodeRecord([]core.Word{0x08A9, 0x0051, 2, 0x0191, 31, 0x0141, 42, 0x0141, 5, 0})
+	tr, _, _ := core.DecodeRecord([]core.Word{0x0AA9, 0x0051, 2, 0x0191, 31, 0x0141, 42, 0x0141, 5, 0})
 	good := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0051, 9, 0x0051, 2, 0x0141, 0x8EE2}}
 	bad := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0051, 10, 0x0051, 4, 0x0141, 0x8EE2}}
 	issuer := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Issuer: []core.Word{1}, Payload: []core.Word{0x0051, 11}}

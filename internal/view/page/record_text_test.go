@@ -21,7 +21,7 @@ func TestRecordText(t *testing.T) {
 		"PUBLICATION":         {Kind: core.KindEdge, Codec: 0x18},
 		"UNKNOWN-VALUE":       {Kind: core.KindReference, Codec: 1},
 		"NO-VALUE":            {Kind: core.KindReference, Codec: 2},
-		"2/3":                 {Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}},
+		"2/3":                 {Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0611, 2, 0x0621, 3}},
 		"RATIONAL-I64 0x0001": {Kind: core.KindValue, Codec: core.CodecValueIssuer2Word, Issuer: []core.Word{0, 2}, Format: 0x0702, Payload: []core.Word{1}},
 	} {
 		if got := recordText(r); got != want {

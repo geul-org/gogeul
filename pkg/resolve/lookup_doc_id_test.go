@@ -16,10 +16,10 @@ func TestLookupDocID(t *testing.T) {
 	if id, err := lookupDocID(g, "0xffff000000000007"); err != nil || !slices.Equal(id, []core.Word{0xffff, 0, 0, 7}) {
 		t.Fatal(id, err)
 	}
-	if id, err := lookupDocID(g, "0x00000980"); err != nil || !slices.Equal(id, []core.Word{0, 0x0980}) {
+	if id, err := lookupDocID(g, "0x00000b80"); err != nil || !slices.Equal(id, []core.Word{0, 0x0B80}) {
 		t.Fatal(id, err)
 	}
-	for _, s := range []string{"seven", "0x980", "0xFFFF000000000007", ""} {
+	for _, s := range []string{"seven", "0xb80", "0xFFFF000000000007", ""} {
 		if _, err := lookupDocID(g, s); !errors.Is(err, ErrNotFound) || !strings.Contains(err.Error(), "0x00000000") {
 			t.Fatal(s, err)
 		}

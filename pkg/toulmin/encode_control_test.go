@@ -10,10 +10,10 @@ import (
 )
 
 // TestEncodeControl pins a SECTION record (EDGE-ISSUER-2WORD, GEUL Issuer 0x00000000,
-// SECTION direct code 0x102L (§3.14), Edge Id, section code) and checks every error.
+// SECTION direct code 0x122L (§3.14), Edge Id, section code) and checks every error.
 func TestEncodeControl(t *testing.T) {
 	got, err := EncodeControl(ControlPacket{ID: 3, Code: ControlSection, Arg: 5}, testWire)
-	if want := []core.Word{0x1023, 0x0051, 3, 5}; err != nil || !reflect.DeepEqual(got, want) {
+	if want := []core.Word{0x1223, 0x0051, 3, 5}; err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatalf("section: %04X %v want %04X", got, err, want)
 	}
 	bad := []ControlPacket{

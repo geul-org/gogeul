@@ -3,7 +3,7 @@
 package toulmin
 
 // recordNames maps every TOULMIN record type to its spec name (GEUL t002
-// TOULMIN 코덱; 0x100L~0x114L by migration.md §3.14).
+// TOULMIN 코덱; 0x120L~0x134L by migration.md §3.14).
 var recordNames = map[uint16]string{
 	CodecCaseDeclare: "CASE-DECLARE", CodecPredicateDeclare: "PREDICATE-DECLARE",
 	CodecSpecDeclare: "SPEC-DECLARE", CodecRuleDeclare: "RULE-DECLARE",

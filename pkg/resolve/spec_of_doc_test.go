@@ -9,11 +9,11 @@ import (
 )
 
 func TestSpecOfDoc(t *testing.T) {
-	doc, err := inspect.Decode(codecDocOf(0x0980, 4, 2))
+	doc, err := inspect.Decode(codecDocOf(0x0B80, 4, 2))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s := specOfDoc(doc); len(s) != 1 || len(s[0x0980]) != 2 {
+	if s := specOfDoc(doc); len(s) != 1 || len(s[0x0B80]) != 2 {
 		t.Fatalf("%+v", s)
 	}
 	if s := specOfDoc(inspect.Document{}); len(s) != 0 {

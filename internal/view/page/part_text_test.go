@@ -15,10 +15,10 @@ func TestPartText(t *testing.T) {
 		"license":     {Words: []core.Word{1}, Enum: "license"},
 		"2":           {Words: []core.Word{2}, Data: inspect.Value{Codec: core.CodecUnsignedInteger, Uint: 2}},
 		"0x00000002":  {Words: []core.Word{0, 2}},
-		`"v1"`:        {Words: []core.Word{0x0521, 0x7631}},
+		`"v1"`:        {Words: []core.Word{0x0721, 0x7631}},
 		"9":           {Record: true, Data: inspect.Value{Codec: core.CodecUnsignedInteger, Uint: 9}},
 		"#7":          {Record: true, Words: ref},
-		"PUBLICATION": {Record: true, Words: []core.Word{0x0980}},
+		"PUBLICATION": {Record: true, Words: []core.Word{0x0B80}},
 	} {
 		if got := partText(p); got != want {
 			t.Fatalf("got %q want %q", got, want)

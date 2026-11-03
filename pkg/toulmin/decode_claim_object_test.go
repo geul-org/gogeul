@@ -15,7 +15,7 @@ func TestDecodeClaimObject(t *testing.T) {
 		t.Fatalf("REF: %v %+v", err, c)
 	}
 	pos = 0
-	if err := decodeClaimObject([]core.Word{0x0421, 7}, &pos, ObjNum, testWire, &c); err != nil || c.ObjNum != 7 {
+	if err := decodeClaimObject([]core.Word{0x0621, 7}, &pos, ObjNum, testWire, &c); err != nil || c.ObjNum != 7 {
 		t.Fatalf("integer: %v %+v", err, c)
 	}
 	pos = 0
@@ -26,9 +26,9 @@ func TestDecodeClaimObject(t *testing.T) {
 		ws   []core.Word
 		kind ObjKind
 	}{
-		{[]core.Word{0x1000}, ObjNum},
-		{[]core.Word{0x0840}, ObjNum},
-		{[]core.Word{0x0423, 1, 0, 0}, ObjNum},
+		{[]core.Word{0x1200}, ObjNum},
+		{[]core.Word{0x0A40}, ObjNum},
+		{[]core.Word{0x0623, 1, 0, 0}, ObjNum},
 		{nil, 3},
 	}
 	for i, b := range bad {

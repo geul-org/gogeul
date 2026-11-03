@@ -3,7 +3,7 @@
 package toulmin
 
 // CodecRef identifies a TANGEUL record type on the wire: its direct TOULMIN
-// Edge codec (Edge Codec = code - 0x80; 0x060~0x07B and, since migration.md
+// Edge codec (Edge Codec = code - 0xA0; 0x060~0x07B and, since migration.md
 // §3.14, 0x080~0x094). TANGEUL has no ISSUER-format records any more.
 type CodecRef struct {
 	Codec uint16

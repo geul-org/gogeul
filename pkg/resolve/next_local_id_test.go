@@ -5,7 +5,7 @@ package resolve
 import "testing"
 
 func TestNextLocalID(t *testing.T) {
-	b := codecDocOf(0x0804, 4, 4)
+	b := codecDocOf(0x0A04, 4, 4)
 	if n := nextLocalID(0, b); n < 2 {
 		t.Fatalf("doc: %d", n)
 	}

@@ -14,7 +14,7 @@ func newTypedFixture(t *testing.T) typedFixture {
 	t.Helper()
 	ctx := context.Background()
 	f := typedFixture{d: Dir{Root: t.TempDir()}, g: []core.Word{0, 0}, pad: []core.Word{0, 0, 0, 0}}
-	f.v1, f.v2, f.codec = edgeDoc(7, "a"), edgeDoc(7, "b"), codecDocOf(0x0980, 4)
+	f.v1, f.v2, f.codec = edgeDoc(7, "a"), edgeDoc(7, "b"), codecDocOf(0x0B80, 4)
 	for _, b := range [][]byte{f.v1, f.v2} {
 		if _, err := f.d.Publish(b); err != nil {
 			t.Fatal(err)
@@ -31,7 +31,7 @@ func newTypedFixture(t *testing.T) typedFixture {
 	ws, _ := core.ReadWords(f.v2)
 	f.hash, _ = core.ContentHash(ws)
 	read := func(p string) []byte { b, _ := f.d.Fetch(ctx, p); return b }
-	f.list, f.clist = read(listPath(sampleKeyOf(7))), read(listPath(codecKey(0x0980)))
+	f.list, f.clist = read(listPath(sampleKeyOf(7))), read(listPath(codecKey(0x0B80)))
 	f.ilist = read(listPath(issuersKey()))
 	return f
 }

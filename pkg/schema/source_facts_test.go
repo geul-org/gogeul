@@ -36,7 +36,7 @@ func TestSourceFacts(t *testing.T) {
 		edge(0x0051, 9, 0x0051, 2, 0x0141, 5, 0),
 		edge(0x0051, 9, 0x0051, 2),
 		edge(0x0051, 9, 0x0051, 2, 0x0003),
-		edge(0x0051, 9, 0x0051, 2, 0x0421, 5),
+		edge(0x0051, 9, 0x0051, 2, 0x0621, 5),
 	} {
 		if got := rulesOf(sourceFacts(r, ids)); got != "E8" {
 			t.Fatalf("bad %d: %q", i, got)

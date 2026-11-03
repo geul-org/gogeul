@@ -4,8 +4,8 @@
 // Tokens:
 //
 //	ABSENT                slot marker ABSENT 0x0000, 적지 않음 (edge/CODEC 선택 필드)
-//	UNKNOWN               slot marker UNKNOWN-VALUE 0x0001, 알 수 없음
-//	NONE                  slot marker NO-VALUE 0x0002, 없음
+//	UNKNOWN               slot marker UNKNOWN-VALUE 0x0010, 알 수 없음
+//	NONE                  slot marker NO-VALUE 0x0020, 없음
 //	                      (a record field takes a marker only when its CODEC
 //	                      list names that exact WORD: reference/slot-marker)
 //	#12                   LOCAL

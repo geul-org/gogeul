@@ -15,7 +15,7 @@ func TestNumberProblem(t *testing.T) {
 	good := []core.Record{
 		v(core.CodecSignedInteger, 0xFFFF), v(core.CodecUnsignedInteger, 0x8000), v(core.CodecSignedDecimal, 0xFFFF, 0xFFFE, 0x0929),
 		v(core.CodecUnsignedDecimal, 0xFFFF, 0xFFFF, 0x3111), v(core.CodecBinaryFloat, 0x3C00),
-		v(core.CodecFraction, 0x0411, 2, 0x0421, 3), v(core.CodecUTF8TextEven),
+		v(core.CodecFraction, 0x0611, 2, 0x0621, 3), v(core.CodecUTF8TextEven),
 	}
 	for _, r := range good {
 		if p := numberProblem(r); p != "" {
@@ -25,7 +25,7 @@ func TestNumberProblem(t *testing.T) {
 	bad := []core.Record{
 		v(core.CodecSignedInteger, 0, 1), v(core.CodecUnsignedInteger, 0, 1), v(core.CodecSignedDecimal, 0, 0),
 		v(core.CodecSignedDecimal, 0, 0, 0xFFFF, 0xFFFF), v(core.CodecUnsignedDecimal, 0, 0, 0, 1),
-		v(core.CodecBinaryFloat, 0x7E00), v(core.CodecFraction, 0x0421, 2, 0x0421, 3), v(core.CodecFraction, 0x0411, 2, 0x0421, 0),
+		v(core.CodecBinaryFloat, 0x7E00), v(core.CodecFraction, 0x0621, 2, 0x0621, 3), v(core.CodecFraction, 0x0611, 2, 0x0621, 0),
 	}
 	for _, r := range bad {
 		if numberProblem(r) == "" {

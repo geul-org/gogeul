@@ -20,7 +20,7 @@ func TestQuantityNumbers(t *testing.T) {
 	for i, q := range []core.Quantity{
 		{Amount: v(core.CodecSignedDecimal, 0, 0, 0, 1), Unit: absent, Lower: absent, Upper: absent},
 		{Amount: d, Unit: absent, Lower: v(core.CodecBinaryFloat, 0x7FC0, 0), Upper: absent},
-		{Amount: d, Unit: absent, Lower: absent, Upper: v(core.CodecFraction, 0x0411, 1, 0x0421, 0)},
+		{Amount: d, Unit: absent, Lower: absent, Upper: v(core.CodecFraction, 0x0611, 1, 0x0621, 0)},
 	} {
 		if quantityNumbers(q) == "" {
 			t.Fatalf("case %d: want a problem", i)

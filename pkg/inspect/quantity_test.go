@@ -21,7 +21,7 @@ func TestQuantity(t *testing.T) {
 	if a, u, l, h, err := quantity(r); err != nil || a != "1.20" || u != "" || l != "" || h != "" {
 		t.Fatalf("unitless: %q %q %q %q %v", a, u, l, h, err)
 	}
-	frac := core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}}
+	frac := core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0611, 2, 0x0621, 3}}
 	one := core.Record{Kind: core.KindValue, Codec: core.CodecSignedInteger, Payload: []core.Word{1}}
 	bf := core.Record{Kind: core.KindValue, Codec: core.CodecBinaryFloat, Payload: []core.Word{0x3C00}}
 	r, _ = core.EncodeQuantity(core.Quantity{Amount: frac, Unit: absent, Lower: one, Upper: bf})

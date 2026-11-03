@@ -17,7 +17,7 @@ func TestTextOf(t *testing.T) {
 	if s, ok := textOf(enc(core.EncodeLanguageText(fr, []byte("Paris")))); !ok || s != `"Paris"@fr` {
 		t.Fatalf("language text: %q %v", s, ok)
 	}
-	for i, ws := range [][]core.Word{enc(core.EncodeUintValue(1)), enc(core.EncodeLocalRef(1)), {0x08C1, 0x4142}, {0xE000}, enc(core.EncodeBytesValue(core.CodecURIEven, []byte("http://x"))), {0x0531, 0x4142}} {
+	for i, ws := range [][]core.Word{enc(core.EncodeUintValue(1)), enc(core.EncodeLocalRef(1)), {0x0AC1, 0x4142}, {0xE000}, enc(core.EncodeBytesValue(core.CodecURIEven, []byte("http://x"))), {0x0731, 0x4142}} {
 		if _, ok := textOf(ws); ok {
 			t.Fatalf("case %d: want not text", i)
 		}

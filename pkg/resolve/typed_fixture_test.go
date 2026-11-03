@@ -5,7 +5,7 @@ package resolve
 import "github.com/geul-org/gogeul/pkg/core"
 
 // typedFixture is what newTypedFixture publishes: d holds document
-// 0xffff000000000007 (v1 "a", v2 "b"), codec 0x00000980 (v1), and version 1 of
+// 0xffff000000000007 (v1 "a", v2 "b"), codec 0x00000b80 (v1), and version 1 of
 // the Issuer list.
 type typedFixture struct {
 	d             Dir

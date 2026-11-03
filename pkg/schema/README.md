@@ -25,7 +25,7 @@
 | F2 | Length가 레코드의 전체 WORD 수와 같고, 레코드가 입력 안에 들어간다. |
 | F3 | 1~14 WORD는 직접 길이, 15~65535는 `1110`, 그 위는 `1111`이다. 더 넓은 표현은 비정규로 거부한다. |
 | F4 | TAG WORD 접두사가 `000`(Proposal)이다. `001`(Standard)은 아직 배정이 없어 Warn, 그 밖은 Error다. |
-| F5 | Codec이 ISSUER-2/4/16WORD(Value C `0x3D`~`0x3F`, Edge C `0x13D`~`0x13F`)면 TAG 뒤에 그 폭의 Issuer와 코덱 번호 2 WORD가 있다. Issuer는 값이 들어가는 가장 짧은 폭이다. Reference의 REFERENCE-ISSUER(C `0x3D`~`0x3F`)는 Payload가 그 Issuer의 것이다. |
+| F5 | Codec이 ISSUER-2/4/16WORD(Value TAG `0x09DL`~`0x09FL`, Edge TAG `0x1BDL`~`0x1BFL`)면 TAG 뒤에 그 폭의 Issuer와 코덱 번호 2 WORD가 있다. Issuer는 값이 들어가는 가장 짧은 폭이다. Reference의 REFERENCE-ISSUER(TAG `0x05DL`~`0x05FL`)는 Payload가 그 Issuer의 것이다. |
 
 ### D 문서 구조 (OVERVIEW 구조)
 
@@ -40,11 +40,11 @@
 
 | 규칙 | 내용 |
 |---|---|
-| R1 | C `0`~`2`는 자리 표지 ABSENT·UNKNOWN-VALUE·NO-VALUE(WORD `0x0000`·`0x0010`·`0x0020`)다. 레코드 자리(HEAD·BODY)의 자리 표지는 Error(표지는 그것을 받는 레코드 필드 안에서만 쓴다), Payload가 있는 표지 C는 예약(Warn)이다. 5Q 체계(C `0x05`~`0x3B`)는 체계 C/5, Quantifier C%5다. |
+| R1 | Reference TAG `0x000L`~`0x002L`은 자리 표지 ABSENT·UNKNOWN-VALUE·NO-VALUE(WORD `0x0000`·`0x0010`·`0x0020`)다. 레코드 자리(HEAD·BODY)의 자리 표지는 Error(표지는 그것을 받는 레코드 필드 안에서만 쓴다), Payload가 있는 표지는 예약(Warn)이다. 빈칸 `0x003L`·`0x004L`, `0x01EL`·`0x01FL`, `0x03EL`·`0x03FL`, `0x043L`~`0x05CL`은 예약(Warn)이다. 5Q 체계는 섹션 0 `0x005L`~`0x01DL`(체계 C/5)과 섹션 1 `0x020L`~`0x03DL`(체계 6 + C/5)이고 Quantifier는 C%5다(C는 섹션 안 5비트 오프셋). |
 | R2 | 대상 ID는 가장 짧은 폭이다. 값 0은 `0x0000` 1 WORD이고, 그 밖에는 선행 `0x0000` WORD가 없다. |
 | R3 | `EXTERNAL-POINTER-*`: IMPORT ID가 들어가는 가장 좁은 Codec이고, 그 IMPORT ID를 배정한 `IMPORT-DOC`이 HEAD에 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). |
 | R4 | `EXTERNAL-ISSUER-*`(체계 9~11, 2/4/16 WORD): Issuer 폭이 체계와 맞고 값이 들어가는 가장 짧은 폭이며, 문서 ID 4 WORD 뒤에 대상 ID가 1 WORD 이상 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). 문서 ID `0`은 Issuer의 용어 정의 색인 문서다. |
-| R5 | `ISSUER-POINTER`(C 3)·`DOC-POINTER`(C 4)·`CODEC-POINTER`(C `0x3C`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`·`…FE`·`…FD`는 목록(issuers·docs·codecs) 예약 ID다. |
+| R5 | `ISSUER-POINTER`(`0x040L`)·`DOC-POINTER`(`0x041L`)·`CODEC-POINTER`(`0x042L`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`·`…FE`·`…FD`는 목록(issuers·docs·codecs) 예약 ID다. |
 
 ### V Value (OVERVIEW Value)
 
@@ -69,7 +69,7 @@
 |---|---|
 | E1 | Payload 첫 요소가 LOCAL Reference(Quantifier `000`)다. 그 LOCAL ID가 Edge Id이며 `0`이 아니다(`0`은 문서 자신). |
 | E2 | Edge Id는 문서 안에서 중복되지 않는다. HEAD Edge와 BODY는 한 번호 공간이다. |
-| E3 | 직접 코드의 Reserved 구간은 예약이다. 근거 계열은 `0x20`(SOURCE)만 배정되어 있다. |
+| E3 | 직접 코드의 Reserved 구간은 예약이다. 근거 계열은 SOURCE(`0x0C0L`)만 배정되어 있다. |
 | E4 | core 내장 Codec은 레이아웃이 맞다. `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`(Edge Id 뒤 22·6·7 WORD), `DECLARE`·`FIELD`·`ENUM`·`CODEC`(edge/DECLARE·FIELD·ENUM·CODEC). |
 | E5 | CODEC의 필드는 같은 문서의 FIELD이고, 한 필드에 같은 대상을 두 번 두지 않으며, 날값 필드(폭 ≥ 1)에는 CODEC이 하나뿐이고 와일드카드(LLLL `1111`)나 자리 표지(`0000`~`0007`)가 아니다. 자리 표지 대상만 있는 필드는 없다(edge/CODEC 선택 필드와 자리 표지). 예약 표지 대상 `0003`~`0007`은 Warn이다. 대상 WORD는 LLLL `0000`이거나 `1111` 와일드카드다(E4). |
 | E6 | (Warn) Object가 NO-VALUE(`0x0002`)인 TRIPLE과 같은 Subject·Predicate·rank, 같은 QUALIFIER 묶음(Property=Value)의 TRIPLE이 다른 Object(값 또는 UNKNOWN-VALUE)를 가지면 경고한다. 거부하지 않는다(위키데이터에도 있는 상태, 읽는 쪽이 rank로 고른다). TRIPLE·QUALIFIER는 문법이 고정한 레이아웃으로 자른다. |

@@ -9,15 +9,15 @@ import (
 )
 
 func TestCheckDocIDCodec(t *testing.T) {
-	id, _ := core.EncodeDocIDCodec([]core.Word{0, 0}, 0x0980)
+	id, _ := core.EncodeDocIDCodec([]core.Word{0, 0}, 0x0B80)
 	if fs := checkDocID(recOf(id)); fs != nil {
 		t.Fatalf("codec DOC-ID: %+v", fs)
 	}
-	ver := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaDocID, Payload: []core.Word{0x03C6, 0, 0, 0, 0x0980, 0, 1}})
+	ver := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaDocID, Payload: []core.Word{0x0426, 0, 0, 0, 0x0B80, 0, 1}})
 	if rulesOf(checkDocID(ver)) != "M2" {
 		t.Fatal("codec DOC-ID with a version: want M2")
 	}
-	imp := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x03C6, 0, 0, 0, 0x0980, 0, 1, 3}})
+	imp := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0426, 0, 0, 0, 0x0B80, 0, 1, 3}})
 	if fs := checkImportDoc(imp); fs != nil {
 		t.Fatalf("IMPORT-DOC of a codec: %+v", fs)
 	}

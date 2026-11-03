@@ -26,7 +26,7 @@ func sampleDoc(t *testing.T) []byte {
 	in = append(in, meta(core.MetaProfile, core.EncodeBytesValue(core.CodecUTF8TextEven, []byte("tangeul-1.0")))...)
 	in = append(in, meta(core.MetaDefaultLanguage, core.EncodeBytesValue(core.CodecLanguageBCP47Even, []byte("ko")))...)
 	in = append(in, raw(func() core.Record { r, _ := core.EncodeDocID([]core.Word{0, 2}, []core.Word{0, 0, 0, 5}); return r }())...)
-	in = append(in, raw(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0048, 0, 2, 0, 0, 0, 2, 0, 0, 1}})...)
+	in = append(in, raw(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0418, 0, 2, 0, 0, 0, 2, 0, 0, 1}})...)
 	in = append(in, raw(core.Record{Kind: core.KindMeta, Codec: 0x2A, Payload: []core.Word{7}})...)
 	in = append(in, 0x1C30)
 	src, _ := toulmin.EncodeSource(toulmin.TextPacket{TID: 9, Bytes: []byte("# t\n")}, w)

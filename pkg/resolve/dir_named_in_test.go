@@ -10,7 +10,7 @@ func TestDirNamedIn(t *testing.T) {
 	if len(got) != 1 || got[0].ID != "0xffff000000000007" || got[0].Names != nil {
 		t.Fatal(got)
 	}
-	if got := f.d.namedIn("0x00000000/codecs", 2); len(got) != 1 || got[0].ID != "0x00000980" {
+	if got := f.d.namedIn("0x00000000/codecs", 2); len(got) != 1 || got[0].ID != "0x00000b80" {
 		t.Fatal(got)
 	}
 	if got := f.d.namedIn("0x00000000/docs", 2); len(got) != 0 {

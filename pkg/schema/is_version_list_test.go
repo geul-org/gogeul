@@ -8,7 +8,7 @@ import (
 )
 
 func TestIsVersionList(t *testing.T) {
-	pub := recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x03B8, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))
+	pub := recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x03D8, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))
 	id := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaDocID, Payload: []core.Word{0, 0, 0, 0, 2}})
 	if !isVersionList(docParts{Body: []rec{pub}}) || isVersionList(docParts{Head: []rec{id}, Body: []rec{pub}}) || isVersionList(docParts{Body: []rec{recOf(edgeOf(0, 1))}}) || isVersionList(docParts{}) {
 		t.Fatal("wrong")

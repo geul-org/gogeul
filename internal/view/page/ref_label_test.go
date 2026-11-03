@@ -10,7 +10,7 @@ import (
 
 func TestRefLabel(t *testing.T) {
 	ext := core.Record{Kind: core.KindReference, Codec: core.CodecExternalIssuer2Word, Payload: []core.Word{0, 0, 0xffff, 0, 0, 1, 0}}
-	c, _, _ := core.DecodeRecord([]core.Word{0x0980})
+	c, _, _ := core.DecodeRecord([]core.Word{0x0B80})
 	for want, r := range map[string]core.Record{
 		"0x00000000 0xffff000000000001 0x0000": ext,
 		"0x0007":                               core.EncodeLocalRef(7),

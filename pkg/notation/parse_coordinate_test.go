@@ -12,7 +12,7 @@ import (
 func TestParseCoordinate(t *testing.T) {
 	r, err := parseCall("COORDINATE-EARTH(52.516666666667, 13.383333333333, 1, Q209426)", Context{})
 	ws, _ := core.EncodeRecord(r)
-	if err != nil || !slices.Equal(ws, []core.Word{0x044D, 0x404A, 0x4222, 0x2222, 0x2251, 0x402A, 0xC444, 0x4444, 0x4389, 0x3F80, 0x0000, 0x0142, 0x0003, 0x3212}) {
+	if err != nil || !slices.Equal(ws, []core.Word{0x064D, 0x404A, 0x4222, 0x2222, 0x2251, 0x402A, 0xC444, 0x4444, 0x4389, 0x3F80, 0x0000, 0x0142, 0x0003, 0x3212}) {
 		t.Fatalf("earth: %04X %v", ws, err)
 	}
 	if got, ok := formatValue(r); !ok || got != "COORDINATE-EARTH(52.516666666667, 13.383333333333, 1, Q209426)" {

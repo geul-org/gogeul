@@ -13,7 +13,7 @@ import (
 )
 
 func TestRecordNameVector(t *testing.T) {
-	f, err := os.Open("../core/testdata/migration1/vector.tsv")
+	f, err := os.Open("../core/testdata/migration1/vector2.tsv")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,8 +1,8 @@
 //ff:type feature=toulmin type=model
-//ff:what TOULMIN codec table — the direct Edge codes of a .geul TANGEUL document (0x0E0L~0x0FBL and, since §3.14, 0x100L~0x114L)
+//ff:what TOULMIN codec table — the direct Edge codes of a .geul TANGEUL document (0x100L~0x11BL and, since §3.14, 0x120L~0x134L)
 package toulmin
 
-// Direct TOULMIN Edge codecs (Edge Codec = code - 0x80, TAG 0x0E0L~0x0FBL). FROZEN.
+// Direct TOULMIN Edge codecs (Edge Codec = code - 0xA0, TAG 0x100L~0x11BL). FROZEN.
 const (
 	CodecCaseDeclare      uint16 = 0x60
 	CodecPredicateDeclare uint16 = 0x61
@@ -23,8 +23,8 @@ const (
 
 // TOULMIN record types formerly written as GEUL ISSUER formats 0xC000~0xC029,
 // now direct Edge codes in their old number order (migration.md §3.14; TAG
-// 0x100L~0x114L, Edge Codec = code - 0x80). The family of these codes
-// ((code-0x80)>>5 = 4) has no name yet.
+// 0x120L~0x134L, Edge Codec = code - 0xA0). The family of these codes
+// ((code-0xA0)>>5 = 4) has no name yet.
 const (
 	CodecSource       uint16 = 0x80
 	CodecText         uint16 = 0x81

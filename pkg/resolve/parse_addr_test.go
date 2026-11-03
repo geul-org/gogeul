@@ -12,7 +12,7 @@ func TestParseAddr(t *testing.T) {
 	h := "0x" + strings.Repeat("ab", 32)
 	forms := []string{
 		"issuers/latest.geul", "issuers/0x00000002.geul", "issuers/versions.geul",
-		"0x00000000/codecs/0x000003c0/latest.geul", "0x00000000/codecs/0x000003c0/0x00000003.geul", "0x00000000/codecs/0x000003c0/versions.geul",
+		"0x00000000/codecs/0x00000420/latest.geul", "0x00000000/codecs/0x00000420/0x00000003.geul", "0x00000000/codecs/0x00000420/versions.geul",
 		"0x00000001/docs/0x510000000000002a/latest.geul", "0x00000001/docs/0x510000000000002a/0x00000001.geul", "0x00000001/docs/0x510000000000002a/versions.geul",
 		"0x00000001/hashes/" + h + ".geul", "0x00000002/docs/0xfffffffffffffffd/0x00000001.geul",
 	}
@@ -39,7 +39,7 @@ func TestParseAddr(t *testing.T) {
 	}
 	for _, s := range []string{"", "issuers.geul", "0x0000/documents.geul", "h/" + h + ".geul", "0x0000/docs/latest.geul", "0x00000000/docs/0x00000000.geul",
 		"0x00000000/docs/0x0000000000000001/0x00000000.geul", "0x00000000/0x0000000000000001/0x00000001.geul", "0x00000000/docs/0x0000000000000001.geul",
-		"0x00000000/codecs/0x3c0/latest.geul", "0x00000000/codecs/0x000003c0/0x000003c0/latest.geul", "0x00000000/keys/x.geul", "0x00000000/hashes/0xab.geul",
+		"0x00000000/codecs/0x420/latest.geul", "0x00000000/codecs/0x00000420/0x00000420/latest.geul", "0x00000000/keys/x.geul", "0x00000000/hashes/0xab.geul",
 		"0x00000000/docs/latest", "0x00000000/DOCS/latest.geul", "0x0000000A/docs/latest.geul", "0x00000000/docs/0x00000001.geul/x",
 		"0x00000000/codecs/latest.geul", "0x00000000/codecs/0x00000001.geul", "0x00000000/codecs/versions.geul",
 		"0x00000001/docs/latest.geul", "0x00000001/docs/0x00000001.geul", "0x00000001/docs/versions.geul",

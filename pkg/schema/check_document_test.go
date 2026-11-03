@@ -17,7 +17,7 @@ func TestCheckDocument(t *testing.T) {
 	if fs := checkDocument(docParts{Head: head, Body: body[:1]}); rulesOf(fs) != "E2" {
 		t.Fatalf("Edge Ids are one numbering over HEAD and BODY: %+v", fs)
 	}
-	list := []rec{recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x0048, 0, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...)), recOf(edgeOf(0, 1))}
+	list := []rec{recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x0418, 0, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...)), recOf(edgeOf(0, 1))}
 	if fs := checkDocument(docParts{Body: list}); rulesOf(fs) != "E2,P2,P1" {
 		t.Fatalf("list: %+v", fs)
 	}

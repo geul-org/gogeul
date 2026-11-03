@@ -10,9 +10,9 @@ import (
 
 func TestFormatReferenceBare(t *testing.T) {
 	for _, r := range []core.Record{
-		{Kind: core.KindReference, Codec: core.CodecDocPointer},                                      // raw 0x0040
-		{Kind: core.KindReference, Codec: core.CodecDocPointer, Payload: []core.Word{0}},             // raw 0x0041 0x0000
-		{Kind: core.KindReference, Codec: core.CodecIssuerPointer},                                   // raw 0x0030
+		{Kind: core.KindReference, Codec: core.CodecDocPointer},                                      // raw 0x0410
+		{Kind: core.KindReference, Codec: core.CodecDocPointer, Payload: []core.Word{0}},             // raw 0x0411 0x0000
+		{Kind: core.KindReference, Codec: core.CodecIssuerPointer},                                   // raw 0x0400
 		{Kind: core.KindReference, Codec: core.CodecIssuerPointer, Payload: []core.Word{0, 0, 0, 1}}, // Issuer 0x0000000000000001 not canonical
 	} {
 		if s, ok := formatReference(r); ok || s != "" {
@@ -28,7 +28,7 @@ func TestFormatReferenceBare(t *testing.T) {
 			t.Errorf("%04x: empty token", v)
 		}
 	}
-	if got := formatRecord(core.Record{Kind: core.KindReference, Codec: core.CodecDocPointer}); got != "0x0040" {
-		t.Errorf("bare DOC-POINTER: got %s, want raw 0x0040", got)
+	if got := formatRecord(core.Record{Kind: core.KindReference, Codec: core.CodecDocPointer}); got != "0x0410" {
+		t.Errorf("bare DOC-POINTER: got %s, want raw 0x0410", got)
 	}
 }

@@ -32,7 +32,7 @@ func TestBodyEntry(t *testing.T) {
 	q := toulmin.VFix(8000)
 	node, _ := toulmin.EncodeNode(toulmin.NodePacket{TID: 1, Type: toulmin.NodeCase, Flags: toulmin.NodeFlagQual, Qual: &q}, w)
 	rn, _, _ := core.DecodeRecord(node)
-	copy(rn.Payload[3:7], []core.Word{0x0483, 0xFFFF, 0xFFFE, 80})
+	copy(rn.Payload[3:7], []core.Word{0x0683, 0xFFFF, 0xFFFE, 80})
 	if _, err := toulmin.DecodeNode(rn, w); err != nil {
 		t.Fatalf("crafted node must decode: %v", err)
 	}

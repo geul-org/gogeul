@@ -22,24 +22,24 @@ func TestCodecDecls(t *testing.T) {
 	codec := func(id, f uint64, t core.Word) core.Record {
 		return core.EncodeCodecDecl(core.CodecDecl{EdgeID: id, Field: f, Target: t})
 	}
-	if fs := codecDecls(recs(field(2, 0), field(3, 1), codec(4, 2, 0x0580), codec(5, 2, 0x000F), codec(6, 3, 0x0420), codec(7, 2, 0x0000))); len(fs) != 0 {
+	if fs := codecDecls(recs(field(2, 0), field(3, 1), codec(4, 2, 0x0780), codec(5, 2, 0x000F), codec(6, 3, 0x0620), codec(7, 2, 0x0000))); len(fs) != 0 {
 		t.Fatalf("ok: %+v", fs)
 	}
 	for i, body := range [][]rec{
-		recs(codec(4, 9, 0x0580)),
-		recs(field(2, 0), codec(4, 2, 0x0580), codec(5, 2, 0x0580)),
-		recs(field(3, 1), codec(4, 3, 0x0420), codec(5, 3, 0x0410)),
-		recs(field(3, 1), codec(4, 3, 0x040F)),
-		recs(field(3, 1), codec(4, 3, 0x0420), codec(5, 3, 0x0000)),
+		recs(codec(4, 9, 0x0780)),
+		recs(field(2, 0), codec(4, 2, 0x0780), codec(5, 2, 0x0780)),
+		recs(field(3, 1), codec(4, 3, 0x0620), codec(5, 3, 0x0610)),
+		recs(field(3, 1), codec(4, 3, 0x060F)),
+		recs(field(3, 1), codec(4, 3, 0x0620), codec(5, 3, 0x0000)),
 		recs(field(2, 0), codec(4, 2, 0x0000)),
-		recs(field(3, 1), codec(4, 3, 0x0420), codec(5, 3, core.UnknownValue)),
+		recs(field(3, 1), codec(4, 3, 0x0620), codec(5, 3, core.UnknownValue)),
 		recs(field(2, 0), codec(4, 2, core.NoValue)),
 	} {
 		if got := rulesOf(codecDecls(body)); got != "E5" {
 			t.Fatalf("case %d: %q", i, got)
 		}
 	}
-	if fs := codecDecls(recs(field(2, 0), codec(4, 2, 0x000F), codec(5, 2, 0x0030), codec(6, 2, 0x0050))); len(fs) != 0 {
+	if fs := codecDecls(recs(field(2, 0), codec(4, 2, 0x000F), codec(5, 2, 0x0400), codec(6, 2, 0x0050))); len(fs) != 0 {
 		t.Fatalf("pointer and LOCAL targets are not markers: %+v", fs)
 	}
 }

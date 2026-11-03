@@ -33,7 +33,7 @@ func TestResolvePublished(t *testing.T) {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
 	id, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7})
 	in := enc(id)
-	for i, imp := range [][2]uint32{{0x0980, 0}, {0x09C0, 1}} {
+	for i, imp := range [][2]uint32{{0x0B80, 0}, {0x0BC0, 1}} {
 		ptr, _ := core.EncodeCodecPointer([]core.Word{0, 0}, imp[0], imp[1])
 		in = append(in, enc(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: append(enc(ptr), core.Word(i+1))})...)
 	}
@@ -45,7 +45,7 @@ func TestResolvePublished(t *testing.T) {
 	key := func(codec core.Word) NodeKey {
 		return NodeKey{DocKey: DocKey{Issuer: "0x00000000", Doc: core.FormatID([]core.Word{0, codec})}, Version: 1}
 	}
-	pub, field := g.Docs[key(0x0980)], g.Docs[key(0x09C0)]
+	pub, field := g.Docs[key(0x0B80)], g.Docs[key(0x0BC0)]
 	if len(g.Docs) != 2 || pub == nil || field == nil || pub.Source != "file://"+root {
 		t.Fatalf("got %+v", g.Docs)
 	}

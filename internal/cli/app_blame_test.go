@@ -23,7 +23,7 @@ func TestAppBlame(t *testing.T) {
 		t.Fatal(out)
 	}
 	id, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0, 0, 0, 9})
-	noEdgeID := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0421, 1}}
+	noEdgeID := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0621, 1}}
 	odd, _ := core.EncodeDocument([]core.Record{id}, []core.Record{noEdgeID})
 	(resolve.Dir{Root: h.data}).Publish(odd)
 	if _, err := h.run("", "blame", "0x00000000/0x0000000000000009"); err == nil {

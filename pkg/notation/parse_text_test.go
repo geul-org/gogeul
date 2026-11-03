@@ -21,7 +21,7 @@ func TestParseText(t *testing.T) {
 	if s, ok := formatLanguageText(r); err != nil || !ok || s != `"Adams"@@0x0784` {
 		t.Fatalf("hex: %s %v", s, err)
 	}
-	ctx := Context{Spec: codecspec.Spec{0x05A0: {{Name: "code", Width: 1, Enums: map[string]string{"0x4130": "pt-BR"}}}}}
+	ctx := Context{Spec: codecspec.Spec{0x07A0: {{Name: "code", Width: 1, Enums: map[string]string{"0x4130": "pt-BR"}}}}}
 	r, err = parseText(`"Brasil"@@pt-br`, ctx)
 	if s, ok := formatLanguageText(r); err != nil || !ok || s != `"Brasil"@@0x4130` {
 		t.Fatalf("registry tag: %s %v", s, err)

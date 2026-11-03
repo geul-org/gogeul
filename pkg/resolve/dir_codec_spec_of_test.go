@@ -10,21 +10,21 @@ import (
 
 func TestDirCodecSpecOf(t *testing.T) {
 	d := Dir{Root: t.TempDir()}
-	d.PublishCodec(codecDocOf(0x0980, 4, 2))
-	s, err := d.codecSpecOf(0x0980)
-	if err != nil || len(s[0x0980]) != 2 {
+	d.PublishCodec(codecDocOf(0x0B80, 4, 2))
+	s, err := d.codecSpecOf(0x0B80)
+	if err != nil || len(s[0x0B80]) != 2 {
 		t.Fatal(s, err)
 	}
-	if _, err := d.codecSpecOf(0x09A0); err == nil {
+	if _, err := d.codecSpecOf(0x0BA0); err == nil {
 		t.Fatal("unpublished")
 	}
-	value := codecDocAs(0x09A0, 0x05A0, 4)
+	value := codecDocAs(0x0BA0, 0x07A0, 4)
 	ws, _ := core.ReadWords(value)
 	h, _ := core.ContentHash(ws)
-	if _, err := d.publishAt(codecKey(0x09A0), []core.Word{0, 0}, codecDocID(0x09A0), value, h); err != nil {
+	if _, err := d.publishAt(codecKey(0x0BA0), []core.Word{0, 0}, codecDocID(0x0BA0), value, h); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := d.codecSpecOf(0x09A0); err == nil {
+	if _, err := d.codecSpecOf(0x0BA0); err == nil {
 		t.Fatal("a Value codec document at an Edge codec ID: want error (§1.1 103)")
 	}
 }

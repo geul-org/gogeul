@@ -24,7 +24,7 @@ func TestRecordField(t *testing.T) {
 	if ws, err := recordField("P5", codecspec.Field{}, Context{}); err != nil || len(ws) != 2 {
 		t.Fatalf("no CODEC, any record: %v %v", ws, err)
 	}
-	object := codecspec.Field{Codecs: []core.Word{0x000F, 0x040F, core.UnknownValue, core.NoValue}}
+	object := codecspec.Field{Codecs: []core.Word{0x000F, 0x060F, core.UnknownValue, core.NoValue}}
 	if ws, err := recordField("UNKNOWN", object, Context{}); err != nil || !slices.Equal(ws, []core.Word{core.UnknownValue}) {
 		t.Fatalf("UNKNOWN named: %v %v", ws, err)
 	}

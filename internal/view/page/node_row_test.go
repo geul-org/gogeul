@@ -13,8 +13,8 @@ func TestNodeRow(t *testing.T) {
 	if r.Anchor != "n2" || r.Name != "LOCAL" || r.Label != "0x0007" || r.Summary != "#7" || len(r.HeadParts) != 1 || len(r.BodyParts) != 1 {
 		t.Fatalf("got %+v", r)
 	}
-	c, _, _ := core.DecodeRecord([]core.Word{0x1018})
-	if r := nodeRow(0, inspect.Entry{Record: c, Words: []core.Word{0x1018}, Name: "PUBLICATION"}); r.Label != "" {
+	c, _, _ := core.DecodeRecord([]core.Word{0x1218})
+	if r := nodeRow(0, inspect.Entry{Record: c, Words: []core.Word{0x1218}, Name: "PUBLICATION"}); r.Label != "" {
 		t.Fatalf("codec: %+v", r)
 	}
 }

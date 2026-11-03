@@ -22,7 +22,7 @@ func TestPayloadParts(t *testing.T) {
 		t.Fatalf("no fitting width: %+v", parts)
 	}
 	tomb := core.EncodePublication(core.Publication{Codec: core.EdgeTombstone, EdgeID: 3, Issuer: []core.Word{0, 0}, Doc: []core.Word{0, 0, 0, 1}, Version: 1, Reason: 1})
-	if parts := payloadParts(Entry{Record: tomb, Spec: tombstoneSpec()[0x09A0]}); len(parts) != 3 || parts[2].Enum != "license" {
+	if parts := payloadParts(Entry{Record: tomb, Spec: tombstoneSpec()[0x0BA0]}); len(parts) != 3 || parts[2].Enum != "license" {
 		t.Fatalf("spec: %+v", parts)
 	}
 }

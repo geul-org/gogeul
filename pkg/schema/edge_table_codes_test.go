@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what edgeTableCodes — the old Edge C 0x00~0x7B of t12_edge.md, each with whether the plan assigns it a new code
+//ff:what edgeTableCodes — the Edge codes of the plan2 name table (layout2.md), each with whether it is assigned (Reserved is not)
 package schema
 
 import (
@@ -9,27 +9,23 @@ import (
 	"testing"
 )
 
-// edgeTableCodes reads the plan's Edge table and expands its ranges: a row
-// whose new code column is a number is assigned, 빈칸 and deleted rows are not.
+// edgeTableCodes reads the name table of layout2.md (migration.md §3.15) and
+// keeps the Edge rows (TAG 0x0A0L~0x1BFL) as Edge Codec (code - 0xA0) → true
+// for an assigned code, false for Reserved.
 func edgeTableCodes(t *testing.T) map[uint16]bool {
-	b, err := os.ReadFile("../core/testdata/migration1/t12_edge.md")
+	b, err := os.ReadFile("../core/testdata/migration1/layout2.md")
 	if err != nil {
 		t.Fatal(err)
 	}
 	out := map[uint16]bool{}
 	for _, line := range strings.Split(string(b), "\n") {
 		a := strings.Split(line, "|")
-		if len(a) < 6 || !strings.HasPrefix(strings.TrimSpace(a[1]), "`0x") {
+		if len(a) < 3 || !strings.HasPrefix(strings.TrimSpace(a[1]), "`0x") {
 			continue
 		}
-		lo, hi, _ := strings.Cut(strings.Trim(strings.TrimSpace(a[1]), "`"), "`~`")
-		from, _ := strconv.ParseUint(lo, 0, 16)
-		to := from
-		if hi != "" {
-			to, _ = strconv.ParseUint(hi, 0, 16)
-		}
-		for c := from; c <= to && c < 0x7C; c++ {
-			out[uint16(c)] = strings.HasPrefix(strings.TrimSpace(a[4]), "`0x")
+		code, err := strconv.ParseUint(strings.Trim(strings.TrimSpace(a[1]), "`L"), 0, 16)
+		if err == nil && code >= 0x0A0 && code < 0x1C0 {
+			out[uint16(code-0xA0)] = strings.TrimSpace(a[2]) != "Reserved"
 		}
 	}
 	return out

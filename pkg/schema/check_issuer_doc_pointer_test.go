@@ -30,10 +30,10 @@ func TestCheckIssuerDocPointer(t *testing.T) {
 		{ref(doc, 0, 0, 0, 0, 0, 0, 0, 1), doc, ""},
 		{ref(doc, 0, 0xFFFF, 0, 0, 1, 0, 1), doc, "R5"},
 		{ref(doc, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1), doc, "R5"},
-		{ref(cdc, 0, 0, 0, 0x0980, 0, 0), cdc, ""},
-		{ref(cdc, 0, 1, 0, 0, 0, 0x0980, 0, 1), cdc, ""},
-		{ref(cdc, 0, 0, 0, 1, 0, 0x0980, 0, 1), cdc, "R5"},
-		{ref(cdc, 0, 0, 0x0980, 0, 1), cdc, "R5"},
+		{ref(cdc, 0, 0, 0, 0x0B80, 0, 0), cdc, ""},
+		{ref(cdc, 0, 1, 0, 0, 0, 0x0B80, 0, 1), cdc, ""},
+		{ref(cdc, 0, 0, 0, 1, 0, 0x0B80, 0, 1), cdc, "R5"},
+		{ref(cdc, 0, 0, 0x0B80, 0, 1), cdc, "R5"},
 	}
 	for i, tc := range cases {
 		if got := rulesOf(checkIssuerDocPointer(tc.r, tc.c)); got != tc.want {

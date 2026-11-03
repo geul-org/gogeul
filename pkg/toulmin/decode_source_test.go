@@ -21,8 +21,8 @@ func TestDecodeSource(t *testing.T) {
 		src(0x0051, 1),
 		src(0x0051, 1, 0x0001),
 		src(0x0051, 1, 0),
-		src(0x0051, 1, 0, 0x0421, 1),
-		src(0x0051, 1, 0, 0x0840, 0),
+		src(0x0051, 1, 0, 0x0621, 1),
+		src(0x0051, 1, 0, 0x0A40, 0),
 	}
 	for i, r := range bad {
 		if _, _, err := DecodeSource(r); err == nil {

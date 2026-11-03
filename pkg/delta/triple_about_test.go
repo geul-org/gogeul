@@ -11,7 +11,7 @@ import (
 
 func TestTripleAbout(t *testing.T) {
 	id, words, ok := tripleAbout(tripleOf(4, 1476, core.EncodeLocalRef(20), "ab"))
-	want := []core.Word{0x0191, 1476, 0x0521, 0x6162, 0}
+	want := []core.Word{0x0191, 1476, 0x0721, 0x6162, 0}
 	if !ok || id != 20 || !slices.Equal(words, want) {
 		t.Fatalf("%d %04x %v", id, words, ok)
 	}

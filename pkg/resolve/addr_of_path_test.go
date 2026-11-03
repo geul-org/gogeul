@@ -12,7 +12,7 @@ func TestAddrOfPath(t *testing.T) {
 	h := "0x" + strings.Repeat("ab", 32) + ".geul"
 	for p, k := range map[string]AddrKind{
 		"issuers/latest.geul":                            AddrIssuers,
-		"0x00000000/codecs/0x00000980/latest.geul":       AddrCodec,
+		"0x00000000/codecs/0x00000b80/latest.geul":       AddrCodec,
 		"0x00000000/docs/0x0000000000000007/latest.geul": AddrDoc,
 		"0x00000000/hashes/" + h:                         AddrHash,
 	} {

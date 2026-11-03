@@ -12,13 +12,13 @@ func TestCheckFraction(t *testing.T) {
 	v := func(p ...core.Word) rec {
 		return recOf(core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: p})
 	}
-	if fs := checkFraction(v(0x0411, 2, 0x0421, 3)); fs != nil {
+	if fs := checkFraction(v(0x0611, 2, 0x0621, 3)); fs != nil {
 		t.Fatalf("2/3: %+v", fs)
 	}
-	if rulesOf(checkFraction(v(0x0411, 2))) != "V10" {
+	if rulesOf(checkFraction(v(0x0611, 2))) != "V10" {
 		t.Fatal("layout: want V10")
 	}
-	if rulesOf(checkFraction(v(0x0411, 2, 0x0421, 0))) != "V10" {
+	if rulesOf(checkFraction(v(0x0611, 2, 0x0621, 0))) != "V10" {
 		t.Fatal("zero denominator: want V10")
 	}
 }

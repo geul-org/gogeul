@@ -16,7 +16,7 @@ func TestDirLookup(t *testing.T) {
 			t.Fatalf("%s: %+v %v", s, k, err)
 		}
 	}
-	if k, err := d.Lookup("geul.org/0x00000980@1"); err != nil || core.FormatID(k.Doc) != "0x00000980" || k.Version != 1 {
+	if k, err := d.Lookup("geul.org/0x00000b80@1"); err != nil || core.FormatID(k.Doc) != "0x00000b80" || k.Version != 1 {
 		t.Fatalf("codec: %+v %v", k, err)
 	}
 	for _, s := range []string{"seven", "geul.org/seven", "geul.org/0xffff000000000007@x", "nobody/seven", "geul.org/nothing", "0x00000000/0xFFFF000000000007", "0x0000/0xffff000000000007"} {

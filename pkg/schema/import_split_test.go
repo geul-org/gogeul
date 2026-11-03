@@ -16,7 +16,7 @@ func TestImportSplit(t *testing.T) {
 	if _, ok := importSplit(recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0051, 1, 2}})); ok {
 		t.Fatal("LOCAL accepted")
 	}
-	if _, ok := importSplit(recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x03B8, 0}})); ok {
+	if _, ok := importSplit(recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x03D8, 0}})); ok {
 		t.Fatal("short accepted")
 	}
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func TestS314Names(t *testing.T) {
-	b, err := os.ReadFile("../core/testdata/migration1/s314.tsv")
+	b, err := os.ReadFile("../core/testdata/migration1/s314_p2.tsv")
 	if err != nil {
 		t.Fatal(err)
 	}

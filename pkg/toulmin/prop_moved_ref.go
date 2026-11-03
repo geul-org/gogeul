@@ -1,11 +1,11 @@
 //ff:func feature=toulmin type=encoder control=selection
-//ff:what propMovedRef — the codec of a relation formerly written as a GEUL ISSUER format (0x10BL~0x114L, §3.14)
+//ff:what propMovedRef — the codec of a relation formerly written as a GEUL ISSUER format (0x12BL~0x134L, §3.14)
 package toulmin
 
 import "fmt"
 
-// propMovedRef maps the relations outside the TOULMIN 0x0E0L~0x0FBL codes to
-// their direct codes 0x10BL~0x114L (formerly GEUL ISSUER formats, migration.md
+// propMovedRef maps the relations outside the TOULMIN 0x100L~0x11BL codes to
+// their direct codes 0x12BL~0x134L (formerly GEUL ISSUER formats, migration.md
 // §3.14).
 func propMovedRef(p PropCode) (CodecRef, error) {
 	switch p {

@@ -13,7 +13,7 @@ func TestAppShowNoSpec(t *testing.T) {
 	h := newHarness(t)
 	addr, _ := h.doc()
 	with := h.must("show", docsAddr(addr)+"/latest")
-	os.RemoveAll(filepath.Join(h.data, ".well-known", "geul", "0x00000000", "codecs", "0x000008a0"))
+	os.RemoveAll(filepath.Join(h.data, ".well-known", "geul", "0x00000000", "codecs", "0x00000aa0"))
 	out := h.must("show", docsAddr(addr)+"/latest")
 	if strings.Contains(out, "normal") || !strings.Contains(out, "TRIPLE") || out == with {
 		t.Fatal(out)

@@ -21,7 +21,7 @@ func TestFormatValue(t *testing.T) {
 		"QUANTITY(1.20, ABSENT, ABSENT, ABSENT)": q,
 		"SHA1-DIGEST(0x0001)":                    {Kind: core.KindValue, Codec: core.CodecSHA1Digest, Payload: []core.Word{1}},
 		"SIGNED-INTEGER(-1)":                     {Kind: core.KindValue, Codec: core.CodecSignedInteger, Payload: []core.Word{0xFFFF}},
-		"FRACTION(2, 3)":                         {Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}},
+		"FRACTION(2, 3)":                         {Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0611, 2, 0x0621, 3}},
 	}
 	for want, r := range cases {
 		if got, ok := formatValue(r); !ok || got != want {

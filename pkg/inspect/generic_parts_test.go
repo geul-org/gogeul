@@ -15,9 +15,9 @@ func TestGenericParts(t *testing.T) {
 		names []string
 	}{
 		{Entry{Record: core.Record{Kind: core.KindEdge, Payload: []core.Word{0x0051, 1, 9}}}, []string{"ID", "payload"}},
-		{Entry{Record: core.Record{Kind: core.KindMeta, Payload: []core.Word{0x0421, 1}}, Data: Value{}}, []string{"value"}},
-		{Entry{Record: core.Record{Kind: core.KindEdge, Payload: []core.Word{0x0421, 1}}}, []string{"UNSIGNED-INTEGER"}},
-		{Entry{Record: core.Record{Kind: core.KindEdge, Payload: []core.Word{0x0051, 1, 0x0051, 7, 0x0522, 0x6d61, 0x696e}}}, []string{"ID", "LOCAL", "UTF8-TEXT"}},
+		{Entry{Record: core.Record{Kind: core.KindMeta, Payload: []core.Word{0x0621, 1}}, Data: Value{}}, []string{"value"}},
+		{Entry{Record: core.Record{Kind: core.KindEdge, Payload: []core.Word{0x0621, 1}}}, []string{"UNSIGNED-INTEGER"}},
+		{Entry{Record: core.Record{Kind: core.KindEdge, Payload: []core.Word{0x0051, 1, 0x0051, 7, 0x0722, 0x6d61, 0x696e}}}, []string{"ID", "LOCAL", "UTF8-TEXT"}},
 		{Entry{Record: core.Record{Kind: core.KindMeta, Payload: []core.Word{0x0002}}, Data: Value{}}, []string{"payload"}},
 		{Entry{Record: core.Record{Kind: core.KindMeta}}, nil},
 	}

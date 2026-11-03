@@ -36,7 +36,7 @@ func TestParseValue(t *testing.T) {
 		{core.Record{Kind: core.KindValue, Codec: core.CodecSHA1Digest, Payload: make([]core.Word, 10)}, Value{Codec: core.CodecSHA1Digest, Text: "0x" + strings.Repeat("0", 40)}},
 		{qty, Value{Codec: core.CodecQuantity, Amount: "1.20"}},
 		{core.Record{Kind: core.KindValue, Codec: core.CodecSignedInteger, Payload: []core.Word{0xFFFB}}, Value{Codec: core.CodecSignedInteger, Number: "-5"}},
-		{core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}}, Value{Codec: core.CodecFraction, Number: "2/3"}},
+		{core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0611, 2, 0x0621, 3}}, Value{Codec: core.CodecFraction, Number: "2/3"}},
 	}
 	for _, c := range cases {
 		if got, ok := ParseValue(c.r); !ok || got != c.want {

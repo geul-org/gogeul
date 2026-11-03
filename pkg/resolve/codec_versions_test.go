@@ -12,10 +12,10 @@ import (
 func TestCodecVersions(t *testing.T) {
 	ctx := context.Background()
 	f := newTypedFixture(t)
-	if b, err := CodecVersions(ctx, f.d, f.pad, 0x0980); err != nil || !bytes.Equal(b, f.clist) {
+	if b, err := CodecVersions(ctx, f.d, f.pad, 0x0B80); err != nil || !bytes.Equal(b, f.clist) {
 		t.Fatalf("%d bytes %v", len(b), err)
 	}
-	if _, err := CodecVersions(ctx, f.d, f.g, 0x0981); !errors.Is(err, ErrNotFound) {
+	if _, err := CodecVersions(ctx, f.d, f.g, 0x0B81); !errors.Is(err, ErrNotFound) {
 		t.Fatal("missing:", err)
 	}
 }

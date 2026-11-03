@@ -1,5 +1,5 @@
 //ff:func feature=toulmin type=encoder control=iteration dimension=1
-//ff:what TestPropMovedRef — every relation moved from a GEUL format maps to its direct code 0x10BL~0x114L; ATTACKS does not
+//ff:what TestPropMovedRef — every relation moved from a GEUL format maps to its direct code 0x12BL~0x134L; ATTACKS does not
 package toulmin
 
 import "testing"
@@ -17,6 +17,6 @@ func TestPropMovedRef(t *testing.T) {
 		}
 	}
 	if _, err := propMovedRef(PropAttacks); err == nil {
-		t.Fatal("attacks is a TOULMIN 0x0E0L code, not a moved one")
+		t.Fatal("attacks is a TOULMIN 0x100L code, not a moved one")
 	}
 }

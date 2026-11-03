@@ -35,8 +35,8 @@
 
 | 출처 | 레이아웃 | Key |
 |---|---|---|
-| `IMPORT-DOC` (Meta C `0x24`, TAG `0x1E4L`) | IMPORT ID + 대상 포인터(DOC-POINTER 또는 CODEC-POINTER) | 그대로 |
-| `EXTERNAL-ISSUER-*` (Reference C `0x2D`·`0x32`·`0x37`, 5Q 체계 9~11) | TAG + Issuer + 문서 ID(4) + LOCAL ID(나머지) | 버전 ID 0(최신) |
+| `IMPORT-DOC` (Meta TAG `0x1E4L`) | IMPORT ID + 대상 포인터(DOC-POINTER 또는 CODEC-POINTER) | 그대로 |
+| `EXTERNAL-ISSUER-*` (Reference TAG `0x02FL`·`0x034L`·`0x039L`, 5Q 체계 9~11) | TAG + Issuer + 문서 ID(4) + LOCAL ID(나머지) | 버전 ID 0(최신) |
 
 - `EXTERNAL-ISSUER-*`는 BODY의 독립 Reference일 수도, Edge Payload에 내장된 Reference일 수도 있다. 독립 레코드는 코덱북 없이 모은다. 내장된 것은 `inspect.Layout`이 Record로 표시한 부분 중 Kind가 Reference인 것을 모은다. 레이아웃을 모르는 Edge 안의 참조는 찾지 못하며 미해결 목록에 그 Edge를 남긴다.
 - Quantifier가 Variable이면 대상은 그 문서의 LOCAL 변수다. 해석 방법은 같다.

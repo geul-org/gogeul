@@ -23,7 +23,7 @@ func TestAppDocSpec(t *testing.T) {
 	}
 	a := h.app(io.Discard)
 	s := a.docSpec(b)
-	if len(s) != 2 || s[core.TargetWord(core.KindEdge, 0x0A)] == nil || s[0x05A0] == nil {
+	if len(s) != 2 || s[core.TargetWord(core.KindEdge, 0x0A)] == nil || s[0x07A0] == nil {
 		t.Fatalf("want TRIPLE and the registry: %+v", s)
 	}
 	got, err := linesWith(b, s)
@@ -35,7 +35,7 @@ func TestAppDocSpec(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s := a.docSpec(v1); s[0x05A0] != nil {
+	if s := a.docSpec(v1); s[0x07A0] != nil {
 		t.Fatal("no language code in this version: the registry is not read")
 	}
 	if len(a.docSpec([]byte{1})) != 0 {
@@ -44,7 +44,7 @@ func TestAppDocSpec(t *testing.T) {
 	if len(a.docSpec(make([]byte, 8))) != 0 {
 		t.Fatal("not a document: want empty")
 	}
-	list := filepath.Join(h.data, ".well-known", "geul", "0x00000000", "codecs", "0x000008a0", "versions.geul")
+	list := filepath.Join(h.data, ".well-known", "geul", "0x00000000", "codecs", "0x00000aa0", "versions.geul")
 	os.WriteFile(list, []byte{1}, 0o644)
 	if len(a.docSpec(b)) != 0 {
 		t.Fatal("broken spec: want empty")

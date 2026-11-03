@@ -12,10 +12,10 @@ import (
 func TestDirDocuments(t *testing.T) {
 	d := issuersFixture(t)
 	os.MkdirAll(d.file("0x00000000/docs/x"), 0o755)
-	os.MkdirAll(d.file("0x00000000/codecs/0x00000980"), 0o755)
+	os.MkdirAll(d.file("0x00000000/codecs/0x00000b80"), 0o755)
 	os.WriteFile(d.file("0x00000000/docs/0x0000000000000009"), []byte{1}, 0o644)
 	got, err := d.Documents([]core.Word{0, 0})
-	if err != nil || len(got) != 2 || got[0].ID != "0xffff000000000007" || got[1].ID != "0x00000980" || got[0].Names != nil {
+	if err != nil || len(got) != 2 || got[0].ID != "0xffff000000000007" || got[1].ID != "0x00000b80" || got[0].Names != nil {
 		t.Fatalf("%+v %v", got, err)
 	}
 	if _, err := d.Documents([]core.Word{0, 1}); err == nil {

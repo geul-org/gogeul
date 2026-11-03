@@ -15,7 +15,7 @@ func TestHeadEntry(t *testing.T) {
 		{Kind: core.KindMeta, Codec: core.MetaDefaultLanguage, Payload: lw},
 		{Kind: core.KindMeta, Codec: core.MetaRecordedAt, Payload: at},
 		func() core.Record { r, _ := core.EncodeDocID([]core.Word{0, 2}, []core.Word{0, 0, 0, 2}); return r }(),
-		{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0048, 0, 1, 0, 0, 0, 2, 0, 0, 4}},
+		{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0418, 0, 1, 0, 0, 0, 2, 0, 0, 4}},
 	}
 	for _, r := range typed {
 		if e := headEntry(r); e.Data == nil || e.Name == "" {

@@ -9,7 +9,7 @@ import (
 )
 
 func TestRecordLines(t *testing.T) {
-	if l := recordLines([]core.Word{0x0421, 5}); len(l) != 2 || l[0].Name != "TAG" || l[1].Name != "payload" {
+	if l := recordLines([]core.Word{0x0621, 5}); len(l) != 2 || l[0].Name != "TAG" || l[1].Name != "payload" {
 		t.Fatalf("value: %+v", l)
 	}
 	if l := recordLines([]core.Word{0x0051, 7}); l[1].Name != "대상 ID" {

@@ -10,14 +10,14 @@ import (
 )
 
 func TestCheckDeclareKind(t *testing.T) {
-	edge, _ := inspect.Decode(codecDocOf(0x0980, 4, 2))
+	edge, _ := inspect.Decode(codecDocOf(0x0B80, 4, 2))
 	if err := checkDeclareKind(edge, core.KindEdge); err != nil {
 		t.Fatal(err)
 	}
 	if err := checkDeclareKind(edge, core.KindValue); err == nil {
 		t.Fatal("Edge codec for a Value record: want error")
 	}
-	value, _ := inspect.Decode(codecDocOf(0x05A0, 4))
+	value, _ := inspect.Decode(codecDocOf(0x07A0, 4))
 	if err := checkDeclareKind(value, core.KindEdge); err == nil {
 		t.Fatal("Value codec for an Edge record: want error")
 	}

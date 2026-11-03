@@ -9,14 +9,14 @@ import (
 )
 
 func TestResolverCodecSpecs(t *testing.T) {
-	const tag = core.Word(0x0980)
+	const tag = core.Word(0x0B80)
 	published := Dir{Root: t.TempDir()}
 	if _, err := published.PublishCodec(codecDocOf(tag, 4, 2)); err != nil {
 		t.Fatal(err)
 	}
 	empty := Dir{Root: t.TempDir()}
 	r := Resolver{Config: Config{Proxy: []Entry{{Name: "data", Source: empty}, {Name: "geul.org", Source: published}}}}
-	s, err := r.CodecSpecs(t.Context(), []core.Word{tag, 0x0990})
+	s, err := r.CodecSpecs(t.Context(), []core.Word{tag, 0x0B90})
 	if err != nil || s[tag] == nil || len(s) != 1 {
 		t.Fatalf("%+v %v", s, err)
 	}
@@ -24,14 +24,14 @@ func TestResolverCodecSpecs(t *testing.T) {
 	if s, err := r.CodecSpecs(t.Context(), []core.Word{tag}); err != nil || len(s) != 0 {
 		t.Fatalf("%+v %v", s, err)
 	}
-	value := codecDocAs(0x09A0, 0x05A0, 4)
+	value := codecDocAs(0x0BA0, 0x07A0, 4)
 	ws, _ := core.ReadWords(value)
 	h, _ := core.ContentHash(ws)
-	if _, err := published.publishAt(codecKey(0x09A0), []core.Word{0, 0}, codecDocID(0x09A0), value, h); err != nil {
+	if _, err := published.publishAt(codecKey(0x0BA0), []core.Word{0, 0}, codecDocID(0x0BA0), value, h); err != nil {
 		t.Fatal(err)
 	}
 	r.Config.Proxy = []Entry{{Name: "geul.org", Source: published}}
-	if _, err := r.CodecSpecs(t.Context(), []core.Word{0x09A0}); err == nil {
+	if _, err := r.CodecSpecs(t.Context(), []core.Word{0x0BA0}); err == nil {
 		t.Fatal("a Value codec document for an Edge target: want error (§1.1 103)")
 	}
 	broken := Dir{Root: t.TempDir()}

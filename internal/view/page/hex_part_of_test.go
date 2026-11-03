@@ -24,11 +24,11 @@ func TestHexPartOf(t *testing.T) {
 	if h.Lines[1].Note != "" {
 		t.Fatal("LOCAL is not text")
 	}
-	h = hexPartOf(inspect.Part{Name: "UTF8-TEXT", Words: []core.Word{0x0522, 0x6d61, 0x696e}, Record: true})
+	h = hexPartOf(inspect.Part{Name: "UTF8-TEXT", Words: []core.Word{0x0722, 0x6d61, 0x696e}, Record: true})
 	if h.Lines[1].Name != "payload" || h.Lines[1].Note != "main" || !h.Lines[1].Text || h.Lines[2].Note != "" {
 		t.Fatalf("text: %+v", h)
 	}
-	if h = hexPartOf(inspect.Part{Name: "UTF8-TEXT", Words: []core.Word{0x0520}, Record: true}); len(h.Lines) != 1 {
+	if h = hexPartOf(inspect.Part{Name: "UTF8-TEXT", Words: []core.Word{0x0720}, Record: true}); len(h.Lines) != 1 {
 		t.Fatalf("empty text: %+v", h)
 	}
 	if h = hexPartOf(inspect.Part{Name: "reason", Words: []core.Word{1}, Enum: "license"}); h.Lines[0].Note != "license" {

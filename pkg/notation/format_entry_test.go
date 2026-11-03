@@ -23,7 +23,7 @@ func TestFormatEntry(t *testing.T) {
 	}
 	unnamed := doc.Body[0]
 	unnamed.Name = ""
-	noID := inspect.Entry{Record: core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0141, 42}}, Words: []core.Word{0x0842, 0x0141, 42}, Name: "LABEL"}
+	noID := inspect.Entry{Record: core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0141, 42}}, Words: []core.Word{0x0A42, 0x0141, 42}, Name: "LABEL"}
 	issued := doc.Head[0]
 	issued.Record.Format = 1
 	for _, e := range []inspect.Entry{unnamed, noID, issued} {
