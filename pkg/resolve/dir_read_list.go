@@ -18,5 +18,5 @@ func (d Dir) readList(k DocKey, doc string) (versionLog, error) {
 	if err != nil {
 		return versionLog{}, err
 	}
-	return decodeVersionList(b, doc)
+	return decodeVersionList(b, k.Issuer, doc)
 }

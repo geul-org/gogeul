@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=sequence
-//ff:what TestListRecord — Edge Id order, PUBLICATION dispatch, BIND refused (§1.1 102), another document and foreign records
+//ff:what TestListRecord — Edge Id order, PUBLICATION dispatch, BIND refused (§1.1 102), another document, another Issuer and foreign records
 package schema
 
 import (
@@ -8,7 +8,7 @@ import (
 )
 
 func TestListRecord(t *testing.T) {
-	st := &listState{doc: "0xFFFF000000000002", docs: map[string]*docVersions{}}
+	st := &listState{issuer: "0x00000000", doc: "0xFFFF000000000002", docs: map[string]*docVersions{}}
 	if fs := listRecord(st, 0, recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x0418, 0, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))); fs != nil {
 		t.Fatalf("publication: %+v", fs)
 	}
@@ -24,6 +24,10 @@ func TestListRecord(t *testing.T) {
 	other := recOf(edgeOf(core.EdgeDeprecation, 4, 0x0418, 0, 0, 0xffff, 0, 0, 3, 0, 1))
 	if fs := listRecord(st, 3, other); rulesOf(fs) != "P1" {
 		t.Fatalf("other document: %+v", fs)
+	}
+	otherIssuer := recOf(edgeOf(core.EdgeDeprecation, 4, 0x0418, 0, 3, 0xffff, 0, 0, 2, 0, 1))
+	if fs := listRecord(st, 3, otherIssuer); rulesOf(fs) != "P1" {
+		t.Fatalf("other Issuer: %+v", fs)
 	}
 	if fs := listRecord(st, 4, recOf(core.EncodeUintValue(1))); rulesOf(fs) != "P1" {
 		t.Fatalf("foreign: %+v", fs)

@@ -24,7 +24,7 @@ func (d Dir) oldCopies(lg versionLog, k DocKey) [][32]byte {
 		if err != nil {
 			break
 		}
-		if lg, err = decodeVersionList(b, k.Doc); err != nil {
+		if lg, err = decodeVersionList(b, k.Issuer, k.Doc); err != nil {
 			break
 		}
 	}

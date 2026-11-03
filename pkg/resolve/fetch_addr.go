@@ -29,7 +29,7 @@ func FetchAddr(ctx context.Context, src Source, a Addr) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	lg, err := decodeVersionList(b, k.Doc)
+	lg, err := decodeVersionList(b, k.Issuer, k.Doc)
 	if err != nil {
 		return nil, err
 	}

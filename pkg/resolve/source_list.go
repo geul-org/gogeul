@@ -11,7 +11,7 @@ func sourceList(ctx context.Context, e Entry, d DocKey) ([]VersionEntry, error) 
 	if err != nil {
 		return nil, err
 	}
-	lg, err := decodeVersionList(lb, d.Doc)
+	lg, err := decodeVersionList(lb, d.Issuer, d.Doc)
 	if err != nil {
 		return nil, err
 	}

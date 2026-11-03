@@ -8,10 +8,15 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// decodeVersionList reads the version list document of the document whose ID
-// is docHex in canonical hex (edge/PUBLICATION), with its PARENT (listParent). Anything that does not read as
-// one is a verification failure.
-func decodeVersionList(b []byte, docHex string) (versionLog, error) {
+// decodeVersionList reads the version list document of the document whose
+// Issuer and ID are issuer (any accepted width, normalIssuer) and docHex in
+// canonical hex (edge/PUBLICATION), with its PARENT (listParent). Anything
+// that does not read as one, a record of another Issuer included, is a
+// verification failure.
+func decodeVersionList(b []byte, issuer, docHex string) (versionLog, error) {
+	if n, ok := normalIssuer(issuer); ok {
+		issuer = n
+	}
 	ws, err := core.ReadWords(b)
 	if err != nil {
 		return versionLog{}, fmt.Errorf("%w: %v", ErrVerify, err)
@@ -25,7 +30,7 @@ func decodeVersionList(b []byte, docHex string) (versionLog, error) {
 	lg.Parent, lg.HasParent = listParent(doc.Head)
 	lg.Next = listNext(doc.Head)
 	for _, r := range doc.Body {
-		if err := applyListRecord(&lg, r, docHex); err != nil {
+		if err := applyListRecord(&lg, r, issuer, docHex); err != nil {
 			return versionLog{}, fmt.Errorf("%w: version list: %v", ErrVerify, err)
 		}
 	}

@@ -88,11 +88,11 @@
 
 ### P 버전 목록 문서 (edge/PUBLICATION)
 
-`DOC-ID`가 없고 BODY가 `PUBLICATION`으로 시작하는 문서(`<I>/docs/<D>/versions.geul`, `<I>/codecs/<C>/versions.geul`, 목록의 `versions.geul`)에 적용한다. 목록이 다루는 문서는 첫 `PUBLICATION`의 문서 ID다.
+`DOC-ID`가 없고 BODY가 `PUBLICATION`으로 시작하는 문서(`<I>/docs/<D>/versions.geul`, `<I>/codecs/<C>/versions.geul`, 목록의 `versions.geul`)에 적용한다. 목록이 다루는 문서는 첫 `PUBLICATION`의 Issuer·문서 ID다.
 
 | 규칙 | 내용 |
 |---|---|
-| P1 | `IMPORT-DOC`이 없고, BODY에는 그 문서의 `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`만 있다. `BIND`(문서 이름)도 P1 위반이다(문서 이름 없음, migration.md §1.1 102). |
+| P1 | `IMPORT-DOC`이 없고, BODY에는 그 문서(같은 Issuer·문서 ID)의 `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`만 있다. `BIND`(문서 이름)도 P1 위반이다(문서 이름 없음, migration.md §1.1 102). |
 | P2 | Edge Id는 1부터 이어지는 순번이다. |
 | P3 | 문서 ID마다 PUBLICATION의 버전 ID가 1부터 빠짐없이 오름차순이고, 같은 내용 해시를 다시 공표하지 않는다. |
 | P4 | DEPRECATION·TOMBSTONE은 앞에 나온 PUBLICATION을 가리킨다. |
