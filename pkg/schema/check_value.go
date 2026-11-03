@@ -13,9 +13,9 @@ import (
 func checkValue(r rec) []Fact {
 	c := r.R.Codec
 	switch {
-	case c >= core.CodecIssuer1Word:
+	case c >= core.CodecValueIssuer2Word:
 		return nil
-	case c == 0x00:
+	case c == core.CodecBool:
 		return checkBool(r)
 	case c == core.CodecSignedInteger || c == core.CodecUnsignedInteger:
 		return checkInteger(r, r.R.Payload, c == core.CodecSignedInteger, "Payload")
@@ -25,15 +25,15 @@ func checkValue(r rec) []Fact {
 		return checkQuantity(r)
 	case c == core.CodecFraction:
 		return checkFraction(r)
-	case c == 0x03:
+	case c == core.CodecBinaryFloat:
 		return checkWidth(r, 1, 2, 4, 8)
 	case c == core.CodecSignedDecimal || c == core.CodecUnsignedDecimal:
 		return checkDecimal(r, c == core.CodecSignedDecimal)
-	case c == 0x21:
+	case c == core.CodecCivilTime:
 		return checkCivilTime(r)
 	case fixedValueWidth[c] > 0:
 		return checkWidth(r, fixedValueWidth[c])
-	case c == core.CodecUTF8TextEven, c == core.CodecUTF8TextEven|1, c >= 0x44 && c <= 0x47, c == core.CodecEDTFEven, c == core.CodecEDTFEven|1,
+	case c == core.CodecUTF8TextEven, c == core.CodecUTF8TextEven|1, c >= core.CodecURIEven && c <= core.CodecLanguageBCP47Even|1, c == core.CodecEDTFEven, c == core.CodecEDTFEven|1,
 		c == core.CodecGEDCOMDateEven, c == core.CodecGEDCOMDateEven|1:
 		return checkBytes(r)
 	case c == core.CodecUTF8LanguageTextEven, c == core.CodecUTF8LanguageTextEven|1:

@@ -9,12 +9,12 @@ import (
 )
 
 // checkIssuerRef applies R4 (and R2 to the target) to an EXTERNAL-ISSUER-*
-// Reference whose 4-bit codec is c, whose Issuer must be in canonical form
+// Reference of scheme (C/5, 9~11), whose Issuer must be in canonical form
 // (core.IssuerCanonical). It points at a LOCAL ID of an Issuer's
 // document (document ID 0 is the Issuer's term definition index document):
 // the document itself is DOC-POINTER, so target ID 0 is invalid.
-func checkIssuerRef(r rec, c uint8) []Fact {
-	w := core.ExternalIssuerWidth(c)
+func checkIssuerRef(r rec, scheme uint16) []Fact {
+	w := core.ExternalIssuerWidth(scheme)
 	p := r.R.Payload
 	if len(p) < w+5 {
 		return []Fact{factAt("R4", Error, r, "Payload", fmt.Sprintf("Issuer %d WORD + 문서 ID 4 WORD + 대상 ID", w), fmtWords(len(p)))}

@@ -9,11 +9,11 @@ import (
 )
 
 // checkPointer applies R3 (and R2 to the target) to an EXTERNAL-POINTER-*
-// Reference whose 4-bit codec is c. imports holds the IMPORT IDs of the HEAD.
+// Reference of scheme (C/5, 6~8). imports holds the IMPORT IDs of the HEAD.
 // Target ID 0 (the imported document itself) is invalid: a document is
 // pointed at only by DOC-POINTER.
-func checkPointer(r rec, c uint8, imports map[uint64]bool) []Fact {
-	w := core.WidthWords(c)
+func checkPointer(r rec, scheme uint16, imports map[uint64]bool) []Fact {
+	w := core.ExternalPointerWidth(scheme)
 	p := r.R.Payload
 	if len(p) < w+1 {
 		return []Fact{factAt("R3", Error, r, "Payload", fmt.Sprintf("IMPORT ID %d WORD + 대상 ID", w), fmtWords(len(p)))}

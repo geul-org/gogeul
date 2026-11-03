@@ -20,7 +20,7 @@ func TestDecodeFraction(t *testing.T) {
 		"codec":    {Kind: KindValue, Codec: CodecQuantity},
 		"short":    {Kind: KindValue, Codec: CodecFraction, Payload: good.Payload[:2]},
 		"leftover": {Kind: KindValue, Codec: CodecFraction, Payload: append(append([]Word{}, good.Payload...), 0)},
-		"swapped":  {Kind: KindValue, Codec: CodecFraction, Payload: []Word{0x0882, 3, 0x0881, 2}},
+		"swapped":  {Kind: KindValue, Codec: CodecFraction, Payload: []Word{0x0421, 3, 0x0411, 2}},
 	} {
 		if _, err := DecodeFraction(r); err == nil {
 			t.Fatalf("%s: want error", name)

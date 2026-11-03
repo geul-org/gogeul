@@ -8,7 +8,7 @@ import (
 )
 
 func TestListDoc(t *testing.T) {
-	if d := listDoc([]rec{recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x03B8, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))}); d != "0xffff000000000002" {
+	if d := listDoc([]rec{recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x0048, 0, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))}); d != "0xffff000000000002" {
 		t.Fatalf("got %q", d)
 	}
 	if d := listDoc([]rec{recOf(edgeOf(0, 1))}); d != "" {

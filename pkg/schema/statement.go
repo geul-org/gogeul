@@ -9,7 +9,7 @@ import "github.com/geul-org/gogeul/pkg/core"
 // layout the grammar fixes for these direct codes (edge/TRIPLE, QUALIFIER).
 type statement struct {
 	R     rec
-	Codec uint8
+	Codec uint16
 	ID    uint64
 	Parts [3][]core.Word
 	Rest  []core.Word

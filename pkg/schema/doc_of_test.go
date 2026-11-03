@@ -12,9 +12,9 @@ func docOf(head, body []core.Record) []byte {
 	for _, r := range head {
 		in = append(in, enc(r)...)
 	}
-	in = append(in, 0x180E)
+	in = append(in, 0x1C30)
 	for _, r := range body {
 		in = append(in, enc(r)...)
 	}
-	return core.PutWords(core.WrapDocument(append(in, 0x180F)))
+	return core.PutWords(core.WrapDocument(append(in, 0x1C40)))
 }

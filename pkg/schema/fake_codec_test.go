@@ -3,5 +3,5 @@
 package schema
 
 type fakeCodec struct {
-	codec uint8
+	codec uint16
 }

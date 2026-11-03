@@ -1,34 +1,29 @@
 //ff:func feature=schema type=rule control=selection
-//ff:what checkReference — R1~R5 for one Reference record (Codec 0000 by checkCodecZero)
+//ff:what checkReference — Reference rules by C: slot markers, pointers, REFERENCE-ISSUER, EXTERNAL-ISSUER/POINTER schemes, direct targets
 package schema
 
-import (
-	"fmt"
+import "github.com/geul-org/gogeul/pkg/core"
 
-	"github.com/geul-org/gogeul/pkg/core"
-)
-
-// checkReference applies the Reference rules: the reserved Codec 0000, whose
-// low bits are a slot marker number and no Quantifier (checkCodecZero), the
-// reserved Quantifier (R1), then the layout of the pointer, issuer,
-// issuer/document pointer or declaration forms.
+// checkReference applies the Reference rules by C: a slot marker standing as a
+// record (checkSlotMarker), the ISSUER-, DOC- and CODEC-POINTER layouts (R5),
+// the REFERENCE-ISSUER codes (their Payload is the Issuer's; F5 checked the
+// extension), and by scheme C/5 the EXTERNAL-ISSUER (R4), EXTERNAL-POINTER
+// (R3) and direct target (R2) forms. Every Reference C is assigned.
 func checkReference(r rec, imports map[uint64]bool) []Fact {
-	c, q := r.R.Codec>>3, r.R.Codec&7
-	if c == 0 {
-		return checkCodecZero(r)
-	}
-	var fs []Fact
-	if q >= 5 {
-		fs = append(fs, factAt("R1", Warn, r, "Quantifier", "000~100", fmt.Sprintf("%03b (예약)", q)))
-	}
+	c := r.R.Codec
+	scheme, quantified := core.RefScheme(c)
 	switch {
-	case c == core.RefIssuerPointer || c == core.RefDocPointer:
-		return append(fs, checkIssuerDocPointer(r, c)...)
-	case c >= core.RefExternalIssuer1Word:
-		return append(fs, checkIssuerRef(r, c)...)
-	case c >= core.RefExternalPointer1Word:
-		return append(fs, checkPointer(r, c, imports)...)
+	case core.IsSlotMarkerCodec(c):
+		return checkSlotMarker(r)
+	case c == core.CodecIssuerPointer || c == core.CodecDocPointer || c == core.CodecCodecPointer:
+		return checkIssuerDocPointer(r, c)
+	case !quantified:
+		return nil
+	case scheme >= core.SchemeExternalIssuer2Word:
+		return checkIssuerRef(r, scheme)
+	case scheme >= core.SchemeExternalPointer1Word:
+		return checkPointer(r, scheme, imports)
 	default:
-		return append(fs, checkTarget(r, r.R.Payload)...)
+		return checkTarget(r, r.R.Payload)
 	}
 }

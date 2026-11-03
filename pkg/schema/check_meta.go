@@ -24,7 +24,7 @@ func checkMeta(r rec) []Fact {
 		return checkEmbedded(r, "M4", "LANGUAGE-BCP47-CODE 또는 LANGUAGE-SHORT-CODE", isLanguage)
 	case c == core.MetaEffectiveFrom || c == core.MetaEffectiveUntil:
 		return checkEmbedded(r, "M5", "GREGORIAN-DATE 또는 POSIX-TIMESTAMP-SECONDS", isTime)
-	case c == metaParent:
+	case c == core.MetaParent:
 		return checkEmbedded(r, "M6", "SHA-256-DIGEST", isDigest)
 	case c == core.MetaDeltaBase || c == core.MetaDeltaRemove || c == core.MetaNextLocalID:
 		return checkDeltaMeta(r)

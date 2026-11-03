@@ -8,11 +8,11 @@ import (
 )
 
 func TestFrame(t *testing.T) {
-	recs, fs := frame([]core.Word{0x0882, 5, 0x0882, 6})
+	recs, fs := frame([]core.Word{0x0421, 5, 0x0421, 6})
 	if len(recs) != 2 || fs != nil || recs[1].Word != 2 || recs[1].Index != 1 {
 		t.Fatalf("ok: %+v %v", recs, fs)
 	}
-	if recs, fs := frame([]core.Word{0x0882, 5, 0x0F00}); len(recs) != 1 || rulesOf(fs) != "F2" {
+	if recs, fs := frame([]core.Word{0x0421, 5, 0x040E}); len(recs) != 1 || rulesOf(fs) != "F2" {
 		t.Fatalf("stop: %+v %v", recs, fs)
 	}
 }

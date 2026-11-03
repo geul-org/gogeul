@@ -13,7 +13,7 @@ func TestImportSplit(t *testing.T) {
 	if id, ok := importSplit(importDoc(1, 2, 3)); !ok || !slices.Equal(id, []core.Word{2, 3}) {
 		t.Fatalf("got %v %v", id, ok)
 	}
-	if _, ok := importSplit(recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0088, 1, 2}})); ok {
+	if _, ok := importSplit(recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0051, 1, 2}})); ok {
 		t.Fatal("LOCAL accepted")
 	}
 	if _, ok := importSplit(recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x03B8, 0}})); ok {

@@ -9,7 +9,7 @@ import (
 )
 
 func TestZeroExpDecimal(t *testing.T) {
-	v := func(c uint8, p ...core.Word) core.Record {
+	v := func(c uint16, p ...core.Word) core.Record {
 		return core.Record{Kind: core.KindValue, Codec: c, Payload: p}
 	}
 	for _, r := range []core.Record{v(core.CodecSignedDecimal, 0, 0, 5), v(core.CodecUnsignedDecimal, 0, 0, 5)} {

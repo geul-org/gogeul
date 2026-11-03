@@ -6,6 +6,6 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-func metaOf(codec uint8, v core.Record) core.Record {
+func metaOf(codec uint16, v core.Record) core.Record {
 	return core.Record{Kind: core.KindMeta, Codec: codec, Payload: enc(v)}
 }

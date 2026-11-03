@@ -8,7 +8,7 @@ import (
 )
 
 func TestCheckMeta(t *testing.T) {
-	raw := func(c uint8, p ...core.Word) rec {
+	raw := func(c uint16, p ...core.Word) rec {
 		return recOf(core.Record{Kind: core.KindMeta, Codec: c, Payload: p})
 	}
 	cases := []struct {
@@ -21,11 +21,12 @@ func TestCheckMeta(t *testing.T) {
 		{raw(core.MetaProfile), "M4"},
 		{raw(core.MetaDefaultLanguage), "M4"},
 		{raw(core.MetaEffectiveFrom), "M5"},
-		{raw(metaParent), "M6"},
+		{raw(core.MetaParent), "M6"},
 		{raw(core.MetaDeltaBase), "M7"},
 		{raw(core.MetaDeltaRemove), "M7"},
 		{raw(core.MetaNextLocalID), "M7"},
-		{raw(0x15), "M1"},
+		{raw(0x2A), "M1"},
+		{raw(0x3F), "M1"},
 		{raw(0x20), ""},
 	}
 	for i, c := range cases {

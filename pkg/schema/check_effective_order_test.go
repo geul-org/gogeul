@@ -8,7 +8,7 @@ import (
 )
 
 func TestCheckEffectiveOrder(t *testing.T) {
-	at := func(c uint8, d core.Word) rec {
+	at := func(c uint16, d core.Word) rec {
 		return recOf(metaOf(c, core.Record{Kind: core.KindValue, Codec: core.CodecGregorianDate, Payload: []core.Word{0, d}}))
 	}
 	if checkEffectiveOrder([]rec{at(core.MetaEffectiveFrom, 1), at(core.MetaEffectiveUntil, 2)}) != nil {

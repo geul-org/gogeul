@@ -15,7 +15,7 @@ func TestCheckQuantity(t *testing.T) {
 	if fs := checkQuantity(recOf(good)); fs != nil {
 		t.Fatalf("good: %+v", fs)
 	}
-	frac := core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0881, 2, 0x0882, 3}}
+	frac := core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}}
 	good, _ = core.EncodeQuantity(core.Quantity{Amount: frac, Unit: absent, Lower: core.Record{Kind: core.KindValue, Codec: core.CodecSignedInteger, Payload: []core.Word{0}}, Upper: absent})
 	if fs := checkQuantity(recOf(good)); fs != nil {
 		t.Fatalf("fraction: %+v", fs)

@@ -9,8 +9,8 @@ import (
 )
 
 // readRec frames the record at ws[at]: prefix (F4), Length (F2, F3) and the
-// Codec extension TAG of an ISSUER codec and the canonical width of its
-// Issuer (F5). The bool is false when the
+// ISSUER extension (Issuer and 2-word codec number) and the canonical width
+// of its Issuer (F5). The bool is false when the
 // Length cannot be trusted; framing stops there.
 func readRec(ws []core.Word, at, index int) (rec, []Fact, bool) {
 	tag := ws[at]
@@ -29,15 +29,16 @@ func readRec(ws []core.Word, at, index int) (rec, []Fact, bool) {
 		fs = append(fs, factAt("F3", Error, r, "Length", "가장 짧은 Length 표현", fmt.Sprintf("%d WORD를 %d WORD TAG로 표현", total, head)))
 	}
 	r.Total = total
-	r.R = core.Record{Kind: core.Kind((tag >> 11) & 3), Codec: uint8(tag & 0x7F)}
+	k, codec := core.SplitTarget(tag)
+	r.R = core.Record{Kind: k, Codec: codec}
 	body := ws[at+head : at+total]
 	w := core.IssuerWidth(r.R.Kind, r.R.Codec)
-	if w > 0 && len(body) < w+1 {
+	if w > 0 && len(body) < w+core.FormatWords {
 		r.R.Payload = body
-		return r, append(fs, factAt("F5", Error, r, "Codec 확장 TAG", fmt.Sprintf("Issuer %d WORD + 형식 번호 1 WORD", w), fmt.Sprintf("%d WORD", len(body)))), true
+		return r, append(fs, factAt("F5", Error, r, "ISSUER 확장", fmt.Sprintf("Issuer %d WORD + 코덱 번호 %d WORD", w, core.FormatWords), fmt.Sprintf("%d WORD", len(body)))), true
 	}
 	if w > 0 {
-		r.R.Issuer, r.R.Format, body = body[:w], uint16(body[w]), body[w+1:]
+		r.R.Issuer, r.R.Format, body = body[:w], uint32(body[w])<<16|uint32(body[w+1]), body[w+core.FormatWords:]
 		if !core.IssuerCanonical(r.R.Issuer) {
 			fs = append(fs, factAt("F5", Error, r, "Issuer", "값이 들어가는 가장 짧은 폭", fmt.Sprintf("ISSUER-%dWORD", w)))
 		}

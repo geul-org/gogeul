@@ -15,7 +15,7 @@ func TestCheck(t *testing.T) {
 	if r := Check(append(ok, 0), Options{}); r.Verdict != Fail || rulesOf(r.Facts) != "F1" {
 		t.Fatalf("odd: %+v", r)
 	}
-	reserved := docOf(nil, []core.Record{{Kind: core.KindValue, Codec: 0x08}})
+	reserved := docOf(nil, []core.Record{{Kind: core.KindValue, Codec: 0x1E}})
 	if r := Check(reserved, Options{}); r.Verdict != Review {
 		t.Fatalf("reserved: %+v", r)
 	}

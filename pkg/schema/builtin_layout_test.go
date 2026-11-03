@@ -9,7 +9,7 @@ import (
 )
 
 func TestBuiltinLayout(t *testing.T) {
-	for _, c := range []uint8{core.EdgePublication, core.EdgeDeclare, core.EdgeField, core.EdgeEnum, core.EdgeCodec} {
+	for _, c := range []uint16{core.EdgePublication, core.EdgeDeclare, core.EdgeField, core.EdgeEnum, core.EdgeCodec} {
 		if want, err := builtinLayout(core.Record{Kind: core.KindEdge, Codec: c}); err == nil || want == "" {
 			t.Fatalf("0x%02X: want error", c)
 		}

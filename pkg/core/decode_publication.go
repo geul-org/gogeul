@@ -8,8 +8,8 @@ import (
 )
 
 // DecodePublication reads a version list record (GEUL t002 docs/edge/PUBLICATION):
-// the LOCAL Edge Id, the DOC-POINTER of the version (version ID not 0) and the
-// codec's tail, whose length is fixed per codec.
+// the LOCAL Edge Id, the DOC-POINTER (or, for a codec, CODEC-POINTER) of the
+// version (version ID not 0) and the codec's tail, whose length is fixed per codec.
 func DecodePublication(r Record) (Publication, error) {
 	tail, ok := publicationTail(r.Codec)
 	if r.Kind != KindEdge || !ok {
@@ -27,7 +27,7 @@ func DecodePublication(r Record) (Publication, error) {
 	if err != nil {
 		return Publication{}, err
 	}
-	issuer, doc, ver, err := DecodeDocPointer(ptr)
+	issuer, doc, ver, err := DecodeTargetPointer(ptr)
 	if err != nil {
 		return Publication{}, err
 	}

@@ -9,7 +9,7 @@ import (
 
 func TestImportsOf(t *testing.T) {
 	imp := func(id core.Word) rec {
-		return recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x03B8, 1, 0, 0, 0, 2, 0, 0, id}})
+		return recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0048, 0, 2, 0, 0, 0, 2, 0, 0, id}})
 	}
 	other := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaDocID, Payload: make([]core.Word, 5)})
 	ids, fs := importsOf([]rec{imp(1), other, imp(2), imp(1)})

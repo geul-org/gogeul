@@ -32,7 +32,7 @@ func markerOnly(body []rec) []Fact {
 	var fs []Fact
 	for _, f := range order {
 		if r, ok := last[f]; ok && !others[f] {
-			fs = append(fs, factAt("E5", Error, r, "대상", "자리 표지(0000~0007) 말고 대상 하나 이상", fmt.Sprintf("#%d에 자리 표지만", f)))
+			fs = append(fs, factAt("E5", Error, r, "대상", "자리 표지(0000·0010·0020) 말고 대상 하나 이상", fmt.Sprintf("#%d에 자리 표지만", f)))
 		}
 	}
 	return fs

@@ -8,7 +8,7 @@ import (
 )
 
 func TestCheckDocOpen(t *testing.T) {
-	doc := func(c uint8, p ...core.Word) rec {
+	doc := func(c uint16, p ...core.Word) rec {
 		return recOf(core.Record{Kind: core.KindMeta, Codec: c, Payload: p})
 	}
 	if fs := checkDocOpen(doc(core.MetaDoc1Word, 10), 10); fs != nil {

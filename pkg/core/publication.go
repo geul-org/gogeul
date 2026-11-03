@@ -4,9 +4,10 @@ package core
 
 // Publication is one version list record (GEUL t002 docs/edge/PUBLICATION).
 // Codec says which: EdgePublication carries Hash, EdgeTombstone carries Reason,
-// EdgeDeprecation carries neither. Issuer (2/4/16 words), Doc (the 4-word
-// document ID) and Version are the record's DOC-POINTER: one version of the
-// document the version list (`<Issuer>/<문서 ID>/versions.geul`) lists.
+// EdgeDeprecation carries neither. Issuer (2/4/16 words), Doc and Version are
+// the record's pointer: Doc is the 4-word document ID of a DOC-POINTER, or the
+// 2-word codec ID of a CODEC-POINTER in a codec's version list
+// (`<Issuer>/docs/<문서 ID>/versions.geul`, `<Issuer>/codecs/<코덱 ID>/versions.geul`).
 type Publication struct {
 	Codec   uint16
 	EdgeID  uint64

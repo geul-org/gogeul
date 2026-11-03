@@ -9,7 +9,7 @@ import (
 )
 
 // metaInstant returns the instant of the first Meta of codec c in head.
-func metaInstant(head []rec, c uint8) (time.Time, rec, bool) {
+func metaInstant(head []rec, c uint16) (time.Time, rec, bool) {
 	for _, r := range head {
 		if r.R.Codec != c {
 			continue

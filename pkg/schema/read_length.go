@@ -8,7 +8,7 @@ import "github.com/geul-org/gogeul/pkg/core"
 // reports whether the encoding is canonical (F3) and whether the length can be
 // trusted at all: an extension must be present and cover its own TAG words.
 func readLength(ws []core.Word, at int) (total, head int, canonical, ok bool) {
-	code := (ws[at] >> 7) & 0xF
+	code := ws[at] & 0xF
 	switch {
 	case code < 0xE:
 		return int(code) + 1, 1, true, true

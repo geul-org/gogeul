@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckIssuerDocPointer — Issuer widths, a non-canonical Issuer and Quantifier fail R5; document 0 passes; valid forms pass
+//ff:what TestCheckIssuerDocPointer — R5: ISSUER-, DOC- and CODEC-POINTER Issuers of 2/4/16 WORD in canonical width pass; 1 WORD, odd widths and zero-padded Issuers fail
 package schema
 
 import (
@@ -9,28 +9,31 @@ import (
 )
 
 func TestCheckIssuerDocPointer(t *testing.T) {
-	ref := func(c, q uint8, p ...core.Word) rec {
-		return recOf(core.Record{Kind: core.KindReference, Codec: c<<3 | q, Payload: p})
+	ref := func(c uint16, p ...core.Word) rec {
+		return recOf(core.Record{Kind: core.KindReference, Codec: c, Payload: p})
 	}
-	iss, doc := core.RefIssuerPointer, core.RefDocPointer
+	iss, doc, cdc := core.CodecIssuerPointer, core.CodecDocPointer, core.CodecCodecPointer
 	cases := []struct {
 		r    rec
-		c    uint8
+		c    uint16
 		want string
 	}{
-		{ref(iss, 0, 0x40), iss, ""},
-		{ref(iss, 0, 1, 2), iss, ""},
-		{ref(iss, 0, 0, 2), iss, "R5"},
-		{ref(doc, 0, 0, 0x20, 0xFFFF, 0, 0, 1, 0, 1), doc, "R5"},
-		{ref(iss, 0, 1, 2, 3), iss, "R5"},
-		{ref(iss, 0), iss, "R5"},
-		{ref(iss, 4, 0x40), iss, "R5"},
+		{ref(iss, 0, 0x0D), iss, ""},
+		{ref(iss, 1, 2), iss, ""},
+		{ref(iss, 0x40), iss, "R5"},
+		{ref(iss, 0, 0, 1, 2), iss, "R5"},
+		{ref(iss, 0, 1, 0, 0), iss, ""},
+		{ref(iss, 1, 2, 3), iss, "R5"},
+		{ref(iss), iss, "R5"},
 		{ref(doc, 0, 0, 0xFFFF, 0, 0, 1, 0, 1), doc, ""},
 		{ref(doc, 0, 0, 0xFFFF, 0, 0, 1, 0, 0), doc, ""},
 		{ref(doc, 0, 0, 0, 0, 0, 0, 0, 1), doc, ""},
+		{ref(doc, 0, 0xFFFF, 0, 0, 1, 0, 1), doc, "R5"},
 		{ref(doc, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1), doc, "R5"},
-		{ref(doc, 1, 0, 0xFFFF, 0, 0, 1, 0, 1), doc, "R5"},
-		{ref(doc, 1, 0, 0, 0, 0, 0, 0, 1), doc, "R5"},
+		{ref(cdc, 0, 0, 0, 0x0980, 0, 0), cdc, ""},
+		{ref(cdc, 0, 1, 0, 0, 0, 0x0980, 0, 1), cdc, ""},
+		{ref(cdc, 0, 0, 0, 1, 0, 0x0980, 0, 1), cdc, "R5"},
+		{ref(cdc, 0, 0, 0x0980, 0, 1), cdc, "R5"},
 	}
 	for i, tc := range cases {
 		if got := rulesOf(checkIssuerDocPointer(tc.r, tc.c)); got != tc.want {

@@ -14,8 +14,8 @@ func TestBindDoc(t *testing.T) {
 	bad := []core.Record{
 		subjectOf(2, 1),
 		core.EncodeLocalRef(0),
-		{Kind: core.KindValue, Codec: core.RefDocPointer << 3, Payload: []core.Word{0, 0xffff, 0, 0, 2, 0, 0}},
-		{Kind: core.KindReference, Codec: core.RefExternalIssuer1Word << 3, Payload: []core.Word{0, 0xffff, 0, 0, 2, 0}},
+		{Kind: core.KindValue, Codec: core.CodecDocPointer, Payload: []core.Word{0, 0, 0xffff, 0, 0, 2, 0, 0}},
+		{Kind: core.KindReference, Codec: core.CodecExternalIssuer2Word, Payload: []core.Word{0, 0, 0xffff, 0, 0, 2, 0}},
 	}
 	for i, r := range bad {
 		if _, ok := bindDoc(r); ok {

@@ -18,7 +18,7 @@ func TestLocalAt(t *testing.T) {
 	if _, ok := localAt(src.Payload, 3); ok {
 		t.Fatal("past the end")
 	}
-	if _, ok := localAt([]Word{0x0088}, 1); ok {
+	if _, ok := localAt([]Word{0x0051}, 1); ok {
 		t.Fatal("a truncated record before the index")
 	}
 }

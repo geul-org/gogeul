@@ -4,14 +4,14 @@ package schema
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// importSplit decodes the DOC-POINTER that leads an IMPORT-DOC payload and
+// importSplit decodes the DOC-POINTER (or CODEC-POINTER) that leads an IMPORT-DOC payload and
 // returns the words after it, the IMPORT ID.
 func importSplit(r rec) ([]core.Word, bool) {
 	ref, n, err := core.DecodeRecord(r.R.Payload)
 	if err != nil {
 		return nil, false
 	}
-	if _, _, _, err := core.DecodeDocPointer(ref); err != nil {
+	if _, _, _, err := core.DecodeTargetPointer(ref); err != nil {
 		return nil, false
 	}
 	return r.R.Payload[n:], true

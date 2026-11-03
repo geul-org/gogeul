@@ -9,11 +9,11 @@ import (
 )
 
 // checkText applies V5 to the bytes of a byte-string Value whose even codec is
-// even (0x40 UTF8-TEXT, 0x44 URI, 0x46 LANGUAGE-BCP47-CODE,
-// 0x24 EDTF, 0x26 GEDCOM-DATE), then V6 to EDTF. The EDTF and GEDCOM date
-// grammars are not checked yet (README 미결정). A text may start with
-// U+FEFF (EF BB BF): it is a character kept as written, not a BOM.
-func checkText(r rec, even uint8, b []byte) []Fact {
+// even (UTF8-TEXT, URI, LANGUAGE-BCP47-CODE, EDTF, GEDCOM-DATE), then V6 to
+// EDTF. The EDTF and GEDCOM date grammars are not checked yet (README 미결정).
+// A text may start with U+FEFF (EF BB BF): it is a character kept as written,
+// not a BOM.
+func checkText(r rec, even uint16, b []byte) []Fact {
 	text := even == core.CodecUTF8TextEven
 	switch {
 	case text && !utf8.Valid(b):

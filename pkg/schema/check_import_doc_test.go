@@ -8,7 +8,7 @@ import (
 )
 
 func TestCheckImportDoc(t *testing.T) {
-	bad := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{1, 1, 0, 0, 0, 2, 0, 0}})
+	bad := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0051, 1, 0, 0, 0, 0, 2, 0, 0}})
 	if checkImportDoc(importDoc(0, 1)) != nil || rulesOf(checkImportDoc(bad)) != "M3" || rulesOf(checkImportDoc(importDoc(0))) != "M3" || rulesOf(checkImportDoc(importDoc(0, 0, 1))) != "M3" {
 		t.Fatal("wrong")
 	}

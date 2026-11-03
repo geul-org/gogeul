@@ -1,44 +1,52 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckValue — each Value branch (FRACTION V10 included) and the reserved code
+//ff:what TestCheckValue — Value rules per direct code (new C numbers), VALUE-ISSUER skipped, empty codes V1
 package schema
 
 import (
-	"github.com/geul-org/gogeul/pkg/core"
 	"testing"
+
+	"github.com/geul-org/gogeul/pkg/core"
 )
 
 func TestCheckValue(t *testing.T) {
-	v := func(c uint8, p ...core.Word) rec {
+	v := func(c uint16, p ...core.Word) rec {
 		return recOf(core.Record{Kind: core.KindValue, Codec: c, Payload: p})
 	}
 	cases := []struct {
 		r    rec
 		want string
 	}{
-		{v(0x7C), ""},
+		{v(0x3D), ""},
+		{v(0x3F), ""},
+		{v(0x3C), "V1"},
 		{v(0x00, 2), "V2"},
 		{v(0x01, 0, 1), "V3"},
 		{v(0x02, 0, 1), "V3"},
 		{v(0x03, 1, 2, 3), "V2"},
-		{v(0x11, 0), "V3"},
-		{v(0x21, 1), "V2"},
-		{v(0x60, 1), "V2"},
-		{v(0x62, 1), "V2"},
-		{v(0x62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ""},
-		{v(0x63), "V1"},
-		{v(0x41), "V4"},
-		{v(0x25), "V4"},
-		{v(0x24, 0x3139, 0x3734), ""},
-		{v(0x27), "V4"},
-		{v(0x30), "V1"},
+		{v(0x09, 0), "V3"},
+		{v(0x0B, 1), "V2"},
+		{v(0x0D, 1), "V2"},
+		{v(0x1A, 1, 2), "V2"},
+		{v(0x1A, 7), ""},
+		{v(0x1B, 1), "V2"},
+		{v(0x1C, 1), "V2"},
+		{v(0x1D, 1), "V2"},
+		{v(0x1D, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ""},
+		{v(0x1E), "V1"},
+		{v(0x13), "V4"},
+		{v(0x0F), "V4"},
+		{v(0x0E, 0x3139, 0x3734), ""},
+		{v(0x11), "V4"},
+		{v(0x14, 0x6162), ""},
+		{v(0x15), "V4"},
+		{v(0x17), "V4"},
 		{v(0x04, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ""},
 		{v(0x05), "V8"},
 		{v(0x06), "V9"},
 		{v(0x07), "V10"},
-		{v(0x07, 0x0881, 2, 0x0882, 3), ""},
-		{v(0x08), "V1"},
-		{v(0x42, 0x4142), "V1"},
-		{v(0x4A, 0x08C6, 0x656E), ""},
+		{v(0x07, 0x0411, 2, 0x0421, 3), ""},
+		{v(0x30), "V1"},
+		{v(0x18, 0x0561, 0x656E), ""},
 	}
 	for i, c := range cases {
 		if got := rulesOf(checkValue(c.r)); got != c.want {

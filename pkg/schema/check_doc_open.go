@@ -14,7 +14,7 @@ func checkDocOpen(r rec, words int) []Fact {
 	if r.R.Kind != core.KindMeta || r.R.Codec > core.MetaDoc4Word {
 		return []Fact{factAt("D1", Error, r, "TAG WORD", "DOC-1WORD/2WORD/4WORD", fmt.Sprintf("kind %d codec 0x%02X", r.R.Kind, r.R.Codec))}
 	}
-	w := core.WidthWords(r.R.Codec)
+	w := core.WidthWords(uint8(r.R.Codec))
 	if len(r.R.Payload) != w {
 		return []Fact{factAt("D1", Error, r, "Payload", fmt.Sprintf("%d WORD", w), fmt.Sprintf("%d WORD", len(r.R.Payload)))}
 	}

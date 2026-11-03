@@ -8,9 +8,9 @@ import (
 )
 
 func TestCheckVersionList(t *testing.T) {
-	imp := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x03B8, 1, 0, 0, 0, 2, 0, 0, 1}})
-	p1 := recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x03B8, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))
-	p2 := recOf(edgeOf(core.EdgeDeprecation, 3, 0x03B8, 0, 0xffff, 0, 0, 2, 0, 1))
+	imp := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0048, 0, 2, 0, 0, 0, 2, 0, 0, 1}})
+	p1 := recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x0048, 0, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))
+	p2 := recOf(edgeOf(core.EdgeDeprecation, 3, 0x0048, 0, 0, 0xffff, 0, 0, 2, 0, 1))
 	if fs := checkVersionList(docParts{Body: []rec{p1, p2}}); rulesOf(fs) != "P2" {
 		t.Fatalf("order: %+v", fs)
 	}

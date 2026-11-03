@@ -9,7 +9,7 @@ import (
 )
 
 func TestQuantityNumbers(t *testing.T) {
-	v := func(c uint8, p ...core.Word) core.Record {
+	v := func(c uint16, p ...core.Word) core.Record {
 		return core.Record{Kind: core.KindValue, Codec: c, Payload: p}
 	}
 	absent := core.Record{Kind: core.KindReference}
@@ -20,7 +20,7 @@ func TestQuantityNumbers(t *testing.T) {
 	for i, q := range []core.Quantity{
 		{Amount: v(core.CodecSignedDecimal, 0, 0, 0, 1), Unit: absent, Lower: absent, Upper: absent},
 		{Amount: d, Unit: absent, Lower: v(core.CodecBinaryFloat, 0x7FC0, 0), Upper: absent},
-		{Amount: d, Unit: absent, Lower: absent, Upper: v(core.CodecFraction, 0x0881, 1, 0x0882, 0)},
+		{Amount: d, Unit: absent, Lower: absent, Upper: v(core.CodecFraction, 0x0411, 1, 0x0421, 0)},
 	} {
 		if quantityNumbers(q) == "" {
 			t.Fatalf("case %d: want a problem", i)

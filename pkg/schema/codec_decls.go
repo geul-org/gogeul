@@ -11,9 +11,8 @@ import (
 // codecDecls checks the CODEC Edges of body against its FIELDs (edge/CODEC):
 // the field is a FIELD Edge of this document, no field names the same target
 // twice, a raw field (width ≥ 1) has at most one CODEC, an exact one other
-// than a slot marker 0000~0007 (a raw field has no TAG to put a marker in), a
-// reserved marker target 0003~0007 is a Warn, and no field has slot markers
-// alone (markerOnly). CODECs that do not decode are E4's.
+// than a slot marker 0000/0010/0020 (a raw field has no TAG to put a marker
+// in), and no field has slot markers alone (markerOnly). CODECs that do not decode are E4's.
 func codecDecls(body []rec) []Fact {
 	widths := map[uint64]core.Word{}
 	for _, r := range body {
@@ -38,10 +37,8 @@ func codecDecls(body []rec) []Fact {
 		case seen[key]:
 			fs = append(fs, factAt("E5", Error, r, "대상", "필드마다 한 번", fmt.Sprintf("%04X 중복", c.Target)))
 		case w != 0 && core.IsSlotMarkerWord(c.Target):
-			fs = append(fs, factAt("E5", Error, r, "대상", "날값 필드는 자리 표지(0000~0007) 불가", fmt.Sprintf("%04X", c.Target)))
-		case core.IsSlotMarkerWord(c.Target) && c.Target > core.NoValue:
-			fs = append(fs, factAt("E5", Warn, r, "대상", "자리 표지 0000~0002", fmt.Sprintf("%04X (예약 표지)", c.Target)))
-		case w != 0 && c.Target&0x0780 != 0:
+			fs = append(fs, factAt("E5", Error, r, "대상", "날값 필드는 자리 표지(0000·0010·0020) 불가", fmt.Sprintf("%04X", c.Target)))
+		case w != 0 && c.Target&0xF == 0xF:
 			fs = append(fs, factAt("E5", Error, r, "대상", "날값 필드는 정확한 대상", fmt.Sprintf("%04X 와일드카드", c.Target)))
 		case w != 0 && count[c.Field] > 1:
 			fs = append(fs, factAt("E5", Error, r, "필드", "날값 필드의 CODEC 하나", fmt.Sprintf("#%d에 %d개", c.Field, count[c.Field])))

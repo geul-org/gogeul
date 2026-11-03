@@ -9,12 +9,12 @@ import (
 )
 
 func TestMisplacedHeadEdges(t *testing.T) {
-	head := []rec{recOf(edgeOf(core.EdgeSource, 3, 0x0088, 0, 0x00A0, 42))}
+	head := []rec{recOf(edgeOf(core.EdgeSource, 3, 0x0051, 0, 0x0141, 42))}
 	body := []rec{
-		recOf(edgeOf(core.EdgeSource, 5, 0x0088, 0, 0x00A0, 42)),
-		recOf(edgeOf(core.EdgeQualifier, 6, 0x00A8, 813, 0x0088, 3, 0x00A0, 42)),
-		recOf(edgeOf(core.EdgeSource, 7, 0x0088, 9, 0x00A0, 42)),
-		recOf(edgeOf(core.EdgeQualifier, 8, 0x00A8, 813, 0x0088, 7, 0x00A0, 42)),
+		recOf(edgeOf(core.EdgeSource, 5, 0x0051, 0, 0x0141, 42)),
+		recOf(edgeOf(core.EdgeQualifier, 6, 0x0191, 813, 0x0051, 3, 0x0141, 42)),
+		recOf(edgeOf(core.EdgeSource, 7, 0x0051, 9, 0x0141, 42)),
+		recOf(edgeOf(core.EdgeQualifier, 8, 0x0191, 813, 0x0051, 7, 0x0141, 42)),
 	}
 	fs := misplacedHeadEdges(docParts{Head: head, Body: body})
 	if rulesOf(fs) != "E8,E8" || fs[0].Actual != "BODY의 SOURCE" || fs[1].Actual != "BODY의 QUALIFIER" {

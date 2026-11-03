@@ -9,14 +9,14 @@ import (
 )
 
 // singleRule maps Meta codecs that may appear once to the rule they belong to.
-var singleRule = map[uint8]string{
+var singleRule = map[uint16]string{
 	core.MetaDocID: "M2", core.MetaSpecVersion: "M4", core.MetaProfile: "M4", core.MetaDefaultLanguage: "M4",
 	core.MetaEffectiveFrom: "M5", core.MetaEffectiveUntil: "M5",
 }
 
 // countSingles reports every repeat of a Meta that may appear at most once.
 func countSingles(head []rec) []Fact {
-	seen := map[uint8]bool{}
+	seen := map[uint16]bool{}
 	var fs []Fact
 	for _, r := range head {
 		rule, single := singleRule[r.R.Codec]

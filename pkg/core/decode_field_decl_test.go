@@ -21,8 +21,8 @@ func TestDecodeFieldDecl(t *testing.T) {
 		{Kind: KindEdge, Codec: EdgeField, Payload: id},
 		{Kind: KindEdge, Codec: EdgeField, Payload: slices.Concat(id, []Word{4})},
 		{Kind: KindEdge, Codec: EdgeField, Payload: slices.Concat(id, id)},
-		{Kind: KindEdge, Codec: EdgeField, Payload: slices.Concat(id, id, []Word{4, 0x0088})},
-		{Kind: KindEdge, Codec: EdgeField, Payload: slices.Concat(id, id, []Word{0, 0x0088})},
+		{Kind: KindEdge, Codec: EdgeField, Payload: slices.Concat(id, id, []Word{4, 0x0051})},
+		{Kind: KindEdge, Codec: EdgeField, Payload: slices.Concat(id, id, []Word{0, 0x0051})},
 	} {
 		if _, err := DecodeFieldDecl(r); err == nil {
 			t.Fatalf("bad %d: want error", i)

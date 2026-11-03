@@ -16,11 +16,11 @@ func TestNoValueConflicts(t *testing.T) {
 		}
 		return recOf(x)
 	}
-	none := r(0x140A, 0x0088, 1, 0x00A8, 1304, 0x00A0, 30, core.NoValue, 0)
-	fed := r(0x148A, 0x0088, 2, 0x00A8, 1304, 0x00A0, 30, 0x00A0, 53536, 0)
-	unknown := r(0x140A, 0x0088, 3, 0x00A8, 1304, 0x00A0, 30, core.UnknownValue, 0)
-	fedPreferred := r(0x148A, 0x0088, 2, 0x00A8, 1304, 0x00A0, 30, 0x00A0, 53536, 1)
-	from := r(0x148B, 0x0088, 4, 0x00A8, 580, 0x0088, 1, 0x0924, 0x3138, 0x3131)
+	none := r(0x08A8, 0x0051, 1, 0x0191, 1304, 0x0141, 30, core.NoValue, 0)
+	fed := r(0x08A9, 0x0051, 2, 0x0191, 1304, 0x0141, 30, 0x0141, 53536, 0)
+	unknown := r(0x08A8, 0x0051, 3, 0x0191, 1304, 0x0141, 30, core.UnknownValue, 0)
+	fedPreferred := r(0x08A9, 0x0051, 2, 0x0191, 1304, 0x0141, 30, 0x0141, 53536, 1)
+	from := r(0x08B9, 0x0051, 4, 0x0191, 580, 0x0051, 1, 0x04E2, 0x3138, 0x3131)
 	fs := noValueConflicts([]rec{none, fed})
 	if len(fs) != 1 || fs[0].Rule != "E6" || fs[0].Severity != Warn {
 		t.Fatalf("value beside NO-VALUE: %+v", fs)

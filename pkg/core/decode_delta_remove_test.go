@@ -14,7 +14,7 @@ func TestDecodeDeltaRemove(t *testing.T) {
 	for _, r := range []Record{
 		EncodeSpecVersion(2),
 		EncodeDeltaRemove(nil),
-		{Kind: KindMeta, Codec: MetaDeltaRemove, Payload: []Word{0x0088}},
+		{Kind: KindMeta, Codec: MetaDeltaRemove, Payload: []Word{0x0051}},
 		{Kind: KindMeta, Codec: MetaDeltaRemove, Payload: []Word{0x08C0, 0x6162}},
 		EncodeDeltaRemove([]uint64{7, 7}),
 	} {

@@ -9,7 +9,7 @@ import (
 )
 
 func TestFractionProblem(t *testing.T) {
-	v := func(c uint8, p ...core.Word) core.Record {
+	v := func(c uint16, p ...core.Word) core.Record {
 		return core.Record{Kind: core.KindValue, Codec: c, Payload: p}
 	}
 	si, ui := v(core.CodecSignedInteger, 2), v(core.CodecUnsignedInteger, 3)

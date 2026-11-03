@@ -10,8 +10,8 @@ import (
 )
 
 func TestCheckCoordinate(t *testing.T) {
-	q := func(n core.Word, quant uint8) core.Record {
-		return core.Record{Kind: core.KindReference, Codec: core.RefWikidataQID<<3 | quant, Payload: []core.Word{n}}
+	q := func(n core.Word, quant uint16) core.Record {
+		return core.Record{Kind: core.KindReference, Codec: core.CodecWikidataQID + quant, Payload: []core.Word{n}}
 	}
 	metre, someUnit := q(11573, 0), q(11573, 1)
 	geo := func(g core.Record, lat, lon float64) core.Record {

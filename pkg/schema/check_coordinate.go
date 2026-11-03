@@ -26,7 +26,7 @@ func checkCoordinate(r rec) []Fact {
 	switch {
 	case err != nil:
 		return []Fact{factAt("V8", Error, r, "Payload", "Globe Reference(Geo), 10 WORD, Unit Reference 또는 ABSENT", err.Error())}
-	case c.Globe != nil && c.Globe.Codec&7 != 0:
+	case c.Globe != nil && notIdentified(c.Globe.Codec):
 		return []Fact{factAt("V8", Error, r, "Payload", "Globe Quantifier Identified", fmt.Sprintf("0x%02X", c.Globe.Codec))}
 	case math.IsNaN(c.Lat) || math.IsNaN(c.Lon) || math.IsInf(c.Lat, 0) || math.IsInf(c.Lon, 0):
 		return []Fact{factAt("V8", Error, r, "Payload", "유한한 위도·경도", fmt.Sprintf("%v, %v", c.Lat, c.Lon))}
@@ -34,7 +34,7 @@ func checkCoordinate(r rec) []Fact {
 		return []Fact{factAt("V8", Error, r, "Payload", fmt.Sprintf("위도 [-90, 90], 경도 [%v, %v]", lonMin, lonMax), fmt.Sprintf("%v, %v", c.Lat, c.Lon))}
 	case math.IsNaN(float64(c.Uncertainty)) || math.IsInf(float64(c.Uncertainty), 0) || math.Signbit(float64(c.Uncertainty)):
 		return []Fact{factAt("V8", Error, r, "Uncertainty", "유한한 +0 이상 binary32", fmt.Sprintf("%v", c.Uncertainty))}
-	case c.Unit != nil && c.Unit.Codec&7 != 0:
+	case c.Unit != nil && notIdentified(c.Unit.Codec):
 		return []Fact{factAt("V8", Error, r, "Unit", "Unit Quantifier Identified", fmt.Sprintf("0x%02X", c.Unit.Codec))}
 	case c.Unit == nil && c.Uncertainty != 0:
 		return []Fact{factAt("V8", Error, r, "Uncertainty", "Unit이 ABSENT(미상)이면 +0", fmt.Sprintf("%v", c.Uncertainty))}

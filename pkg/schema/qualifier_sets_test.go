@@ -17,10 +17,10 @@ func TestQualifierSets(t *testing.T) {
 		}
 		return s
 	}
-	a := st(0x138B, 0x0088, 8, 0x00A8, 582, 0x0088, 7, core.UnknownValue)
-	b := st(0x138B, 0x0088, 9, 0x00A8, 580, 0x0088, 7, core.NoValue)
-	tr := st(0x140A, 0x0088, 7, 0x00A8, 40, 0x00A0, 42, core.NoValue, 0)
-	bad := st(0x138B, 0x0088, 10, 0x00A8, 582, 0x00A0, 7, core.UnknownValue)
+	a := st(0x08B7, 0x0051, 8, 0x0191, 582, 0x0051, 7, core.UnknownValue)
+	b := st(0x08B7, 0x0051, 9, 0x0191, 580, 0x0051, 7, core.NoValue)
+	tr := st(0x08A8, 0x0051, 7, 0x0191, 40, 0x0141, 42, core.NoValue, 0)
+	bad := st(0x08B7, 0x0051, 10, 0x0191, 582, 0x0141, 7, core.UnknownValue)
 	m1, m2 := qualifierSets([]statement{a, b, tr, bad}), qualifierSets([]statement{b, a})
 	if len(m1) != 1 || m1[7] == "" || m1[7] != m2[7] {
 		t.Fatalf("%v %v", m1, m2)

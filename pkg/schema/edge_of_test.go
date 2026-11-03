@@ -6,6 +6,6 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-func edgeOf(codec uint8, id uint64, rest ...core.Word) core.Record {
+func edgeOf(codec uint16, id uint64, rest ...core.Word) core.Record {
 	return core.Record{Kind: core.KindEdge, Codec: codec, Payload: append(enc(core.EncodeLocalRef(id)), rest...)}
 }
