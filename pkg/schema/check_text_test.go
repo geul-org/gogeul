@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckText — UTF-8 for text (leading or inner U+FEFF passes), ASCII for URI, language tags, EDTF and GEDCOM-DATE (spaces inside), plain-day EDTF fails V6
+//ff:what TestCheckText — UTF-8 for text (leading or inner U+FEFF passes), ASCII for URI, language tags, EDTF and GEDCOM-DATE (spaces inside), the RFC 3986 URI and RFC 5646 well-formed tag grammars, plain-day EDTF fails V6
 package schema
 
 import (
@@ -25,6 +25,11 @@ func TestCheckText(t *testing.T) {
 		{core.CodecOpaqueBytesEven, "\xff\x00", ""},
 		{core.CodecURIEven, "", "V5"},
 		{core.CodecLanguageBCP47Even, "ko KR", "V5"},
+		{core.CodecURIEven, "ab", "V5"},
+		{core.CodecURIEven, "http://x/a|b", "V5"},
+		{core.CodecLanguageBCP47Even, "en_US", "V5"},
+		{core.CodecLanguageBCP47Even, "zh-classical", "V5"},
+		{core.CodecLanguageBCP47Even, "be-tarask", ""},
 		{core.CodecEDTFEven, "1974", ""},
 		{core.CodecEDTFEven, "197X", ""},
 		{core.CodecEDTFEven, "1952-03-11?", ""},
