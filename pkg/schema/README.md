@@ -44,7 +44,7 @@
 | R2 | 대상 ID는 가장 짧은 폭이다. 값 0은 `0x0000` 1 WORD이고, 그 밖에는 선행 `0x0000` WORD가 없다. |
 | R3 | `EXTERNAL-POINTER-*`: IMPORT ID가 들어가는 가장 좁은 Codec이고, 그 IMPORT ID를 배정한 `IMPORT-DOC`이 HEAD에 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). |
 | R4 | `EXTERNAL-ISSUER-*`(체계 9~11, 2/4/16 WORD): Issuer 폭이 체계와 맞고 값이 들어가는 가장 짧은 폭이며, 문서 ID 4 WORD 뒤에 대상 ID가 1 WORD 이상 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). 문서 ID `0`은 Issuer의 용어 정의 색인 문서다. |
-| R5 | `ISSUER-POINTER`(`0x040L`)·`DOC-POINTER`(`0x041L`)·`CODEC-POINTER`(`0x042L`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`는 Issuer 목록(`issuers/`) 예약 ID다(docs·codecs 목록은 없다, migration.md §1.1 101). |
+| R5 | `ISSUER-POINTER`(`0x040L`)·`DOC-POINTER`(`0x041L`)·`CODEC-POINTER`(`0x042L`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`는 Issuer 목록(`issuers/`) 예약 ID이고 Issuer `0x00000000`만 쓴다(docs·codecs 목록은 없다, migration.md §1.1 101, 문법 0x041L). |
 
 ### V Value (OVERVIEW Value)
 
@@ -76,12 +76,13 @@
 | E9 | ENUM(edge/ENUM)의 필드는 같은 문서의 고정 폭 날값 FIELD(폭 1~65534, 나머지 날값 `0xFFFF`에는 ENUM 없음)이고, 코드값은 정확히 그 폭이며, 한 필드에서 같은 코드값을 두 번 선언하지 않는다. 디코딩되지 않는 ENUM은 E4다. |
 | E10 | TRIPLE·QUALIFIER(문법 0x0AAL·0x0ABL)는 Edge Id 뒤 완전한 레코드 셋이다. TRIPLE의 Predicate·Subject는 Reference이고 Object 뒤에 Rank가 정확히 1 WORD이며 `0`(normal)·`1`(preferred)·`2`(deprecated)뿐이다. QUALIFIER의 Target은 LOCAL Reference이고 Value를 읽은 커서가 Edge 끝과 맞는다. Object·Value는 Reference 또는 Value 레코드다(자리 표지는 E7). QUALIFIER Property의 Kind는 보지 않는다(문법 본문은 Reference, 필드 표는 자리 표지 말고 아무 레코드). |
 | E11 | DECLARE(문법 0x0BBL)의 대상 WORD는 Codec 자리(접두사 `000`, LLLL `0000`, 아니면 E4)이고 한 문서에서 같은 대상(Issuer 코덱은 Issuer·코덱 번호까지)을 두 번 선언하지 않는다. FIELD(0x0BCL)의 DECLARE는 같은 문서의 DECLARE이고, DECLARE마다 나머지 날값(`0xFFFF`)은 하나이며 그 뒤 필드는 고정 폭 날값뿐이다. |
+| E12 | 한 문서에서 같은 BIND 이름(바이트 비교)을 서로 다른 Subject에 묶지 않는다(문법 0x0A3L, edge.md). 같은 Subject에 다시 묶거나 한 Subject에 이름 여럿은 된다. |
 
 ### M Meta (OVERVIEW Meta)
 
 | 규칙 | 내용 |
 |---|---|
-| M2 | `DOC-ID`는 하나이고, Payload는 `DOC-POINTER`(Issuer, 문서 ID ≠ 0, 버전 0) Reference 하나다. |
+| M2 | `DOC-ID`는 하나이고, Payload는 `DOC-POINTER`(Issuer, 문서 ID, 버전 0) Reference 하나다(문서 ID `0`은 용어 정의 색인 문서로 허용). 코덱 문서는 `CODEC-POINTER`(Issuer, 코덱 ID, 버전 0)다. 문서 ID `0xFFFFFFFFFFFFFFFF`는 오지 않는다(목록 문서는 DOC-ID가 없다, 문법 0x1C7L). |
 | M3 | `IMPORT-DOC`: Payload는 `DOC-POINTER` Reference 하나와 그 뒤의 IMPORT ID다. IMPORT ID가 최소 폭이고 문서 안에서 중복되지 않는다. |
 | M4 | `SPEC-VERSION`·`PROFILE`·`DEFAULT-LANGUAGE`은 각각 하나다. `SPEC-VERSION`의 Payload는 내장 Value 없이 가장 짧은 폭의 unsigned 정수다(v1 = `0x0001`). 나머지는 내장 Value가 해당 형식이다. |
 | M5 | `EFFECTIVE-FROM`·`EFFECTIVE-UNTIL`은 각각 하나이고 GREGORIAN-DATE 또는 POSIX-TIMESTAMP-SECONDS다. 둘 다 있으면 FROM이 UNTIL보다 앞선다. |
