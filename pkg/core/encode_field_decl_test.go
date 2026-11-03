@@ -8,10 +8,10 @@ import (
 )
 
 func TestEncodeFieldDecl(t *testing.T) {
-	if ws, _ := EncodeRecord(EncodeFieldDecl(FieldDecl{EdgeID: 7, Declare: 1})); !slices.Equal(ws, []Word{0x129C, 0x0088, 7, 0x0088, 1, 0}) {
+	if ws, _ := EncodeRecord(EncodeFieldDecl(FieldDecl{EdgeID: 7, Declare: 1})); !slices.Equal(ws, []Word{0x09C5, 0x0051, 7, 0x0051, 1, 0}) {
 		t.Fatalf("record: %04X", ws)
 	}
-	if ws, _ := EncodeRecord(EncodeFieldDecl(FieldDecl{EdgeID: 2, Declare: 1, Width: 4})); !slices.Equal(ws, []Word{0x129C, 0x0088, 2, 0x0088, 1, 4}) {
+	if ws, _ := EncodeRecord(EncodeFieldDecl(FieldDecl{EdgeID: 2, Declare: 1, Width: 4})); !slices.Equal(ws, []Word{0x09C5, 0x0051, 2, 0x0051, 1, 4}) {
 		t.Fatalf("raw: %04X", ws)
 	}
 }

@@ -1,20 +1,20 @@
 //ff:func feature=core type=helper control=selection
-//ff:what IssuerCanonical — whether an Issuer is written in the shortest of 1, 2, 4 and 16 words that holds its value
+//ff:what IssuerCanonical — whether an Issuer ID is 2, 4 or 16 words at its narrowest width
 package core
 
 import "slices"
 
-// IssuerCanonical reports whether issuer is an Issuer ID in canonical form
-// (GEUL t002 ISSUER): 1, 2, 4 or 16 words, and the shortest of those that holds
-// its value. An Issuer ID is its integer value, so 0x0005 and 0x00000005 are
-// the same Issuer; a width grows only when the value does not fit the
-// narrower one (2 WORD from 0x00010000, 4 WORD from 2^32, 16 WORD from 2^64).
+// IssuerCanonical reports whether issuer is an Issuer ID in canonical form: 2,
+// 4 or 16 words, and the shortest of those that holds its value. An Issuer ID
+// is its integer value, so a 2-word ID written with leading zero words as 4 or
+// 16 words is the same Issuer (IssuerNormal); that is why no 4-word Issuer has
+// its top 2 words zero (it starts at 2^32) and no 16-word Issuer its top 12
+// words zero (it starts at 2^64). Every 2-word value is canonical; 1 word is
+// not an Issuer width.
 func IssuerCanonical(issuer []Word) bool {
 	switch len(issuer) {
-	case 1:
-		return true
 	case 2:
-		return issuer[0] != 0
+		return true
 	case 4:
 		return issuer[0]|issuer[1] != 0
 	case 16:

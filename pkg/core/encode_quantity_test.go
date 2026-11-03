@@ -9,7 +9,7 @@ import (
 
 func TestEncodeQuantity(t *testing.T) {
 	absent := Record{Kind: KindReference}
-	km := Record{Kind: KindReference, Codec: RefWikidataQID << 3, Payload: []Word{0x000C, 0xA250}}
+	km := Record{Kind: KindReference, Codec: CodecWikidataQID, Payload: []Word{0x000C, 0xA250}}
 	dec := func(c int64) Record { return EncodeSignedDecimalBig(0, big.NewInt(c)) }
 	for want, q := range map[int]Quantity{
 		17: {Amount: dec(652), Unit: km, Lower: dec(651), Upper: dec(653)},

@@ -1,16 +1,15 @@
 //ff:func feature=core type=helper control=iteration dimension=1
-//ff:what TestValidTarget — exact and wildcard targets pass; prefix bits, other LLLL and wildcards with nothing to match fail
+//ff:what TestValidTarget — over the whole 16-bit space a target is valid iff the prefix is 000 and LLLL is 0000 or 1111
 package core
 
 import "testing"
 
 func TestValidTarget(t *testing.T) {
-	for w, want := range map[Word]bool{
-		0x084A: true, 0x0008: true, 0x0780: true, 0x0F80: true, 0x07A0: true, 0x0781: true,
-		0x2008: false, 0x0088: false, 0x0F84: false, 0x07A1: false,
-	} {
+	for v := 0; v <= 0xFFFF; v++ {
+		w := Word(v)
+		want := v < 0x2000 && (v&0xF == 0 || v&0xF == 0xF)
 		if got := validTarget(w); got != want {
-			t.Fatalf("%04X: %v", w, got)
+			t.Fatalf("%04X: %v", v, got)
 		}
 	}
 }

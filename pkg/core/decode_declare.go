@@ -6,7 +6,7 @@ import "fmt"
 
 // DecodeDeclare reads a DECLARE Edge (GEUL t002 docs/edge/DECLARE): the LOCAL
 // Edge Id, the target word and, for an ISSUER target, the Issuer and format
-// number. Nothing may follow.
+// number (2 words). Nothing may follow.
 func DecodeDeclare(r Record) (Declare, error) {
 	if r.Kind != KindEdge || r.Codec != EdgeDeclare {
 		return Declare{}, fmt.Errorf("geul/core: not a DECLARE Edge (kind %d codec 0x%02X)", r.Kind, r.Codec)
@@ -21,11 +21,12 @@ func DecodeDeclare(r Record) (Declare, error) {
 	d := Declare{EdgeID: id, Target: r.Payload[pos]}
 	pos++
 	if w := IssuerWidth(SplitTarget(d.Target)); w > 0 {
-		if len(r.Payload) < pos+w+1 {
-			return Declare{}, fmt.Errorf("geul/core: DECLARE ISSUER target needs %d Issuer words and a format number", w)
+		if len(r.Payload) < pos+w+FormatWords {
+			return Declare{}, fmt.Errorf("geul/core: DECLARE ISSUER target needs %d Issuer words and a 2-word codec number", w)
 		}
-		d.Issuer, d.Format = r.Payload[pos:pos+w], r.Payload[pos+w]
-		pos += w + 1
+		d.Issuer = r.Payload[pos : pos+w]
+		d.Format = uint32(r.Payload[pos+w])<<16 | uint32(r.Payload[pos+w+1])
+		pos += w + FormatWords
 	}
 	if pos != len(r.Payload) {
 		return Declare{}, fmt.Errorf("geul/core: DECLARE has %d words after its target", len(r.Payload)-pos)

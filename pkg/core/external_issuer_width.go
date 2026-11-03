@@ -1,19 +1,17 @@
 //ff:func feature=core type=helper control=selection
-//ff:what ExternalIssuerWidth — the Issuer word count of an EXTERNAL-ISSUER-* Reference codec, 0 otherwise
+//ff:what ExternalIssuerWidth — the Issuer width of an EXTERNAL-ISSUER scheme (9, 10, 11 → 2, 4, 16)
 package core
 
-// ExternalIssuerWidth returns the Issuer width that the 4-bit Reference codec
-// c of EXTERNAL-ISSUER-1/2/4/16WORD declares (GEUL t002 OVERVIEW Reference):
-// its low 2 bits, 00=1, 01=2, 10=4, 11=16 words. Any other codec returns 0.
-func ExternalIssuerWidth(c uint8) int {
-	switch c {
-	case RefExternalIssuer1Word:
-		return 1
-	case RefExternalIssuer2Word:
+// ExternalIssuerWidth returns the Issuer width of the Reference scheme (C/5) of
+// EXTERNAL-ISSUER-2/4/16WORD: scheme 9 is 2, 10 is 4 and 11 is 16 words. Any
+// other scheme returns 0.
+func ExternalIssuerWidth(scheme uint16) int {
+	switch scheme {
+	case SchemeExternalIssuer2Word:
 		return 2
-	case RefExternalIssuer4Word:
+	case SchemeExternalIssuer4Word:
 		return 4
-	case RefExternalIssuer16Word:
+	case SchemeExternalIssuer16Word:
 		return 16
 	default:
 		return 0

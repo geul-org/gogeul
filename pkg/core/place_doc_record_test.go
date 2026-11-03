@@ -37,8 +37,8 @@ func TestPlaceDocRecord(t *testing.T) {
 	if err := placeDocRecord(head, edge); err == nil {
 		t.Fatal("non-Meta in HEAD must fail")
 	}
-	q42 := Record{Kind: KindReference, Codec: RefWikidataQID << 3, Payload: []Word{42}}
-	p813 := Record{Kind: KindReference, Codec: RefWikidataPID << 3, Payload: []Word{813}}
+	q42 := Record{Kind: KindReference, Codec: CodecWikidataQID, Payload: []Word{42}}
+	p813 := Record{Kind: KindReference, Codec: CodecWikidataPID, Payload: []Word{813}}
 	src := headEdgeFixture(EdgeSource, 1, EncodeLocalRef(0), q42)
 	qual := headEdgeFixture(EdgeQualifier, 2, p813, EncodeLocalRef(1), q42)
 	withSource := &docState{}

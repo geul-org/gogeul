@@ -8,10 +8,10 @@ import "slices"
 // docs/edge/PUBLICATION): the LOCAL Edge Id, the DOC-POINTER Reference of
 // (Issuer, document ID, version ID) and the codec's tail — the content hash
 // for PUBLICATION, the reason for TOMBSTONE, nothing for DEPRECATION. p must
-// hold a 1/2/4/16-word Issuer and a 4-word document ID.
+// hold a 2/4/16-word Issuer and a 4-word document ID.
 func EncodePublication(p Publication) Record {
 	id, _ := EncodeRecord(EncodeLocalRef(p.EdgeID))
-	ptr, _ := EncodeRecord(Record{Kind: KindReference, Codec: RefDocPointer << 3, Payload: slices.Concat(p.Issuer, p.Doc, []Word{Word(p.Version >> 16), Word(p.Version)})})
+	ptr, _ := EncodeRecord(Record{Kind: KindReference, Codec: CodecDocPointer, Payload: slices.Concat(p.Issuer, p.Doc, []Word{Word(p.Version >> 16), Word(p.Version)})})
 	payload := append(id, ptr...)
 	switch p.Codec {
 	case EdgePublication:

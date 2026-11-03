@@ -6,8 +6,8 @@ package core
 // whose even member is evenCodec (GEUL t002 OVERVIEW Value): the codec's low bit
 // is the byte-count parity and an odd count is padded with one 0x00 byte. The
 // bytes are stored verbatim (no normalization).
-func EncodeBytesValue(evenCodec uint8, b []byte) Record {
-	odd := uint8(len(b) % 2)
+func EncodeBytesValue(evenCodec uint16, b []byte) Record {
+	odd := uint16(len(b) % 2)
 	padded := b
 	if odd == 1 {
 		padded = append(append([]byte(nil), b...), 0x00)

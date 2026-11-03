@@ -12,7 +12,7 @@ func TestIsAbsent(t *testing.T) {
 	if IsAbsent(EncodeLocalRef(1)) || IsAbsent(Record{Kind: KindReference, Payload: []Word{1}}) || IsAbsent(Record{Kind: KindValue}) {
 		t.Fatal("non-absent records: want false")
 	}
-	if !CodecMatches(Absent, r.Kind, r.Codec) || CodecMatches(Absent, KindReference, RefLocal<<3) {
-		t.Fatal("CODEC 0000 matches only Absent")
+	if !CodecMatches(Absent, r.Kind, r.Codec) || CodecMatches(Absent, KindReference, CodecLocal) {
+		t.Fatal("CODEC 0x0000 matches only Absent")
 	}
 }

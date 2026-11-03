@@ -5,7 +5,7 @@ package core
 // publicationTail returns how many words follow the DOC-POINTER: 16 (content
 // hash) for PUBLICATION, 0 for DEPRECATION, 1 (reason) for TOMBSTONE. The bool
 // is false for any other codec.
-func publicationTail(codec uint8) (int, bool) {
+func publicationTail(codec uint16) (int, bool) {
 	switch codec {
 	case EdgePublication:
 		return 16, true

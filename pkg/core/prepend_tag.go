@@ -5,7 +5,7 @@ package core
 // prependTag encodes the tag of a k/codec record whose body has n words and
 // appends body; n is passed apart from body so the length limit can be
 // checked without such a body.
-func prependTag(k Kind, codec uint8, n int, body []Word) ([]Word, error) {
+func prependTag(k Kind, codec uint16, n int, body []Word) ([]Word, error) {
 	tag, err := encodeTag(k, codec, n)
 	if err != nil {
 		return nil, err

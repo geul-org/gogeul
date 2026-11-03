@@ -17,6 +17,6 @@ func WrapDocument(inner []Word) []Word {
 	}
 	code, _ := WidthCode(w)
 	payload, _ := EncodeID(uint64(len(inner)+1+w), w)
-	head, _ := EncodeRecord(Record{Kind: KindMeta, Codec: MetaDoc1Word + code, Payload: payload})
+	head, _ := EncodeRecord(Record{Kind: KindMeta, Codec: MetaDoc1Word + uint16(code), Payload: payload})
 	return append(head, inner...)
 }

@@ -10,12 +10,12 @@ import (
 func TestEncodeIntegerBig(t *testing.T) {
 	r, err := EncodeIntegerBig(true, big.NewInt(2))
 	ws, _ := EncodeRecord(r)
-	if err != nil || FormatID(ws) != "0x08810002" {
+	if err != nil || FormatID(ws) != "0x04110002" {
 		t.Fatalf("signed: %s %v", FormatID(ws), err)
 	}
 	r, err = EncodeIntegerBig(false, big.NewInt(3))
 	ws, _ = EncodeRecord(r)
-	if err != nil || FormatID(ws) != "0x08820003" {
+	if err != nil || FormatID(ws) != "0x04210003" {
 		t.Fatalf("unsigned: %s %v", FormatID(ws), err)
 	}
 	if _, err := EncodeIntegerBig(false, big.NewInt(-3)); err == nil {

@@ -8,7 +8,7 @@ import (
 )
 
 func TestEncodeDeltaRemove(t *testing.T) {
-	if ws, _ := EncodeRecord(EncodeDeltaRemove([]uint64{7, 12})); !slices.Equal(ws, []Word{0x1A3B, 0x0088, 7, 0x0088, 12}) {
+	if ws, _ := EncodeRecord(EncodeDeltaRemove([]uint64{7, 12})); !slices.Equal(ws, []Word{0x1DC4, 0x0051, 7, 0x0051, 12}) {
 		t.Fatalf("got %04X", ws)
 	}
 }

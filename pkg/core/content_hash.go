@@ -6,7 +6,7 @@ import "crypto/sha256"
 
 // ContentHash computes a document's content hash (GEUL t002 OVERVIEW 계보): the
 // SHA-256 of its words from the opening DOC-* record up to, not including, END.
-// Validation-class Meta records (class 100, codecs 0x40-0x4F: ISSUER-KEY,
+// Validation-class Meta records (Meta C >= 0x25, IsValidationMeta: ISSUER-KEY,
 // SIGNATURE, VERDICT, …) are left out, and the DOC-* record is rewritten for the
 // remaining length at its narrowest width, so adding or removing signatures does
 // not change the hash. ws must be exactly one well-formed document.

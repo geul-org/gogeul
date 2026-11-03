@@ -5,7 +5,7 @@ package core
 import "testing"
 
 func TestEncodeBind(t *testing.T) {
-	subj, _ := EncodeIssuerPointer([]Word{0})
+	subj, _ := EncodeIssuerPointer([]Word{0, 0})
 	r, err := EncodeBind(Bind{EdgeID: 3, Subject: subj, Name: []byte("geul-org")})
 	if err != nil {
 		t.Fatal(err)
@@ -17,7 +17,7 @@ func TestEncodeBind(t *testing.T) {
 	if _, err := EncodeBind(Bind{EdgeID: 0, Subject: subj}); err == nil {
 		t.Fatal("Edge Id 0: want error")
 	}
-	if _, err := EncodeBind(Bind{EdgeID: 1, Subject: Record{Kind: KindEdge, Codec: 0x80}}); err == nil {
-		t.Fatal("codec past 7 bits: want error")
+	if _, err := EncodeBind(Bind{EdgeID: 1, Subject: Record{Kind: KindEdge, Codec: 0x140}}); err == nil {
+		t.Fatal("codec past the Edge zone: want error")
 	}
 }

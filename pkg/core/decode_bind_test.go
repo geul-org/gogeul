@@ -18,7 +18,7 @@ func TestDecodeBind(t *testing.T) {
 	if err != nil || b.EdgeID != 3 || b.Subject.Payload[0] != 7 || string(b.Name) != "main" {
 		t.Fatalf("got %+v %v", b, err)
 	}
-	if b, err := DecodeBind(Record{Kind: KindEdge, Codec: EdgeBind, Payload: cat(id, []Word{0x1018}, name)}); err != nil || b.Subject.Codec != EdgePublication {
+	if b, err := DecodeBind(Record{Kind: KindEdge, Codec: EdgeBind, Payload: cat(id, []Word{0x0980}, name)}); err != nil || b.Subject.Codec != EdgePublication {
 		t.Fatalf("codec subject: %+v %v", b, err)
 	}
 	bad := [][]Word{
@@ -27,7 +27,7 @@ func TestDecodeBind(t *testing.T) {
 		cat(id),
 		cat(id, enc(EncodeUintValue(1)), name),
 		cat(id, subj),
-		cat(id, subj, name, []Word{0x180F}),
+		cat(id, subj, name, []Word{0x1C40}),
 		cat(id, subj, enc(EncodeUintValue(1))),
 	}
 	for i, p := range bad {

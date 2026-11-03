@@ -5,7 +5,7 @@ package core
 import "testing"
 
 func TestPublicationTail(t *testing.T) {
-	for c, want := range map[uint8]int{EdgePublication: 16, EdgeDeprecation: 0, EdgeTombstone: 1} {
+	for c, want := range map[uint16]int{EdgePublication: 16, EdgeDeprecation: 0, EdgeTombstone: 1} {
 		if n, ok := publicationTail(c); !ok || n != want {
 			t.Fatalf("0x%02X: %d %v", c, n, ok)
 		}

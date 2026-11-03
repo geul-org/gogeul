@@ -5,7 +5,7 @@ package core
 import "testing"
 
 func TestQuantityNumber(t *testing.T) {
-	for _, c := range []uint8{CodecSignedInteger, CodecUnsignedInteger, CodecBinaryFloat, CodecFraction, CodecSignedDecimal, CodecUnsignedDecimal} {
+	for _, c := range []uint16{CodecSignedInteger, CodecUnsignedInteger, CodecBinaryFloat, CodecFraction, CodecSignedDecimal, CodecUnsignedDecimal} {
 		if !quantityNumber(Record{Kind: KindValue, Codec: c}) {
 			t.Fatalf("0x%02X: want true", c)
 		}

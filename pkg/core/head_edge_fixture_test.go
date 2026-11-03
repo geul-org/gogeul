@@ -4,7 +4,7 @@ package core
 
 // headEdgeFixture encodes codec(Edge Id id, fields…): each field is a
 // record (a LOCAL Reference for an ID).
-func headEdgeFixture(codec uint8, id uint64, fields ...Record) Record {
+func headEdgeFixture(codec uint16, id uint64, fields ...Record) Record {
 	ws, _ := EncodeRecord(EncodeLocalRef(id))
 	for _, f := range fields {
 		fw, _ := EncodeRecord(f)

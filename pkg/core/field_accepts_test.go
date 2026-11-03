@@ -6,20 +6,20 @@ import "testing"
 
 func TestFieldAccepts(t *testing.T) {
 	marker := func(w Word) Record { r, _, _ := DecodeRecord([]Word{w}); return r }
-	object := []Word{0x0780, 0x0F80, UnknownValue, NoValue}
-	q5 := Record{Kind: KindReference, Codec: RefWikidataQID << 3, Payload: []Word{5}}
+	object := []Word{0x000F, 0x040F, UnknownValue, NoValue}
+	q5 := Record{Kind: KindReference, Codec: CodecWikidataQID, Payload: []Word{5}}
 	switch {
 	case !FieldAccepts(object, marker(UnknownValue)), !FieldAccepts(object, marker(NoValue)):
 		t.Fatal("named markers: want true")
-	case FieldAccepts(object, marker(Absent)), FieldAccepts([]Word{0x0780}, marker(UnknownValue)):
+	case FieldAccepts(object, marker(Absent)), FieldAccepts([]Word{0x000F}, marker(UnknownValue)):
 		t.Fatal("marker not named, wildcard only: want false")
 	case FieldAccepts(nil, marker(Absent)), FieldAccepts(nil, marker(NoValue)):
 		t.Fatal("no CODEC list takes no marker")
 	case FieldAccepts([]Word{UnknownValue}, Record{Kind: KindReference, Codec: 1, Payload: []Word{7}}):
-		t.Fatal("Codec 0000 with payload: want false")
-	case !FieldAccepts(nil, q5), !FieldAccepts(object, q5), FieldAccepts([]Word{0x0008}, q5):
+		t.Fatal("marker C with payload: want false")
+	case !FieldAccepts(nil, q5), !FieldAccepts(object, q5), FieldAccepts([]Word{0x0050}, q5):
 		t.Fatal("ordinary records follow the list")
-	case !FieldAccepts([]Word{0x0810, Absent}, marker(Absent)):
+	case !FieldAccepts([]Word{0x0480, Absent}, marker(Absent)):
 		t.Fatal("optional field: want true")
 	}
 }

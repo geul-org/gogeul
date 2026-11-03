@@ -1,28 +1,21 @@
 //ff:func feature=core type=helper control=selection
-//ff:what CodecMatches — whether a k/codec record fits a CODEC target word: exact, or a wildcard (LLLL 1111) over its zero Codec bits; wildcards never match Reference Codec 0000 (slot markers)
+//ff:what CodecMatches — whether a record's Kind·Codec fits a CODEC target (exact or Kind wildcard)
 package core
 
 // CodecMatches reports whether a record of Kind k and Codec codec fits the
 // CODEC target t (GEUL edge/CODEC). With LLLL 0000 the Kind and Codec must be
-// equal (a Reference's Quantifier included); this is the only way a slot
-// marker (Reference Codec 0000: 0x0000 ABSENT, 0x0001 UNKNOWN-VALUE, 0x0002
-// NO-VALUE) is accepted. With LLLL 1111 the target is a wildcard: the Kind must
-// be equal and a Codec bit group that is all zero matches anything — for a
-// Reference the codec CCCC and the Quantifier QQQ are separate groups, for
-// other Kinds the whole 7 bits are one — except the reserved Reference Codec
-// 0000, which no wildcard matches.
-func CodecMatches(t Word, k Kind, codec uint8) bool {
-	tk, tc := Kind(t>>11&3), uint8(t&0x7F)
+// equal; this is the only way a slot marker (0x0000 ABSENT, 0x0010
+// UNKNOWN-VALUE, 0x0020 NO-VALUE) is accepted. With LLLL 1111 the C bits are
+// not read: any record of the target's Kind (KKK) matches, except the slot
+// markers. Several Quantifiers or codes are taken by listing several CODECs.
+func CodecMatches(t Word, k Kind, codec uint16) bool {
+	tk, tc := SplitTarget(t)
 	switch {
 	case tk != k:
 		return false
-	case t&0x0780 == 0:
-		return tc == codec
-	case k != KindReference:
-		return tc == 0
-	case codec>>3 == 0:
-		return false
+	case t&0xF == 0xF:
+		return k != KindReference || !IsSlotMarkerCodec(codec)
 	default:
-		return (tc>>3 == 0 || tc>>3 == codec>>3) && (tc&7 == 0 || tc&7 == codec&7)
+		return tc == codec
 	}
 }

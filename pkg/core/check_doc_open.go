@@ -15,7 +15,7 @@ func checkDocOpen(r Record, inputWords int) error {
 	if r.Kind != KindMeta || r.Codec > MetaDoc4Word {
 		return errors.New("geul/core: document must open with DOC-1WORD/2WORD/4WORD")
 	}
-	w := WidthWords(r.Codec)
+	w := WidthWords(uint8(r.Codec))
 	if len(r.Payload) != w {
 		return fmt.Errorf("geul/core: DOC payload must be %d words", w)
 	}

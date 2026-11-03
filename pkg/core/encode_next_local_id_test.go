@@ -8,7 +8,7 @@ import (
 )
 
 func TestEncodeNextLocalID(t *testing.T) {
-	if ws, _ := EncodeRecord(EncodeNextLocalID(524)); !slices.Equal(ws, []Word{0x18BC, 0x020C}) {
+	if ws, _ := EncodeRecord(EncodeNextLocalID(524)); !slices.Equal(ws, []Word{0x1DD1, 0x020C}) {
 		t.Fatalf("524: %04X", ws)
 	}
 	if r := EncodeNextLocalID(70000); len(r.Payload) != 2 {

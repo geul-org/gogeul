@@ -1,9 +1,10 @@
 //ff:func feature=core type=encoder control=sequence
-//ff:what tagWord — pack prefix 000, Kind, the 4-bit Length code and the 7-bit Codec into a TAG WORD
+//ff:what tagWord — pack prefix 000, the Kind zone, the Codec and the 4-bit Length code into a TAG WORD
 package core
 
-// tagWord packs a GEUL TAG WORD `000K KLLL LCCC CCCC`: the Free/Proposal prefix
-// 000, the 2-bit Kind, the 4-bit Length code and the 7-bit Codec.
-func tagWord(k Kind, lenCode uint8, codec uint8) Word {
-	return Word(uint16(k&3)<<11 | uint16(lenCode&0xF)<<7 | uint16(codec&0x7F))
+// tagWord packs a GEUL TAG WORD `000K KKCC CCCC LLLL`: the zone start of k
+// (kindBase), the Codec shifted past LLLL and the 4-bit Length code. The caller
+// keeps codec within CodecMax(k).
+func tagWord(k Kind, lenCode uint8, codec uint16) Word {
+	return kindBase(k) + Word(codec)<<4 + Word(lenCode&0xF)
 }

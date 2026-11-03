@@ -5,8 +5,8 @@ package core
 import "testing"
 
 func TestPlaceHeadEdge(t *testing.T) {
-	q42 := Record{Kind: KindReference, Codec: RefWikidataQID << 3, Payload: []Word{42}}
-	p813 := Record{Kind: KindReference, Codec: RefWikidataPID << 3, Payload: []Word{813}}
+	q42 := Record{Kind: KindReference, Codec: CodecWikidataQID, Payload: []Word{42}}
+	p813 := Record{Kind: KindReference, Codec: CodecWikidataPID, Payload: []Word{813}}
 	st := &docState{}
 	if placeHeadEdge(st, headEdgeFixture(EdgeQualifier, 2, p813, EncodeLocalRef(1), q42)) {
 		t.Fatal("QUALIFIER before its SOURCE")

@@ -5,8 +5,8 @@ package core
 import "testing"
 
 func TestHeadEdge(t *testing.T) {
-	q42 := Record{Kind: KindReference, Codec: RefWikidataQID << 3, Payload: []Word{42}}
-	p813 := Record{Kind: KindReference, Codec: RefWikidataPID << 3, Payload: []Word{813}}
+	q42 := Record{Kind: KindReference, Codec: CodecWikidataQID, Payload: []Word{42}}
+	p813 := Record{Kind: KindReference, Codec: CodecWikidataPID, Payload: []Word{813}}
 	if id, ok := HeadEdge(headEdgeFixture(EdgeSource, 3, EncodeLocalRef(0), q42), nil); !ok || id != 3 {
 		t.Fatalf("SOURCE on the document: %d %v", id, ok)
 	}
@@ -24,14 +24,14 @@ func TestHeadEdge(t *testing.T) {
 		t.Fatal("TRIPLE is never a HEAD Edge")
 	}
 	issuer := headEdgeFixture(EdgeSource, 3, EncodeLocalRef(0), q42)
-	issuer.Issuer = []Word{1}
+	issuer.Issuer = []Word{0, 1}
 	if _, ok := HeadEdge(issuer, nil); ok {
 		t.Fatal("an ISSUER form is not the direct SOURCE")
 	}
-	if _, ok := HeadEdge(Record{Kind: KindMeta, Codec: 0x20, Payload: issuer.Payload}, nil); ok {
-		t.Fatal("Meta 0x20 (AUTHOR) is not an Edge")
+	if _, ok := HeadEdge(Record{Kind: KindMeta, Codec: MetaAuthor, Payload: issuer.Payload}, nil); ok {
+		t.Fatal("Meta AUTHOR is not an Edge")
 	}
-	if _, ok := HeadEdge(Record{Kind: KindEdge, Codec: EdgeSource, Payload: []Word{0x00A0}}, nil); ok {
+	if _, ok := HeadEdge(Record{Kind: KindEdge, Codec: EdgeSource, Payload: []Word{0x0140}}, nil); ok {
 		t.Fatal("an Edge without a LOCAL Edge Id")
 	}
 	if _, ok := HeadEdge(headEdgeFixture(EdgeSource, 3, q42), nil); ok {

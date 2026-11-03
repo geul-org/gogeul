@@ -1,5 +1,5 @@
 //ff:func feature=core type=decoder control=iteration dimension=1
-//ff:what TestDecodeIssuerPointer — an encoded Issuer round-trips; other codecs, Quantifiers and widths fail
+//ff:what TestDecodeIssuerPointer — a canonical Issuer back; non-canonical widths, other codes and kinds rejected
 package core
 
 import (
@@ -13,10 +13,11 @@ func TestDecodeIssuerPointer(t *testing.T) {
 		t.Fatalf("%v %v", iss, err)
 	}
 	for _, bad := range []Record{
-		{Kind: KindReference, Codec: RefIssuerPointer<<3 | 4, Payload: []Word{0x40}},
-		{Kind: KindReference, Codec: RefIssuerPointer << 3, Payload: []Word{1, 2, 3}},
-		{Kind: KindReference, Codec: RefDocPointer << 3, Payload: []Word{0x40}},
-		{Kind: KindValue, Codec: RefIssuerPointer << 3, Payload: []Word{0x40}},
+		{Kind: KindReference, Codec: CodecIssuerPointer, Payload: []Word{0x40}},
+		{Kind: KindReference, Codec: CodecIssuerPointer, Payload: []Word{1, 2, 3}},
+		{Kind: KindReference, Codec: CodecIssuerPointer, Payload: []Word{0, 0, 1, 2}},
+		{Kind: KindReference, Codec: CodecDocPointer, Payload: []Word{0, 0x40}},
+		{Kind: KindValue, Codec: CodecIssuerPointer, Payload: []Word{0, 0x40}},
 	} {
 		if _, err := DecodeIssuerPointer(bad); err == nil {
 			t.Fatalf("%+v accepted", bad)

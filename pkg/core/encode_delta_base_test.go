@@ -8,7 +8,7 @@ import (
 )
 
 func TestEncodeDeltaBase(t *testing.T) {
-	if ws, _ := EncodeRecord(EncodeDeltaBase(3)); !slices.Equal(ws, []Word{0x193A, 0, 3}) {
+	if ws, _ := EncodeRecord(EncodeDeltaBase(3)); !slices.Equal(ws, []Word{0x1DB2, 0, 3}) {
 		t.Fatalf("got %04X", ws)
 	}
 }

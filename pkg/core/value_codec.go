@@ -1,59 +1,60 @@
 //ff:type feature=core type=model
-//ff:what Value codec constants — the GEUL t002 direct Value codes TANGEUL embeds
+//ff:what Value codec constants — the direct Value codes (C, KKK 001) in table order
 package core
 
-// Direct Value codecs used by the TANGEUL profile (GEUL t002 OVERVIEW Value).
-// Variable-length byte strings come in even/odd pairs: the low bit is 1 when
-// the byte count is odd and the last word carries a 0x00 pad byte.
+// Direct Value codes (KKK 001, TAG 0x040L~0x05DL). The codes run in table
+// order without gaps and carry no family bits: a decoder that does not know
+// a code does not know its family. Variable-length byte strings come in
+// even/odd pairs that start on an even C: the low bit is 1 when the byte count
+// is odd and the last word carries a 0x00 pad byte.
 const (
-	// CodecSignedInteger is a minimal-word big-endian two's-complement integer.
-	CodecSignedInteger uint8 = 0x01
-	// CodecUnsignedInteger is a minimal-word big-endian unsigned integer.
-	CodecUnsignedInteger uint8 = 0x02
-	// CodecBinaryFloat is an IEEE 754 binary16/32/64/128 by Payload width 1/2/4/8.
-	CodecBinaryFloat uint8 = 0x03
-	// CodecCoordinateEarth is a WGS 84 point: latitude and longitude as
-	// binary64 degrees, the uncertainty radius as binary32, then the unit of
-	// the uncertainty as a Reference record (ABSENT: unknown).
-	CodecCoordinateEarth uint8 = 0x04
-	// CodecCoordinateGeo is CodecCoordinateEarth on a given body: a globe
-	// Reference record first.
-	CodecCoordinateGeo uint8 = 0x05
-	// CodecQuantity is a numeric amount (SIGNED-/UNSIGNED-INTEGER,
-	// BINARY-FLOAT, FRACTION, SIGNED-/UNSIGNED-DECIMAL) with a unit Reference
-	// and lower and upper bounds, the unit and bounds left out as the Absent
-	// record.
-	CodecQuantity uint8 = 0x06
-	// CodecFraction is a fraction kept as written: a SIGNED-INTEGER or
-	// SIGNED-DECIMAL numerator record, then an UNSIGNED-INTEGER or
-	// UNSIGNED-DECIMAL denominator record, not reduced.
-	CodecFraction uint8 = 0x07
-	// CodecSignedDecimal is a signed 32-bit exponent E plus a minimal-word
-	// two's-complement coefficient C, value C×10^E.
-	CodecSignedDecimal uint8 = 0x10
-	// CodecUnsignedDecimal is a signed 32-bit exponent E plus a minimal-word
-	// unsigned coefficient C, value C×10^E.
-	CodecUnsignedDecimal uint8 = 0x11
-	// CodecGregorianDate is a fixed 2-word signed int32 day count from 1970-01-01.
-	CodecGregorianDate uint8 = 0x20
-	// CodecPosixSeconds is a fixed 4-word signed int64 second count from the Unix epoch.
-	CodecPosixSeconds uint8 = 0x22
-	// CodecEDTFEven is an EDTF (ISO 8601-2) date string, ASCII (even bytes;
-	// 0x25 is the odd member).
-	CodecEDTFEven uint8 = 0x24
-	// CodecGEDCOMDateEven is a GEDCOM 7 date value string (calendar keyword,
-	// e.g. JULIAN), ASCII (even bytes; 0x27 is the odd member).
-	CodecGEDCOMDateEven uint8 = 0x26
-	// CodecSHA256Digest is a fixed 16-word SHA-256 digest.
-	CodecSHA256Digest uint8 = 0x61
-	// CodecSHA1Digest is a fixed 10-word SHA-1 digest, for identifiers such as
-	// git object IDs only (SHA-1 is not collision resistant).
-	CodecSHA1Digest uint8 = 0x62
-	// CodecUTF8TextEven is valid UTF-8 without implied normalization (even bytes).
-	CodecUTF8TextEven uint8 = 0x40
-	// CodecLanguageBCP47Even is a canonical BCP 47 language tag (even bytes).
-	CodecLanguageBCP47Even uint8 = 0x46
-	// CodecUTF8LanguageTextEven is a language-tagged text: a language Value
-	// record, then UTF-8 bytes (even text bytes; 0x4B is the odd member).
-	CodecUTF8LanguageTextEven uint8 = 0x4A
+	// CodecBool is BOOL (0x040L).
+	CodecBool uint16 = 0x00
+	// CodecSignedInteger is SIGNED-INTEGER (0x041L).
+	CodecSignedInteger uint16 = 0x01
+	// CodecUnsignedInteger is UNSIGNED-INTEGER (0x042L).
+	CodecUnsignedInteger uint16 = 0x02
+	// CodecBinaryFloat is BINARY-FLOAT (0x043L).
+	CodecBinaryFloat uint16 = 0x03
+	// CodecCoordinateEarth is COORDINATE-EARTH (0x044L).
+	CodecCoordinateEarth uint16 = 0x04
+	// CodecCoordinateGeo is COORDINATE-GEO (0x045L).
+	CodecCoordinateGeo uint16 = 0x05
+	// CodecQuantity is QUANTITY (0x046L).
+	CodecQuantity uint16 = 0x06
+	// CodecFraction is FRACTION (0x047L).
+	CodecFraction uint16 = 0x07
+	// CodecSignedDecimal is SIGNED-DECIMAL (0x048L).
+	CodecSignedDecimal uint16 = 0x08
+	// CodecUnsignedDecimal is UNSIGNED-DECIMAL (0x049L).
+	CodecUnsignedDecimal uint16 = 0x09
+	// CodecGregorianDate is GREGORIAN-DATE (0x04AL).
+	CodecGregorianDate uint16 = 0x0A
+	// CodecCivilTime is CIVIL-TIME-NANOSECONDS (0x04BL).
+	CodecCivilTime uint16 = 0x0B
+	// CodecPosixSeconds is POSIX-TIMESTAMP-SECONDS (0x04CL).
+	CodecPosixSeconds uint16 = 0x0C
+	// CodecDurationSeconds is DURATION-SECONDS (0x04DL).
+	CodecDurationSeconds uint16 = 0x0D
+	// CodecEDTFEven is EDTF, even byte count (0x04EL; odd 0x04FL).
+	CodecEDTFEven uint16 = 0x0E
+	// CodecGEDCOMDateEven is GEDCOM-DATE, even byte count (0x050L; odd 0x051L).
+	CodecGEDCOMDateEven uint16 = 0x10
+	// CodecUTF8TextEven is UTF8-TEXT, even byte count (0x052L; odd 0x053L).
+	CodecUTF8TextEven uint16 = 0x12
+	// CodecURIEven is URI, even byte count (0x054L; odd 0x055L).
+	CodecURIEven uint16 = 0x14
+	// CodecLanguageBCP47Even is LANGUAGE-BCP47-CODE, even byte count (0x056L; odd 0x057L).
+	CodecLanguageBCP47Even uint16 = 0x16
+	// CodecUTF8LanguageTextEven is UTF8-LANGUAGE-TEXT, even total byte count (0x058L; odd 0x059L).
+	CodecUTF8LanguageTextEven uint16 = 0x18
+	// CodecLanguageShortCode is LANGUAGE-SHORT-CODE (0x05AL): one word, a code
+	// of the language registry.
+	CodecLanguageShortCode uint16 = 0x1A
+	// CodecUUID is UUID (0x05BL).
+	CodecUUID uint16 = 0x1B
+	// CodecSHA256Digest is SHA-256-DIGEST (0x05CL).
+	CodecSHA256Digest uint16 = 0x1C
+	// CodecSHA1Digest is SHA1-DIGEST (0x05DL).
+	CodecSHA1Digest uint16 = 0x1D
 )

@@ -17,7 +17,7 @@ func TestEncodeDocument(t *testing.T) {
 	if b, err := EncodeDocument(nil, nil); err != nil || len(b) == 0 {
 		t.Fatal(err)
 	}
-	if _, err := EncodeDocument([]Record{{Kind: KindEdge, Codec: 0x80}}, nil); err == nil {
+	if _, err := EncodeDocument([]Record{{Kind: KindEdge, Codec: 0x140}}, nil); err == nil {
 		t.Fatal("bad record: want error")
 	}
 }

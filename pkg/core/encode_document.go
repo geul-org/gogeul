@@ -14,5 +14,6 @@ func EncodeDocument(head, body []Record) ([]byte, error) {
 		}
 		in = append(in, ws...)
 	}
-	return PutWords(WrapDocument(append(in, 0x180F))), nil
+	end, _ := EncodeRecord(Record{Kind: KindMeta, Codec: MetaEnd})
+	return PutWords(WrapDocument(append(in, end...))), nil
 }

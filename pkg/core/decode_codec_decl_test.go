@@ -8,7 +8,7 @@ import (
 )
 
 func TestDecodeCodecDecl(t *testing.T) {
-	in := CodecDecl{EdgeID: 3, Field: 2, Target: TargetWord(KindReference, RefWikidataQID<<3)}
+	in := CodecDecl{EdgeID: 3, Field: 2, Target: TargetWord(KindReference, CodecWikidataQID)}
 	if got, err := DecodeCodecDecl(EncodeCodecDecl(in)); err != nil || got != in {
 		t.Fatalf("%+v %v", got, err)
 	}

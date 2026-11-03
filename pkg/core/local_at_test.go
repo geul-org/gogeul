@@ -5,7 +5,7 @@ package core
 import "testing"
 
 func TestLocalAt(t *testing.T) {
-	src := headEdgeFixture(EdgeSource, 7, EncodeLocalRef(0), Record{Kind: KindReference, Codec: RefWikidataQID << 3, Payload: []Word{42}})
+	src := headEdgeFixture(EdgeSource, 7, EncodeLocalRef(0), Record{Kind: KindReference, Codec: CodecWikidataQID, Payload: []Word{42}})
 	if id, ok := localAt(src.Payload, 0); !ok || id != 7 {
 		t.Fatalf("Edge Id: %d %v", id, ok)
 	}

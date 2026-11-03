@@ -13,7 +13,7 @@ const maxRecordWords = 0xFFFFFFFF
 // canonical form is enforced: 1-14 words use a direct code, 15-65535 the 1-word
 // extension (1110), 65536-2^32-1 the 2-word extension (1111). Larger records
 // are rejected.
-func encodeTag(k Kind, codec uint8, body int) ([]Word, error) {
+func encodeTag(k Kind, codec uint16, body int) ([]Word, error) {
 	if body < 0 {
 		return nil, errors.New("geul/core: negative record body")
 	}

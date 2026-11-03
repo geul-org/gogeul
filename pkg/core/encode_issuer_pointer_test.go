@@ -1,5 +1,5 @@
-//ff:func feature=core type=encoder control=sequence
-//ff:what TestEncodeIssuerPointer — a 1-word Issuer encodes as 00E8 + Issuer; a 3-word Issuer fails
+//ff:func feature=core type=encoder control=iteration dimension=1
+//ff:what TestEncodeIssuerPointer — a 2-word Issuer encodes as 0032 + Issuer; 1-word, 3-word and zero-padded Issuers fail
 package core
 
 import (
@@ -8,14 +8,16 @@ import (
 )
 
 func TestEncodeIssuerPointer(t *testing.T) {
-	r, err := EncodeIssuerPointer([]Word{0x40})
+	r, err := EncodeIssuerPointer([]Word{0, 0x0D})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if ws, _ := EncodeRecord(r); !slices.Equal(ws, []Word{0x00B0, 0x40}) {
+	if ws, _ := EncodeRecord(r); !slices.Equal(ws, []Word{0x0032, 0, 0x0D}) {
 		t.Fatalf("%04X", ws)
 	}
-	if _, err := EncodeIssuerPointer([]Word{1, 2, 3}); err == nil {
-		t.Fatal("3-word Issuer accepted")
+	for _, bad := range [][]Word{{1, 2, 3}, {0x40}, {0, 0, 0, 1}} {
+		if _, err := EncodeIssuerPointer(bad); err == nil {
+			t.Fatalf("%04X accepted", bad)
+		}
 	}
 }
