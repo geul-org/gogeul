@@ -6,7 +6,8 @@ import "github.com/geul-org/gogeul/pkg/core"
 
 // checkDeltaMeta applies M7 to the diff and auto increment Meta
 // (meta/lineage/DELTA-BASE, DELTA-REMOVE, NEXT-LOCAL-ID) by their core
-// decoders. Where they may appear (a diff, a version list) is checked later.
+// decoders. Where they may appear (a diff, a version list) is
+// lineagePlacement's, a document-wide rule.
 func checkDeltaMeta(r rec) []Fact {
 	var err error
 	expected := ""
