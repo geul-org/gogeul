@@ -2,13 +2,10 @@ package core
 
 // valueIssuerFormatNames maps the Value ISSUER formats of 2-WORD Issuers
 // (grammar Value ISSUER 형식) to their spec names, keyed by Issuer<<32 | codec
-// number. The Edge formats of the GEUL Issuer (TOULMIN 0x0000C000~) are named by
-// pkg/toulmin.
+// number. The GEUL Issuer has none: its former formats are direct codes
+// (migration.md §3.14; OPAQUE-BYTES, BIT-VECTOR, DURATION-NANOSECONDS and the
+// TOULMIN 0x100L~0x114L Edges).
 var valueIssuerFormatNames = map[uint64]string{
-	0x00000000_00004000: "DURATION-NANOSECONDS",        // GEUL
-	0x00000000_0000C000: "OPAQUE-BYTES-EVEN",           // GEUL
-	0x00000000_0000C001: "OPAQUE-BYTES-ODD",            // GEUL
-	0x00000000_0000C002: "BIT-VECTOR",                  // GEUL
 	0x00000002_00000000: "BFLOAT16",                    // ADHOC
 	0x00000002_00000500: "DENSE-I16-VECTOR",            // ADHOC
 	0x00000002_00000501: "DENSE-U16-VECTOR",            // ADHOC

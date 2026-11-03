@@ -32,7 +32,9 @@ var schemeNames = map[uint16]string{
 }
 
 // edgeNames maps the direct Edge codes (Codec = code - 0x80) the core knows to
-// their spec names. The TOULMIN family is named by pkg/toulmin.
+// their spec names. The TOULMIN family (0x060~0x07B) and the former GEUL ISSUER
+// formats now direct (0x080~0x094, TAG 0x100L~0x114L, migration.md §3.14) are
+// named by pkg/toulmin.
 var edgeNames = map[uint16]string{
 	0x00: "REFERENCE-NODE", 0x01: "SAME-NODE", 0x02: "DIFFERENT-NODE", EdgeBind: "BIND", 0x04: "LABEL", 0x05: "ALIAS", 0x06: "DESCRIPTION",
 	0x08: "VERB-SHORT", 0x09: "VERB", EdgeTriple: "TRIPLE", EdgeQualifier: "QUALIFIER", 0x10: "WORLD", 0x11: "TIMELINE", 0x12: "SCENE",
@@ -56,6 +58,7 @@ var valueNames = map[uint16]string{
 	CodecLanguageBCP47Even: "LANGUAGE-BCP47-CODE", CodecLanguageBCP47Even | 1: "LANGUAGE-BCP47-CODE",
 	CodecUTF8LanguageTextEven: "UTF8-LANGUAGE-TEXT", CodecUTF8LanguageTextEven | 1: "UTF8-LANGUAGE-TEXT",
 	CodecLanguageShortCode: "LANGUAGE-SHORT-CODE", CodecUUID: "UUID", CodecSHA256Digest: "SHA-256-DIGEST", CodecSHA1Digest: "SHA1-DIGEST",
+	CodecOpaqueBytesEven: "OPAQUE-BYTES", CodecOpaqueBytesEven | 1: "OPAQUE-BYTES", CodecBitVector: "BIT-VECTOR", CodecDurationNanoseconds: "DURATION-NANOSECONDS",
 	CodecValueIssuer2Word: "VALUE-ISSUER-2WORD", CodecValueIssuer4Word: "VALUE-ISSUER-4WORD", CodecValueIssuer16Word: "VALUE-ISSUER-16WORD",
 }
 

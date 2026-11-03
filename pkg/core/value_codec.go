@@ -57,4 +57,14 @@ const (
 	CodecSHA256Digest uint16 = 0x1C
 	// CodecSHA1Digest is SHA1-DIGEST (0x05DL).
 	CodecSHA1Digest uint16 = 0x1D
+	// CodecOpaqueBytesEven is OPAQUE-BYTES, even byte count (0x05EL; odd
+	// 0x05FL). Formerly the GEUL Issuer's ISSUER formats 0xC000/0xC001
+	// (migration.md §3.14).
+	CodecOpaqueBytesEven uint16 = 0x1E
+	// CodecBitVector is BIT-VECTOR (0x060L): a 2-word bit count N, then
+	// ceil(N/16) words MSB-first. Formerly GEUL ISSUER format 0xC002 (§3.14).
+	CodecBitVector uint16 = 0x20
+	// CodecDurationNanoseconds is DURATION-NANOSECONDS (0x061L): signed int64
+	// nanoseconds in 4 words. Formerly GEUL ISSUER format 0x4000 (§3.14).
+	CodecDurationNanoseconds uint16 = 0x21
 )

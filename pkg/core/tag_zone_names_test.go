@@ -12,7 +12,7 @@ func TestTagZoneNames(t *testing.T) {
 		if !named(KindReference, c) {
 			t.Fatalf("Reference C 0x%02X unnamed", c)
 		}
-		if named(KindValue, c) != (c <= 0x1D || c >= 0x3D) {
+		if named(KindValue, c) != (c <= 0x21 || c >= 0x3D) {
 			t.Fatalf("Value C 0x%02X: %v", c, named(KindValue, c))
 		}
 		if named(KindMeta, c) != (c <= 0x29) {

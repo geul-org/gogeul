@@ -28,8 +28,8 @@
 | `encode_id.go`, `decode_id.go`, `width*.go`, `min_width.go` | 고정 폭(1/2/4/8 WORD) 필드와 폭 코드 (DOC-* 길이, TOULMIN SPAN) |
 | `ref_codec.go`, `encode_local_ref.go`, `decode_local_ref.go` | Reference Codec, LOCAL Reference (Edge Id·문서 안 언급) |
 | `kind*.go`, `tag_*.go`, `split_target.go`, `target_word.go`, `codec_max.go` | KKK 표, 영역 시작 TAG, (Kind, Codec) ↔ TAG·대상 WORD |
-| `meta_codec.go`, `value_codec.go`, `edge_codec.go`, `codec_issuer.go`, `issuer_*.go`, `list_doc_id.go` | 사용하는 Meta·Value·Edge·ISSUER 코드, Issuer 폭·정규형, 목록 예약 ID |
-| `testdata/migration1/` | 기준 벡터(`vector.tsv`, `gen12.json`, `t12_*.md`). 시험 기대값은 코드 상수가 아니라 이 표에서 온다 |
+| `meta_codec.go`, `value_codec.go`, `edge_codec.go`, `codec_issuer.go`, `issuer_*.go`, `list_doc_id.go` | 사용하는 Meta·Value·Edge·ISSUER 코드(§3.14로 직접 코드가 된 OPAQUE-BYTES `0x05EL`/`0x05FL`, BIT-VECTOR `0x060L`, DURATION-NANOSECONDS `0x061L` 포함), Issuer 폭·정규형, 목록 예약 ID. 다른 Issuer의 Value ISSUER 형식 이름은 `issuer_format_names.go`(GEUL Issuer 행은 없다) |
+| `testdata/migration1/` | 기준 벡터(`vector.tsv`, `gen12.json`, `t12_*.md`, §3.14 표 `s314.tsv`). 시험 기대값은 코드 상수가 아니라 이 표에서 온다 |
 | `content_hash.go`, `strip_validation.go` | 내용 해시: 검증 클래스 Meta를 빼고 DOC-* 길이를 다시 계산한 뒤 END 직전까지의 SHA-256 |
 
 - toulmin(`draft/toulmin`, 브랜치 `geul-t002`)이 이 패키지를 import해 `.geul`을 읽고 쓴다.

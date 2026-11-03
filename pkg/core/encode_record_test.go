@@ -12,8 +12,8 @@ func TestEncodeRecord(t *testing.T) {
 	if err != nil || !slices.Equal(got, []Word{0x1C40}) {
 		t.Fatalf("END: got %04X err=%v", got, err)
 	}
-	got, err = EncodeRecord(Record{Kind: KindEdge, Codec: CodecEdgeIssuer2Word, Issuer: []Word{0, 0}, Format: 0xC001, Payload: []Word{1}})
-	if err != nil || !slices.Equal(got, []Word{0x1BD5, 0, 0, 0, 0xC001, 1}) {
+	got, err = EncodeRecord(Record{Kind: KindEdge, Codec: CodecEdgeIssuer2Word, Issuer: []Word{0, 7}, Format: 0xC001, Payload: []Word{1}})
+	if err != nil || !slices.Equal(got, []Word{0x1BD5, 0, 7, 0, 0xC001, 1}) {
 		t.Fatalf("EDGE-ISSUER: got %04X err=%v", got, err)
 	}
 	if _, err := EncodeRecord(Record{Kind: KindEdge, Codec: 0x140}); err == nil {
