@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestEnumDecls — distinct codes on raw fields pass, the same code on two fields passes; an unknown field, a record field, a wrong code width and a code declared twice on one field fail with E9
+//ff:what TestEnumDecls — distinct codes on raw fields pass, the same code on two fields passes; an unknown field, a record field, a rest field, a wrong code width and a code declared twice on one field fail with E9
 package schema
 
 import (
@@ -33,6 +33,7 @@ func TestEnumDecls(t *testing.T) {
 	}{
 		{recs(enum(4, 9, 0x0001)), "같은 문서의 FIELD"},
 		{recs(field(2, 0), enum(4, 2, 0x0001)), "날값 FIELD"},
+		{recs(field(2, 0xFFFF), enum(4, 2, 0x0001)), "나머지 날값에는 ENUM"},
 		{recs(field(2, 1), enum(4, 2, 0, 0x0001)), "1 WORD"},
 		{recs(field(2, 1), enum(4, 2, 0x0038), enum(5, 2, 0x0039), enum(6, 2, 0x0038)), "필드마다 한 번"},
 	} {

@@ -10,7 +10,8 @@ import "fmt"
 // target with nothing after it declares the ISSUER code itself, as GEUL's own
 // codec document of that code does (grammar 0x0BBL 유효성 "ISSUER 코드도 그
 // 코드 그대로다", migration.md §1.1 127); its Issuer is empty. Nothing else
-// may follow.
+// may follow. The target is a codec: prefix 000 and LLLL 0000 (grammar 0x0BBL
+// "대상은 Codec 자리만", like a CODEC's exact target).
 func DecodeDeclare(r Record) (Declare, error) {
 	if r.Kind != KindEdge || r.Codec != EdgeDeclare {
 		return Declare{}, fmt.Errorf("geul/core: not a DECLARE Edge (kind %d codec 0x%02X)", r.Kind, r.Codec)
@@ -23,6 +24,9 @@ func DecodeDeclare(r Record) (Declare, error) {
 		return Declare{}, fmt.Errorf("geul/core: DECLARE without a target")
 	}
 	d := Declare{EdgeID: id, Target: r.Payload[pos]}
+	if d.Target&0xE00F != 0 {
+		return Declare{}, fmt.Errorf("geul/core: DECLARE target %04X is not a codec (prefix 000, LLLL 0000)", d.Target)
+	}
 	pos++
 	if w := IssuerWidth(SplitTarget(d.Target)); w > 0 && pos < len(r.Payload) {
 		if len(r.Payload) < pos+w+FormatWords {
