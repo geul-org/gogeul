@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=selection
-//ff:what checkText — any bytes for OPAQUE-BYTES; V5: UTF-8 validity for text (a leading U+FEFF is a character), non-empty ASCII for URI, language tags, EDTF and GEDCOM-DATE; V6 for EDTF
+//ff:what checkText — any bytes for OPAQUE-BYTES; V5: UTF-8 validity for text (a leading U+FEFF is a character), non-empty ASCII for URI, language tags, EDTF and GEDCOM-DATE, the RFC 3986 URI and RFC 5646 well-formed tag grammars; V6 for EDTF
 package schema
 
 import (
@@ -10,7 +10,10 @@ import (
 
 // checkText applies V5 to the bytes of a byte-string Value whose even codec is
 // even (UTF8-TEXT, URI, LANGUAGE-BCP47-CODE, EDTF, GEDCOM-DATE), then V6 to
-// EDTF. OPAQUE-BYTES takes any bytes, none included. The EDTF and GEDCOM date grammars are not checked yet (README 미결정).
+// EDTF. OPAQUE-BYTES takes any bytes, none included. A URI matches the RFC
+// 3986 URI grammar (uriSyntax, grammar 0x074L) and a LANGUAGE-BCP47-CODE is a
+// well-formed RFC 5646 tag (bcp47WellFormed, 0x076L; registry validity is 2층).
+// The full EDTF and GEDCOM date grammars are not checked (grammar 0x06EL, 0x070L).
 // A text may start with U+FEFF (EF BB BF): it is a character kept as written,
 // not a BOM.
 func checkText(r rec, even uint16, b []byte) []Fact {
@@ -30,6 +33,10 @@ func checkText(r rec, even uint16, b []byte) []Fact {
 		return nil
 	case !printableASCII(b):
 		return []Fact{factAt("V5", Error, r, "Payload", "ASCII (0x21~0x7E)", "다른 byte 포함")}
+	case even == core.CodecURIEven && !uriSyntax(b):
+		return []Fact{factAt("V5", Error, r, "Payload", "RFC 3986 URI (scheme \":\" hier-part [?query] [#fragment])", string(b))}
+	case even == core.CodecLanguageBCP47Even && !bcp47WellFormed(b):
+		return []Fact{factAt("V5", Error, r, "Payload", "RFC 5646 well-formed BCP 47 tag", string(b))}
 	case even == core.CodecEDTFEven && edtfPlainDay(b):
 		return []Fact{factAt("V6", Error, r, "Payload", "GREGORIAN-DATE로 쓰는 날짜가 아님", string(b))}
 	default:

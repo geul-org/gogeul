@@ -29,6 +29,8 @@ func checkValue(r rec) []Fact {
 		return checkDecimal(r, c == core.CodecSignedDecimal)
 	case c == core.CodecCivilTime:
 		return checkCivilTime(r)
+	case c == core.CodecLanguageShortCode:
+		return checkShortCode(r)
 	case fixedValueWidth[c] > 0:
 		return checkWidth(r, fixedValueWidth[c])
 	case c == core.CodecUTF8TextEven, c == core.CodecUTF8TextEven|1, c >= core.CodecURIEven && c <= core.CodecLanguageBCP47Even|1, c == core.CodecEDTFEven, c == core.CodecEDTFEven|1,

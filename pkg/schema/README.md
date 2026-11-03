@@ -50,12 +50,12 @@
 
 | 규칙 | 내용 |
 |---|---|
-| V2 | 고정 폭 직접 코드는 Payload 폭이 맞다. BOOL 1(`0x0000`·`0x0001`만), BINARY-FLOAT 1/2/4/8, GREGORIAN-DATE 2, CIVIL-TIME-NANOSECONDS 4(`[0, 86400×10^9)`), POSIX-TIMESTAMP-SECONDS 4, DURATION-SECONDS 4, LANGUAGE-SHORT-CODE 1, UUID 8, SHA-256-DIGEST 16, SHA1-DIGEST 10, DURATION-NANOSECONDS 4. BIT-VECTOR는 bit 수 N 2 WORD 뒤 정확히 ceil(N/16) WORD이고 마지막 WORD의 쓰지 않는 하위 bit가 0이다(§3.14로 직접 코드가 된 Value). |
+| V2 | 고정 폭 직접 코드는 Payload 폭이 맞다. LANGUAGE-SHORT-CODE는 `0x0000`·`0xFFFF`가 아니다(문법 0x07AL, 레지스트리 대조는 2층). BOOL 1(`0x0000`·`0x0001`만), BINARY-FLOAT 1/2/4/8, GREGORIAN-DATE 2, CIVIL-TIME-NANOSECONDS 4(`[0, 86400×10^9)`), POSIX-TIMESTAMP-SECONDS 4, DURATION-SECONDS 4, LANGUAGE-SHORT-CODE 1, UUID 8, SHA-256-DIGEST 16, SHA1-DIGEST 10, DURATION-NANOSECONDS 4. BIT-VECTOR는 bit 수 N 2 WORD 뒤 정확히 ceil(N/16) WORD이고 마지막 WORD의 쓰지 않는 하위 bit가 0이다(§3.14로 직접 코드가 된 Value). |
 | V3 | SIGNED-INTEGER·UNSIGNED-INTEGER와 DECIMAL의 coefficient는 최소 WORD다. DECIMAL은 exponent 2 WORD + coefficient 1 WORD 이상이다. |
 | V4 | 홀짝 코드 쌍(텍스트, URI, 언어 태그, EDTF, GEDCOM-DATE, UTF8-LANGUAGE-TEXT의 텍스트 부분, OPAQUE-BYTES)에서 홀수 코드는 Payload가 1 WORD 이상이고 마지막 하위 byte가 `0x00`이다. |
-| V5 | UTF8-TEXT는 well-formed UTF-8이다(선두 U+FEFF도 문자로 허용한다). URI·URI-RELATIVE-REF·LANGUAGE-BCP47-CODE·EDTF는 ASCII이고 빈 문자열이 아니다. GEDCOM-DATE는 ASCII 0x20~0x7E이고 비어 있지 않으며 앞뒤 공백이 없다. |
+| V5 | UTF8-TEXT는 well-formed UTF-8이다(선두 U+FEFF도 문자로 허용한다). URI·URI-RELATIVE-REF·LANGUAGE-BCP47-CODE·EDTF는 ASCII이고 빈 문자열이 아니다. URI는 RFC 3986 `URI` 문법(scheme과 `:` 필수, pct-encoded)에 맞고(0x074L), LANGUAGE-BCP47-CODE는 RFC 5646 well-formed tag다(0x076L, IANA 레지스트리 대조는 2층). GEDCOM-DATE는 ASCII 0x20~0x7E이고 비어 있지 않으며 앞뒤 공백이 없다. |
 | V6 | EDTF는 GREGORIAN-DATE로 정확히 쓸 수 있는 날짜(한정자·미상 자릿수·구간 없는 `[-]YYYY-MM-DD`)가 아니다. |
-| V7 | UTF8-LANGUAGE-TEXT는 완전한 LANGUAGE-SHORT-CODE 또는 LANGUAGE-BCP47-CODE 레코드로 시작하고 그 레코드도 Value 규칙을 지킨다. 나머지는 UTF8-TEXT처럼 V4·V5를 따른다. |
+| V7 | UTF8-LANGUAGE-TEXT는 완전한 LANGUAGE-SHORT-CODE 또는 LANGUAGE-BCP47-CODE 레코드로 시작하고 그 레코드도 Value 규칙을 지킨다. BCP 47 tag `zxx`(언어 내용 없음)는 쓰지 않는다(0x078L, SHORT-CODE의 zxx 대조는 레지스트리가 필요해 2층). 나머지는 UTF8-TEXT처럼 V4·V5를 따른다. |
 | V8 | COORDINATE-EARTH는 Payload가 10 WORD(위도·경도 binary64, 불확도 2 WORD binary32) 뒤 Unit 레코드, COORDINATE-GEO는 천체 Reference 레코드 하나(globe 닫힌 목록: 5Q 체계의 Identified 코드 `0x005L`·`0x00AL`·`0x00FL`·`0x014L`·`0x020L`·`0x025L`·`0x02AL`·`0x02FL`·`0x034L`·`0x039L`, WIKIDATA-PID·포인터·REFERENCE-ISSUER 제외, 문법 0x065L) 뒤 같은 배치다. 위도·경도는 유한하고 위도 [-90, 90], 경도 [-180, 180](Earth)·[-360, 360](Geo)이다. 불확도는 유한한 +0 이상(-0·NaN·±Inf 아님)이다. Unit은 Quantifier Identified인 Reference 또는 ABSENT(불확도 미상)이고, ABSENT면 불확도는 +0(`0000 0000`)이다. |
 | V9 | QUANTITY는 수치 amount, Reference(자리 표지 제외) 또는 ABSENT(`0x0000`) unit, 수치 또는 ABSENT lower·upper의 네 레코드뿐이다. 수치는 SIGNED-INTEGER·UNSIGNED-INTEGER·BINARY-FLOAT·FRACTION·SIGNED-DECIMAL·UNSIGNED-DECIMAL의 닫힌 목록이다. 있는 수치는 정규형이다: 정수·coefficient 최소 WORD, BINARY-FLOAT 1/2/4/8 WORD의 유한값(NaN·±Infinity 아님), FRACTION은 V10(value/numeric/QUANTITY). |
 | V10 | FRACTION은 SIGNED-INTEGER 또는 SIGNED-DECIMAL numerator와 UNSIGNED-INTEGER 또는 UNSIGNED-DECIMAL denominator의 두 레코드뿐이다. 성분은 최소 WORD이고, 지수 0인 DECIMAL 성분(정수 원문은 INTEGER)과 값이 0인 분모는 Error다. 약분 여부는 보지 않는다(표기 보존, value/numeric/FRACTION). |
@@ -147,7 +147,7 @@ type Options struct {
 
 ## 구현 상태
 
-- 1층 규칙 표 전체를 구현했다(`Check`). 예외: EDTF·GEDCOM 날짜의 전체 문법과 BCP 47 tag 문법 검사(미결정. V6의 평범한 날짜 금지는 구현했다. 라이브러리는 외부 의존성이 없다). UTF8-NFC-TEXT(`0x42`/`0x43`)는 2026-10-26 폐기되어 배정이 없다(보지 않는다).
+- 1층 규칙 표 전체를 구현했다(`Check`). 예외: EDTF·GEDCOM 날짜의 전체 문법(문법 0x06EL·0x070L이 범위 밖으로 둔다. V6의 평범한 날짜 금지는 구현했다).
 - 2층은 `Options.Codecs`로 받은 Codec을 모든 레코드에 돌리는 틀만 있다. 내장 규격(TOULMIN, `docs/value`, `docs/edge`)은 아직 없다.
 - 3층(격틀, 선택 제약)은 없다.
 - core에 버전 목록 레코드 디코드(`core.DecodePublication`)를 넣어 E4·P 규칙이 쓴다.
@@ -155,6 +155,5 @@ type Options struct {
 
 ## 미결정
 
-- URI·LANGUAGE-BCP47-CODE 문법 검사의 엄격도(RFC 3986 전체 문법, IANA 레지스트리 대조 여부).
 - Codec 규격 문서의 형식. 2층이 받을 Codec 규격을 GEUL 문서로 어떻게 표현할지.
 - 서술 Edge(REFERENCE-NODE 등)의 레이아웃을 1층에 둘지 2층에 둘지. 지금은 core 내장 Codec만 1층이다.
