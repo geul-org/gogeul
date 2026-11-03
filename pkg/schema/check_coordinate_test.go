@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckCoordinate — valid Earth and Geo points pass (with a unit, exact, or unknown); bad width, no or quantified globe, non-finite and out-of-range degrees, a negative, -0, infinite or NaN uncertainty, a quantified unit and a non-zero uncertainty without a unit fail
+//ff:what TestCheckCoordinate — valid Earth and Geo points pass (with a unit, exact, or unknown); bad width, no globe, a quantified, WIKIDATA-PID or ISSUER-POINTER globe, non-finite and out-of-range degrees, a negative, -0, infinite or NaN uncertainty, a quantified unit and a non-zero uncertainty without a unit fail
 package schema
 
 import (
@@ -33,6 +33,9 @@ func TestCheckCoordinate(t *testing.T) {
 		{geo(q(111, 0), 4.5, 359), ""},
 		{core.Record{Kind: core.KindValue, Codec: 0x04, Payload: make([]core.Word, 10)}, "V8"},
 		{geo(q(111, 1), 4.5, 10), "V8"},
+		{geo(core.Record{Kind: core.KindReference, Codec: core.CodecWikidataQID + 5, Payload: []core.Word{5}}, 4.5, 10), "V8"},
+		{geo(core.Record{Kind: core.KindReference, Codec: 0x40, Payload: []core.Word{0, 1}}, 4.5, 10), "V8"},
+		{geo(core.Record{Kind: core.KindReference, Codec: 0x05, Payload: []core.Word{7}}, 4.5, 10), ""},
 		{core.EncodeCoordinate(core.Coordinate{Lat: math.NaN(), Lon: 1}), "V8"},
 		{core.EncodeCoordinate(core.Coordinate{Lat: 1, Lon: math.Inf(1)}), "V8"},
 		{core.EncodeCoordinate(core.Coordinate{Lat: 91, Lon: 1}), "V8"},

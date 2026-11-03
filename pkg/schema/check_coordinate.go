@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=selection
-//ff:what checkCoordinate — V8: a COORDINATE-EARTH or COORDINATE-GEO has its layout, an Identified globe Reference (Geo), finite degrees in range, a finite binary32 uncertainty ≥ +0, an Identified unit Reference, or ABSENT with uncertainty +0
+//ff:what checkCoordinate — V8: a COORDINATE-EARTH or COORDINATE-GEO has its layout, a globe in the closed list (Geo), finite degrees in range, a finite binary32 uncertainty ≥ +0, an Identified unit Reference, or ABSENT with uncertainty +0
 package schema
 
 import (
@@ -11,7 +11,8 @@ import (
 
 // checkCoordinate applies V8 to a coordinate Value: COORDINATE-EARTH is 10
 // WORDs then the unit; COORDINATE-GEO starts with one whole Reference record
-// of Quantifier Identified (the body). Latitude and longitude are finite,
+// naming the body, from the closed globe list (globeCodec: an Identified 5Q
+// code other than WIKIDATA-PID, grammar 0x065L). Latitude and longitude are finite,
 // latitude in [-90, 90], longitude in [-180, 180] on Earth and [-360, 360] on
 // another body (the Wikidata globecoordinate range). The uncertainty (binary32) is finite and ≥ 0 written as +0
 // (not -0). The unit is a Reference of Quantifier Identified, or ABSENT
@@ -26,8 +27,8 @@ func checkCoordinate(r rec) []Fact {
 	switch {
 	case err != nil:
 		return []Fact{factAt("V8", Error, r, "Payload", "Globe Reference(Geo), 10 WORD, Unit Reference 또는 ABSENT", err.Error())}
-	case c.Globe != nil && notIdentified(c.Globe.Codec):
-		return []Fact{factAt("V8", Error, r, "Payload", "Globe Quantifier Identified", fmt.Sprintf("0x%02X", c.Globe.Codec))}
+	case c.Globe != nil && !globeCodec(c.Globe.Codec):
+		return []Fact{factAt("V8", Error, r, "Payload", "Globe: 5Q 체계(WIKIDATA-PID 제외)의 Identified", fmt.Sprintf("0x%02X", c.Globe.Codec))}
 	case math.IsNaN(c.Lat) || math.IsNaN(c.Lon) || math.IsInf(c.Lat, 0) || math.IsInf(c.Lon, 0):
 		return []Fact{factAt("V8", Error, r, "Payload", "유한한 위도·경도", fmt.Sprintf("%v, %v", c.Lat, c.Lon))}
 	case c.Lat < -90 || c.Lat > 90 || c.Lon < lonMin || c.Lon > lonMax:
