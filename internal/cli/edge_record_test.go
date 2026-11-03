@@ -10,8 +10,8 @@ import (
 )
 
 func TestEdgeRecord(t *testing.T) {
-	r := edgeRecord(5, notation.Edge{Codec: 0x04, Rest: []core.Word{0x00A0, 1}})
-	if r.Kind != core.KindEdge || r.Codec != 0x04 || r.Payload[0] != 0x0088 || r.Payload[1] != 5 || len(r.Payload) != 4 {
+	r := edgeRecord(5, notation.Edge{Codec: 0x04, Rest: []core.Word{0x0141, 1}})
+	if r.Kind != core.KindEdge || r.Codec != 0x04 || r.Payload[0] != 0x0051 || r.Payload[1] != 5 || len(r.Payload) != 4 {
 		t.Fatalf("%+v", r)
 	}
 }

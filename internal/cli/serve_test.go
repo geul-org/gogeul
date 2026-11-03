@@ -17,7 +17,7 @@ import (
 
 func TestServe(t *testing.T) {
 	file := filepath.Join(t.TempDir(), "a.geul")
-	os.WriteFile(file, core.PutWords(core.WrapDocument([]core.Word{0x180F})), 0o644)
+	os.WriteFile(file, core.PutWords(core.WrapDocument([]core.Word{0x1C40})), 0o644)
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		t.Fatal(err)

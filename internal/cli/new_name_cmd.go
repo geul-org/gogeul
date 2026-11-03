@@ -13,7 +13,7 @@ import (
 func newNameCmd(a *app) *cobra.Command {
 	return &cobra.Command{
 		Use:   "name DOCUMENT NAME",
-		Short: "Bind a name (a-z, 0-9, -) to a published document in its Issuer's documents.geul; old names keep working",
+		Short: "Bind a name (a-z, 0-9, -) to a published document in its Issuer's document list (<Issuer>/docs/); old names keep working",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			d, err := a.dir()

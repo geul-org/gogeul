@@ -13,7 +13,7 @@ func TestTreeSpec(t *testing.T) {
 	if s := treeSpec(treeOf(root)); s == nil || len(s) != 0 {
 		t.Fatalf("empty: %v", s)
 	}
-	dir := filepath.Join(root, ".well-known", "geul", "0x0000", "0x0000000000001018")
+	dir := filepath.Join(root, ".well-known", "geul", "0x00000000", "codecs", "0x00000980")
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		t.Fatal(err)
 	}

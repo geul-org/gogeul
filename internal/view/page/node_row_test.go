@@ -9,7 +9,7 @@ import (
 )
 
 func TestNodeRow(t *testing.T) {
-	r := nodeRow(2, inspect.Entry{Record: core.EncodeLocalRef(7), Words: []core.Word{0x0088, 7}, Name: "LOCAL"})
+	r := nodeRow(2, inspect.Entry{Record: core.EncodeLocalRef(7), Words: []core.Word{0x0051, 7}, Name: "LOCAL"})
 	if r.Anchor != "n2" || r.Name != "LOCAL" || r.Label != "0x0007" || r.Summary != "#7" || len(r.HeadParts) != 1 || len(r.BodyParts) != 1 {
 		t.Fatalf("got %+v", r)
 	}

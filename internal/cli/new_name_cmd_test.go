@@ -11,7 +11,7 @@ func TestNewNameCmd(t *testing.T) {
 	h := newHarness(t)
 	addr, _ := h.doc()
 	h.must("name", addr, "adams")
-	if out := h.must("show", "me/adams"); !strings.Contains(out, "ALIAS") {
+	if out := h.must("show", "me/docs/adams/latest"); !strings.Contains(out, "ALIAS") {
 		t.Fatal(out)
 	}
 	if _, err := h.run("", "name", addr+"@1", "z"); err == nil {

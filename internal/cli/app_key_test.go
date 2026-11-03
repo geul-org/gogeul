@@ -19,11 +19,11 @@ func TestAppKey(t *testing.T) {
 		t.Fatalf("%+v %v", k, err)
 	}
 	h.cwd = t.TempDir()
-	if _, err := h.key("0x0000/0x0000000000000001"); err != nil {
+	if _, err := h.key("0x00000000/0x0000000000000001"); err != nil {
 		t.Fatal(err)
 	}
 	os.WriteFile(filepath.Join(h.conf, "geul", "keys", "x.pem"), []byte("x"), 0o600)
-	if _, err := h.key("0x0000/0x0000000000000001"); err == nil {
+	if _, err := h.key("0x00000000/0x0000000000000001"); err == nil {
 		t.Fatal("broken key: want error")
 	}
 }

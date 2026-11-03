@@ -25,12 +25,15 @@ func valueText(v inspect.Value) string {
 	if v.Codec == core.CodecSignedInteger || v.Codec == core.CodecFraction {
 		return v.Number
 	}
+	if v.Codec == core.CodecSHA256Digest || v.Codec == core.CodecSHA1Digest {
+		return v.Text
+	}
 	switch v.Codec &^ 1 {
 	case core.CodecUTF8TextEven:
 		return strconv.Quote(v.Text)
 	case core.CodecUTF8LanguageTextEven:
 		return strconv.Quote(v.Text) + "@" + v.Lang
-	case 0x44, core.CodecLanguageBCP47Even, core.CodecEDTFEven, core.CodecGEDCOMDateEven:
+	case core.CodecURIEven, core.CodecLanguageBCP47Even, core.CodecEDTFEven, core.CodecGEDCOMDateEven:
 		return v.Text
 	case core.CodecCoordinateEarth:
 		return coordinateText(v)
@@ -40,8 +43,6 @@ func valueText(v inspect.Value) string {
 		return v.Time.Format(time.DateOnly)
 	case core.CodecPosixSeconds:
 		return v.Time.Format(time.RFC3339)
-	case core.CodecSHA256Digest &^ 1, core.CodecSHA1Digest:
-		return v.Text
 	default:
 		f := float64(v.Coef) * math.Pow10(int(v.Exp))
 		return fmt.Sprintf("%s (%de%d)", strconv.FormatFloat(f, 'g', -1, 64), v.Coef, v.Exp)

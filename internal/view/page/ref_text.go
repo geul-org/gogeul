@@ -13,16 +13,16 @@ import (
 // big-endian. Other Reference codecs, other Quantifiers, an empty or over 4
 // word payload and non-Reference records are false.
 func refText(r core.Record) (string, bool) {
-	if r.Kind != core.KindReference || r.Codec&7 != 0 || len(r.Payload) == 0 || len(r.Payload) > 4 {
+	if r.Kind != core.KindReference || len(r.Payload) == 0 || len(r.Payload) > 4 {
 		return "", false
 	}
 	n := wordsNumber(r.Payload)
-	switch r.Codec >> 3 {
-	case core.RefLocal:
+	switch r.Codec {
+	case core.CodecLocal:
 		return "#" + strconv.FormatUint(n, 10), true
-	case core.RefWikidataQID:
+	case core.CodecWikidataQID:
 		return "Q" + strconv.FormatUint(n, 10), true
-	case core.RefWikidataPID:
+	case core.CodecWikidataPID:
 		return "P" + strconv.FormatUint(n, 10), true
 	default:
 		return "", false

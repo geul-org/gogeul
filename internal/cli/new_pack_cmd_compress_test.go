@@ -13,7 +13,8 @@ import (
 func TestNewPackCmdCompress(t *testing.T) {
 	h := newHarness(t)
 	addr, draft := h.doc()
-	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "notes.txt"), []byte(strings.Repeat("a compressible note\n", 100)), 0o644)
+	os.MkdirAll(filepath.Join(h.data, ".well-known", "geul", "issuers"), 0o755)
+	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "issuers", "0x00000009.geul"), []byte(strings.Repeat("a compressible note\n", 100)), 0o644)
 	zst := regexp.MustCompile(`\([1-9][0-9]* zstd\)`).MatchString
 	if out := h.must("pack", "build", "--compress", "zstd:3", "-o", filepath.Join(t.TempDir(), "a")); !zst(out) {
 		t.Fatal(out)

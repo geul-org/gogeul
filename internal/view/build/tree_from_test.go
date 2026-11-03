@@ -1,5 +1,5 @@
-//ff:func feature=build type=builder control=sequence
-//ff:what TestTreeFrom — a pack archive bakes to the same files as its directory tree; output inside the source and an unreadable tree fail
+//ff:func feature=build type=builder control=iteration dimension=1
+//ff:what TestTreeFrom — a file tree and its pack set (공표 주소 paths) bake to the same pages; a destination inside the source and an unreadable tree fail
 package build
 
 import (
@@ -8,12 +8,19 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/geul-org/gogeul/pkg/core"
 	"github.com/geul-org/gogeul/pkg/pack"
 	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
 func TestTreeFrom(t *testing.T) {
-	root := fixture(t)
+	root := t.TempDir()
+	doc := core.PutWords(core.WrapDocument([]core.Word{core.TargetWord(core.KindMeta, core.MetaEnd)}))
+	for _, p := range []string{"0x00000000/docs/0x0000000000000001/0x00000001.geul", "issuers/0x00000001.geul"} {
+		f := filepath.Join(root, ".well-known", "geul", filepath.FromSlash(p))
+		os.MkdirAll(filepath.Dir(f), 0o755)
+		os.WriteFile(f, doc, 0o644)
+	}
 	wk := filepath.Join(t.TempDir(), ".well-known", "geul")
 	if _, err := pack.Build(context.Background(), root, wk, pack.BuildOptions{}); err != nil {
 		t.Fatal(err)
@@ -25,8 +32,9 @@ func TestTreeFrom(t *testing.T) {
 	if err1 != nil || err2 != nil || c1 != c2 {
 		t.Fatal(c1, c2, err1, err2)
 	}
-	want, _ := os.ReadFile(filepath.Join(dirOut, ".well-known", "geul", "h", "a"))
-	got, _ := os.ReadFile(filepath.Join(packOut, ".well-known", "geul", "h", "a"))
+	page := filepath.Join(".well-known", "geul", "0x00000000", "docs", "0x0000000000000001", "0x00000001")
+	want, _ := os.ReadFile(filepath.Join(dirOut, page))
+	got, _ := os.ReadFile(filepath.Join(packOut, page))
 	if string(got) != string(want) || len(got) == 0 {
 		t.Fatal("pages differ")
 	}

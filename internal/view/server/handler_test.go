@@ -14,7 +14,7 @@ import (
 
 func TestHandler(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "empty.geul")
-	if err := os.WriteFile(path, core.PutWords(core.WrapDocument([]core.Word{0x180F})), 0o644); err != nil {
+	if err := os.WriteFile(path, core.PutWords(core.WrapDocument([]core.Word{0x1C40})), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	rec := httptest.NewRecorder()

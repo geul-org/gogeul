@@ -23,7 +23,7 @@ func TestAppBlameVersions(t *testing.T) {
 		}
 	}
 	k, _ := h.key(addr)
-	dir := filepath.Join(h.data, ".well-known", "geul", core.FormatID(k.Issuer), core.FormatID(k.Doc))
+	dir := filepath.Join(h.data, ".well-known", "geul", core.FormatID(k.Issuer), "docs", core.FormatID(k.Doc))
 	os.WriteFile(filepath.Join(dir, "0x00000002.geul"), []byte{0, 5}, 0o644)
 	if _, err := h.run("", "blame", addr); err == nil {
 		t.Fatal("unreadable version: want error")
@@ -34,7 +34,7 @@ func TestAppBlameVersions(t *testing.T) {
 		t.Fatal("no live version: want error")
 	}
 	h.cwd = t.TempDir()
-	if _, err := h.run("", "blame", "0x0000/0x0000000000000001"); err == nil {
+	if _, err := h.run("", "blame", "0x00000000/0x0000000000000001"); err == nil {
 		t.Fatal("no data folder: want error")
 	}
 }

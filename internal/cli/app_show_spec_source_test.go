@@ -11,18 +11,18 @@ import (
 func TestAppShowSpecSource(t *testing.T) {
 	h := newHarness(t)
 	addr, _ := h.doc()
-	with := h.must("show", addr)
-	const rel = ".well-known/geul/0x0000/0x000000000000100a"
+	with := h.must("show", docsAddr(addr)+"/latest")
+	const rel = ".well-known/geul/0x00000000/codecs/0x000008a0"
 	other := t.TempDir()
 	os.MkdirAll(filepath.Dir(filepath.Join(other, rel)), 0o755)
 	if err := os.Rename(filepath.Join(h.data, rel), filepath.Join(other, rel)); err != nil {
 		t.Fatal(err)
 	}
-	if out := h.must("show", addr); out == with {
+	if out := h.must("show", docsAddr(addr)+"/latest"); out == with {
 		t.Fatal("the spec is gone from the data folder and GEULPROXY is off:", out)
 	}
 	h.env["GEULPROXY"] = "file://" + other
-	if out := h.must("show", addr); out != with {
+	if out := h.must("show", docsAddr(addr)+"/latest"); out != with {
 		t.Fatalf("got %q\nwant %q", out, with)
 	}
 }

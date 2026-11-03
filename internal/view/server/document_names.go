@@ -1,5 +1,5 @@
 //ff:func feature=server type=helper control=sequence
-//ff:what documentNames — name → document ID of an Issuer's own documents (documents.geul); empty when missing
+//ff:what documentNames — name → document ID of an Issuer's own documents (its document list); empty when missing
 package server
 
 import (

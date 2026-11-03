@@ -9,15 +9,15 @@ import (
 )
 
 func TestRefPayloadLines(t *testing.T) {
-	r := core.Record{Kind: core.KindReference, Codec: core.RefExternalIssuer1Word << 3, Payload: []core.Word{0, 0xffff, 0, 0, 2, 0}}
+	r := core.Record{Kind: core.KindReference, Codec: core.CodecExternalIssuer2Word, Payload: []core.Word{0, 0, 0xffff, 0, 0, 2, 0}}
 	lines := refPayloadLines(r)
-	names := []string{"Issuer", "문서 ID", "", "", "", "대상 ID"}
+	names := []string{"Issuer", "", "문서 ID", "", "", "", "대상 ID"}
 	for i, l := range lines {
 		if l.Name != names[i] {
 			t.Fatalf("line %d: %+v", i, l)
 		}
 	}
-	if len(lines) != 6 || lines[1].Word != "FFFF" {
+	if len(lines) != 7 || lines[2].Word != "FFFF" {
 		t.Fatalf("got %+v", lines)
 	}
 }

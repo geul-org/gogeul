@@ -19,10 +19,10 @@ func TestOpenTree(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	loose := filepath.Join(h.data, ".well-known", "geul", "0x0009", "0x0000000000000001", "versions.geul")
+	loose := filepath.Join(h.data, ".well-known", "geul", "0x00000009", "docs", "0x0000000000000001", "versions.geul")
 	os.MkdirAll(filepath.Dir(loose), 0o755)
 	os.WriteFile(loose, []byte("x"), 0o644)
-	if b, err := tr.ReadFile("0x0009/0x0000000000000001/versions.geul"); err != nil || string(b) != "x" {
+	if b, err := tr.ReadFile("0x00000009/docs/0x0000000000000001/versions.geul"); err != nil || string(b) != "x" {
 		t.Fatal(b, err)
 	}
 	ents, err := tr.ReadDir(".")
@@ -30,10 +30,10 @@ func TestOpenTree(t *testing.T) {
 	for _, e := range ents {
 		names[e.Name()] = true
 	}
-	if err != nil || !names["0x0009"] || !names["h"] || names["latest.txt"] {
+	if err != nil || !names["0x00000009"] || names["latest.txt"] {
 		t.Fatal(names, err)
 	}
-	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "0x0000", "latest.txt"), []byte("x"), 0o644)
+	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "0x00000000", "latest.txt"), []byte("x"), 0o644)
 	if _, _, err := openTree(h.data); err == nil {
 		t.Fatal("broken")
 	}

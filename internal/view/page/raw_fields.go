@@ -9,10 +9,10 @@ import (
 )
 
 // rawFields shows what an uninterpreted record still says: the Issuer and
-// format number of an ISSUER codec. Other records show only their words.
+// 2-word codec number of an ISSUER codec. Other records show only their words.
 func rawFields(r core.Record) []Field {
 	if len(r.Issuer) == 0 {
 		return nil
 	}
-	return []Field{{Key: "issuer", Text: core.FormatID(r.Issuer)}, {Key: "format", Text: fmt.Sprintf("0x%04X", r.Format)}}
+	return []Field{{Key: "issuer", Text: core.FormatID(r.Issuer)}, {Key: "format", Text: fmt.Sprintf("0x%08X", r.Format)}}
 }

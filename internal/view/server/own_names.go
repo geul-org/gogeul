@@ -1,5 +1,5 @@
 //ff:func feature=server type=helper control=iteration dimension=1
-//ff:what ownNames — name → document ID for the documents of one Issuer in documents.geul bytes; broken bytes give none
+//ff:what ownNames — name → document ID for the documents of one Issuer in document list bytes; broken bytes give none
 package server
 
 import "github.com/geul-org/gogeul/pkg/resolve"

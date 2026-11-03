@@ -15,7 +15,7 @@ func TestPackEntry(t *testing.T) {
 	h := newHarness(t)
 	h.doc()
 	h.packed()
-	set := filepath.Join(h.data, ".well-known", "geul", "0x0000")
+	set := filepath.Join(h.data, ".well-known", "geul", "0x00000000")
 	srv := httptest.NewServer(http.FileServer(http.Dir(set)))
 	defer srv.Close()
 	for _, item := range []string{srv.URL, set, h.data} {

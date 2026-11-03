@@ -23,7 +23,7 @@ func TestAppCheckArchive(t *testing.T) {
 			issuer = k.Name()
 		}
 	}
-	v1 := filepath.Join(h.data, ".well-known", "geul", issuer, "0x0000000000000001", "0x00000001.geul")
+	v1 := filepath.Join(h.data, ".well-known", "geul", issuer, "docs", "0x0000000000000001", "0x00000001.geul")
 	os.WriteFile(v1, []byte{0, 5}, 0o644)
 	out, err := h.run("", "check", "--archive")
 	if err == nil || len(out) == 0 {

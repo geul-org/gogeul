@@ -15,7 +15,7 @@ func TestAppMeta(t *testing.T) {
 	if out := h.must("show", draft); !strings.HasPrefix(out, "SPEC-VERSION 0x0002\nDOC-ID") {
 		t.Fatal(out)
 	}
-	cases := [][]string{{draft, "NOPE", "1"}, {draft, "MESSAGE"}, {filepath.Join(h.data, "none"), "MESSAGE", `"a"`}, {draft, "NEXT-LOCAL-ID", "0x0000"}}
+	cases := [][]string{{draft, "NOPE", "1"}, {draft, "MESSAGE"}, {filepath.Join(h.data, "none"), "MESSAGE", `"a"`}, {draft, "NEXT-LOCAL-ID", "0x00000000"}}
 	for _, c := range cases {
 		if _, err := h.run("", append([]string{"meta"}, c...)...); err == nil {
 			t.Errorf("%v: want error", c)

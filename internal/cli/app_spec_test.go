@@ -23,7 +23,7 @@ func TestAppSpec(t *testing.T) {
 	if len(a.spec()) != 1 {
 		t.Fatal("TRIPLE: want one")
 	}
-	list := filepath.Join(h.data, ".well-known", "geul", "0x0000", "0x000000000000100a", "versions.geul")
+	list := filepath.Join(h.data, ".well-known", "geul", "0x00000000", "codecs", "0x000008a0", "versions.geul")
 	os.WriteFile(list, []byte{1}, 0o644)
 	if len(a.spec()) != 0 {
 		t.Fatal("broken spec: want empty")

@@ -17,7 +17,7 @@ func TestServePage(t *testing.T) {
 	dir := t.TempDir()
 	good := filepath.Join(dir, "a.geul")
 	bad := filepath.Join(dir, "b.geul")
-	os.WriteFile(good, core.PutWords(core.WrapDocument([]core.Word{0x180F})), 0o644)
+	os.WriteFile(good, core.PutWords(core.WrapDocument([]core.Word{0x1C40})), 0o644)
 	os.WriteFile(bad, []byte{0x18, 0x0F}, 0o644)
 	get := func(w http.ResponseWriter, path, url string) {
 		servePage(w, httptest.NewRequest(http.MethodGet, url, nil), path)

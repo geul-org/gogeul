@@ -1,5 +1,5 @@
 //ff:func feature=server type=helper control=sequence
-//ff:what documentLabels — document ID → name of an Issuer's own documents (documents.geul, the first name in name order)
+//ff:what documentLabels — document ID → name of an Issuer's own documents (its document list, the first name in name order)
 package server
 
 import "github.com/geul-org/gogeul/pkg/resolve"

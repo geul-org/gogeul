@@ -12,7 +12,7 @@ func TestCheckIssuer(t *testing.T) {
 	h := newHarness(t)
 	h.tripleSpec()
 	d := resolve.Dir{Root: h.data}
-	if fs, err := checkIssuer(d, "0x0000"); err != nil || len(fs) != 0 {
+	if fs, err := checkIssuer(d, "0x00000000"); err != nil || len(fs) != 0 {
 		t.Fatalf("%+v %v", fs, err)
 	}
 	if _, err := checkIssuer(d, "bad"); err == nil {

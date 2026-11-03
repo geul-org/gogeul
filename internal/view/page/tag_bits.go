@@ -1,5 +1,5 @@
 //ff:func feature=page type=helper control=selection
-//ff:what tagBits — a TAG WORD's bit fields: prefix, Kind, Length, Codec and, for a Reference, the Quantifier
+//ff:what tagBits — the bit fields of a TAG WORD 000K KKCC CCCC LLLL spelled out: prefix, KKK and Kind, C and its name (with the Quantifier of a 5Q Reference), LLLL and the length
 package page
 
 import (
@@ -8,13 +8,12 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// tagBits spells out TAG WORD `000K KLLL LCCC CCCC`: the prefix, the Kind, the
-// Length code with the word count it gives (or the extension it calls for) and
-// the Codec with its spec name, else fallback (a profile record name), else
-// hex. A Reference splits the codec into CCCC and the Quantifier QQQ (under
-// Codec 0000 the marker number, lowBitsName).
+// tagBits spells out TAG WORD `000K KKCC CCCC LLLL`: the prefix, the 3-bit
+// KKK with its Kind, the 6-bit C with the codec's name (tagName), and the
+// Length code with the word count it gives (or the extension it calls for).
 func tagBits(w core.Word, fallback string) string {
-	k, l, codec := core.Kind((w>>11)&3), uint8((w>>7)&0xF), uint8(w&0x7F)
+	k, codec := core.SplitTarget(w)
+	l := uint8(w & 0xF)
 	length := fmt.Sprintf("%d WORDs", l+1)
 	switch l {
 	case 0:
@@ -24,19 +23,6 @@ func tagBits(w core.Word, fallback string) string {
 	case 0xF:
 		length = "Length 확장 2 WORD"
 	}
-	name := core.CodecName(k, codec)
-	if k == core.KindReference && codec>>3 == 0 {
-		name = "자리 표지"
-	}
-	if name == "" {
-		name = fallback
-	}
-	if name == "" {
-		name = fmt.Sprintf("0x%02X", codec)
-	}
-	head := fmt.Sprintf("%03b Proposal\n%02b %s\n%04b %s", uint16(w)>>13, uint8(k), k, l, length)
-	if k == core.KindReference {
-		return fmt.Sprintf("%s\n%04b %s\n%03b %s", head, codec>>3, name, codec&7, lowBitsName(codec))
-	}
-	return fmt.Sprintf("%s\n%07b %s", head, codec, name)
+	name := tagName(k, codec, fallback)
+	return fmt.Sprintf("%03b Proposal\n%03b %s\n%06b %s\n%04b %s", uint16(w)>>13, uint16(w)>>10&7, k, uint16(w)>>4&0x3F, name, l, length)
 }

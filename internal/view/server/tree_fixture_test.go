@@ -17,9 +17,9 @@ func treeFixture(t *testing.T) string {
 	if err := os.MkdirAll(h, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	os.WriteFile(filepath.Join(h, "a.geul"), core.PutWords(core.WrapDocument([]core.Word{0x180F})), 0o644)
+	os.WriteFile(filepath.Join(h, "a.geul"), core.PutWords(core.WrapDocument([]core.Word{0x1C40})), 0o644)
 	os.WriteFile(filepath.Join(h, "bad.geul"), []byte{1, 2}, 0o644)
 	os.WriteFile(filepath.Join(h, "versions"), []byte("x"), 0o644)
-	os.WriteFile(filepath.Join(root, "outside.geul"), core.PutWords(core.WrapDocument([]core.Word{0x180F})), 0o644)
+	os.WriteFile(filepath.Join(root, "outside.geul"), core.PutWords(core.WrapDocument([]core.Word{0x1C40})), 0o644)
 	return root
 }

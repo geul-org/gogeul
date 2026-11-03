@@ -20,12 +20,12 @@ func TestAppFindDoc(t *testing.T) {
 	if b, err := h.app(io.Discard).findDoc(draft); err != nil || !bytes.Equal(b, file) {
 		t.Fatal(err)
 	}
-	if b, err := h.app(io.Discard).findDoc(addr + ".geul"); err != nil || !bytes.Equal(b, file) {
+	if b, err := h.app(io.Discard).findDoc(docsAddr(addr) + "/latest.geul"); err != nil || !bytes.Equal(b, file) {
 		t.Fatal(err)
 	}
 	cwd := h.cwd
 	h.cwd = t.TempDir()
-	if _, err := h.app(io.Discard).findDoc(addr); err == nil {
+	if _, err := h.app(io.Discard).findDoc(docsAddr(addr) + "/latest"); err == nil {
 		t.Fatal("no data folder: want error")
 	}
 	h.cwd = cwd
@@ -33,7 +33,7 @@ func TestAppFindDoc(t *testing.T) {
 	os.RemoveAll(keys)
 	os.MkdirAll(filepath.Dir(keys), 0o755)
 	os.WriteFile(keys, nil, 0o644)
-	if _, err := h.app(io.Discard).findDoc(addr); err == nil {
+	if _, err := h.app(io.Discard).findDoc(docsAddr(addr) + "/latest"); err == nil {
 		t.Fatal("unreadable keys folder: want error")
 	}
 }

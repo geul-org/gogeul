@@ -1,5 +1,5 @@
 //ff:func feature=page type=helper control=iteration dimension=1
-//ff:what TestTagBits — Edge, Reference with Quantifier, a slot marker (no Quantifier), 1-word and extended Lengths, a fallback name and an unnamed codec
+//ff:what TestTagBits — prefix, KKK and Kind, C and its name (5Q Quantifier, slot marker, ISSUER), LLLL and its length; fallback and hex for unnamed codes
 package page
 
 import (
@@ -10,19 +10,21 @@ import (
 
 func TestTagBits(t *testing.T) {
 	cases := map[core.Word]string{
-		0x13FC: "000 Proposal\n10 EDGE\n0111 8 WORDs\n1111100 ISSUER-1WORD",
-		0x0088: "000 Proposal\n00 REFERENCE\n0001 2 WORDs\n0001 LOCAL\n000 Identified",
-		0x1801: "000 Proposal\n11 META\n0000 1 WORD\n0000001 DOC-2WORD",
-		0x1761: "000 Proposal\n10 EDGE\n1110 Length 확장 1 WORD\n1100001 0x61",
-		0x17E6: "000 Proposal\n10 EDGE\n1111 Length 확장 2 WORD\n1100110 0x66",
-		0x0001: "000 Proposal\n00 REFERENCE\n0000 1 WORD\n0000 자리 표지\n001 표지 번호",
+		0x1BD9: "000 Proposal\n110 EDGE\n111101 EDGE-ISSUER-2WORD\n1001 10 WORDs",
+		0x0051: "000 Proposal\n000 REFERENCE\n000101 LOCAL · Identified\n0001 2 WORDs",
+		0x0181: "000 Proposal\n000 REFERENCE\n011000 WIKIDATA-QID · Variable\n0001 2 WORDs",
+		0x1C10: "000 Proposal\n111 META\n000001 DOC-2WORD\n0000 1 WORD",
+		0x0E1E: "000 Proposal\n011 EDGE\n100001 0x061\n1110 Length 확장 1 WORD",
+		0x0E6F: "000 Proposal\n011 EDGE\n100110 0x066\n1111 Length 확장 2 WORD",
+		0x0010: "000 Proposal\n000 REFERENCE\n000001 자리 표지 UNKNOWN-VALUE\n0000 1 WORD",
+		0x03C6: "000 Proposal\n000 REFERENCE\n111100 CODEC-POINTER\n0110 7 WORDs",
 	}
 	for w, want := range cases {
 		if got := tagBits(w, ""); got != want {
 			t.Fatalf("%04X: %q want %q", uint16(w), got, want)
 		}
 	}
-	if got := tagBits(0x1463, "RULE-DECLARE"); got != "000 Proposal\n10 EDGE\n1000 9 WORDs\n1100011 RULE-DECLARE" {
+	if got := tagBits(0x0E38, "RULE-DECLARE"); got != "000 Proposal\n011 EDGE\n100011 RULE-DECLARE\n1000 9 WORDs" {
 		t.Fatalf("fallback: %q", got)
 	}
 }

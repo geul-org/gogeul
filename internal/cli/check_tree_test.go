@@ -16,7 +16,8 @@ import (
 func TestCheckTree(t *testing.T) {
 	h := newHarness(t)
 	h.doc()
-	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "h", "bad.geul"), []byte{1, 2}, 0o644)
+	os.MkdirAll(filepath.Join(h.data, ".well-known", "geul", "issuers"), 0o755)
+	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "issuers", "0x00000009.geul"), []byte{1, 2}, 0o644)
 	dir, err := checkTree(resolve.Dir{Root: h.data}.Tree(), "base")
 	if err != nil || len(dir) == 0 || !strings.HasPrefix(dir[0].Path, "base") {
 		t.Fatal(dir, err)

@@ -23,12 +23,12 @@ func TestBuildCmd(t *testing.T) {
 	if err := buildCmd(root, t.TempDir(), failWriter{}); err == nil {
 		t.Fatal("output failure: want error")
 	}
-	os.MkdirAll(filepath.Join(top, "0x0000"), 0o755)
-	os.WriteFile(filepath.Join(top, "0x0000", "latest.txt"), []byte("x"), 0o644)
+	os.MkdirAll(filepath.Join(top, "0x00000000"), 0o755)
+	os.WriteFile(filepath.Join(top, "0x00000000", "latest.txt"), []byte("x"), 0o644)
 	if err := buildCmd(root, t.TempDir(), &bytes.Buffer{}); err == nil {
 		t.Fatal("broken pack archive: want error")
 	}
-	os.RemoveAll(filepath.Join(top, "0x0000"))
+	os.RemoveAll(filepath.Join(top, "0x00000000"))
 	var out bytes.Buffer
 	dst := t.TempDir()
 	if err := buildCmd(top, dst, &out); err != nil || out.String() != "geul: 0 documents, 1 directories → "+filepath.Join(dst, ".well-known", "geul")+"\n" {

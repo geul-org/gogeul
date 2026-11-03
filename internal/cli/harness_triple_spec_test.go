@@ -8,10 +8,10 @@ import (
 )
 
 // tripleSpec publishes the spec document of TRIPLE (0x0A) as geul.org's
-// document for its target word (resolve.Dir.PublishCodec).
+// codec for its target word (resolve.Dir.PublishCodec).
 func (h *harness) tripleSpec() {
 	target := core.TargetWord(core.KindEdge, 0x0A)
-	id, _ := core.EncodeDocID([]core.Word{0}, []core.Word{0, 0, 0, target})
+	id, _ := core.EncodeDocIDCodec([]core.Word{0, 0}, uint32(target))
 	body := []core.Record{core.EncodeDeclare(core.Declare{EdgeID: 1, Target: target})}
 	for i, w := range []core.Word{0, 0, 0, 1} {
 		body = append(body, core.EncodeFieldDecl(core.FieldDecl{EdgeID: uint64(i + 2), Declare: 1, Width: w}))

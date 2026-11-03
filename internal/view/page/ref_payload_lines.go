@@ -9,7 +9,7 @@ import "github.com/geul-org/gogeul/pkg/core"
 func refPayloadLines(r core.Record) []HexLine {
 	var out []HexLine
 	pos := 0
-	for _, f := range refFields(r.Codec>>3, len(r.Payload)) {
+	for _, f := range refFields(r.Codec, len(r.Payload)) {
 		out = append(out, hexLines(r.Payload[pos:pos+f.N], f.Name)...)
 		pos += f.N
 	}

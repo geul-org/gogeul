@@ -7,10 +7,10 @@ import "testing"
 func TestTreeIndex(t *testing.T) {
 	root := namesFixture(t)
 	p, err := treeIndex(treeOf(root), "/.well-known/geul/")
-	if err != nil || p.Path != "/.well-known/geul/" || len(p.Entries) != 2 || p.Entries[0] != (indexEntry{Name: "geul.org/", URL: "/.well-known/geul/0x0000/", ID: "0x0000"}) {
+	if err != nil || p.Path != "/.well-known/geul/" || len(p.Entries) != 2 || p.Entries[0] != (indexEntry{Name: "geul.org/", URL: "/.well-known/geul/0x00000000/", ID: "0x00000000"}) {
 		t.Fatalf("top: %+v %v", p, err)
 	}
-	if p, _ := treeIndex(treeOf(root), "/.well-known/geul/0x0000/"); p.Entries[1].Name != "sample-b/" {
+	if p, _ := treeIndex(treeOf(root), "/.well-known/geul/0x00000000/"); p.Entries[1].Name != "docs/" {
 		t.Fatalf("issuer: %+v", p)
 	}
 	if _, err := treeIndex(treeOf(root), "/.well-known/geul/none/"); err == nil {

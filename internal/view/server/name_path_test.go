@@ -8,16 +8,16 @@ import (
 
 func TestNamePath(t *testing.T) {
 	root := namesFixture(t)
-	if p, ok := namePath(treeOf(root), "/.well-known/geul/geul.org/sample-b/x"); !ok || p != "/.well-known/geul/0x0000/0xffff000000000002/x" {
+	if p, ok := namePath(treeOf(root), "/.well-known/geul/geul.org/sample-b/x"); !ok || p != "/.well-known/geul/0x00000000/docs/0xffff000000000002/x" {
 		t.Fatalf("both: %q %v", p, ok)
 	}
-	if p, ok := namePath(treeOf(root), "/.well-known/geul/geul.org"); !ok || p != "/.well-known/geul/0x0000" {
+	if p, ok := namePath(treeOf(root), "/.well-known/geul/geul.org"); !ok || p != "/.well-known/geul/0x00000000" {
 		t.Fatalf("issuer: %q %v", p, ok)
 	}
-	if p, ok := namePath(treeOf(root), "/.well-known/geul/geul.org/publication/"); !ok || p != "/.well-known/geul/0x0000/0x0000000000001018/" {
+	if p, ok := namePath(treeOf(root), "/.well-known/geul/geul.org/publication/"); !ok || p != "/.well-known/geul/0x00000000/codecs/0x00000980/" {
 		t.Fatalf("codec: %q %v", p, ok)
 	}
-	if _, ok := namePath(treeOf(root), "/.well-known/geul/0x0000/nope"); ok {
+	if _, ok := namePath(treeOf(root), "/.well-known/geul/0x00000000/nope"); ok {
 		t.Fatal("no name: want false")
 	}
 }

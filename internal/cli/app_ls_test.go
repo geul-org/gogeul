@@ -12,7 +12,7 @@ import (
 func TestAppLs(t *testing.T) {
 	h := newHarness(t)
 	h.doc()
-	if out := h.must("ls", "0x0000"); !strings.HasPrefix(out, "0x000000000000100a\n") {
+	if out := h.must("ls", "me"); !strings.HasPrefix(out, "0x0000000000000001") {
 		t.Fatal(out)
 	}
 	if out := h.must("ls", "--format", "json"); !strings.HasPrefix(out, "[") {

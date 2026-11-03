@@ -11,7 +11,7 @@ import (
 )
 
 func TestLinesWith(t *testing.T) {
-	label := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0088, 1, 0x00A0, 42}}
+	label := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0051, 1, 0x0141, 42}}
 	b, _ := core.EncodeDocument([]core.Record{core.EncodeSpecVersion(2)}, []core.Record{label})
 	ls, err := linesWith(b, codecspec.Spec{})
 	if err != nil || len(ls.Head) != 1 || len(ls.Body) != 1 || !strings.HasPrefix(ls.Body[0], "#1 LABEL") {

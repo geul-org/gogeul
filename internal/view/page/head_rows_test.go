@@ -14,7 +14,7 @@ func TestHeadRows(t *testing.T) {
 	if len(rows) != 2 || rows[1].Anchor != "h1" || rows[1].Name != "PROFILE" || rows[1].Class != "meta" || rows[1].Fields[0].Text != `"tangeul-1.0"` || len(rows[1].HeadParts) != 1 {
 		t.Fatalf("got %+v", rows)
 	}
-	b, _ := core.EncodeDocument([]core.Record{core.EncodeSpecVersion(core.SpecVersion), {Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0088, 3, 0x0088, 0, 0x00A0, 42}}}, nil)
+	b, _ := core.EncodeDocument([]core.Record{core.EncodeSpecVersion(core.SpecVersion), {Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0051, 3, 0x0051, 0, 0x0141, 42}}}, nil)
 	d, err := inspect.Decode(b)
 	if err != nil {
 		t.Fatal(err)

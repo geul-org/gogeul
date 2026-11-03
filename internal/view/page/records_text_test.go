@@ -10,7 +10,7 @@ import (
 )
 
 func TestRecordsText(t *testing.T) {
-	a, _ := core.EncodeRecord(core.EncodeBytesValue(0x44, []byte("https://x")))
+	a, _ := core.EncodeRecord(core.EncodeBytesValue(core.CodecURIEven, []byte("https://x")))
 	b, _ := core.EncodeRecord(core.EncodeBytesValue(core.CodecUTF8TextEven, []byte("v1")))
 	if got := recordsText(slices.Concat(a, b)); got != `https://x "v1"` {
 		t.Fatalf("got %q", got)

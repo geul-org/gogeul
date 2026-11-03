@@ -17,7 +17,7 @@ import (
 func fixtureDoc(t *testing.T) inspect.Document {
 	t.Helper()
 	w := toulmin.Wire{Span: 1}
-	meta := func(c uint8, v core.Record) []core.Word {
+	meta := func(c uint16, v core.Record) []core.Word {
 		vw, _ := core.EncodeRecord(v)
 		ws, _ := core.EncodeRecord(core.Record{Kind: core.KindMeta, Codec: c, Payload: vw})
 		return ws
@@ -26,7 +26,7 @@ func fixtureDoc(t *testing.T) inspect.Document {
 	sv, _ := core.EncodeRecord(core.EncodeSpecVersion(toulmin.SpecVersion))
 	in = append(in, sv...)
 	in = append(in, meta(core.MetaProfile, core.EncodeBytesValue(core.CodecUTF8TextEven, []byte(toulmin.ProfileString())))...)
-	in = append(in, 0x180E)
+	in = append(in, 0x1C30)
 	check := toulmin.TID(1)
 	src, _ := toulmin.EncodeSource(toulmin.TextPacket{TID: 10, Bytes: []byte("# 사안\n규칙")}, w)
 	sec, _ := toulmin.EncodeControl(toulmin.ControlPacket{ID: 11, Code: toulmin.ControlSection, Arg: 5}, w)
@@ -37,11 +37,11 @@ func fixtureDoc(t *testing.T) inspect.Document {
 	begin, _ := toulmin.EncodeControl(toulmin.ControlPacket{ID: 13, Code: toulmin.ControlCaseBegin, Arg: 1}, w)
 	att, _ := toulmin.EncodeEdge(toulmin.EdgePacket{ID: 14, Prop: toulmin.PropAttacks, Src: 2, DstTID: 1}, w)
 	end, _ := toulmin.EncodeControl(toulmin.ControlPacket{ID: 15, Code: toulmin.ControlCaseEnd, Arg: 1}, w)
-	pred, _ := core.EncodeRecord(core.Record{Kind: core.KindEdge, Codec: toulmin.CodecPredicateDeclare, Payload: []core.Word{0x0088, 16, 0}})
+	pred, _ := core.EncodeRecord(core.Record{Kind: core.KindEdge, Codec: toulmin.CodecPredicateDeclare, Payload: []core.Word{0x0051, 16, 0}})
 	for _, p := range [][]core.Word{src, sec, cs, txt, lbl, rule, begin, att, end, pred} {
 		in = append(in, p...)
 	}
-	d, err := inspect.Decode(core.PutWords(core.WrapDocument(append(in, 0x180F))))
+	d, err := inspect.Decode(core.PutWords(core.WrapDocument(append(in, 0x1C40))))
 	if err != nil {
 		t.Fatal(err)
 	}

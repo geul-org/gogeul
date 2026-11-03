@@ -5,7 +5,7 @@ package server
 import "testing"
 
 func TestIssuerLabels(t *testing.T) {
-	if l := issuerLabels(treeOf(namesFixture(t))); len(l) != 1 || l["0x0000"] != "geul.org" {
+	if l := issuerLabels(treeOf(namesFixture(t))); len(l) != 1 || l["0x00000000"] != "geul.org" {
 		t.Fatalf("got %v", l)
 	}
 	if l := issuerLabels(treeOf(t.TempDir())); len(l) != 0 {

@@ -18,7 +18,7 @@ func TestAppShow(t *testing.T) {
 	if out := h.must("show", draft, "--format", "json"); !strings.Contains(out, `"body"`) {
 		t.Fatal(out)
 	}
-	if _, err := h.run("", "show", "me/0x0000000000000009"); err == nil {
+	if _, err := h.run("", "show", "me/docs/0x0000000000000009/latest"); err == nil {
 		t.Fatal("missing: want error")
 	}
 	bad := filepath.Join(h.data, "bad.geul")

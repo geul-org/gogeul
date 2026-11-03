@@ -9,13 +9,13 @@ import (
 )
 
 func TestRecordLines(t *testing.T) {
-	if l := recordLines([]core.Word{0x0882, 5}); len(l) != 2 || l[0].Name != "TAG" || l[1].Name != "payload" {
+	if l := recordLines([]core.Word{0x0421, 5}); len(l) != 2 || l[0].Name != "TAG" || l[1].Name != "payload" {
 		t.Fatalf("value: %+v", l)
 	}
-	if l := recordLines([]core.Word{0x0088, 7}); l[1].Name != "대상 ID" {
+	if l := recordLines([]core.Word{0x0051, 7}); l[1].Name != "대상 ID" {
 		t.Fatalf("local: %+v", l)
 	}
-	long := append([]core.Word{0x0708, 16}, make([]core.Word, 14)...)
+	long := append([]core.Word{0x005E, 16}, make([]core.Word, 14)...)
 	long[2] = 1
 	if l := recordLines(long); len(l) != 16 || l[1].Name != "LENGTH" || l[2].Name != "대상 ID" {
 		t.Fatalf("long: %+v", l[:3])

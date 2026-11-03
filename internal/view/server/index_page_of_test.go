@@ -14,7 +14,7 @@ func TestIndexPageOf(t *testing.T) {
 	if p, err := indexPageOf(tr, ".", "/.well-known/geul/", map[string]string{"h": "hub"}); err != nil || p.Up != "" || len(p.Entries) != 1 || p.Entries[0] != (indexEntry{Name: "hub/", URL: "/.well-known/geul/h/", ID: "h"}) {
 		t.Fatalf("top: %+v %v", p, err)
 	}
-	if p, _ := indexPageOf(tr, ".", "/.well-known/geul/0x0000/", map[string]string{"h": "doc"}); p.Entries[0].Name != "doc/" {
+	if p, _ := indexPageOf(tr, ".", "/.well-known/geul/0x00000000/", map[string]string{"h": "doc"}); p.Entries[0].Name != "doc/" {
 		t.Fatalf("below top: %+v", p)
 	}
 	if _, err := indexPageOf(tr, "none", "/x/", nil); err == nil {

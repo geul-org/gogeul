@@ -1,4 +1,4 @@
 package server
 
-// nameCacheMax bounds the parsed documents.geul kept by docNameMaps.
+// nameCacheMax bounds the parsed document lists kept by docNameMaps.
 const nameCacheMax = 64

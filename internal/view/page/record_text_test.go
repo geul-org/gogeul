@@ -13,16 +13,16 @@ func TestRecordText(t *testing.T) {
 		"#3":                  core.EncodeLocalRef(3),
 		"—":                   {Kind: core.KindReference},
 		`"Douglas Adams"@en`:  core.EncodeLanguageText(core.EncodeBytesValue(core.CodecLanguageBCP47Even, []byte("en")), []byte("Douglas Adams")),
-		"codec 0x42 0x4142":   {Kind: core.KindValue, Codec: 0x42, Payload: []core.Word{0x4142}},
-		"https://x":           core.EncodeBytesValue(0x44, []byte("https://x")),
+		"codec 0x1e 0x4142":   {Kind: core.KindValue, Codec: 0x1E, Payload: []core.Word{0x4142}},
+		"https://x":           core.EncodeBytesValue(core.CodecURIEven, []byte("https://x")),
 		"1974":                core.EncodeBytesValue(core.CodecEDTFEven, []byte("1974")),
 		"7":                   core.EncodeUintValue(7),
-		"UTF8-TEXT 0x0001":    {Kind: core.KindValue, Codec: 0x41, Payload: []core.Word{1}},
+		"UTF8-TEXT 0x0001":    {Kind: core.KindValue, Codec: core.CodecUTF8TextEven | 1, Payload: []core.Word{1}},
 		"PUBLICATION":         {Kind: core.KindEdge, Codec: 0x18},
 		"UNKNOWN-VALUE":       {Kind: core.KindReference, Codec: 1},
 		"NO-VALUE":            {Kind: core.KindReference, Codec: 2},
-		"2/3":                 {Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0881, 2, 0x0882, 3}},
-		"RATIONAL-I64 0x0001": {Kind: core.KindValue, Codec: core.CodecIssuer1Word, Issuer: []core.Word{1}, Format: 0x0702, Payload: []core.Word{1}},
+		"2/3":                 {Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}},
+		"RATIONAL-I64 0x0001": {Kind: core.KindValue, Codec: core.CodecValueIssuer2Word, Issuer: []core.Word{0, 2}, Format: 0x0702, Payload: []core.Word{1}},
 	} {
 		if got := recordText(r); got != want {
 			t.Fatalf("got %q want %q", got, want)

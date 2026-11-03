@@ -34,7 +34,8 @@ func TestPackBuild(t *testing.T) {
 	if err := packBuild(t.TempDir(), t.TempDir(), false, packOptions(), &out); err == nil {
 		t.Fatal("no tree")
 	}
-	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "h", "0x"+strings.Repeat("0", 64)+".geul"), []byte("x"), 0o644)
+	os.MkdirAll(filepath.Join(h.data, ".well-known", "geul", "0x00000000", "hashes"), 0o755)
+	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "0x00000000", "hashes", "0x"+strings.Repeat("0", 64)+".geul"), []byte("x"), 0o644)
 	if err := packBuild(h.data, filepath.Join(t.TempDir(), "bad"), true, packOptions(), &out); err == nil {
 		t.Fatal("bad h/ copy")
 	}

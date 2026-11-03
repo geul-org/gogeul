@@ -16,7 +16,7 @@ func fixture(t *testing.T) string {
 	top := filepath.Join(root, ".well-known", "geul")
 	os.MkdirAll(filepath.Join(top, "h"), 0o755)
 	os.MkdirAll(filepath.Join(top, "0x0000", "x"), 0o755)
-	doc := core.PutWords(core.WrapDocument([]core.Word{0x180F}))
+	doc := core.PutWords(core.WrapDocument([]core.Word{0x1C40}))
 	os.WriteFile(filepath.Join(top, "h", "a.geul"), doc, 0o644)
 	os.WriteFile(filepath.Join(top, "0x0000", "x", "0x00000001.geul"), doc, 0o644)
 	os.WriteFile(filepath.Join(top, "h", "notes.txt"), []byte("x"), 0o644)

@@ -23,7 +23,7 @@ func TestAppVersions(t *testing.T) {
 		}
 	}
 	h.cwd = t.TempDir()
-	if _, err := h.run("", "show", "versions", "0x0000/0x0000000000000001"); err == nil {
+	if _, err := h.run("", "show", "versions", "0x00000000/0x0000000000000001"); err == nil {
 		t.Fatal("no data folder: want error")
 	}
 }

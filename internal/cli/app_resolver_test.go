@@ -11,7 +11,7 @@ func TestAppResolver(t *testing.T) {
 	h := newHarness(t)
 	h.doc()
 	h.packed()
-	set := h.data + "/.well-known/geul/0x0000"
+	set := h.data + "/.well-known/geul/0x00000000"
 	h.env["GEULPROXY"] = "file:///srv,off"
 	h.env["GEULPACK"] = set
 	r, err := h.app(io.Discard).resolver()

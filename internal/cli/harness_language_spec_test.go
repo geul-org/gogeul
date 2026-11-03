@@ -7,10 +7,10 @@ import (
 	"github.com/geul-org/gogeul/pkg/resolve"
 )
 
-// languageSpec publishes the GEUL Language Registry's document, 0x0848.
+// languageSpec publishes the GEUL Language Registry's codec, 0x000005a0.
 func (h *harness) languageSpec() {
-	target := core.TargetWord(core.KindValue, 0x48)
-	id, _ := core.EncodeDocID([]core.Word{0}, []core.Word{0, 0, 0, target})
+	target := core.TargetWord(core.KindValue, core.CodecLanguageShortCode)
+	id, _ := core.EncodeDocIDCodec([]core.Word{0, 0}, uint32(target))
 	field, _ := core.EncodeBind(core.Bind{EdgeID: 3, Subject: core.EncodeLocalRef(2), Name: []byte("code")})
 	enum, _ := core.EncodeBind(core.Bind{EdgeID: 5, Subject: core.EncodeLocalRef(4), Name: []byte("en")})
 	body := []core.Record{

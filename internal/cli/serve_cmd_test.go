@@ -29,7 +29,7 @@ func TestServeCmd(t *testing.T) {
 	if err := serveCmd("127.0.0.1:0", h.data, &bytes.Buffer{}); err == nil || err.Error() != "busy" {
 		t.Fatalf("tree listen: %v", err)
 	}
-	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "0x0000", "latest.txt"), []byte("x"), 0o644)
+	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "0x00000000", "latest.txt"), []byte("x"), 0o644)
 	if err := serveCmd("127.0.0.1:0", h.data, &bytes.Buffer{}); err == nil || err.Error() == "busy" {
 		t.Fatalf("broken pack archive: %v", err)
 	}

@@ -26,7 +26,7 @@ func TestAppLastTwo(t *testing.T) {
 		t.Fatalf("%q", out)
 	}
 	k, _ := h.key("me/0x0000000000000005")
-	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", core.FormatID(k.Issuer), core.FormatID(k.Doc), "0x00000001.geul"), []byte{0, 5}, 0o644)
+	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", core.FormatID(k.Issuer), "docs", core.FormatID(k.Doc), "0x00000001.geul"), []byte{0, 5}, 0o644)
 	if _, err := h.run("", "diff", "me/0x0000000000000005"); err == nil {
 		t.Fatal("unreadable older version: want error")
 	}
@@ -36,7 +36,7 @@ func TestAppLastTwo(t *testing.T) {
 		}
 	}
 	h.cwd = t.TempDir()
-	if _, err := h.run("", "diff", "0x0000/0x0000000000000001"); err == nil {
+	if _, err := h.run("", "diff", "0x00000000/0x0000000000000001"); err == nil {
 		t.Fatal("no data folder: want error")
 	}
 }

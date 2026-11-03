@@ -14,8 +14,8 @@ func TestValueText(t *testing.T) {
 	cases := map[string]inspect.Value{
 		`"a\n"`:                {Codec: core.CodecUTF8TextEven | 1, Text: "a\n"},
 		"ko":                   {Codec: core.CodecLanguageBCP47Even, Text: "ko"},
-		`"우주"@ko`:              {Codec: 0x4A, Text: "우주", Lang: "ko"},
-		"http://x":             {Codec: 0x45, Text: "http://x"},
+		`"우주"@ko`:              {Codec: core.CodecUTF8LanguageTextEven, Text: "우주", Lang: "ko"},
+		"http://x":             {Codec: core.CodecURIEven | 1, Text: "http://x"},
 		"197X":                 {Codec: core.CodecEDTFEven, Text: "197X"},
 		"JULIAN 1300":          {Codec: core.CodecGEDCOMDateEven | 1, Text: "JULIAN 1300"},
 		"7":                    {Codec: core.CodecUnsignedInteger, Uint: 7},

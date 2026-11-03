@@ -18,9 +18,9 @@ func TestAppShowNoListing(t *testing.T) {
 	ctx := context.Background()
 	h := newHarness(t)
 	addr, draft := h.doc()
-	wk := filepath.Join(h.data, ".well-known", "geul", "0x0000")
+	wk := filepath.Join(h.data, ".well-known", "geul", "0x00000000")
 	for i := range 300 {
-		f := filepath.Join(wk, fmt.Sprintf("0x00001000%08x", i), "versions.geul")
+		f := filepath.Join(wk, "docs", fmt.Sprintf("0x00001000%08x", i), "versions.geul")
 		os.MkdirAll(filepath.Dir(f), 0o755)
 		os.WriteFile(f, []byte{0, 0}, 0o644)
 	}
@@ -42,13 +42,13 @@ func TestAppShowNoListing(t *testing.T) {
 		args []string
 		fail bool
 	}{
-		{[]string{"show", addr}, false},
-		{[]string{"show", addr + "/0x00000001.geul"}, false},
-		{[]string{"show", addr + "/versions.geul"}, false},
+		{[]string{"show", docsAddr(addr) + "/latest"}, false},
+		{[]string{"show", docsAddr(addr) + "/0x00000001.geul"}, false},
+		{[]string{"show", docsAddr(addr) + "/versions.geul"}, false},
 		{[]string{"show", draft}, false},
 		{[]string{"show", "versions", addr}, false},
-		{[]string{"show", missing}, true},
-		{[]string{"show", addr + "/0x00000009.geul"}, true},
+		{[]string{"show", docsAddr(missing) + "/latest"}, true},
+		{[]string{"show", docsAddr(addr) + "/0x00000009.geul"}, true},
 		{[]string{"show", "versions", missing}, true},
 	} {
 		reads, err := h.metered(set, c.args...)

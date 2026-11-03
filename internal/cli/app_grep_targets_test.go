@@ -24,12 +24,12 @@ func TestAppGrepTargets(t *testing.T) {
 	if out := h.must("grep", "DECLARE"); out == "" {
 		t.Fatal("every document: want a match")
 	}
-	os.Chmod(filepath.Join(h.data, ".well-known", "geul", "0x0000"), 0o000)
-	defer os.Chmod(filepath.Join(h.data, ".well-known", "geul", "0x0000"), 0o755)
+	os.Chmod(filepath.Join(h.data, ".well-known", "geul", "0x00000000"), 0o000)
+	defer os.Chmod(filepath.Join(h.data, ".well-known", "geul", "0x00000000"), 0o755)
 	if _, err := h.run("", "grep", "x"); err == nil {
 		t.Fatal("unreadable Issuer: want error")
 	}
-	os.Chmod(filepath.Join(h.data, ".well-known", "geul", "0x0000"), 0o755)
+	os.Chmod(filepath.Join(h.data, ".well-known", "geul", "0x00000000"), 0o755)
 	os.RemoveAll(filepath.Join(h.data, ".well-known"))
 	if _, err := h.run("", "grep", "x", "--data", h.data); err == nil {
 		t.Fatal("missing archive: want error")

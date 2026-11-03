@@ -9,8 +9,8 @@ import (
 )
 
 // treeLabels maps IDs to names for the listing of the directory at URL path p:
-// Issuer IDs to their issuers.geul names and, inside an Issuer, its document
-// IDs to their documents.geul names.
+// Issuer IDs to their names in the Issuer list and, inside an Issuer, its
+// document IDs to their names in its document list.
 func treeLabels(t resolve.Store, p string) map[string]string {
 	labels := issuerLabels(t)
 	segs := strings.Split(strings.Trim(strings.TrimPrefix(p, wellKnown), "/"), "/")

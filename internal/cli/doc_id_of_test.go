@@ -9,7 +9,7 @@ import (
 )
 
 func TestDocIDOf(t *testing.T) {
-	id, _ := core.EncodeDocID([]core.Word{0}, []core.Word{0, 0, 0, 7})
+	id, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0, 0, 0, 7})
 	b, _ := core.EncodeDocument([]core.Record{core.EncodeSpecVersion(2), id}, nil)
 	if is, doc, err := docIDOf(b); err != nil || is[0] != 0 || doc[3] != 7 {
 		t.Fatal(err)

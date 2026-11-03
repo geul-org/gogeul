@@ -16,12 +16,12 @@ func TestAppCommit(t *testing.T) {
 	}
 	wk := filepath.Join(t.TempDir(), ".well-known", "geul")
 	arch, _ := pack.OpenDir(context.Background(), wk, packOptions())
-	arch.WriteFile("0x0001/0x0000000000000001/versions.geul", []byte("x"))
+	arch.WriteFile("0x00000002/docs/0x0000000000000001/versions.geul", []byte("x"))
 	a := &app{arch: arch}
 	if err := a.commit(); err != nil || arch.Pending() || !pack.IsPacked(wk) {
 		t.Fatal(err)
 	}
-	arch.WriteFile("h/0x0000000000000000000000000000000000000000000000000000000000000000.geul", []byte("not that hash"))
+	arch.WriteFile("0x00000000/hashes/0x0000000000000000000000000000000000000000000000000000000000000000.geul", []byte("not that hash"))
 	if err := a.commit(); err == nil {
 		t.Fatal("bad h/ copy: want error")
 	}

@@ -21,7 +21,7 @@ func TestPackSources(t *testing.T) {
 		}
 		return ""
 	})
-	set := filepath.Join(h.data, ".well-known", "geul", "0x0000")
+	set := filepath.Join(h.data, ".well-known", "geul", "0x00000000")
 	cfg, err := packSources(cfg, " "+set+" ,,")
 	if err != nil || len(cfg.Proxy) != 4 || cfg.Proxy[0].Name != "pack+"+set || cfg.Proxy[1].Name != "file://"+h.data {
 		t.Fatal(cfg.Proxy, err)

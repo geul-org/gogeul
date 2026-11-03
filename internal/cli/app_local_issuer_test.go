@@ -18,7 +18,7 @@ func TestAppLocalIssuer(t *testing.T) {
 	if err != nil || !strings.HasPrefix(got, "0x") || !strings.HasSuffix(got, "/doc") {
 		t.Fatal(got, err)
 	}
-	for _, s := range []string{"other/doc", "0x0000/doc"} {
+	for _, s := range []string{"other/doc", "0x00000000/doc"} {
 		if got, err := a.localIssuer(s); err != nil || got != s {
 			t.Fatal(s, got, err)
 		}

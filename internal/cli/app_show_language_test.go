@@ -13,7 +13,7 @@ func TestAppShowLanguage(t *testing.T) {
 	addr, draft := h.doc()
 	h.must("add", draft, "ALIAS", "Q42", `"Doug"@@en`)
 	h.must("publish", draft)
-	if out := h.must("show", addr); !strings.Contains(out, `"Doug"@@en`) || strings.Contains(out, "0x0784") {
+	if out := h.must("show", docsAddr(addr)+"/latest"); !strings.Contains(out, `"Doug"@@en`) || strings.Contains(out, "0x0784") {
 		t.Fatal(out)
 	}
 }

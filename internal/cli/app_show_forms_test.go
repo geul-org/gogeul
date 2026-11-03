@@ -12,22 +12,23 @@ import (
 func TestAppShowForms(t *testing.T) {
 	h := newHarness(t)
 	addr, draft := h.doc()
-	if out := h.must("show", addr); !strings.Contains(out, "#2 TRIPLE P31 Q42 Q36180 normal\n") || !strings.Contains(out, "ALIAS") {
+	sa := docsAddr(addr)
+	if out := h.must("show", sa+"/latest"); !strings.Contains(out, "#2 TRIPLE P31 Q42 Q36180 normal\n") || !strings.Contains(out, "ALIAS") {
 		t.Fatal(out)
 	}
-	if out := h.must("show", addr+"/0x00000001.geul"); !strings.Contains(out, "#2 TRIPLE P31 Q42 Q5 normal\n") || strings.Contains(out, "ALIAS") {
+	if out := h.must("show", sa+"/0x00000001.geul"); !strings.Contains(out, "#2 TRIPLE P31 Q42 Q5 normal\n") || strings.Contains(out, "ALIAS") {
 		t.Fatal(out)
 	}
-	if a, b := h.must("show", addr+".geul"), h.must("show", addr); a != b {
+	if a, b := h.must("show", sa+"/latest.geul"), h.must("show", sa+"/latest"); a != b {
 		t.Fatalf("with .geul %q\nwithout %q", a, b)
 	}
-	if out := h.must("show", addr+"/versions.geul"); !strings.Contains(out, "PUBLICATION") {
+	if out := h.must("show", sa+"/versions.geul"); !strings.Contains(out, "PUBLICATION") {
 		t.Fatal(out)
 	}
-	if a, b := h.must("show", draft), h.must("show", addr); a != b {
+	if a, b := h.must("show", draft), h.must("show", sa+"/latest"); a != b {
 		t.Fatalf("file %q\naddress %q", a, b)
 	}
-	for _, missing := range []string{addr + "/0x00000009.geul", strings.TrimSuffix(addr, "1") + "9"} {
+	for _, missing := range []string{sa + "/0x00000009.geul", strings.TrimSuffix(sa, "1") + "9/latest"} {
 		if _, err := h.run("", "show", missing); err == nil || !strings.Contains(err.Error(), "not found") {
 			t.Fatal(missing, err)
 		}

@@ -29,7 +29,7 @@ func TestAppDir(t *testing.T) {
 	if d, err := a.dir(); err != nil || d.Store == nil {
 		t.Fatal("pack", err)
 	}
-	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "0x0000", "latest.txt"), []byte("x"), 0o644)
+	os.WriteFile(filepath.Join(h.data, ".well-known", "geul", "0x00000000", "latest.txt"), []byte("x"), 0o644)
 	a.arch = nil
 	if _, err := a.dir(); err == nil {
 		t.Fatal("broken pack archive: want error")

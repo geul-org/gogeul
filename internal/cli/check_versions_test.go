@@ -20,7 +20,7 @@ func TestCheckVersions(t *testing.T) {
 	if fs := checkVersions(d, k.Issuer, k.Doc); len(fs) != 0 {
 		t.Fatalf("deleted skipped: %+v", fs)
 	}
-	dir := filepath.Join(h.data, ".well-known", "geul", core.FormatID(k.Issuer), core.FormatID(k.Doc))
+	dir := filepath.Join(h.data, ".well-known", "geul", core.FormatID(k.Issuer), "docs", core.FormatID(k.Doc))
 	os.WriteFile(filepath.Join(dir, "0x00000002.geul"), []byte{0, 5}, 0o644)
 	if fs := checkVersions(d, k.Issuer, k.Doc); len(fs) != 1 {
 		t.Fatalf("bad version: %+v", fs)

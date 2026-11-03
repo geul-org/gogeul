@@ -17,8 +17,8 @@ func TestReferrer(t *testing.T) {
 		t.Fatalf("%d %v", by, ok)
 	}
 	zero, _ := core.EncodeRecord(core.EncodeLocalRef(0))
-	q1 := []core.Word{0x00A0, 1}
-	p813 := []core.Word{0x00A8, 813}
+	q1 := []core.Word{0x0141, 1}
+	p813 := []core.Word{0x0191, 813}
 	head := draft{head: []core.Record{
 		edgeRecord(2, notation.Edge{Codec: core.EdgeSource, Rest: append(zero, q1...)}),
 		edgeRecord(3, notation.Edge{Codec: core.EdgeQualifier, Rest: append(append(append([]core.Word{}, p813...), ref...), q1...)}),

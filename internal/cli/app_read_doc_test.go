@@ -26,7 +26,7 @@ func TestAppReadDoc(t *testing.T) {
 		t.Fatal("bad address: want error")
 	}
 	h.cwd = t.TempDir()
-	if _, err := h.app(io.Discard).readDoc("0x0000/0x0000000000000001"); err == nil {
+	if _, err := h.app(io.Discard).readDoc("0x00000000/0x0000000000000001"); err == nil {
 		t.Fatal("no data folder: want error")
 	}
 }

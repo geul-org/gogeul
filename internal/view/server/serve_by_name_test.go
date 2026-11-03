@@ -13,11 +13,11 @@ import (
 func TestServeByName(t *testing.T) {
 	root := namesFixture(t)
 	cases := map[string]string{
-		"/.well-known/geul/geul.org/0xffff000000000002/0x00000001.geul": "/.well-known/geul/0x0000/0xffff000000000002/0x00000001.geul",
-		"/.well-known/geul/geul.org/?json":                              "/.well-known/geul/0x0000/?json",
-		"/.well-known/geul/geul.org":                                    "/.well-known/geul/0x0000",
-		"/.well-known/geul/geul.org/sample-b/0x00000001.geul":           "/.well-known/geul/0x0000/0xffff000000000002/0x00000001.geul",
-		"/.well-known/geul/0x0000/sample-b/":                            "/.well-known/geul/0x0000/0xffff000000000002/",
+		"/.well-known/geul/geul.org/docs/0xffff000000000002/0x00000001.geul": "/.well-known/geul/0x00000000/docs/0xffff000000000002/0x00000001.geul",
+		"/.well-known/geul/geul.org/?json":                                   "/.well-known/geul/0x00000000/?json",
+		"/.well-known/geul/geul.org":                                         "/.well-known/geul/0x00000000",
+		"/.well-known/geul/geul.org/sample-b/0x00000001.geul":                "/.well-known/geul/0x00000000/docs/0xffff000000000002/0x00000001.geul",
+		"/.well-known/geul/0x00000000/sample-b/":                             "/.well-known/geul/0x00000000/docs/0xffff000000000002/",
 	}
 	for u, want := range cases {
 		rec := httptest.NewRecorder()
@@ -32,7 +32,7 @@ func TestServeByName(t *testing.T) {
 	if rec.Code != 404 {
 		t.Fatalf("unknown: %d", rec.Code)
 	}
-	issuers := filepath.Join(root, ".well-known", "geul", "issuers.geul")
+	issuers := filepath.Join(root, ".well-known", "geul", "issuers/0x00000001.geul")
 	os.WriteFile(issuers, []byte{1}, 0o644)
 	rec = httptest.NewRecorder()
 	serveTree(rec, httptest.NewRequest(http.MethodGet, "/.well-known/geul/geul.org/x", nil), treeOf(root))

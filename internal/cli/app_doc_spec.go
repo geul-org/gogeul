@@ -1,5 +1,5 @@
 //ff:func feature=cli type=helper control=sequence
-//ff:what app.docSpec — the codec specs for the codecs one document uses, found under 0x0000 through the data folder and the source list; empty when they do not read
+//ff:what app.docSpec — the codec specs for the codecs one document uses, found under 0x00000000/codecs through the data folder and the source list; empty when they do not read
 package cli
 
 import (

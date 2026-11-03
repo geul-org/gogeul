@@ -23,11 +23,11 @@ func TestAppNewDraft(t *testing.T) {
 	if _, err := h.run("", "new", "nobody/0x0000000000000007", "-o", filepath.Join(h.data, "y.geul")); err == nil {
 		t.Fatal("bad address: want error")
 	}
-	if _, err := h.run("", "new", "0x0000/0x07", "-o", filepath.Join(h.data, "z.geul")); err == nil {
+	if _, err := h.run("", "new", "0x00000000/0x07", "-o", filepath.Join(h.data, "z.geul")); err == nil {
 		t.Fatal("bad document ID: want error")
 	}
 	os.WriteFile(filepath.Join(h.conf, "geul", "keys", "broken.pem"), []byte("x"), 0o600)
-	if _, err := h.run("", "new", "0x0000/0x0000000000000007", "-o", filepath.Join(h.data, "w.geul")); err == nil {
+	if _, err := h.run("", "new", "0x00000000/0x0000000000000007", "-o", filepath.Join(h.data, "w.geul")); err == nil {
 		t.Fatal("broken key: want error")
 	}
 }

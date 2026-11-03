@@ -10,8 +10,8 @@ import (
 )
 
 func TestSpecFields(t *testing.T) {
-	r := core.EncodePublication(core.Publication{Codec: core.EdgeTombstone, EdgeID: 3, Issuer: []core.Word{0}, Doc: []core.Word{0, 0, 0, 1}, Version: 2, Reason: 1})
-	spec := []codecspec.Field{{Name: "doc", Codecs: []core.Word{core.TargetWord(core.KindReference, core.RefDocPointer<<3)}}, {Name: "reason", Width: 1, Enums: map[string]string{"0x0001": "license"}}}
+	r := core.EncodePublication(core.Publication{Codec: core.EdgeTombstone, EdgeID: 3, Issuer: []core.Word{0, 0}, Doc: []core.Word{0, 0, 0, 1}, Version: 2, Reason: 1})
+	spec := []codecspec.Field{{Name: "doc", Codecs: []core.Word{core.TargetWord(core.KindReference, core.CodecDocPointer)}}, {Name: "reason", Width: 1, Enums: map[string]string{"0x0001": "license"}}}
 	fs := specFields(inspectEntry(r, spec))
 	if len(fs) != 2 || fs[0].Key != "doc" || fs[1].Text != "license" {
 		t.Fatalf("got %+v", fs)
