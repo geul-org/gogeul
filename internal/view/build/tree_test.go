@@ -24,11 +24,11 @@ func TestTree(t *testing.T) {
 	}
 	for p, want := range map[string]string{
 		"h/a":                      "browseBtn",
-		"0x00000000/x/0x00000001":      "browseBtn",
+		"0x00000000/x/0x00000001":  "browseBtn",
 		"index.html":               `href="/.well-known/geul/h/"`,
 		"h/index.html":             `href="/.well-known/geul/h/a"`,
 		"h/index.json":             `"URL":"/.well-known/geul/h/a"`,
-		"0x00000000/x/index.json":      `"URL":"/.well-known/geul/0x00000000/x/0x00000001"`,
+		"0x00000000/x/index.json":  `"URL":"/.well-known/geul/0x00000000/x/0x00000001"`,
 		"_static/cytoscape.min.js": "cytoscape",
 	} {
 		if b, err := os.ReadFile(filepath.Join(out, filepath.FromSlash(p))); err != nil || !strings.Contains(string(b), want) {

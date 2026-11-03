@@ -20,15 +20,15 @@ func NodeCodec(t NodeType, role RoleCode) (CodecRef, error) {
 	case NodeTrigger:
 		return CodecRef{Codec: CodecTrigger}, nil
 	case NodeNamespace:
-		return fmtRef(FormatNamespace), nil
+		return CodecRef{Codec: CodecNamespace}, nil
 	case NodeFunc:
-		return fmtRef(FormatFunc), nil
+		return CodecRef{Codec: CodecFunc}, nil
 	case NodeField:
-		return fmtRef(FormatField), nil
+		return CodecRef{Codec: CodecField}, nil
 	case NodeAlias:
-		return fmtRef(FormatAlias), nil
+		return CodecRef{Codec: CodecAlias}, nil
 	case NodeGroup:
-		return fmtRef(FormatGroup), nil
+		return CodecRef{Codec: CodecGroup}, nil
 	default:
 		return CodecRef{}, fmt.Errorf("geul/toulmin: unknown NodeType 0x%04X", uint16(t))
 	}

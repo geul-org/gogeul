@@ -13,7 +13,7 @@ func TestRecordText(t *testing.T) {
 		"#3":                  core.EncodeLocalRef(3),
 		"—":                   {Kind: core.KindReference},
 		`"Douglas Adams"@en`:  core.EncodeLanguageText(core.EncodeBytesValue(core.CodecLanguageBCP47Even, []byte("en")), []byte("Douglas Adams")),
-		"codec 0x1e 0x4142":   {Kind: core.KindValue, Codec: 0x1E, Payload: []core.Word{0x4142}},
+		"codec 0x22 0x4142":   {Kind: core.KindValue, Codec: 0x22, Payload: []core.Word{0x4142}},
 		"https://x":           core.EncodeBytesValue(core.CodecURIEven, []byte("https://x")),
 		"1974":                core.EncodeBytesValue(core.CodecEDTFEven, []byte("1974")),
 		"7":                   core.EncodeUintValue(7),

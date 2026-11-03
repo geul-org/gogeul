@@ -1,20 +1,20 @@
 //ff:func feature=toulmin type=encoder control=selection
-//ff:what ControlFormat — the GEUL ISSUER format number of a framing control
+//ff:what ControlCodec — the direct Edge codec of a framing control
 package toulmin
 
 import "fmt"
 
-// ControlFormat returns the format number a framing control is written under.
-func ControlFormat(c ControlCode) (uint32, error) {
+// ControlCodec returns the Edge codec a framing control is written under.
+func ControlCodec(c ControlCode) (uint16, error) {
 	switch c {
 	case ControlSection:
-		return FormatSection, nil
+		return CodecSection, nil
 	case ControlCaseBegin:
-		return FormatCaseBegin, nil
+		return CodecCaseBegin, nil
 	case ControlCaseEnd:
-		return FormatCaseEnd, nil
+		return CodecCaseEnd, nil
 	case ControlProse:
-		return FormatProse, nil
+		return CodecProse, nil
 	default:
 		return 0, fmt.Errorf("geul/toulmin: control 0x%02X has no record", uint16(c))
 	}

@@ -1,10 +1,6 @@
 //ff:type feature=toulmin type=model
-//ff:what TOULMIN codec table — the direct Edge codes and GEUL ISSUER format numbers of a .geul TANGEUL document
+//ff:what TOULMIN codec table — the direct Edge codes of a .geul TANGEUL document (0x0E0L~0x0FBL and, since §3.14, 0x100L~0x114L)
 package toulmin
-
-// IssuerGEUL is the 2-word GEUL Issuer (0x00000000) under which the TANGEUL
-// ISSUER-format records are defined (EDGE-ISSUER-2WORD, grammar TOULMIN 코덱).
-const IssuerGEUL uint32 = 0x00000000
 
 // Direct TOULMIN Edge codecs (Edge Codec = code - 0x80, TAG 0x0E0L~0x0FBL). FROZEN.
 const (
@@ -25,28 +21,30 @@ const (
 	CodecTrigger          uint16 = 0x76
 )
 
-// TOULMIN codec numbers under the GEUL Issuer (EDGE-ISSUER-2WORD 0x1BDL, 2-word
-// codec number). The values are FROZEN append-only; only their width grew.
+// TOULMIN record types formerly written as GEUL ISSUER formats 0xC000~0xC029,
+// now direct Edge codes in their old number order (migration.md §3.14; TAG
+// 0x100L~0x114L, Edge Codec = code - 0x80). The family of these codes
+// ((code-0x80)>>5 = 4) has no name yet.
 const (
-	FormatSource       uint32 = 0x0000C000
-	FormatText         uint32 = 0x0000C001
-	FormatSection      uint32 = 0x0000C002
-	FormatCaseBegin    uint32 = 0x0000C003
-	FormatCaseEnd      uint32 = 0x0000C004
-	FormatProse        uint32 = 0x0000C005
-	FormatNamespace    uint32 = 0x0000C010
-	FormatFunc         uint32 = 0x0000C011
-	FormatField        uint32 = 0x0000C012
-	FormatAlias        uint32 = 0x0000C013
-	FormatGroup        uint32 = 0x0000C014
-	FormatRequires     uint32 = 0x0000C020
-	FormatMeans        uint32 = 0x0000C021
-	FormatHas          uint32 = 0x0000C022
-	FormatRuns         uint32 = 0x0000C023
-	FormatEvaluates    uint32 = 0x0000C024
-	FormatTriggers     uint32 = 0x0000C025
-	FormatUntil        uint32 = 0x0000C026
-	FormatSameAs       uint32 = 0x0000C027
-	FormatImportedFrom uint32 = 0x0000C028
-	FormatLabel        uint32 = 0x0000C029
+	CodecSource       uint16 = 0x80
+	CodecText         uint16 = 0x81
+	CodecSection      uint16 = 0x82
+	CodecCaseBegin    uint16 = 0x83
+	CodecCaseEnd      uint16 = 0x84
+	CodecProse        uint16 = 0x85
+	CodecNamespace    uint16 = 0x86
+	CodecFunc         uint16 = 0x87
+	CodecField        uint16 = 0x88
+	CodecAlias        uint16 = 0x89
+	CodecGroup        uint16 = 0x8A
+	CodecRequires     uint16 = 0x8B
+	CodecMeans        uint16 = 0x8C
+	CodecHas          uint16 = 0x8D
+	CodecRuns         uint16 = 0x8E
+	CodecEvaluates    uint16 = 0x8F
+	CodecTriggers     uint16 = 0x90
+	CodecUntil        uint16 = 0x91
+	CodecSameAs       uint16 = 0x92
+	CodecImportedFrom uint16 = 0x93
+	CodecLabel        uint16 = 0x94
 )

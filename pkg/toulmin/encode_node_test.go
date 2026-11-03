@@ -10,7 +10,7 @@ import (
 )
 
 // TestEncodeNode pins a CASE-DECLARE record (TAG 0x0E05 = Edge 0x0E0L, 6 words;
-// LOCAL Edge Id; header; SPAN) and an ALIAS record under EDGE-ISSUER-2WORD, and
+// LOCAL Edge Id; header; SPAN) and an ALIAS record (direct code 0x109L, §3.14), and
 // checks each error: unknown NodeType, every flag whose field is absent, and a
 // SPAN beyond the width.
 func TestEncodeNode(t *testing.T) {
@@ -19,7 +19,7 @@ func TestEncodeNode(t *testing.T) {
 		t.Fatalf("case: %04X %v want %04X", got, err, want)
 	}
 	got, err = EncodeNode(NodePacket{TID: 1, Type: NodeAlias}, testWire)
-	if want := []core.Word{0x1BD9, 0, 0, 0, 0xC013, 0x0051, 1, 0, 0, 0}; err != nil || !reflect.DeepEqual(got, want) {
+	if want := []core.Word{0x1095, 0x0051, 1, 0, 0, 0}; err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatalf("alias: %04X %v want %04X", got, err, want)
 	}
 	bad := []NodePacket{

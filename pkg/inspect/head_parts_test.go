@@ -19,7 +19,11 @@ func TestHeadParts(t *testing.T) {
 		t.Fatalf("direct: %+v", p)
 	}
 	text, _ := toulmin.EncodeText(toulmin.TextPacket{TID: 1, Bytes: make([]byte, 40)}, testWire)
-	p := headParts(entry(text))
+	if p := headParts(entry(text)); len(p) != 2 || p[1].Name != "LENGTH" {
+		t.Fatalf("direct + length: %+v", p)
+	}
+	ws, _ := core.EncodeRecord(core.Record{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 7}, Format: 0xC001, Payload: make([]core.Word, 20)})
+	p := headParts(entry(ws))
 	if len(p) != 4 || p[1].Name != "LENGTH" || p[2].Name != "ISSUER" || p[3].Name != "FORMAT" || p[3].Words[1] != 0xC001 {
 		t.Fatalf("issuer + length: %+v", p)
 	}

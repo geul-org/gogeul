@@ -16,11 +16,11 @@ import (
 func toulminData(r core.Record, ref toulmin.CodecRef, w *toulmin.Wire) (any, []core.Word, error) {
 	_, _, _, isNode := toulmin.NodeFromCodec(ref)
 	_, _, isLink := toulmin.PropFromCodec(ref)
-	_, isControl := toulmin.ControlFromFormat(ref.Format)
+	_, isControl := toulmin.ControlFromCodec(ref.Codec)
 	switch {
-	case ref.Format == toulmin.FormatSource:
+	case ref.Codec == toulmin.CodecSource:
 		return sourceData(r, w)
-	case ref.Format == toulmin.FormatText:
+	case ref.Codec == toulmin.CodecText:
 		p, err := toulmin.DecodeText(r, *w)
 		enc, _ := toulmin.EncodeText(p, *w)
 		return p, enc, err
@@ -40,6 +40,6 @@ func toulminData(r core.Record, ref toulmin.CodecRef, w *toulmin.Wire) (any, []c
 		enc, _ := toulmin.EncodeEdge(p, *w)
 		return p, enc, err
 	default:
-		return nil, nil, fmt.Errorf("geul/inspect: codec 0x%03X format 0x%08X has no typed form", ref.Codec, ref.Format)
+		return nil, nil, fmt.Errorf("geul/inspect: codec 0x%03X has no typed form", ref.Codec)
 	}
 }

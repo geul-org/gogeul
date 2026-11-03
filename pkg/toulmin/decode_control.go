@@ -8,7 +8,7 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// DecodeControl decodes r as a framing record: the format number gives the
+// DecodeControl decodes r as a framing record: the Edge codec gives the
 // control, then the Edge Id and the control's argument, which must use the
 // whole payload.
 func DecodeControl(r core.Record, w Wire) (ControlPacket, error) {
@@ -16,9 +16,9 @@ func DecodeControl(r core.Record, w Wire) (ControlPacket, error) {
 	if err != nil {
 		return ControlPacket{}, err
 	}
-	code, ok := ControlFromFormat(ref.Format)
-	if !ok || ref.Codec != core.CodecEdgeIssuer2Word {
-		return ControlPacket{}, fmt.Errorf("geul/toulmin: record 0x%03X/0x%08X is not a framing control", ref.Codec, ref.Format)
+	code, ok := ControlFromCodec(ref.Codec)
+	if !ok {
+		return ControlPacket{}, fmt.Errorf("geul/toulmin: record 0x%03X is not a framing control", ref.Codec)
 	}
 	ws, pos := r.Payload, 0
 	p := ControlPacket{Code: code}

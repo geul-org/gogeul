@@ -11,7 +11,7 @@ import (
 // TestDecodeText feeds DecodeText malformed records.
 func TestDecodeText(t *testing.T) {
 	txt := func(p ...core.Word) core.Record {
-		return core.Record{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 0}, Format: FormatText, Payload: p}
+		return core.Record{Kind: core.KindEdge, Codec: CodecText, Payload: p}
 	}
 	bad := []core.Record{
 		{Kind: core.KindValue},

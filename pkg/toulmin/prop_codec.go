@@ -24,6 +24,6 @@ func PropCodec(p PropCode, once bool) (CodecRef, error) {
 	case PropProvenance:
 		return CodecRef{}, fmt.Errorf("geul/toulmin: provenance has no record layout yet")
 	default:
-		return propFormatRef(p)
+		return propMovedRef(p)
 	}
 }

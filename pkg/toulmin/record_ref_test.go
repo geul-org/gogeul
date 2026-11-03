@@ -1,5 +1,5 @@
 //ff:func feature=toulmin type=decoder control=iteration dimension=1
-//ff:what TestRecordRef — direct and GEUL-format Edge records resolve; other kinds and Issuers fail
+//ff:what TestRecordRef — direct Edge records (TOULMIN and the §3.14 moved codes) resolve; other kinds and every EDGE-ISSUER record, the old GEUL formats included, fail
 package toulmin
 
 import (
@@ -9,14 +9,15 @@ import (
 )
 
 func TestRecordRef(t *testing.T) {
-	if r, err := RecordRef(core.Record{Kind: core.KindEdge, Codec: CodecRun}); err != nil || r.Codec != CodecRun || r.Format != 0 {
+	if r, err := RecordRef(core.Record{Kind: core.KindEdge, Codec: CodecRun}); err != nil || r.Codec != CodecRun {
 		t.Fatalf("direct: %+v %v", r, err)
 	}
-	if r, err := RecordRef(core.Record{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 0}, Format: FormatText}); err != nil || r.Format != FormatText {
-		t.Fatalf("format: %+v %v", r, err)
+	if r, err := RecordRef(core.Record{Kind: core.KindEdge, Codec: CodecText}); err != nil || r.Codec != CodecText {
+		t.Fatalf("moved direct code: %+v %v", r, err)
 	}
 	bad := []core.Record{
 		{Kind: core.KindValue},
+		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 0}, Format: 0xC001},
 		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{0, 1}},
 		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer2Word, Issuer: []core.Word{1, 2}},
 		{Kind: core.KindEdge, Codec: core.CodecEdgeIssuer4Word, Issuer: []core.Word{0, 1, 0, 0}},

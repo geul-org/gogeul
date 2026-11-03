@@ -15,7 +15,7 @@ func DecodeText(r core.Record, w Wire) (TextPacket, error) {
 	if err != nil {
 		return TextPacket{}, err
 	}
-	if ref.Codec != core.CodecEdgeIssuer2Word || ref.Format != FormatText {
+	if ref.Codec != CodecText {
 		return TextPacket{}, errors.New("geul/toulmin: record is not a TEXT")
 	}
 	ws, pos := r.Payload, 0

@@ -27,8 +27,8 @@ func TestToulminData(t *testing.T) {
 	if w.Span != 2 {
 		t.Fatalf("SOURCE must set the span width: %d", w.Span)
 	}
-	bad := core.Record{Kind: core.KindEdge, Codec: 0x7C, Issuer: []core.Word{0}, Format: toulmin.FormatSection}
-	if _, _, err := toulminData(bad, toulmin.CodecRef{Codec: 0x7C, Format: toulmin.FormatSection}, &w); err == nil {
+	bad := core.Record{Kind: core.KindEdge, Codec: 0x7C}
+	if _, _, err := toulminData(bad, toulmin.CodecRef{Codec: 0x7C}, &w); err == nil {
 		t.Fatal("bad control: want error")
 	}
 	if _, _, err := toulminData(core.Record{}, toulmin.CodecRef{Codec: toulmin.CodecPredicateDeclare}, &w); err == nil {

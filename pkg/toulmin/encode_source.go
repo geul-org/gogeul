@@ -18,5 +18,5 @@ func EncodeSource(p TextPacket, w Wire) ([]core.Word, error) {
 	if err != nil {
 		return nil, err
 	}
-	return EdgeRecord(CodecRef{Codec: core.CodecEdgeIssuer2Word, Format: FormatSource}, body)
+	return EdgeRecord(CodecRef{Codec: CodecSource}, body)
 }

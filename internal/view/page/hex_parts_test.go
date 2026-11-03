@@ -16,7 +16,7 @@ func TestHexParts(t *testing.T) {
 	ws, _ := toulmin.EncodeNode(p, toulmin.Wire{Span: 1})
 	r, _, _ := core.DecodeRecord(ws)
 	head, body := hexParts(inspect.Entry{Record: r, Words: ws, Name: "ALIAS", Data: p})
-	if len(head) != 3 || head[0].Lines[0].Word != "1BD9" || !head[0].Lines[0].Tag || !strings.Contains(head[0].Lines[0].Note, "EDGE-ISSUER-2WORD") || head[2].Lines[1].Word != "C013" {
+	if len(head) != 1 || head[0].Lines[0].Word != "1095" || !head[0].Lines[0].Tag || !strings.Contains(head[0].Lines[0].Note, "001001 ALIAS") {
 		t.Fatalf("head: %+v", head)
 	}
 	if len(body) != 4 || !body[0].Record || body[0].Lines[0].Word != "0051" || body[0].Lines[1].Word != "0003" || body[2].Lines[0].Word != "06EC" {

@@ -20,7 +20,7 @@ func DecodeNode(r core.Record, w Wire) (NodePacket, error) {
 	}
 	t, role, fixed, ok := NodeFromCodec(ref)
 	if !ok {
-		return NodePacket{}, fmt.Errorf("geul/toulmin: record 0x%03X/0x%08X is not a NODE", ref.Codec, ref.Format)
+		return NodePacket{}, fmt.Errorf("geul/toulmin: record 0x%03X is not a NODE", ref.Codec)
 	}
 	ws, pos := r.Payload, 0
 	p := NodePacket{Type: t}

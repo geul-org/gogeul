@@ -1,15 +1,15 @@
 //ff:func feature=toulmin type=decoder control=iteration dimension=1
-//ff:what ControlFromFormat — the framing control a GEUL ISSUER format number declares
+//ff:what ControlFromCodec — the framing control a direct Edge codec declares
 package toulmin
 
-// controls lists every framing control ControlFromFormat searches.
+// controls lists every framing control ControlFromCodec searches.
 var controls = []ControlCode{ControlSection, ControlCaseBegin, ControlCaseEnd, ControlProse}
 
-// ControlFromFormat reports the framing control whose record uses format number
-// f. ok is false when f is not a control format.
-func ControlFromFormat(f uint32) (ControlCode, bool) {
+// ControlFromCodec reports the framing control whose record uses Edge codec
+// f. ok is false when f is not a control codec.
+func ControlFromCodec(f uint16) (ControlCode, bool) {
 	for _, c := range controls {
-		if cf, _ := ControlFormat(c); cf == f {
+		if cf, _ := ControlCodec(c); cf == f {
 			return c, true
 		}
 	}

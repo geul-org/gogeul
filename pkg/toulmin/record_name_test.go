@@ -1,5 +1,5 @@
 //ff:func feature=toulmin type=helper control=sequence
-//ff:what TestRecordName — direct codecs and format numbers name; unknown refs are empty
+//ff:what TestRecordName — direct codecs name, the §3.14 codes included; unknown codecs and EDGE-ISSUER are empty
 package toulmin
 
 import (
@@ -9,10 +9,10 @@ import (
 )
 
 func TestRecordName(t *testing.T) {
-	if RecordName(CodecRef{Codec: CodecDoOnce}) != "DO-ONCE" || RecordName(CodecRef{Codec: core.CodecEdgeIssuer2Word, Format: FormatLabel}) != "LABEL" {
+	if RecordName(CodecRef{Codec: CodecDoOnce}) != "DO-ONCE" || RecordName(CodecRef{Codec: CodecLabel}) != "LABEL" {
 		t.Fatal("name mismatch")
 	}
-	if RecordName(CodecRef{Codec: 0x66}) != "" || RecordName(CodecRef{Codec: core.CodecEdgeIssuer2Word, Format: 0xCFFF}) != "" {
+	if RecordName(CodecRef{Codec: 0x66}) != "" || RecordName(CodecRef{Codec: core.CodecEdgeIssuer2Word}) != "" || RecordName(CodecRef{Codec: 0x95}) != "" {
 		t.Fatal("unknown refs must be empty")
 	}
 }

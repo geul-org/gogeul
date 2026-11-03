@@ -13,7 +13,7 @@ import (
 // PROSE, a 1-word section code for SECTION, or the case REF for CASE-BEGIN /
 // CASE-END. A PROSE without a Span and a section code above one word are errors.
 func EncodeControl(p ControlPacket, w Wire) ([]core.Word, error) {
-	f, err := ControlFormat(p.Code)
+	f, err := ControlCodec(p.Code)
 	if err != nil {
 		return nil, err
 	}
@@ -35,5 +35,5 @@ func EncodeControl(p ControlPacket, w Wire) ([]core.Word, error) {
 	if err != nil {
 		return nil, err
 	}
-	return EdgeRecord(CodecRef{Codec: core.CodecEdgeIssuer2Word, Format: f}, body)
+	return EdgeRecord(CodecRef{Codec: f}, body)
 }

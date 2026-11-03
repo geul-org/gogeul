@@ -1,26 +1,22 @@
 //ff:func feature=toulmin type=encoder control=iteration dimension=1
-//ff:what TestPropFormatRef — every format-number relation maps to its format; a direct-code relation does not
+//ff:what TestPropMovedRef — every relation moved from a GEUL format maps to its direct code 0x10BL~0x114L; ATTACKS does not
 package toulmin
 
-import (
-	"testing"
+import "testing"
 
-	"github.com/geul-org/gogeul/pkg/core"
-)
-
-func TestPropFormatRef(t *testing.T) {
-	want := map[PropCode]uint32{
-		PropRequires: FormatRequires, PropMeans: FormatMeans, PropHas: FormatHas,
-		PropRuns: FormatRuns, PropEvaluates: FormatEvaluates, PropTriggers: FormatTriggers,
-		PropUntil: FormatUntil, PropSameAs: FormatSameAs, PropImportedFrom: FormatImportedFrom,
-		PropLabel: FormatLabel,
+func TestPropMovedRef(t *testing.T) {
+	want := map[PropCode]uint16{
+		PropRequires: CodecRequires, PropMeans: CodecMeans, PropHas: CodecHas,
+		PropRuns: CodecRuns, PropEvaluates: CodecEvaluates, PropTriggers: CodecTriggers,
+		PropUntil: CodecUntil, PropSameAs: CodecSameAs, PropImportedFrom: CodecImportedFrom,
+		PropLabel: CodecLabel,
 	}
 	for p, f := range want {
-		if ref, err := propFormatRef(p); err != nil || ref.Codec != core.CodecEdgeIssuer2Word || ref.Format != f {
+		if ref, err := propMovedRef(p); err != nil || ref.Codec != f {
 			t.Fatalf("0x%04X: %+v %v", uint16(p), ref, err)
 		}
 	}
-	if _, err := propFormatRef(PropAttacks); err == nil {
-		t.Fatal("attacks has a direct code, not a format")
+	if _, err := propMovedRef(PropAttacks); err == nil {
+		t.Fatal("attacks is a TOULMIN 0x0E0L code, not a moved one")
 	}
 }
