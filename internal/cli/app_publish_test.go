@@ -1,5 +1,5 @@
 //ff:func feature=cli type=command control=sequence
-//ff:what TestAppPublish — --amend leaves one version; the same content again is noted, not published; a missing file, a document breaking the spec, no data folder, no DOC-ID and a taken name fail
+//ff:what TestAppPublish — --amend leaves one version; the same content again is noted, not published; a missing file, a document breaking the spec, no data folder, no DOC-ID and the gone --name flag fail
 package cli
 
 import (
@@ -37,11 +37,10 @@ func TestAppPublish(t *testing.T) {
 	if _, err := h.run("", "publish", g); err == nil {
 		t.Fatal("no DOC-ID: want error")
 	}
-	h.must("name", "me/0x0000000000000001", "taken")
 	f := filepath.Join(h.data, "two.geul")
 	h.must("new", "me/0x0000000000000002", "-o", f)
 	if _, err := h.run("", "publish", f, "--name", "taken"); err == nil {
-		t.Fatal("taken name: want error")
+		t.Fatal("--name: want error")
 	}
 	h.cwd = t.TempDir()
 	if _, err := h.run("", "publish", draft); err == nil {

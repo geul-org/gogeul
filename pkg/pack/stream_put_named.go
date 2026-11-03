@@ -4,9 +4,9 @@ package pack
 
 import "fmt"
 
-// PutNamed stores r at the named path (§3.4: a list `issuers/<V>.geul`,
-// `<Issuer>/docs/<V>.geul`, `<Issuer>/codecs/<V>.geul` or its versions.geul, or a
-// codec `<Issuer>/codecs/<코덱 ID>/<V>.geul` or its versions.geul),
+// PutNamed stores r at the named path (§3.4: the Issuer list
+// `issuers/<V>.geul` or its versions.geul, or a codec
+// `<Issuer>/codecs/<코덱 ID>/<V>.geul` or its versions.geul),
 // in the open data pack's path table. A path may be put once; NAMED is
 // sorted when the stream closes. A named record does not serve h/. Once
 // Close has begun, a path it holds is acknowledged without storing

@@ -1,5 +1,5 @@
-//ff:func feature=server type=helper control=sequence
-//ff:what TestTreeLabels — Issuer names at the top, Issuer and document names under an Issuer, codec spec names under the GEUL Issuer
+//ff:func feature=server type=helper control=iteration dimension=1
+//ff:what TestTreeLabels — Issuer names at the top of the tree (also for its index.json path); nothing below, so a codec ID that looks like an Issuer ID keeps its ID
 package server
 
 import (
@@ -8,13 +8,14 @@ import (
 
 func TestTreeLabels(t *testing.T) {
 	root := namesFixture(t)
-	if l := treeLabels(treeOf(root), "/.well-known/geul/"); len(l) != 1 || l["0x00000000"] != "geul.org" {
-		t.Fatalf("top: %v", l)
+	for _, p := range []string{"/.well-known/geul/", "/.well-known/geul"} {
+		if l := treeLabels(treeOf(root), p); len(l) != 1 || l["0x00000000"] != "geul.org" {
+			t.Fatalf("top %q: %v", p, l)
+		}
 	}
-	if l := treeLabels(treeOf(root), "/.well-known/geul/0x00000000/"); len(l) != 3 || l["0xffff000000000002"] != "sample-b" {
-		t.Fatalf("issuer: %v", l)
-	}
-	if l := treeLabels(treeOf(root), "/.well-known/geul/0x00000000/"); l["0x00000980"] != "publication" {
-		t.Fatalf("codec spec: %v", l)
+	for _, p := range []string{"/.well-known/geul/0x00000000/", "/.well-known/geul/0x00000000/codecs"} {
+		if l := treeLabels(treeOf(root), p); len(l) != 0 {
+			t.Fatalf("%s: %v", p, l)
+		}
 	}
 }

@@ -13,14 +13,14 @@ import (
 // `<Issuer>/hashes/<r.Hash>.geul` too (flags bit0: the bytes are shared, never copied).
 // Keys must come in strictly ascending order (Issuer number, document ID,
 // slot) and the Issuer must be one of StreamOptions.Issuers. Once Close has
-// begun (a resumed stream whose Close stopped) closedPut answers instead. A
-// reserved list document ID (core.IsListDocID) is refused: a list is named.
+// begun (a resumed stream whose Close stopped) closedPut answers instead. The
+// reserved Issuer list ID (core.DocIDIssuers) is refused: the list is named.
 func (s *Stream) Put(issuer []core.Word, doc uint64, slot uint32, r StreamRecord) error {
 	if n, ok := core.IssuerNormal(issuer); ok {
 		issuer = n
 	}
-	if core.IsListDocID(doc) {
-		return fmt.Errorf("geul/pack: 0x%016x is a reserved list document ID (PutNamed `<Issuer>/docs/…`)", doc)
+	if doc == core.DocIDIssuers {
+		return fmt.Errorf("geul/pack: 0x%016x is the reserved Issuer list ID (PutNamed `issuers/…`)", doc)
 	}
 	num, ok := s.inum[core.FormatID(issuer)]
 	if !ok {

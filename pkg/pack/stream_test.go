@@ -18,7 +18,7 @@ func TestStream(t *testing.T) {
 	ctx := context.Background()
 	finish := func(s *Stream) string {
 		r, _ := s.Encode([]byte("q1 0x5100000000000001\n"))
-		if err := s.PutNamed("0x00000001/docs/0x00000001.geul", r); err != nil {
+		if err := s.PutNamed("0x00000001/codecs/0x000003c0/0x00000001.geul", r); err != nil {
 			t.Fatal(err)
 		}
 		res, err := s.Close()
@@ -80,7 +80,7 @@ func TestStream(t *testing.T) {
 			t.Fatalf("%s: %v", path, err)
 		}
 	}
-	want = append(want, "0x00000001/docs/0x00000001.geul")
+	want = append(want, "0x00000001/codecs/0x000003c0/0x00000001.geul")
 	paths, err := r.Paths(ctx)
 	sort.Strings(want)
 	sort.Strings(paths)

@@ -4,7 +4,7 @@ package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// Addr is one of the sixteen 공표 주소 forms (§3.13), parsed (ParseAddr).
+// Addr is one of the ten 공표 주소 forms (§3.13), parsed (ParseAddr).
 // Base is where it is read from (`file://<dir>`, `https://<host>`), "" when the
 // address was given relative to `.well-known/geul/`. Issuer is canonical (a
 // zero-padded 16- or 64-digit form names the same Issuer). ID is the 2-word

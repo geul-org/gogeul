@@ -1,5 +1,5 @@
 //ff:func feature=cli type=command control=sequence
-//ff:what TestNewPublishCmd — publish prints the version and hash, --name binds a name, --amend replaces the versions
+//ff:what TestNewPublishCmd — publish prints the version and hash, --amend replaces the versions; there is no --name
 package cli
 
 import (
@@ -11,10 +11,10 @@ func TestNewPublishCmd(t *testing.T) {
 	h := newHarness(t)
 	addr, draft := h.doc()
 	h.must("add", draft, "ALIAS", "Q42", `"D"@en`)
-	if out := h.must("publish", draft, "--name", "adams"); !strings.HasPrefix(out, "3 0x") {
-		t.Fatal(out)
+	if _, err := h.run("", "publish", draft, "--name", "adams"); err == nil {
+		t.Fatal("--name: want error")
 	}
-	if out := h.must("ls", "me"); out != "0x0000000000000001 adams\n" {
+	if out := h.must("publish", draft); !strings.HasPrefix(out, "3 0x") {
 		t.Fatal(out)
 	}
 	h.must("publish", draft, "--amend")

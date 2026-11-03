@@ -16,17 +16,15 @@ const (
 	// issuersDir holds geul.org's Issuer list (GEUL-ORG Issuer 이름), in place
 	// of the old issuers.geul.
 	issuersDir = "issuers"
-	// docsDir holds an Issuer's documents and its document list (in place of the
-	// old documents.geul); codecsDir its codec documents and codec list;
-	// hashesDir its documents by content hash (in place of the old h/).
+	// docsDir holds an Issuer's documents, codecsDir its codec documents and
+	// hashesDir its documents by content hash (in place of the old h/). There
+	// is no document or codec list (§1.1 101).
 	docsDir   = "docs"
 	codecsDir = "codecs"
 	hashesDir = "hashes"
-	// listIDIssuers, listIDDocs and listIDCodecs are the reserved list document
-	// IDs (core.DocIDIssuers, DocIDDocs, DocIDCodecs) in canonical hex.
+	// listIDIssuers is the reserved Issuer list document ID
+	// (core.DocIDIssuers) in canonical hex.
 	listIDIssuers = "0xffffffffffffffff"
-	listIDDocs    = "0xfffffffffffffffe"
-	listIDCodecs  = "0xfffffffffffffffd"
 	// geulIssuer is the GEUL Issuer, whose folder holds the paths outside every
 	// Issuer when an archive is kept as one set per Issuer (pack.Split).
 	geulIssuer = "0x00000000"

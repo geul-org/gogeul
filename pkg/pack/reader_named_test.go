@@ -1,5 +1,5 @@
 //ff:func feature=pack type=resolver control=iteration dimension=1
-//ff:what TestReaderNamed — the Issuer and document lists from NAMED; absent names, before and after the table, are NotFound
+//ff:what TestReaderNamed — the Issuer list from NAMED; absent names, before and after the table, are NotFound
 package pack
 
 import (

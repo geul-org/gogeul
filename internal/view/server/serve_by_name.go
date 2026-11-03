@@ -1,5 +1,5 @@
 //ff:func feature=server type=handler control=sequence
-//ff:what serveByName — redirect an Issuer or document name path to its ID path; 404 when no segment is a known name
+//ff:what serveByName — redirect an Issuer name path to its ID path; 404 when the first segment is not a known Issuer name
 package server
 
 import (
@@ -10,9 +10,9 @@ import (
 )
 
 // serveByName answers a tree path that does not exist by reading its first
-// segments as an Issuer name and a document name (namePath). A known name
-// redirects (302) to the same path under the IDs, keeping a trailing / and the
-// query. Anything else is 404.
+// segment as an Issuer name (namePath; documents have no names). A known name
+// redirects (302) to the same path under the Issuer ID, keeping a trailing /
+// and the query. Anything else is 404.
 func serveByName(w http.ResponseWriter, r *http.Request, t resolve.Store, p string) {
 	to, ok := namePath(t, p)
 	if !ok {

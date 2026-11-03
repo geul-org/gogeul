@@ -5,7 +5,7 @@ package notation
 import "github.com/geul-org/gogeul/pkg/codecspec"
 
 // Context configures reading. Spec gives the fields of declared codecs (a
-// codec without one is read token by token). Lookup resolves document names.
+// codec without one is read token by token). Lookup resolves Issuer names.
 // Local, when set, maps a `#label` written in a token (the text after #) to
 // the LOCAL ID to encode (labels of a batch, geul add -i); a label it does not
 // know is read as the decimal Edge Id it spells.

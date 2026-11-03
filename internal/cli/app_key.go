@@ -1,5 +1,5 @@
 //ff:func feature=cli type=helper control=sequence
-//ff:what app.key — a document address to its Key: a local Issuer key name first, then the archive's IDs and names
+//ff:what app.key — a document address to its Key: a local Issuer key name first, then the archive's Issuer IDs and names and document IDs
 package cli
 
 import "github.com/geul-org/gogeul/pkg/resolve"

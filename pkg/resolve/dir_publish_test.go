@@ -36,9 +36,9 @@ func TestDirPublish(t *testing.T) {
 		t.Fatal("odd bytes: want error")
 	}
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	listID, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0xffff, 0xffff, 0xffff, 0xfffe})
+	listID, _ := core.EncodeDocID([]core.Word{0, 0}, []core.Word{0xffff, 0xffff, 0xffff, 0xffff})
 	if _, err := d.Publish(core.PutWords(core.WrapDocument(append(enc(listID), 0x1C30, 0x1C40)))); err == nil {
-		t.Fatal("reserved list ID: want error")
+		t.Fatal("reserved Issuer list ID: want error")
 	}
 	if _, err := d.Publish(core.PutWords(core.WrapDocument([]core.Word{0x1C30}))); err == nil {
 		t.Fatal("no END: want error")

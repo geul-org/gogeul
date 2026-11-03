@@ -11,7 +11,7 @@ import (
 func TestWriterPlanPut(t *testing.T) {
 	_, out := built(t, small())
 	doc := fixtureFile(t, "issuers/0x00000001.geul")
-	get := memGet(map[string][]byte{"issuers/0x00000001.geul": doc, "0x00000000/docs/0x00000001.geul": {1, 2}})
+	get := memGet(map[string][]byte{"issuers/0x00000001.geul": doc, "0x00000000/codecs/0x000003c0/0x00000001.geul": {1, 2}})
 	w := testWriter(t, out, Batch{Get: get})
 	w.sums = map[string][32]byte{}
 	for _, p := range []string{"", strings.Repeat("a", 0x10000), "none"} {
@@ -25,7 +25,7 @@ func TestWriterPlanPut(t *testing.T) {
 	if pu, err := w.planPut("issuers/0x00000001.geul"); pu != nil || err != nil {
 		t.Fatal(pu, err)
 	}
-	pu, err := w.planPut("0x00000000/docs/0x00000001.geul")
+	pu, err := w.planPut("0x00000000/codecs/0x000003c0/0x00000001.geul")
 	if err != nil || pu == nil || pu.chOK || pu.ref.space != spaceNamed {
 		t.Fatal(pu, err)
 	}

@@ -17,7 +17,7 @@ func TestPageHTML(t *testing.T) {
 	if err := PageHTML(&b, treeOf(root), "/.well-known/geul/0x00000000/docs/0xffff000000000002/0x00000001", data, nil); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(b.String(), "browseBtn") || !strings.Contains(b.String(), ".well-known/geul/geul.org/sample-b/0x00000001") {
+	if !strings.Contains(b.String(), "browseBtn") || !strings.Contains(b.String(), ".well-known/geul/geul.org/docs/0xffff000000000002/0x00000001") {
 		t.Fatalf("page: %s", b.String()[:200])
 	}
 	if err := PageHTML(&b, treeOf(root), "/x", []byte{1, 2}, nil); err == nil {

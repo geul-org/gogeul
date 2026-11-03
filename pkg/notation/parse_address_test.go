@@ -10,7 +10,7 @@ import (
 
 func TestParseAddress(t *testing.T) {
 	ctx := Context{Lookup: fakeLookup}
-	r, err := parseAddress("geul.org/quantity", ctx)
+	r, err := parseAddress("geul.org/0x0000000000000806", ctx)
 	if s, _ := formatReference(r); err != nil || s != "0x00000000/0x0000000000000806" {
 		t.Fatalf("%s %v", s, err)
 	}
@@ -18,7 +18,7 @@ func TestParseAddress(t *testing.T) {
 	if s, _ := formatReference(r); s != "0x00000000/0x0000000000000806@2" {
 		t.Fatal(s)
 	}
-	r, err = parseAddress("geul.org/quantity#3", ctx)
+	r, err = parseAddress("geul.org/0x0000000000000806#3", ctx)
 	if s, _ := formatReference(r); err != nil || s != "0x00000000/0x0000000000000806#3" {
 		t.Fatalf("%s %v", s, err)
 	}
@@ -26,7 +26,7 @@ func TestParseAddress(t *testing.T) {
 	if r.Codec != core.CodecExternalIssuer16Word {
 		t.Fatalf("%+v", r)
 	}
-	for _, s := range []string{"nobody/x", "0x00000000/0x0000000000000806@2#1", "geul.org/quantity#0", "geul.org/quantity#x", "0x00000000/0x00000980#1"} {
+	for _, s := range []string{"nobody/x", "0x00000000/0x0000000000000806@2#1", "geul.org/0x0000000000000806#0", "geul.org/0x0000000000000806#x", "0x00000000/0x00000980#1"} {
 		if _, err := parseAddress(s, ctx); err == nil {
 			t.Errorf("%s: want error", s)
 		}

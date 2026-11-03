@@ -26,13 +26,14 @@ func TestDirFindForms(t *testing.T) {
 	}
 	ows, _ := core.ReadWords(od)
 	osum, _ := core.ContentHash(ows)
-	addrs := []string{"issuers/latest.geul", "/.well-known/geul/issuers/0x00000001.geul", "0x00000000/docs/latest.geul", "geul.org/docs/latest.geul",
-		id + "/latest.geul", "geul.org/docs/seven/latest.geul", id + "/0x00000001.geul", id + "/0x00000002", "geul.org/docs/seven/0x00000001.geul",
-		id + "/versions.geul", "geul.org/docs/seven/versions.geul", gone + "/versions.geul",
+	addrs := []string{"issuers/latest.geul", "/.well-known/geul/issuers/0x00000001.geul",
+		id + "/latest.geul", "geul.org/docs/0xffff000000000007/latest.geul", id + "/0x00000001.geul", id + "/0x00000002",
+		id + "/versions.geul", gone + "/versions.geul",
 		other + "/latest.geul", other + "/0x00000001.geul", other + "/versions.geul", "other.example/docs/0x0000000000000005/latest.geul",
 		hashPath(geulIssuer, sum), hashPath("0x00000002", osum)}
 	missing := []string{id + "/0x00000009.geul", gone + "/0x00000001.geul", gone + "/latest.geul", "0x00000000/docs/0xffff000000000009/latest.geul",
 		"0x00000009/docs/0x0000000000000001/versions.geul", "0x00000009/docs/latest.geul", "geul.org/docs/nothing/latest.geul", "nobody.example/docs/seven/latest.geul",
+		"0x00000000/docs/latest.geul", "geul.org/docs/latest.geul", "geul.org/docs/seven/latest.geul", "0x00000000/codecs/versions.geul",
 		"h/0x" + strings.Repeat("0", 64) + ".geul", "issuers.geul", "0x00000000/documents.geul", hashPath("0x00000002", sum)}
 	for _, f := range formsOf(t, tree) {
 		for _, a := range addrs {

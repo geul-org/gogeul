@@ -1,19 +1,19 @@
 //ff:func feature=resolve type=helper control=sequence
-//ff:what addrDoc — `<문서 ID>/<tail>` under an Issuer's docs/: a 16-digit document ID (or a name via docOf), then the version file
+//ff:what addrDoc — `<문서 ID>/<tail>` under an Issuer's docs/: a 16-digit document ID other than the reserved Issuer list ID, then the version file
 package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// addrDoc reads `<문서 ID>/<name>`: docOf gives the 4-word document ID (16
-// lowercase hex digits; Dir.Find also takes a document name), the name as
-// addrTail. A reserved list document ID (core.IsListDocID) is not a
-// document address.
-func addrDoc(a Addr, id, name string, docOf func([]core.Word, string) ([]core.Word, error), bad error) (Addr, error) {
-	doc, err := docOf(a.Issuer, id)
-	if err != nil {
-		return Addr{}, err
+// addrDoc reads `<문서 ID>/<name>`: the 4-word document ID (16 lowercase hex
+// digits), the name as addrTail. The reserved Issuer list ID
+// (core.DocIDIssuers) is not a document address.
+func addrDoc(a Addr, id, name string, bad error) (Addr, error) {
+	b, ok := parseHexID(id, 4)
+	if !ok {
+		return Addr{}, bad
 	}
-	if len(doc) != 4 || core.IsListDocID(wordsUint(doc)) {
+	doc := hexWords(b)
+	if wordsUint(doc) == core.DocIDIssuers {
 		return Addr{}, bad
 	}
 	a.Kind, a.ID = AddrDoc, doc

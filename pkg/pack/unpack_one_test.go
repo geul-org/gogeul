@@ -14,10 +14,10 @@ func TestUnpackOne(t *testing.T) {
 	_, out := built(t, small())
 	r := opened(t, out)
 	base := t.TempDir()
-	if err := unpackOne(ctx, r, base, "0x00000000/docs/0x00000001.geul"); err != nil {
+	if err := unpackOne(ctx, r, base, "0x00000000/codecs/0x000003c0/0x00000001.geul"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := os.Stat(filepath.Join(base, "0x00000000", "docs", "0x00000001.geul")); err != nil {
+	if _, err := os.Stat(filepath.Join(base, "0x00000000", "codecs", "0x000003c0", "0x00000001.geul")); err != nil {
 		t.Fatal(err)
 	}
 	if err := unpackOne(ctx, r, base, "none"); err == nil {

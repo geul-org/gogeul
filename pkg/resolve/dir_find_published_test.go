@@ -45,7 +45,8 @@ func TestDirFindPublished(t *testing.T) {
 		ws, _ := core.ReadWords(v1)
 		sum, _ := core.ContentHash(ws)
 		addrs = append(addrs, "issuers/latest.geul", codec+"/latest.geul", codec+"/0x00000001.geul", codec+"/versions.geul", hashPath(geulIssuer, sum))
-		missing = append(missing, "0x00000000/codecs/0x0000fff0/latest.geul", "0x00000000/hashes/0x"+strings.Repeat("0", 64)+".geul")
+		missing = append(missing, "0x00000000/codecs/0x0000fff0/latest.geul", "0x00000000/hashes/0x"+strings.Repeat("0", 64)+".geul",
+			"0x00000000/docs/latest.geul", "0x00000000/docs/versions.geul", "0x00000000/codecs/latest.geul", "0x00000000/codecs/versions.geul")
 	}
 	if wikiErr == nil {
 		item := "0x00000001/docs/0x510000000000002a"

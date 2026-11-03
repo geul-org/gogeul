@@ -24,7 +24,7 @@ func TestFetch(t *testing.T) {
 	if _, err := Fetch(ctx, a); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
-	a, _ = ParseAddr("0x00000000/docs/latest.geul")
+	a, _ = ParseAddr("0x00000000/docs/0xffff000000000007/latest.geul")
 	if _, err := Fetch(ctx, a); err == nil {
 		t.Fatal("no base: want error")
 	}

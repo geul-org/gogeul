@@ -23,7 +23,7 @@ func newRootCmd(a *app) *cobra.Command {
 	root.SetIn(a.in)
 	root.AddCommand(newEnvCmd(a), newLsCmd(a), newShowCmd(a), newGetCmd(a), newCatCmd(a), newHashCmd(a), newDiffCmd(a), newCheckCmd(a))
 	root.AddCommand(newBlameCmd(a), newGrepCmd(a), newResolveCmd(a), newServeCmd(a), newBuildCmd(a))
-	root.AddCommand(newPublishCmd(a), newDeltaCmd(a), newDeprecateCmd(a), newTombstoneCmd(a), newNameCmd(a))
+	root.AddCommand(newPublishCmd(a), newDeltaCmd(a), newDeprecateCmd(a), newTombstoneCmd(a))
 	root.AddCommand(newNewCmd(a), newOpenCmd(a), newAddCmd(a), newDefCmd(a), newSetCmd(a), newRmCmd(a), newMetaCmd(a), newIssuerCmd(a))
 	root.AddCommand(newPackCmd(a))
 	return root

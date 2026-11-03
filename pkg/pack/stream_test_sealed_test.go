@@ -17,7 +17,7 @@ func streamTestSealed(t *testing.T) (*Stream, string, []streamSnap) {
 	t.Helper()
 	s := streamTestNew(t, nil)
 	r, _ := s.Encode([]byte("q1 0x5100000000000001\n"))
-	s.PutNamed("0x00000001/docs/0x00000001.geul", r)
+	s.PutNamed("0x00000001/codecs/0x000003c0/0x00000001.geul", r)
 	var snaps []streamSnap
 	for i := uint64(2); s.st.Data.Num == 0; i++ {
 		snaps = append(snaps, streamSnap{open: s.st.Data, inv: slices.Clone(s.st.Inv), paths: slices.Clone(s.st.Paths)})

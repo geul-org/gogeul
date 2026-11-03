@@ -16,14 +16,13 @@ func newShowCmd(a *app) *cobra.Command {
   geul show <Issuer>/docs/<document>/<version>.geul    a given version
   geul show <Issuer>/docs/<document>/versions.geul     the version list document
   geul show <Issuer>/codecs/<codec ID>/latest.geul     a codec document
-  geul show <Issuer>/docs/latest.geul                  the Issuer's document list (names)
   geul show issuers/latest.geul                        the Issuer list (names)
   geul show <Issuer>/hashes/<content hash>.geul        a document by its hash
   geul show ./draft.geul                               a local file
   geul show versions <Issuer>/<document>               number, time, content hash, state, NEXT-LOCAL-ID
 
-Issuer may be a name of the Issuer list and document a name of the Issuer's
-document list. .geul may be left off. For the pure bytes of an address, use geul get.
+Issuer may be a name of the Issuer list; documents and codecs are given by ID.
+.geul may be left off. For the pure bytes of an address, use geul get.
 
 A file named versions is ./versions. Records are laid out by the spec documents
 of the codecs the document uses, found under 0x00000000/codecs by TAG in the data folder,

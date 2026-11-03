@@ -30,8 +30,8 @@ func (d Dir) Publish(b []byte) (VersionEntry, error) {
 	if !ok {
 		return VersionEntry{}, errors.New("geul/resolve: publishing needs a DOC-ID")
 	}
-	if len(id.Doc) == 4 && core.IsListDocID(wordsUint(id.Doc)) {
-		return VersionEntry{}, errors.New("geul/resolve: a reserved list document ID is published only as a list (PublishList)")
+	if len(id.Doc) == 4 && wordsUint(id.Doc) == core.DocIDIssuers {
+		return VersionEntry{}, errors.New("geul/resolve: the reserved Issuer list ID is published only as the list (PublishList)")
 	}
 	return d.publishAt(Key{Issuer: id.Issuer, Doc: id.Doc}.DocKey(), id.Issuer, id.Doc, b, h)
 }

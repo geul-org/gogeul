@@ -14,7 +14,7 @@ func TestArchiveReadDir(t *testing.T) {
 	if err != nil || len(top) != 2 || top[0].Name() != "0x00000000" || !top[0].IsDir() || top[1].Name() != "issuers" || !top[1].IsDir() {
 		t.Fatal(top, err)
 	}
-	if es, err := a.ReadDir("0x00000000"); err != nil || len(es) != 2 {
+	if es, err := a.ReadDir("0x00000000"); err != nil || len(es) != 3 || es[0].Name() != "codecs" {
 		t.Fatal(es, err)
 	}
 	if _, err := a.ReadDir("none"); !errors.Is(err, fs.ErrNotExist) {

@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=helper control=iteration dimension=1
-//ff:what formsTree — test fixture: two Issuers named in issuers.geul, a two-version named document, a deleted version and long compressible texts, as a file tree
+//ff:what formsTree — test fixture: two Issuers named in the Issuer list, a two-version document, a deleted version and long compressible texts, as a file tree
 package resolve
 
 import (
@@ -15,10 +15,7 @@ func formsTree(t *testing.T) Dir {
 	d := Dir{Root: t.TempDir()}
 	s0, _ := core.EncodeIssuerPointer([]core.Word{0, 0})
 	s1, _ := core.EncodeIssuerPointer([]core.Word{0, 2})
-	b, _ := namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: s0, Name: []byte("geul.org")})
-	ws, _ := core.ReadWords(b)
-	names, _ := core.SplitDocument(ws)
-	b, _ = namesDoc(names.Head, names.Body, core.Bind{EdgeID: 2, Subject: s1, Name: []byte("other.example")})
+	b := bindDoc(core.Bind{Subject: s0, Name: []byte("geul.org")}, core.Bind{Subject: s1, Name: []byte("other.example")})
 	if _, err := d.PublishList([]core.Word{0, 0}, core.DocIDIssuers, b); err != nil {
 		t.Fatal(err)
 	}
@@ -27,9 +24,6 @@ func formsTree(t *testing.T) Dir {
 		if _, err := d.Publish(b); err != nil {
 			t.Fatal(err)
 		}
-	}
-	if err := d.Name([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}, "seven"); err != nil {
-		t.Fatal(err)
 	}
 	if err := d.Tombstone([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 8}, 1, 1); err != nil {
 		t.Fatal(err)

@@ -13,6 +13,9 @@ func TestTreeIndex(t *testing.T) {
 	if p, _ := treeIndex(treeOf(root), "/.well-known/geul/0x00000000/"); p.Entries[1].Name != "docs/" {
 		t.Fatalf("issuer: %+v", p)
 	}
+	if p, _ := treeIndex(treeOf(root), "/.well-known/geul/0x00000000/codecs/"); len(p.Entries) != 1 || p.Entries[0].Name != "0x00000000/" || p.Entries[0].ID != "" {
+		t.Fatalf("codec ID not named as an Issuer: %+v", p)
+	}
 	if _, err := treeIndex(treeOf(root), "/.well-known/geul/none/"); err == nil {
 		t.Fatal("missing: want error")
 	}

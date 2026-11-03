@@ -24,20 +24,14 @@ func newTypedFixture(t *testing.T) typedFixture {
 		t.Fatal(err)
 	}
 	ip, _ := core.EncodeIssuerPointer(f.g)
-	f.issuers, _ = namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: ip, Name: []byte("geul.org")})
-	cp, _ := core.EncodeCodecPointer(f.g, 0x0980, 0)
-	f.codecs, _ = namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: cp, Name: []byte("x")})
-	f.d.PublishList(f.g, core.DocIDIssuers, f.issuers)
-	f.d.PublishList(f.g, core.DocIDCodecs, f.codecs)
-	if err := f.d.Name(f.g, []core.Word{0xffff, 0, 0, 7}, "seven"); err != nil {
+	f.issuers = bindDoc(core.Bind{Subject: ip, Name: []byte("geul.org")})
+	if _, err := f.d.PublishList(f.g, core.DocIDIssuers, f.issuers); err != nil {
 		t.Fatal(err)
 	}
 	ws, _ := core.ReadWords(f.v2)
 	f.hash, _ = core.ContentHash(ws)
 	read := func(p string) []byte { b, _ := f.d.Fetch(ctx, p); return b }
-	f.docs = read(namesPath(geulIssuer))
 	f.list, f.clist = read(listPath(sampleKeyOf(7))), read(listPath(codecKey(0x0980)))
-	f.ilist, f.dlist = read(listPath(issuersKey())), read(listPath(namesKey(geulIssuer)))
-	f.cslist = read(listPath(DocKey{Issuer: geulIssuer, Doc: listIDCodecs}))
+	f.ilist = read(listPath(issuersKey()))
 	return f
 }

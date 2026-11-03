@@ -9,7 +9,7 @@ import (
 
 // indexPageOf lists the directory dir whose URL path is urlPath (ending in /).
 // Up is the parent URL, empty at the top of the tree. Directories show the
-// names labels gives them (Issuer or document ID → name, treeLabels).
+// names labels gives them (Issuer ID → name, treeLabels).
 func indexPageOf(t fs.FS, dir, urlPath string, labels map[string]string) (indexPage, error) {
 	entries, err := indexEntries(t, dir, urlPath)
 	if err != nil {

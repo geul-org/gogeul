@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=selection
-//ff:what Dir.Find — one document by its 공표 주소 (the sixteen forms), the Issuer also as a name of the Issuer list and the document as a name of the document list
+//ff:what Dir.Find — one document by its 공표 주소 (the ten forms), the Issuer also as a name of the Issuer list
 package resolve
 
 import (
@@ -13,21 +13,21 @@ import (
 // same way, one key at a time:
 //
 //	issuers/<latest|<버전 ID>|versions>.geul
-//	<Issuer>/codecs/[<코덱 ID>/]<latest|<버전 ID>|versions>.geul
-//	<Issuer>/docs/[<문서 ID>/]<latest|<버전 ID>|versions>.geul
+//	<Issuer>/codecs/<코덱 ID>/<latest|<버전 ID>|versions>.geul
+//	<Issuer>/docs/<문서 ID>/<latest|<버전 ID>|versions>.geul
 //	<Issuer>/hashes/<내용 해시>.geul
 //
-// For text viewing the Issuer may also be a name of the Issuer list and the
-// document a name of the Issuer's document list, and `.geul` may be left off.
-// A codec or document version is read as a snapshot (At: a stored diff is
-// applied), latest.geul being the newest live version. A missing document is
-// ErrNotFound.
+// For text viewing the Issuer may also be a name of the Issuer list, and
+// `.geul` may be left off; documents and codecs are named by ID only (there is
+// no document name index, §1.1 101). A codec or document version is read as a
+// snapshot (At: a stored diff is applied), latest.geul being the newest live
+// version. A missing document is ErrNotFound.
 func (d Dir) Find(addr string) ([]byte, error) {
 	p := strings.TrimPrefix(strings.TrimPrefix(addr, "/"), wellKnown+"/")
 	if !strings.HasSuffix(p, geulExt) {
 		p += geulExt
 	}
-	a, err := addrOfPath(p, d.issuerOfName, d.docOfName)
+	a, err := addrOfPath(p, d.issuerOfName)
 	switch {
 	case err != nil:
 		return nil, err

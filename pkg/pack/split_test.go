@@ -25,12 +25,12 @@ func TestSplit(t *testing.T) {
 	if _, err := Split(ctx, t.TempDir(), wk, small()); err == nil {
 		t.Fatal("missing")
 	}
-	os.Chmod(filepath.Join(root, ".well-known", "geul", "0x00000000", "docs", "0x00000001.geul"), 0)
-	defer os.Chmod(filepath.Join(root, ".well-known", "geul", "0x00000000", "docs", "0x00000001.geul"), 0o644)
+	os.Chmod(filepath.Join(root, ".well-known", "geul", "0x00000000", "codecs", "0x000003c0", "0x00000001.geul"), 0)
+	defer os.Chmod(filepath.Join(root, ".well-known", "geul", "0x00000000", "codecs", "0x000003c0", "0x00000001.geul"), 0o644)
 	if _, err := Split(ctx, root, filepath.Join(t.TempDir(), "x"), small()); err == nil {
 		t.Fatal("unreadable")
 	}
-	os.Chmod(filepath.Join(root, ".well-known", "geul", "0x00000000", "docs", "0x00000001.geul"), 0o644)
+	os.Chmod(filepath.Join(root, ".well-known", "geul", "0x00000000", "codecs", "0x000003c0", "0x00000001.geul"), 0o644)
 	if _, err := Split(ctx, root, filepath.Join(t.TempDir(), "y"), BuildOptions{Codec: fakeCodec{err: os.ErrInvalid}}); err == nil {
 		t.Fatal("write")
 	}

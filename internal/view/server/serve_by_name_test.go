@@ -1,5 +1,5 @@
 //ff:func feature=server type=handler control=iteration dimension=1
-//ff:what TestServeByName — known Issuer and document names redirect to their ID path (trailing / and query kept); unknown names, a missing or broken issuers.geul are 404
+//ff:what TestServeByName — a known Issuer name redirects to its ID path (trailing / and query kept, a document name left as it is); a document name alone, unknown names, a missing or broken Issuer list are 404
 package server
 
 import (
@@ -16,8 +16,7 @@ func TestServeByName(t *testing.T) {
 		"/.well-known/geul/geul.org/docs/0xffff000000000002/0x00000001.geul": "/.well-known/geul/0x00000000/docs/0xffff000000000002/0x00000001.geul",
 		"/.well-known/geul/geul.org/?json":                                   "/.well-known/geul/0x00000000/?json",
 		"/.well-known/geul/geul.org":                                         "/.well-known/geul/0x00000000",
-		"/.well-known/geul/geul.org/sample-b/0x00000001.geul":                "/.well-known/geul/0x00000000/docs/0xffff000000000002/0x00000001.geul",
-		"/.well-known/geul/0x00000000/sample-b/":                             "/.well-known/geul/0x00000000/docs/0xffff000000000002/",
+		"/.well-known/geul/geul.org/sample-b/0x00000001.geul":                "/.well-known/geul/0x00000000/sample-b/0x00000001.geul",
 	}
 	for u, want := range cases {
 		rec := httptest.NewRecorder()
@@ -27,14 +26,16 @@ func TestServeByName(t *testing.T) {
 			t.Fatalf("%s: %d %q", u, rec.Code, rec.Header().Get("Location"))
 		}
 	}
-	rec := httptest.NewRecorder()
-	serveTree(rec, httptest.NewRequest(http.MethodGet, "/.well-known/geul/nope.org/x", nil), treeOf(root))
-	if rec.Code != 404 {
-		t.Fatalf("unknown: %d", rec.Code)
+	for _, u := range []string{"/.well-known/geul/nope.org/x", "/.well-known/geul/0x00000000/sample-b/"} {
+		rec := httptest.NewRecorder()
+		serveTree(rec, httptest.NewRequest(http.MethodGet, u, nil), treeOf(root))
+		if rec.Code != 404 {
+			t.Fatalf("%s: %d", u, rec.Code)
+		}
 	}
 	issuers := filepath.Join(root, ".well-known", "geul", "issuers/0x00000001.geul")
 	os.WriteFile(issuers, []byte{1}, 0o644)
-	rec = httptest.NewRecorder()
+	rec := httptest.NewRecorder()
 	serveTree(rec, httptest.NewRequest(http.MethodGet, "/.well-known/geul/geul.org/x", nil), treeOf(root))
 	if rec.Code != 404 {
 		t.Fatalf("broken: %d", rec.Code)

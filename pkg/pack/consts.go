@@ -44,8 +44,8 @@ const (
 	spaceH     = 2
 	spaceNamed = 3
 
-	docsDir    = "docs"    // <Issuer>/docs/: documents and the document list
-	codecsDir  = "codecs"  // <Issuer>/codecs/: codec documents and the codec list
+	docsDir    = "docs"    // <Issuer>/docs/<문서 ID>/: documents (no document list)
+	codecsDir  = "codecs"  // <Issuer>/codecs/<코덱 ID>/: codec documents (no codec list)
 	hashesDir  = "hashes"  // <Issuer>/hashes/: documents by content hash
 	issuersDir = "issuers" // issuers/: the Issuer list
 	listFile   = "versions.geul"

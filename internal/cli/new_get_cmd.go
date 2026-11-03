@@ -5,7 +5,7 @@ package cli
 import "github.com/spf13/cobra"
 
 // newGetCmd is `geul get <주소>`: resolve.ParseAddr → resolve.Fetch → standard
-// output. The address is one of the sixteen 공표 주소 forms under
+// output. The address is one of the ten 공표 주소 forms under
 // `file://<dir>/.well-known/geul/` or `https://<host>/.well-known/geul/`; files,
 // pack sets and zstd pack sets answer alike. Any other form and a missing
 // address end with the not-found error.
@@ -16,9 +16,7 @@ func newGetCmd(a *app) *cobra.Command {
 		Long: `Write the bytes at one 공표 주소 to standard output, unchanged:
 
   issuers/latest.geul | issuers/<version>.geul | issuers/versions.geul
-  <Issuer>/codecs/latest.geul | <version>.geul | versions.geul
   <Issuer>/codecs/<codec ID>/latest.geul | <version>.geul | versions.geul
-  <Issuer>/docs/latest.geul | <version>.geul | versions.geul
   <Issuer>/docs/<document ID>/latest.geul | <version>.geul | versions.geul
   <Issuer>/hashes/<content hash>.geul
 

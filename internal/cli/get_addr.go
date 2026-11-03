@@ -9,7 +9,7 @@ import (
 )
 
 // getAddr is geul get without the output: resolve.ParseAddr then
-// resolve.Fetch. A form outside the sixteen or a missing address wraps
+// resolve.Fetch. A form outside the ten or a missing address wraps
 // resolve.ErrNotFound.
 func getAddr(ctx context.Context, s string) ([]byte, error) {
 	if ctx == nil {

@@ -10,7 +10,7 @@
 //	                      list names that exact WORD: reference/slot-marker)
 //	#12                   LOCAL
 //	Q42, P31              WIKIDATA-QID, WIKIDATA-PID
-//	0x0000/0x…0806[@2]    DOC-POINTER (names allowed when reading: geul.org/quantity)
+//	0x0000/0x…0806[@2]    DOC-POINTER (an Issuer name allowed when reading: geul.org/0x…0806)
 //	0x0000/0x…0806#3      EXTERNAL-ISSUER-* (Issuer document's LOCAL)
 //	"text", "text"@en     UTF8-TEXT, UTF8-LANGUAGE-TEXT (language LANGUAGE-BCP47-CODE)
 //	"text"@@pt-BR         UTF8-LANGUAGE-TEXT whose language is a LANGUAGE-SHORT-CODE,

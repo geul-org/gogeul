@@ -1,5 +1,5 @@
 //ff:type feature=notation type=model
-//ff:what Lookup — how a document address (ID or name, optional @version) becomes a Key when reading tokens
+//ff:what Lookup — how a document address (Issuer ID or name, document ID, optional @version) becomes a Key when reading tokens
 package notation
 
 import "github.com/geul-org/gogeul/pkg/resolve"

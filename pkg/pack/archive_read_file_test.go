@@ -32,7 +32,7 @@ func TestArchiveReadFile(t *testing.T) {
 		t.Fatal(err)
 	}
 	os.Remove(objPath(t, a.sets[0].r, a.sets[0].dir, kindData))
-	if _, err := a.ReadFile("0x00000000/docs/0x00000001.geul"); err == nil {
+	if _, err := a.ReadFile("0x00000000/codecs/0x000003c0/0x00000001.geul"); err == nil {
 		t.Fatal("broken")
 	}
 }

@@ -1,5 +1,5 @@
 //ff:func feature=notation type=helper control=selection
-//ff:what fakeLookup — test fixture: a Lookup that knows geul.org/quantity and the 16-word Issuer "self", else reads IDs
+//ff:what fakeLookup — test fixture: a Lookup that knows geul.org/0x0000000000000806 and the 16-word Issuer "self", else reads IDs
 package notation
 
 import (
@@ -10,7 +10,7 @@ import (
 // fakeLookup resolves two names and passes IDs to resolve.Dir{}.Lookup.
 func fakeLookup(addr string) (resolve.Key, error) {
 	switch addr {
-	case "geul.org/quantity":
+	case "geul.org/0x0000000000000806":
 		return resolve.Key{Issuer: []core.Word{0, 0}, Doc: []core.Word{0, 0, 0, 0x806}}, nil
 	case "self/0x0000000000000000", "self/0x0000000000000001":
 		is := make([]core.Word, 16)
