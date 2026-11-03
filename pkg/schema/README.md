@@ -40,17 +40,16 @@
 
 | 규칙 | 내용 |
 |---|---|
-| R1 | Reference TAG `0x000L`~`0x002L`은 자리 표지 ABSENT·UNKNOWN-VALUE·NO-VALUE(WORD `0x0000`·`0x0010`·`0x0020`)다. 레코드 자리(HEAD·BODY)의 자리 표지는 Error(표지는 그것을 받는 레코드 필드 안에서만 쓴다), Payload가 있는 표지는 예약(Warn)이다. 빈칸 `0x003L`·`0x004L`, `0x01EL`·`0x01FL`, `0x03EL`·`0x03FL`, `0x043L`~`0x05CL`은 예약(Warn)이다. 5Q 체계는 섹션 0 `0x005L`~`0x01DL`(체계 C/5)과 섹션 1 `0x020L`~`0x03DL`(체계 6 + C/5)이고 Quantifier는 C%5다(C는 섹션 안 5비트 오프셋). |
+| R1 | Reference TAG `0x000L`~`0x002L`은 자리 표지 ABSENT·UNKNOWN-VALUE·NO-VALUE(WORD `0x0000`·`0x0010`·`0x0020`)다. 레코드 자리(HEAD·BODY)의 자리 표지는 Error다(표지는 그것을 받는 레코드 필드 안에서만 쓴다). Payload가 있는 표지 C와 빈칸(`0x003L`·`0x004L`, `0x01EL`·`0x01FL`, `0x03EL`·`0x03FL`, `0x043L`~`0x05CL`)은 보지 않는다(migration.md §1.1 112). 5Q 체계는 섹션 0 `0x005L`~`0x01DL`(체계 C/5)과 섹션 1 `0x020L`~`0x03DL`(체계 6 + C/5)이고 Quantifier는 C%5다(C는 섹션 안 5비트 오프셋). |
 | R2 | 대상 ID는 가장 짧은 폭이다. 값 0은 `0x0000` 1 WORD이고, 그 밖에는 선행 `0x0000` WORD가 없다. |
 | R3 | `EXTERNAL-POINTER-*`: IMPORT ID가 들어가는 가장 좁은 Codec이고, 그 IMPORT ID를 배정한 `IMPORT-DOC`이 HEAD에 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). |
 | R4 | `EXTERNAL-ISSUER-*`(체계 9~11, 2/4/16 WORD): Issuer 폭이 체계와 맞고 값이 들어가는 가장 짧은 폭이며, 문서 ID 4 WORD 뒤에 대상 ID가 1 WORD 이상 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). 문서 ID `0`은 Issuer의 용어 정의 색인 문서다. |
-| R5 | `ISSUER-POINTER`(`0x040L`)·`DOC-POINTER`(`0x041L`)·`CODEC-POINTER`(`0x042L`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`·`…FE`·`…FD`는 목록(issuers·docs·codecs) 예약 ID다. |
+| R5 | `ISSUER-POINTER`(`0x040L`)·`DOC-POINTER`(`0x041L`)·`CODEC-POINTER`(`0x042L`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`는 Issuer 목록(`issuers/`) 예약 ID다(docs·codecs 목록은 없다, migration.md §1.1 101). |
 
 ### V Value (OVERVIEW Value)
 
 | 규칙 | 내용 |
 |---|---|
-| V1 | 직접 코드의 Reserved 구간은 예약이다. |
 | V2 | 고정 폭 직접 코드는 Payload 폭이 맞다. BOOL 1(`0x0000`·`0x0001`만), BINARY-FLOAT 1/2/4/8, GREGORIAN-DATE 2, CIVIL-TIME-NANOSECONDS 4(`[0, 86400×10^9)`), POSIX-TIMESTAMP-SECONDS 4, DURATION-SECONDS 4, LANGUAGE-SHORT-CODE 1, UUID 8, SHA-256-DIGEST 16, SHA1-DIGEST 10, DURATION-NANOSECONDS 4. BIT-VECTOR는 bit 수 N 2 WORD 뒤 정확히 ceil(N/16) WORD이고 마지막 WORD의 쓰지 않는 하위 bit가 0이다(§3.14로 직접 코드가 된 Value). |
 | V3 | SIGNED-INTEGER·UNSIGNED-INTEGER와 DECIMAL의 coefficient는 최소 WORD다. DECIMAL은 exponent 2 WORD + coefficient 1 WORD 이상이다. |
 | V4 | 홀짝 코드 쌍(텍스트, URI, 언어 태그, EDTF, GEDCOM-DATE, UTF8-LANGUAGE-TEXT의 텍스트 부분, OPAQUE-BYTES)에서 홀수 코드는 Payload가 1 WORD 이상이고 마지막 하위 byte가 `0x00`이다. |
@@ -69,9 +68,8 @@
 |---|---|
 | E1 | Payload 첫 요소가 LOCAL Reference(Quantifier `000`)다. 그 LOCAL ID가 Edge Id이며 `0`이 아니다(`0`은 문서 자신). |
 | E2 | Edge Id는 문서 안에서 중복되지 않는다. HEAD Edge와 BODY는 한 번호 공간이다. |
-| E3 | 직접 코드의 Reserved 구간은 예약이다. 근거 계열은 SOURCE(`0x0C0L`)만 배정되어 있다. |
 | E4 | core 내장 Codec은 레이아웃이 맞다. `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`(Edge Id 뒤 22·6·7 WORD), `DECLARE`·`FIELD`·`ENUM`·`CODEC`(edge/DECLARE·FIELD·ENUM·CODEC). |
-| E5 | CODEC의 필드는 같은 문서의 FIELD이고, 한 필드에 같은 대상을 두 번 두지 않으며, 날값 필드(폭 ≥ 1)에는 CODEC이 하나뿐이고 와일드카드(LLLL `1111`)나 자리 표지(`0000`~`0007`)가 아니다. 자리 표지 대상만 있는 필드는 없다(edge/CODEC 선택 필드와 자리 표지). 예약 표지 대상 `0003`~`0007`은 Warn이다. 대상 WORD는 LLLL `0000`이거나 `1111` 와일드카드다(E4). |
+| E5 | CODEC의 필드는 같은 문서의 FIELD이고, 한 필드에 같은 대상을 두 번 두지 않으며, 날값 필드(폭 ≥ 1)에는 CODEC이 하나뿐이고 와일드카드(LLLL `1111`)나 자리 표지(`0000`·`0010`·`0020`)가 아니다. 자리 표지 대상만 있는 필드는 없다(edge/CODEC 선택 필드와 자리 표지). 대상 WORD는 LLLL `0000`이거나 `1111` 와일드카드다(E4). |
 | E6 | (Warn) Object가 NO-VALUE(`0x0002`)인 TRIPLE과 같은 Subject·Predicate·rank, 같은 QUALIFIER 묶음(Property=Value)의 TRIPLE이 다른 Object(값 또는 UNKNOWN-VALUE)를 가지면 경고한다. 거부하지 않는다(위키데이터에도 있는 상태, 읽는 쪽이 rank로 고른다). TRIPLE·QUALIFIER는 문법이 고정한 레이아웃으로 자른다. |
 | E7 | TRIPLE·QUALIFIER의 Predicate·Subject(Property·Target)에는 Reference Codec `0000`(자리 표지)이 오지 않고, Object(Value)에는 `0x0001` UNKNOWN-VALUE·`0x0002` NO-VALUE만 온다(ABSENT·예약 표지·Payload 있는 Codec `0000`은 Error). 두 Codec의 필드는 문법이 고정하므로 1층에서 본다. 다른 Codec 필드의 표지 수용은 규격 문서(2층) 몫이다. |
 | E8 | 근거 Edge `SOURCE`(`0x20`, edge/SOURCE): Edge Id 뒤에 대상·원천 레코드 둘뿐이다. 대상은 LOCAL Reference이고 `0`(문서 전체)이거나 BODY의 Edge Id다. 원천은 Reference이고, 자리 표지는 `0x0000` ABSENT와 `0x0001` UNKNOWN-VALUE만 받는다(Value·NO-VALUE·예약 표지는 Error). 대상이 `0`인 `SOURCE`와 HEAD `SOURCE`를 대상으로 하는 `QUALIFIER`가 BODY에 있으면 Error다(HEAD에 둔다). 레이아웃을 문법이 고정하므로 1층에서 본다. |
@@ -81,7 +79,6 @@
 
 | 규칙 | 내용 |
 |---|---|
-| M1 | 표에 없는 직접 코드는 예약이다. Meta에는 ISSUER 코드가 없다. |
 | M2 | `DOC-ID`는 하나이고, Payload는 `DOC-POINTER`(Issuer, 문서 ID ≠ 0, 버전 0) Reference 하나다. |
 | M3 | `IMPORT-DOC`: Payload는 `DOC-POINTER` Reference 하나와 그 뒤의 IMPORT ID다. IMPORT ID가 최소 폭이고 문서 안에서 중복되지 않는다. |
 | M4 | `SPEC-VERSION`·`PROFILE`·`DEFAULT-LANGUAGE`은 각각 하나다. `SPEC-VERSION`의 Payload는 내장 Value 없이 가장 짧은 폭의 unsigned 정수다(v1 = `0x0001`). 나머지는 내장 Value가 해당 형식이다. |
@@ -129,13 +126,13 @@ type Report struct {
 func Check(b []byte, opt Options) Report
 
 type Options struct {
-	Strict bool    // 예약 코드를 Warn이 아니라 Error로
+	Strict bool    // Warn을 Error로
 	Codecs []Codec // 2층. 비면 1층만
 }
 ```
 
 - Error가 하나라도 있으면 Fail, Warn만 있으면 Review, 없으면 Pass다.
-- 예약 코드는 기본이 Warn이다. 더 새로운 명세로 쓴 문서일 수 있기 때문이다. `Strict`이면 Error다.
+- Warn은 경고 규칙(F4 Standard 접두사, M4 모르는 SPEC-VERSION, E6 NO-VALUE 모순)이 낸다. `Strict`이면 Error다. 배정되지 않은 코드를 예약(Warn)으로 보고하던 규칙(V1, E3, M1, R1의 빈칸과 Payload 있는 표지)은 지웠다(migration.md §1.1 112). 빈 코드는 코덱 조회(404)에서 드러나고, 변환 검증은 migvalid `new-unassigned`가 맡는다.
 
 ## 원칙
 
@@ -147,7 +144,7 @@ type Options struct {
 
 ## 구현 상태
 
-- 1층 규칙 표 전체를 구현했다(`Check`). 예외: EDTF·GEDCOM 날짜의 전체 문법과 BCP 47 tag 문법 검사(미결정. V6의 평범한 날짜 금지는 구현했다. 라이브러리는 외부 의존성이 없다). UTF8-NFC-TEXT(`0x42`/`0x43`)는 2026-10-26 폐기되어 V1(예약)이다.
+- 1층 규칙 표 전체를 구현했다(`Check`). 예외: EDTF·GEDCOM 날짜의 전체 문법과 BCP 47 tag 문법 검사(미결정. V6의 평범한 날짜 금지는 구현했다. 라이브러리는 외부 의존성이 없다). UTF8-NFC-TEXT(`0x42`/`0x43`)는 2026-10-26 폐기되어 배정이 없다(보지 않는다).
 - 2층은 `Options.Codecs`로 받은 Codec을 모든 레코드에 돌리는 틀만 있다. 내장 규격(TOULMIN, `docs/value`, `docs/edge`)은 아직 없다.
 - 3층(격틀, 선택 제약)은 없다.
 - core에 버전 목록 레코드 디코드(`core.DecodePublication`)를 넣어 E4·P 규칙이 쓴다.

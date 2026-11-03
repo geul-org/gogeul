@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckMeta — each Meta branch and the reserved code
+//ff:what TestCheckMeta — each Meta branch; an unassigned code is not reported (§1.1 112)
 package schema
 
 import (
@@ -25,8 +25,8 @@ func TestCheckMeta(t *testing.T) {
 		{raw(core.MetaDeltaBase), "M7"},
 		{raw(core.MetaDeltaRemove), "M7"},
 		{raw(core.MetaNextLocalID), "M7"},
-		{raw(0x2A), "M1"},
-		{raw(0x3F), "M1"},
+		{raw(0x2A), ""},
+		{raw(0x3F), ""},
 		{raw(0x20), ""},
 	}
 	for i, c := range cases {

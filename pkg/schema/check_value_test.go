@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckValue — Value rules per direct code (new C numbers), VALUE-ISSUER skipped, empty codes V1
+//ff:what TestCheckValue — Value rules per direct code (new C numbers), VALUE-ISSUER skipped, empty codes not reported (§1.1 112)
 package schema
 
 import (
@@ -18,7 +18,7 @@ func TestCheckValue(t *testing.T) {
 	}{
 		{v(0x3D), ""},
 		{v(0x3F), ""},
-		{v(0x3C), "V1"},
+		{v(0x3C), ""},
 		{v(0x00, 2), "V2"},
 		{v(0x01, 0, 1), "V3"},
 		{v(0x02, 0, 1), "V3"},
@@ -41,7 +41,7 @@ func TestCheckValue(t *testing.T) {
 		{v(0x20, 0, 3, 0xa001), "V2"},
 		{v(0x21, 0, 0, 0, 1), ""},
 		{v(0x21, 1), "V2"},
-		{v(0x22), "V1"},
+		{v(0x22), ""},
 		{v(0x13), "V4"},
 		{v(0x0F), "V4"},
 		{v(0x0E, 0x3139, 0x3734), ""},
@@ -54,7 +54,7 @@ func TestCheckValue(t *testing.T) {
 		{v(0x06), "V9"},
 		{v(0x07), "V10"},
 		{v(0x07, 0x0611, 2, 0x0621, 3), ""},
-		{v(0x30), "V1"},
+		{v(0x30), ""},
 		{v(0x18, 0x0761, 0x656E), ""},
 	}
 	for i, c := range cases {

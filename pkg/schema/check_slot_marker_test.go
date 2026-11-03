@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckSlotMarker — slot markers as records are Errors; a marker C with payload is a Warn; pointers (C 3, 4) are not markers
+//ff:what TestCheckSlotMarker — slot markers as records are Errors; a marker C with payload is not reported (§1.1 112); pointers are not markers
 package schema
 
 import (
@@ -20,13 +20,16 @@ func TestCheckSlotMarker(t *testing.T) {
 		{ref(0), Error, "자리 표지"},
 		{ref(1), Error, "자리 표지"},
 		{ref(2), Error, "자리 표지"},
-		{ref(2, 1), Warn, "자리 표지"},
-		{ref(0, 1, 2), Warn, "자리 표지"},
 	}
 	for i, c := range cases {
 		fs := checkReference(c.r, nil)
 		if len(fs) != 1 || fs[0].Rule != "R1" || fs[0].Severity != c.sev || fs[0].Where.Part != c.part {
 			t.Fatalf("case %d: %+v", i, fs)
+		}
+	}
+	for _, r := range []rec{ref(2, 1), ref(0, 1, 2)} {
+		if fs := checkReference(r, nil); fs != nil {
+			t.Fatalf("marker with payload reported: %+v", fs)
 		}
 	}
 	for _, c := range []uint16{core.CodecIssuerPointer, core.CodecDocPointer} {

@@ -8,9 +8,9 @@ import (
 )
 
 func TestCheckRecords(t *testing.T) {
-	head := []rec{recOf(core.Record{Kind: core.KindMeta, Codec: 0x2A})}
+	head := []rec{recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaSpecVersion})}
 	body := []rec{recOf(core.Record{Kind: core.KindReference, Codec: core.CodecExternalPointer1Word, Payload: []core.Word{3, 1}})}
-	if fs := checkRecords(docParts{Head: head, Body: body}); rulesOf(fs) != "M1,R3" {
+	if fs := checkRecords(docParts{Head: head, Body: body}); rulesOf(fs) != "M4,R3" {
 		t.Fatalf("got %+v", fs)
 	}
 }

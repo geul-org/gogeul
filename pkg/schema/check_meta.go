@@ -1,14 +1,11 @@
 //ff:func feature=schema type=rule control=selection
-//ff:what checkMeta — M1~M7 for one HEAD Meta record
+//ff:what checkMeta — M2~M7 for one HEAD Meta record; other Meta codes pass (migration.md §1.1 112)
 package schema
 
-import (
-	"fmt"
+import "github.com/geul-org/gogeul/pkg/core"
 
-	"github.com/geul-org/gogeul/pkg/core"
-)
-
-// checkMeta applies the per-record Meta rules.
+// checkMeta applies the per-record Meta rules. The reserved-code Warn M1
+// was removed (migration.md §1.1 112).
 func checkMeta(r rec) []Fact {
 	c := r.R.Codec
 	switch {
@@ -28,8 +25,6 @@ func checkMeta(r rec) []Fact {
 		return checkEmbedded(r, "M6", "SHA-256-DIGEST", isDigest)
 	case c == core.MetaDeltaBase || c == core.MetaDeltaRemove || c == core.MetaNextLocalID:
 		return checkDeltaMeta(r)
-	case !metaDefined(c):
-		return []Fact{factAt("M1", Warn, r, "Codec", "배정된 Meta 코드", fmt.Sprintf("0x%02X (예약)", c))}
 	default:
 		return nil
 	}

@@ -1,15 +1,13 @@
 //ff:func feature=schema type=rule control=selection
-//ff:what checkValue — V1~V10 for one Value record
+//ff:what checkValue — V2~V10 for one Value record; an unassigned direct code passes (migration.md §1.1 112)
 package schema
 
-import (
-	"fmt"
-
-	"github.com/geul-org/gogeul/pkg/core"
-)
+import "github.com/geul-org/gogeul/pkg/core"
 
 // checkValue applies the Value rules to a direct-code Value. ISSUER formats are
-// left to layer 2 (F5 already checked their extension TAG).
+// left to layer 2 (F5 already checked their extension TAG). A code with no
+// rule here (unassigned) is not reported: the reserved-code Warn V1 was
+// removed (migration.md §1.1 112); an unassigned code shows in codec lookup.
 func checkValue(r rec) []Fact {
 	c := r.R.Codec
 	switch {
@@ -43,6 +41,6 @@ func checkValue(r rec) []Fact {
 	case c == core.CodecBitVector:
 		return checkBitVector(r)
 	default:
-		return []Fact{factAt("V1", Warn, r, "Codec", "배정된 직접 코드", fmt.Sprintf("0x%02X (예약)", c))}
+		return nil
 	}
 }

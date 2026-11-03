@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what codecDecls — E5: each CODEC names a FIELD of the document, a target once per field, a raw field has at most one exact and no slot marker, reserved markers warned
+//ff:what codecDecls — E5: each CODEC names a FIELD of the document, a target once per field, a raw field has at most one exact and no slot marker
 package schema
 
 import (

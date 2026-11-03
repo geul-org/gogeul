@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what markerOnly — E5: a field whose CODEC list holds only slot marker targets (0000~0007: always a marker, never a record)
+//ff:what markerOnly — E5: a field whose CODEC list holds only slot marker targets (0000·0010·0020: always a marker, never a record)
 package schema
 
 import (
