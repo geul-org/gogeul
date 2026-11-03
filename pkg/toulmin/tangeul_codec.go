@@ -12,6 +12,7 @@ const (
 	CodecExceptDeclare    uint16 = 0x65
 	CodecAttacks          uint16 = 0x68
 	CodecSupersedes       uint16 = 0x69
+	CodecSupersedeChain   uint16 = 0x6A // SUPERSEDE-CHAIN: named, layout not set yet (DECLARE-only codec document)
 	CodecRun              uint16 = 0x70
 	CodecDo               uint16 = 0x71
 	CodecDoOnce           uint16 = 0x72
@@ -19,12 +20,14 @@ const (
 	CodecChecking         uint16 = 0x74
 	CodecEntry            uint16 = 0x75
 	CodecTrigger          uint16 = 0x76
+	CodecVerdict          uint16 = 0x78 // VERDICT: named, layout not set yet (DECLARE-only codec document)
+	CodecEvidence         uint16 = 0x79 // EVIDENCE: named, layout not set yet (DECLARE-only codec document)
 )
 
 // TOULMIN record types formerly written as GEUL ISSUER formats 0xC000~0xC029,
 // now direct Edge codes in their old number order (migration.md §3.14; TAG
-// 0x120L~0x134L, Edge Codec = code - 0xA0). The family of these codes
-// ((code-0xA0)>>5 = 4) has no name yet.
+// 0x120L~0x134L, Edge Codec = code - 0xA0): section 9, TOULMIN 형식 (grammar
+// codes.md, edge.md).
 const (
 	CodecSource       uint16 = 0x80
 	CodecText         uint16 = 0x81

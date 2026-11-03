@@ -1,5 +1,5 @@
 //ff:func feature=core type=helper control=selection
-//ff:what CodeName — the name of one TAG code as its codec document binds it (§1.1 124): 5Q <체계>-<양화>, even/odd pair <이름>-EVEN·-ODD, slot marker name; otherwise CodecName
+//ff:what CodeName — the name of one TAG code as its codec document binds it (§1.1 124): 5Q <체계>-<양화>, even/odd pair <이름>-EVEN·-ODD, slot marker name, TOULMIN name; otherwise CodecName
 package core
 
 // quantifierCodeNames spell the five Quantifiers (QuantifierName order) in
@@ -14,9 +14,11 @@ var pairCodeSuffix = [...]string{"-EVEN", "-ODD"}
 // DECLARE (migration.md §1.1 124): each 5Q code is its scheme and Quantifier
 // (LOCAL-GENERIC, EXTERNAL-POINTER-1WORD-VARIABLE), each code of an even/odd
 // Value pair (two codes CodecName names alike) the pair name with -EVEN or
-// -ODD (UTF8-TEXT-ODD), a slot marker its marker name (ABSENT). Every other
+// -ODD (UTF8-TEXT-ODD), a slot marker its marker name (ABSENT), a TOULMIN
+// Edge code (sections 8 and 9) its TOULMIN name (ToulminName). Every other
 // code is named as by CodecName, which keeps naming the scheme and the pair
-// for records and notation. Unassigned codes return "".
+// for records and notation and leaves the TOULMIN codes to pkg/toulmin
+// (their section 9 names repeat core names). Unassigned codes return "".
 func CodeName(k Kind, codec uint16) string {
 	n := CodecName(k, codec)
 	switch {
@@ -29,6 +31,8 @@ func CodeName(k Kind, codec uint16) string {
 		return n
 	case k == KindValue && n != "" && valueNames[codec^1] == n:
 		return n + pairCodeSuffix[codec&1]
+	case k == KindEdge && n == "":
+		return ToulminName(codec)
 	default:
 		return n
 	}

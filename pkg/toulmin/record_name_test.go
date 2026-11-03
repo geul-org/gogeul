@@ -9,7 +9,8 @@ import (
 )
 
 func TestRecordName(t *testing.T) {
-	if RecordName(CodecRef{Codec: CodecDoOnce}) != "DO-ONCE" || RecordName(CodecRef{Codec: CodecLabel}) != "LABEL" {
+	if RecordName(CodecRef{Codec: CodecDoOnce}) != "DO-ONCE" || RecordName(CodecRef{Codec: CodecLabel}) != "LABEL" ||
+		RecordName(CodecRef{Codec: CodecSupersedeChain}) != "SUPERSEDE-CHAIN" || RecordName(CodecRef{Codec: CodecVerdict}) != "VERDICT" || RecordName(CodecRef{Codec: CodecEvidence}) != "EVIDENCE" {
 		t.Fatal("name mismatch")
 	}
 	if RecordName(CodecRef{Codec: 0x66}) != "" || RecordName(CodecRef{Codec: core.CodecEdgeIssuer2Word}) != "" || RecordName(CodecRef{Codec: 0x95}) != "" {

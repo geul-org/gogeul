@@ -32,9 +32,10 @@ var schemeNames = map[uint16]string{
 }
 
 // edgeNames maps the direct Edge codes (Codec = code - 0xA0) the core knows to
-// their spec names. The TOULMIN family (0x060~0x07B) and the former GEUL ISSUER
-// formats now direct (0x080~0x094, TAG 0x120L~0x134L, migration.md §3.14) are
-// named by pkg/toulmin.
+// their spec names. The TOULMIN codes (section 8 TOULMIN 0x060~0x07B and
+// section 9 TOULMIN 형식 0x080~0x094, TAG 0x100L~0x134L) are named by
+// ToulminName, which CodeName and pkg/toulmin read; CodecName leaves them ""
+// so notation does not write the core names section 9 repeats.
 var edgeNames = map[uint16]string{
 	0x00: "REFERENCE-NODE", 0x01: "SAME-NODE", 0x02: "DIFFERENT-NODE", EdgeBind: "BIND", 0x04: "LABEL", 0x05: "ALIAS", 0x06: "DESCRIPTION",
 	0x08: "VERB-SHORT", 0x09: "VERB", EdgeTriple: "TRIPLE", EdgeQualifier: "QUALIFIER", 0x10: "WORLD", 0x11: "TIMELINE", 0x12: "SCENE",

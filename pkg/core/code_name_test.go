@@ -1,5 +1,5 @@
 //ff:func feature=core type=helper control=iteration dimension=1
-//ff:what TestCodeName — slot markers, 5Q codes of every scheme and Quantifier, even/odd pair members, unpaired and unassigned codes, other Kinds as CodecName
+//ff:what TestCodeName — slot markers, 5Q codes of every scheme and Quantifier, even/odd pair members, unpaired and unassigned codes, TOULMIN codes, other Kinds as CodecName
 package core
 
 import "testing"
@@ -27,7 +27,8 @@ func TestCodeName(t *testing.T) {
 		{KindValue, 0x1E, "OPAQUE-BYTES-EVEN"}, {KindValue, 0x1F, "OPAQUE-BYTES-ODD"},
 		{KindValue, 0x00, "BOOL"}, {KindValue, 0x0D, "DURATION-SECONDS"}, {KindValue, 0x1A, "LANGUAGE-SHORT-CODE"}, {KindValue, 0x1D, "SHA1-DIGEST"},
 		{KindValue, 0x20, "BIT-VECTOR"}, {KindValue, 0x21, "DURATION-NANOSECONDS"}, {KindValue, 0x22, ""}, {KindValue, 0x3D, "VALUE-ISSUER-2WORD"},
-		{KindEdge, EdgeTriple, "TRIPLE"}, {KindEdge, 0x11D, "EDGE-ISSUER-2WORD"}, {KindEdge, 0x60, ""},
+		{KindEdge, EdgeTriple, "TRIPLE"}, {KindEdge, 0x11D, "EDGE-ISSUER-2WORD"}, {KindEdge, 0x60, "CASE-DECLARE"},
+		{KindEdge, 0x6A, "SUPERSEDE-CHAIN"}, {KindEdge, 0x80, "SOURCE"}, {KindEdge, 0x7C, ""}, {KindEdge, 0x95, ""},
 		{KindMeta, MetaDocID, "DOC-ID"}, {KindMeta, 0x2A, ""},
 	}
 	for _, c := range cases {
