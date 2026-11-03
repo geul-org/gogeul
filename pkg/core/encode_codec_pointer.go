@@ -4,7 +4,7 @@ package core
 
 import "fmt"
 
-// EncodeCodecPointer builds the CODEC-POINTER Reference (0x03CL, Identified
+// EncodeCodecPointer builds the CODEC-POINTER Reference (0x042L, Identified
 // only): a canonical 2/4/16-word Issuer (IssuerCanonical), the 2-word codec ID
 // and the 2-word version ID, where version 0 is the latest. The Issuer width
 // is the Payload less 4 words, so the Payload is 6, 8 or 20 words.

@@ -18,9 +18,9 @@ func TestDecodeCodecDecl(t *testing.T) {
 		{Kind: KindEdge, Codec: EdgeCodec},
 		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, []Word{1})},
 		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, localWords(2))},
-		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, localWords(2), []Word{0x084A, 0})},
-		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, localWords(2), []Word{0x0D04})},
-		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, localWords(2), []Word{0x0F84})},
+		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, localWords(2), []Word{0x0A4A, 0})},
+		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, localWords(2), []Word{0x0F04})},
+		{Kind: KindEdge, Codec: EdgeCodec, Payload: slices.Concat(id, localWords(2), []Word{0x1184})},
 	} {
 		if _, err := DecodeCodecDecl(r); err == nil {
 			t.Fatalf("case %d: want error", i)

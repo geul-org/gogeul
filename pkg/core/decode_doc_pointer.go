@@ -4,7 +4,7 @@ package core
 
 import "fmt"
 
-// DecodeDocPointer splits r, which must be a DOC-POINTER Reference (0x004L),
+// DecodeDocPointer splits r, which must be a DOC-POINTER Reference (0x041L),
 // into its Issuer (the payload less the 6 fixed words, a canonical 2/4/16-word
 // Issuer), its 4-word document ID (0 is the Issuer's term definition index
 // document) and its 2-word version ID.

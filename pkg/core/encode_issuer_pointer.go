@@ -4,7 +4,7 @@ package core
 
 import "fmt"
 
-// EncodeIssuerPointer builds the ISSUER-POINTER Reference (0x003L, Identified
+// EncodeIssuerPointer builds the ISSUER-POINTER Reference (0x040L, Identified
 // only) for a canonical Issuer of 2, 4 or 16 words (IssuerCanonical).
 func EncodeIssuerPointer(issuer []Word) (Record, error) {
 	if !IssuerCanonical(issuer) {

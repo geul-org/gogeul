@@ -7,7 +7,7 @@ import (
 	"slices"
 )
 
-// EncodeDocPointer builds the DOC-POINTER Reference (0x004L, Identified only):
+// EncodeDocPointer builds the DOC-POINTER Reference (0x041L, Identified only):
 // a canonical 2/4/16-word Issuer (IssuerCanonical), a 4-word document ID (0 is
 // the Issuer's term definition index document) and a 2-word version ID, where
 // version 0 is the latest.

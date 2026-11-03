@@ -1,9 +1,10 @@
 //ff:type feature=core type=model
-//ff:what Quantifier constants — the 5Q order of a Reference scheme (C % 5)
+//ff:what Quantifier constants — the 5Q order of a Reference scheme (section offset C % 5)
 package core
 
 // The five Quantifiers of a Reference scheme, in 5Q order: the Quantifier of
-// a quantified Reference is C % 5 (RefQuantifier).
+// a quantified Reference is C % 5, C the 5-bit offset in its section
+// (RefQuantifier).
 const (
 	// QuantIdentified names one fixed target.
 	QuantIdentified uint16 = 0

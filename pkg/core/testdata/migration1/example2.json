@@ -1,0 +1,13 @@
+{
+ "note": "grammar example.md document in plan2 WORDs: gen12.json ex_new (plan1) with the TAG WORDs at the record heads and the embedded DOC-POINTER, LANGUAGE-BCP47-CODE and EDTF mapped through p1_to_p2.tsv; hash = SHA-256 of the big-endian words before END",
+ "words": [
+  "1c01 003f 1c51 0001 1c79 0418 0000 0001 5100 0000 0000 002a 0000 0000",
+  "1c30",
+  "0a4e 0010 0051 0001 0141 002a 0799 0761 656e 446f 7567 6c61 7320 4164 616d 7300",
+  "0aa9 0051 0002 0191 001f 0141 002a 0141 0005 0000",
+  "0aaa 0051 0003 0191 0045 0141 002a 0142 000a 8c53 0000",
+  "0ab9 0051 0004 0191 0244 0051 0003 06e2 3139 3731",
+  "1c40"
+ ],
+ "hash": "561c157203d51af8c754d53e20ad190f17e73acdc4235ba47c87f608c946737f"
+}

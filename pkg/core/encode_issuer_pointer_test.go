@@ -12,7 +12,7 @@ func TestEncodeIssuerPointer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if ws, _ := EncodeRecord(r); !slices.Equal(ws, []Word{0x0032, 0, 0x0D}) {
+	if ws, _ := EncodeRecord(r); !slices.Equal(ws, []Word{0x0402, 0, 0x0D}) {
 		t.Fatalf("%04X", ws)
 	}
 	for _, bad := range [][]Word{{1, 2, 3}, {0x40}, {0, 0, 0, 1}} {

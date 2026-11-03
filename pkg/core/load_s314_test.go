@@ -1,5 +1,5 @@
 //ff:func feature=core type=helper control=iteration dimension=1
-//ff:what loadS314 — read testdata/migration1/s314.tsv into rows (TAG `0x05EL` read with L=0)
+//ff:what loadS314 — read testdata/migration1/s314_p2.tsv into rows (TAG `0x07EL` read with L=0)
 package core
 
 import (
@@ -11,7 +11,7 @@ import (
 
 // loadS314 reads the §3.14 table. A row that does not parse fails the test.
 func loadS314(t *testing.T) []s314Row {
-	b, err := os.ReadFile("testdata/migration1/s314.tsv")
+	b, err := os.ReadFile("testdata/migration1/s314_p2.tsv")
 	if err != nil {
 		t.Fatal(err)
 	}

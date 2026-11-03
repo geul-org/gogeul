@@ -16,8 +16,14 @@ func TestEncodeRecord(t *testing.T) {
 	if err != nil || !slices.Equal(got, []Word{0x1BD5, 0, 7, 0, 0xC001, 1}) {
 		t.Fatalf("EDGE-ISSUER: got %04X err=%v", got, err)
 	}
-	if _, err := EncodeRecord(Record{Kind: KindEdge, Codec: 0x140}); err == nil {
-		t.Fatal("Edge codec beyond 0x13F must fail")
+	if _, err := EncodeRecord(Record{Kind: KindEdge, Codec: 0x120}); err == nil {
+		t.Fatal("Edge codec beyond 0x11F must fail")
+	}
+	if _, err := EncodeRecord(Record{Kind: KindReference, Codec: 0x60}); err == nil {
+		t.Fatal("Reference codec beyond 0x5F must fail")
+	}
+	if ws, err := EncodeRecord(Record{Kind: KindReference, Codec: CodecRefIssuer16Word, Issuer: make([]Word, 16), Format: 1}); err != nil || ws[0] != 0x05FE || ws[1] != 20 {
+		t.Fatalf("REFERENCE-ISSUER-16WORD: %04X %v", ws, err)
 	}
 	if _, err := EncodeRecord(Record{Kind: KindValue, Codec: 0x40}); err == nil {
 		t.Fatal("Value codec beyond 0x3F must fail")

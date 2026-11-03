@@ -1,5 +1,5 @@
 //ff:func feature=core type=helper control=iteration dimension=1
-//ff:what TestIssuerCodec — the ISSUER Codec of each Kind and width is ..D/..E/..F; Meta and other widths are errors
+//ff:what TestIssuerCodec — the ISSUER Codec of each Kind and width is the zone's ..D/..E/..F; Meta and other widths are errors
 package core
 
 import "testing"
@@ -10,9 +10,9 @@ func TestIssuerCodec(t *testing.T) {
 		width int
 		want  uint16
 	}{
-		{KindReference, 2, 0x3D}, {KindReference, 4, 0x3E}, {KindReference, 16, 0x3F},
+		{KindReference, 2, 0x5D}, {KindReference, 4, 0x5E}, {KindReference, 16, 0x5F},
 		{KindValue, 2, 0x3D}, {KindValue, 4, 0x3E}, {KindValue, 16, 0x3F},
-		{KindEdge, 2, 0x13D}, {KindEdge, 4, 0x13E}, {KindEdge, 16, 0x13F},
+		{KindEdge, 2, 0x11D}, {KindEdge, 4, 0x11E}, {KindEdge, 16, 0x11F},
 	}
 	for _, c := range cases {
 		got, err := IssuerCodec(c.k, c.width)

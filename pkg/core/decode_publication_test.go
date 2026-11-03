@@ -6,7 +6,7 @@ import "testing"
 
 func TestDecodePublication(t *testing.T) {
 	id, _ := EncodeRecord(EncodeLocalRef(3))
-	ptr := func(v Word) []Word { return []Word{0x0048, 0, 0, 0, 0, 0, 5, 0, v} }
+	ptr := func(v Word) []Word { return []Word{0x0418, 0, 0, 0, 0, 0, 5, 0, v} }
 	edge := func(c uint16, rest ...Word) Record {
 		return Record{Kind: KindEdge, Codec: c, Payload: append(append([]Word{}, id...), rest...)}
 	}
@@ -20,7 +20,7 @@ func TestDecodePublication(t *testing.T) {
 	bad := []Record{
 		{Kind: KindValue, Codec: EdgePublication},
 		{Kind: KindEdge, Codec: EdgeDeprecation},
-		{Kind: KindEdge, Codec: EdgeDeprecation, Payload: append([]Word{0x0421, 1}, ptr(1)...)},
+		{Kind: KindEdge, Codec: EdgeDeprecation, Payload: append([]Word{0x0621, 1}, ptr(1)...)},
 		edge(EdgeDeprecation),
 		edge(EdgeDeprecation, 0, 0, 0, 0, 5, 0, 1),
 		edge(EdgeDeprecation, append(ptr(1), 7)...),

@@ -5,8 +5,8 @@ package core
 import "testing"
 
 func TestCodecSubject(t *testing.T) {
-	r, _, _ := DecodeRecord([]Word{0x0980})
-	if w, ok := CodecSubject(r); !ok || w != 0x0980 {
+	r, _, _ := DecodeRecord([]Word{0x0B80})
+	if w, ok := CodecSubject(r); !ok || w != 0x0B80 {
 		t.Fatalf("got %04X %v", w, ok)
 	}
 	if _, ok := CodecSubject(EncodeLocalRef(1)); ok {

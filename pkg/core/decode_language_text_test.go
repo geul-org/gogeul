@@ -12,8 +12,8 @@ func TestDecodeLanguageText(t *testing.T) {
 	}
 	for i, r := range []Record{
 		EncodeBytesValue(CodecUTF8TextEven, []byte("ab")),
-		{Kind: KindValue, Codec: CodecUTF8LanguageTextEven, Payload: []Word{0x056F}},
-		{Kind: KindValue, Codec: CodecUTF8LanguageTextEven | 1, Payload: []Word{0x05A1, 0x0783, 0x4142}},
+		{Kind: KindValue, Codec: CodecUTF8LanguageTextEven, Payload: []Word{0x076F}},
+		{Kind: KindValue, Codec: CodecUTF8LanguageTextEven | 1, Payload: []Word{0x07A1, 0x0783, 0x4142}},
 	} {
 		if _, _, err := DecodeLanguageText(r); err == nil {
 			t.Fatalf("case %d: want error", i)

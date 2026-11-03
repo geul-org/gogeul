@@ -1,5 +1,5 @@
 //ff:func feature=core type=encoder control=iteration dimension=1
-//ff:what TestExampleHash — the grammar example.md document in new WORDs (gen12.json ex_new) splits and hashes to the generated new content hash
+//ff:what TestExampleHash — the grammar example.md document in new WORDs (example2.json, plan2) splits and hashes to the generated new content hash
 package core
 
 import (
@@ -12,19 +12,19 @@ import (
 )
 
 func TestExampleHash(t *testing.T) {
-	b, err := os.ReadFile("testdata/migration1/gen12.json")
+	b, err := os.ReadFile("testdata/migration1/example2.json")
 	if err != nil {
 		t.Fatal(err)
 	}
 	var g struct {
-		ExNew   []string `json:"ex_new"`
-		NewHash string   `json:"new_hash"`
+		Words []string `json:"words"`
+		Hash  string   `json:"hash"`
 	}
 	if err := json.Unmarshal(b, &g); err != nil {
 		t.Fatal(err)
 	}
 	var ws []Word
-	for _, h := range strings.Fields(strings.Join(g.ExNew, " ")) {
+	for _, h := range strings.Fields(strings.Join(g.Words, " ")) {
 		v, _ := strconv.ParseUint(h, 16, 16)
 		ws = append(ws, Word(v))
 	}
@@ -32,7 +32,7 @@ func TestExampleHash(t *testing.T) {
 		t.Fatalf("%d words", len(ws))
 	}
 	h, err := ContentHash(ws)
-	if err != nil || hex.EncodeToString(h[:]) != g.NewHash {
+	if err != nil || hex.EncodeToString(h[:]) != g.Hash {
 		t.Fatalf("%x %v", h, err)
 	}
 	d, err := SplitDocument(ws)

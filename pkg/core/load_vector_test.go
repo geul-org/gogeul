@@ -1,5 +1,5 @@
 //ff:func feature=core type=helper control=iteration dimension=1
-//ff:what loadVector — read testdata/migration1/vector.tsv into rows
+//ff:what loadVector — read testdata/migration1/vector2.tsv into rows
 package core
 
 import (
@@ -12,7 +12,7 @@ import (
 
 // loadVector reads the migration1 reference vector (old → new TAG WORD).
 func loadVector(t *testing.T) []vectorRow {
-	f, err := os.Open("testdata/migration1/vector.tsv")
+	f, err := os.Open("testdata/migration1/vector2.tsv")
 	if err != nil {
 		t.Fatal(err)
 	}

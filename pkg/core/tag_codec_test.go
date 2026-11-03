@@ -10,9 +10,9 @@ func TestTagCodec(t *testing.T) {
 		k Kind
 		c uint16
 	}{
-		{0x0000, KindReference, 0}, {0x03FF, KindReference, 0x3F},
-		{0x0401, KindValue, 0}, {0x07F0, KindValue, 0x3F},
-		{0x0802, KindEdge, 0}, {0x1BFF, KindEdge, 0x13F},
+		{0x0000, KindReference, 0}, {0x05FF, KindReference, 0x5F},
+		{0x0601, KindValue, 0}, {0x09F0, KindValue, 0x3F},
+		{0x0A02, KindEdge, 0}, {0x1BFF, KindEdge, 0x11F},
 		{0x1C0E, KindMeta, 0}, {0x1FF1, KindMeta, 0x3F},
 	}
 	for _, c := range cases {

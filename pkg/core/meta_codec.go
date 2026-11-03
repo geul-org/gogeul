@@ -1,8 +1,8 @@
 //ff:type feature=core type=model
-//ff:what Meta codec constants — the 42 Meta codes (C, KKK 111) in class order
+//ff:what Meta codec constants — the 42 Meta codes (Codec = code - 0x1C0, sections 14·15) in class order
 package core
 
-// Meta codes (KKK 111, TAG 0x1C0L~0x1E9L). They run without gaps in class
+// Meta codes (sections 14·15, TAG 0x1C0L~0x1E9L). They run without gaps in class
 // order — structure, declaration, provenance, lineage, policy, IMPORT,
 // validation — and carry no class bits. Validation is last: Meta C >= 0x25
 // (IsValidationMeta) is left out of the content hash, and the empty codes

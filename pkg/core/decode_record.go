@@ -8,7 +8,7 @@ import (
 )
 
 // DecodeRecord decodes the record at the head of ws. It enforces the 000 prefix
-// and the canonical Length, reads the Kind from KKK (KindOf), slices the Issuer
+// and the canonical Length, reads the Kind from the section (KindOf), slices the Issuer
 // and the 2-word codec number off an ISSUER codec, and returns the Record with
 // the total word count, so a caller can skip records without a codebook.
 func DecodeRecord(ws []Word) (Record, int, error) {

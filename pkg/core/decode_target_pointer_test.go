@@ -12,8 +12,8 @@ func TestDecodeTargetPointer(t *testing.T) {
 		ws      []Word
 		id, ver []Word
 	}{
-		{[]Word{0x03C6, 0, 1, 0, 0x0980, 0, 2}, []Word{0, 0x0980}, []Word{0, 2}},
-		{[]Word{0x0048, 0, 1, 0, 0, 0, 5, 0, 2}, []Word{0, 0, 0, 5}, []Word{0, 2}},
+		{[]Word{0x0426, 0, 1, 0, 0x0B80, 0, 2}, []Word{0, 0x0B80}, []Word{0, 2}},
+		{[]Word{0x0418, 0, 1, 0, 0, 0, 5, 0, 2}, []Word{0, 0, 0, 5}, []Word{0, 2}},
 	}
 	for _, c := range cases {
 		r, _, err := DecodeRecord(c.ws)

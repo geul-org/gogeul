@@ -1,5 +1,5 @@
 //ff:func feature=core type=decoder control=iteration dimension=2
-//ff:what TestEncodeCodecPointer — CODEC-POINTER 0x03CL round trips with 2/4/16-word Issuers × version 0·1; payload 6/8/20 only, not ISSUER nor quantified
+//ff:what TestEncodeCodecPointer — CODEC-POINTER 0x042L round trips with 2/4/16-word Issuers × version 0·1; payload 6/8/20 only, not ISSUER nor quantified
 package core
 
 import (
@@ -11,14 +11,14 @@ func TestEncodeCodecPointer(t *testing.T) {
 	issuers := [][]Word{{0, 0}, {0, 1, 0, 0}, append(make([]Word, 11), 1, 0, 0, 0, 0)}
 	for _, iss := range issuers {
 		for _, v := range []uint32{0, 1} {
-			r, err := EncodeCodecPointer(iss, 0x000003D0, v)
+			r, err := EncodeCodecPointer(iss, 0x000005D0, v)
 			ws, _ := EncodeRecord(r)
-			if err != nil || ws[0] != 0x03C0|Word(len(iss)+4) && len(iss) < 16 {
+			if err != nil || ws[0] != 0x0420|Word(len(iss)+4) && len(iss) < 16 {
 				t.Fatalf("%d-word: %04X %v", len(iss), ws, err)
 			}
 			got, n, _ := DecodeRecord(ws)
 			gi, gc, gv, err := DecodeCodecPointer(got)
-			if err != nil || n != len(ws) || !slices.Equal(gi, iss) || gc != 0x3D0 || gv != v {
+			if err != nil || n != len(ws) || !slices.Equal(gi, iss) || gc != 0x5D0 || gv != v {
 				t.Fatalf("%d-word v%d: %04X %x %d %v", len(iss), v, gi, gc, gv, err)
 			}
 		}

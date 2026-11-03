@@ -10,12 +10,12 @@ import (
 func TestEncodeDecimalBig(t *testing.T) {
 	r, err := EncodeDecimalBig(true, -2, big.NewInt(2345))
 	ws, _ := EncodeRecord(r)
-	if err != nil || FormatID(ws) != "0x0483fffffffe0929" {
+	if err != nil || FormatID(ws) != "0x0683fffffffe0929" {
 		t.Fatalf("signed: %s %v", FormatID(ws), err)
 	}
 	r, err = EncodeDecimalBig(false, -1, big.NewInt(12561))
 	ws, _ = EncodeRecord(r)
-	if err != nil || FormatID(ws) != "0x0493ffffffff3111" {
+	if err != nil || FormatID(ws) != "0x0693ffffffff3111" {
 		t.Fatalf("unsigned: %s %v", FormatID(ws), err)
 	}
 	if _, err := EncodeDecimalBig(false, 0, big.NewInt(-1)); err == nil {

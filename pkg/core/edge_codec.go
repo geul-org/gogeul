@@ -2,8 +2,8 @@ package core
 
 // Edge codecs the core reads without a codebook (GEUL 서술 Edge,
 // docs/edge/PUBLICATION, edge/BIND, edge/DECLARE): the version list records and
-// the codec spec vocabulary (GEUL-ORG 0층). An Edge Codec is code - 0x80: the
-// direct codes keep their 7-bit numbers (TAG 0x0800 + Codec<<4 + L).
+// the codec spec vocabulary (GEUL-ORG 0층). An Edge Codec is code - 0xA0: the
+// direct codes keep their 7-bit numbers (TAG 0x0A00 + Codec<<4 + L).
 const (
 	// EdgeBind binds a machine-matched name to a Subject Reference (서술 0x03).
 	// The Issuer list (`issuers/`) names Issuers with it; a version list holds

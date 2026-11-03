@@ -9,7 +9,7 @@ import (
 
 func TestEncodeCodecDecl(t *testing.T) {
 	ws, _ := EncodeRecord(EncodeCodecDecl(CodecDecl{EdgeID: 9, Field: 4, Target: TargetWord(KindValue, CodecUTF8LanguageTextEven)}))
-	if !slices.Equal(ws, []Word{0x09E5, 0x0051, 0x0009, 0x0051, 0x0004, 0x0580}) {
+	if !slices.Equal(ws, []Word{0x0BE5, 0x0051, 0x0009, 0x0051, 0x0004, 0x0780}) {
 		t.Fatalf("%04X", ws)
 	}
 }

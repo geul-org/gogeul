@@ -13,7 +13,7 @@ func TestEncodeDocPointer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if ws, _ := EncodeRecord(r); !slices.Equal(ws, []Word{0x0048, 0, 0, 0xFFFF, 0, 0, 1, 0, 1}) {
+	if ws, _ := EncodeRecord(r); !slices.Equal(ws, []Word{0x0418, 0, 0, 0xFFFF, 0, 0, 1, 0, 1}) {
 		t.Fatalf("%04X", ws)
 	}
 	if _, err := EncodeDocPointer([]Word{0, 0}, []Word{0, 0, 0, 0}, []Word{0, 0}); err != nil {

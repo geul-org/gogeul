@@ -2,7 +2,7 @@
 //ff:what CodecName — the spec name of a Reference, Meta, Value, Edge or ISSUER codec; "" otherwise
 package core
 
-// metaNames maps the Meta codes (KKK 111) to their spec names.
+// metaNames maps the Meta codes (sections 14·15) to their spec names.
 var metaNames = map[uint16]string{
 	MetaDoc1Word: "DOC-1WORD", MetaDoc2Word: "DOC-2WORD", MetaDoc4Word: "DOC-4WORD", MetaBody: "BODY", MetaEnd: "END",
 	MetaSpecVersion: "SPEC-VERSION", MetaProfile: "PROFILE", MetaDocID: "DOC-ID", MetaEffectiveFrom: "EFFECTIVE-FROM",
@@ -31,9 +31,9 @@ var schemeNames = map[uint16]string{
 	SchemeExternalIssuer4Word: "EXTERNAL-ISSUER-4WORD", SchemeExternalIssuer16Word: "EXTERNAL-ISSUER-16WORD",
 }
 
-// edgeNames maps the direct Edge codes (Codec = code - 0x80) the core knows to
+// edgeNames maps the direct Edge codes (Codec = code - 0xA0) the core knows to
 // their spec names. The TOULMIN family (0x060~0x07B) and the former GEUL ISSUER
-// formats now direct (0x080~0x094, TAG 0x100L~0x114L, migration.md §3.14) are
+// formats now direct (0x080~0x094, TAG 0x120L~0x134L, migration.md §3.14) are
 // named by pkg/toulmin.
 var edgeNames = map[uint16]string{
 	0x00: "REFERENCE-NODE", 0x01: "SAME-NODE", 0x02: "DIFFERENT-NODE", EdgeBind: "BIND", 0x04: "LABEL", 0x05: "ALIAS", 0x06: "DESCRIPTION",

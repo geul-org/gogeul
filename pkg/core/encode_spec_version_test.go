@@ -1,5 +1,5 @@
 //ff:func feature=core type=encoder control=sequence
-//ff:what TestEncodeSpecVersion — v1 encodes as 0x1890 0x0001
+//ff:what TestEncodeSpecVersion — v1 encodes as 0x1A90 0x0001
 package core
 
 import (

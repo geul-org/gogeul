@@ -9,7 +9,7 @@ import (
 )
 
 func TestEncodeTargetPointer(t *testing.T) {
-	for _, id := range [][]Word{{0, 0, 0, 5}, {0, 0x0980}} {
+	for _, id := range [][]Word{{0, 0, 0, 5}, {0, 0x0B80}} {
 		r, err := EncodeTargetPointer([]Word{0, 1}, id, []Word{0, 2})
 		if err != nil {
 			t.Fatal(err)

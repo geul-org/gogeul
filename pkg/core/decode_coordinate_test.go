@@ -19,11 +19,11 @@ func TestDecodeCoordinate(t *testing.T) {
 	trailing := EncodeCoordinate(Coordinate{})
 	trailing.Payload = append(trailing.Payload, 0)
 	value := EncodeCoordinate(Coordinate{})
-	value.Payload = append(value.Payload[:10], 0x0421, 5)
+	value.Payload = append(value.Payload[:10], 0x0621, 5)
 	for i, r := range []Record{
 		EncodeUintValue(1),
 		{Kind: KindValue, Codec: CodecCoordinateGeo, Payload: make([]Word, 11)},
-		{Kind: KindValue, Codec: CodecCoordinateGeo, Payload: []Word{0x08C0}},
+		{Kind: KindValue, Codec: CodecCoordinateGeo, Payload: []Word{0x0AC0}},
 		{Kind: KindValue, Codec: CodecCoordinateEarth, Payload: make([]Word, 10)},
 		unknownUnit, trailing, value,
 	} {

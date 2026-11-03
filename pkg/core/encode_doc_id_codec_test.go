@@ -8,16 +8,16 @@ import (
 )
 
 func TestEncodeDocIDCodec(t *testing.T) {
-	r, err := EncodeDocIDCodec([]Word{0, 0}, 0x00000980)
+	r, err := EncodeDocIDCodec([]Word{0, 0}, 0x00000b80)
 	ws, _ := EncodeRecord(r)
-	if err != nil || !slices.Equal(ws, []Word{0x1C77, 0x03C6, 0, 0, 0, 0x0980, 0, 0}) {
+	if err != nil || !slices.Equal(ws, []Word{0x1C77, 0x0426, 0, 0, 0, 0x0B80, 0, 0}) {
 		t.Fatalf("%04X %v", ws, err)
 	}
-	if iss, c, err := DecodeDocIDCodec(r); err != nil || !slices.Equal(iss, []Word{0, 0}) || c != 0x980 {
+	if iss, c, err := DecodeDocIDCodec(r); err != nil || !slices.Equal(iss, []Word{0, 0}) || c != 0xB80 {
 		t.Fatalf("%v %x %v", iss, c, err)
 	}
 	doc, _ := EncodeDocID([]Word{0, 0}, []Word{0, 0, 0, 1})
-	ver, _ := EncodeRecord(Record{Kind: KindReference, Codec: CodecCodecPointer, Payload: []Word{0, 0, 0, 0x0980, 0, 1}})
+	ver, _ := EncodeRecord(Record{Kind: KindReference, Codec: CodecCodecPointer, Payload: []Word{0, 0, 0, 0x0B80, 0, 1}})
 	for i, b := range []Record{doc, EncodeUintValue(1), {Kind: KindMeta, Codec: MetaDocID, Payload: ver}, {Kind: KindMeta, Codec: MetaDocID, Payload: append(slices.Clone(r.Payload), 1)}} {
 		if _, _, err := DecodeDocIDCodec(b); err == nil {
 			t.Fatalf("bad %d accepted", i)

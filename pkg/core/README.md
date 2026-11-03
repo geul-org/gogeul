@@ -5,9 +5,9 @@
 ## 범위
 
 - 프레이밍: TAG WORD와 Length 확장만으로 레코드 경계를 자른다. 스키마가 필요 없다.
-- TAG WORD `000K KKCC CCCC LLLL`(migration1): Kind는 KKK 표(`KindOf`: 000 Reference, 001 Value, 010~110 Edge, 111 Meta), Codec은 영역 안 번호(`Record.Codec uint16`; Reference·Value·Meta `0x00`~`0x3F`, Edge `0x00`~`0x13F`), `TargetWord`/`SplitTarget`이 (Kind, Codec) ↔ CODEC 대상 WORD를 바꾼다.
+- TAG WORD `000K KKKC CCCC LLLL`(migration1 plan2, §1.1 106·107·109): KKKK는 섹션(`w >> 9`, 32칸), C는 섹션 안 5비트 오프셋(`(w >> 4) & 0x1F`)이다. Kind는 섹션 구간 하나로 판정한다(`KindOf`: Reference `w < 0x0600`, Value `< 0x0A00`, Edge `< 0x1C00`, Meta 나머지). Codec은 Kind 영역 안 번호(`Record.Codec uint16` = 9비트 코드 − 영역 시작; Reference `0x00`~`0x5F`, Value·Meta `0x00`~`0x3F`, Edge `0x00`~`0x11F`)이고, `TargetWord`/`SplitTarget`이 (Kind, Codec) ↔ CODEC 대상 WORD를 바꾼다.
 - ISSUER 코드는 영역마다 마지막 셋(2/4/16 WORD, `IssuerWidth`). Value·Edge는 TAG 뒤 Issuer + 코덱 번호 2 WORD(`Record.Format uint32`, `FormatWords`), Reference의 REFERENCE-ISSUER는 Payload가 Issuer의 것이다. Issuer는 2/4/16 WORD 정규형(`IssuerCanonical`), 더 넓은 0 채움은 같은 Issuer(`IssuerNormal`).
-- Reference C: 자리 표지 0~2, ISSUER-POINTER 3, DOC-POINTER 4, 5Q 체계 `0x05`~`0x3B`(`RefScheme`·`RefQuantifier`), CODEC-POINTER `0x3C`, REFERENCE-ISSUER `0x3D`~`0x3F`.
+- Reference Codec: 섹션 0 엔티티(자리 표지 0~2, 빈칸 3·4, 5Q 체계 1~5 `0x05`~`0x1D`, 빈칸 `0x1E`·`0x1F`), 섹션 1 EXTERNAL(체계 6~11 `0x20`~`0x3D`, 빈칸 `0x3E`·`0x3F`), 섹션 2(ISSUER-POINTER `0x40`, DOC-POINTER `0x41`, CODEC-POINTER `0x42`, 빈칸 `0x43`~`0x5C`, REFERENCE-ISSUER `0x5D`~`0x5F`). 5Q 코드의 체계와 Quantifier는 섹션 안 C로 읽는다(`RefScheme`·`RefQuantifier`: 섹션 0 체계 C/5, 섹션 1 체계 6 + C/5, Quantifier C%5).
 - 목록 예약 문서 ID: `DocIDIssuers`(Issuer 목록 `issuers/` 하나, §1.1 101).
 - 문서 구조: `DOC-*`, HEAD(Meta, 문서 전체 SOURCE와 그 QUALIFIER — `HeadEdge`), BODY, `END`. 필드 폭은 Codec과 Length가 정한다(문서 단위 폭 선언 없음).
 - 모델: Reference, Value, Edge, Meta. 모르는 레코드는 원본 WORD를 그대로 보존한다.
@@ -27,9 +27,9 @@
 | `*_declare.go`, `*_field_decl.go`, `*_enum_decl.go`, `*_codec_decl.go`, `codec_matches.go` | Codec 규격 어휘 DECLARE·FIELD·ENUM·CODEC, CODEC 대상 대조 |
 | `encode_id.go`, `decode_id.go`, `width*.go`, `min_width.go` | 고정 폭(1/2/4/8 WORD) 필드와 폭 코드 (DOC-* 길이, TOULMIN SPAN) |
 | `ref_codec.go`, `encode_local_ref.go`, `decode_local_ref.go` | Reference Codec, LOCAL Reference (Edge Id·문서 안 언급) |
-| `kind*.go`, `tag_*.go`, `split_target.go`, `target_word.go`, `codec_max.go` | KKK 표, 영역 시작 TAG, (Kind, Codec) ↔ TAG·대상 WORD |
-| `meta_codec.go`, `value_codec.go`, `edge_codec.go`, `codec_issuer.go`, `issuer_*.go`, `list_doc_id.go` | 사용하는 Meta·Value·Edge·ISSUER 코드(§3.14로 직접 코드가 된 OPAQUE-BYTES `0x05EL`/`0x05FL`, BIT-VECTOR `0x060L`, DURATION-NANOSECONDS `0x061L` 포함), Issuer 폭·정규형, 목록 예약 ID. 다른 Issuer의 Value ISSUER 형식 이름은 `issuer_format_names.go`(GEUL Issuer 행은 없다) |
-| `testdata/migration1/` | 기준 벡터(`vector.tsv`, `gen12.json`, `t12_*.md`, §3.14 표 `s314.tsv`). 시험 기대값은 코드 상수가 아니라 이 표에서 온다 |
+| `kind*.go`, `tag_*.go`, `split_target.go`, `target_word.go`, `codec_max.go` | 섹션 → Kind 표, 영역 시작 TAG, (Kind, Codec) ↔ TAG·대상 WORD |
+| `meta_codec.go`, `value_codec.go`, `edge_codec.go`, `codec_issuer.go`, `issuer_*.go`, `list_doc_id.go` | 사용하는 Meta·Value·Edge·ISSUER 코드(§3.14로 직접 코드가 된 OPAQUE-BYTES `0x07EL`/`0x07FL`, BIT-VECTOR `0x080L`, DURATION-NANOSECONDS `0x081L` 포함), Issuer 폭·정규형, 목록 예약 ID. 다른 Issuer의 Value ISSUER 형식 이름은 `issuer_format_names.go`(GEUL Issuer 행은 없다) |
+| `testdata/migration1/` | plan2 기준 표(`vector2.tsv`, `s314_p2.tsv`, `p1_to_p2.tsv`, `layout2.md`, 예시 문서 `example2.json`). 시험 기대값은 코드 상수가 아니라 이 표에서 온다 |
 | `content_hash.go`, `strip_validation.go` | 내용 해시: 검증 클래스 Meta를 빼고 DOC-* 길이를 다시 계산한 뒤 END 직전까지의 SHA-256 |
 
 - toulmin(`draft/toulmin`, 브랜치 `geul-t002`)이 이 패키지를 import해 `.geul`을 읽고 쓴다.

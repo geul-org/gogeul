@@ -24,18 +24,18 @@ func TestDecodeRecord(t *testing.T) {
 		{},
 		{0x2000},
 		{0x1BD3, 0, 7, 0},
-		{0x0812},
-		{0x03D3, 0, 1, 0},
+		{0x0A12},
+		{0x05D3, 0, 1, 0},
 	}
 	for _, b := range bad {
 		if _, _, err := DecodeRecord(b); err == nil {
 			t.Fatalf("expected error for %04X", b)
 		}
 	}
-	if _, _, err := DecodeRecord([]Word{0x080E, 3, 0}); err == nil {
+	if _, _, err := DecodeRecord([]Word{0x0A0E, 3, 0}); err == nil {
 		t.Fatal("non-canonical 1-word Length extension must fail")
 	}
-	if _, _, err := DecodeRecord([]Word{0x080F, 0, 2, 0}); err == nil {
+	if _, _, err := DecodeRecord([]Word{0x0A0F, 0, 2, 0}); err == nil {
 		t.Fatal("non-canonical 2-word Length extension must fail")
 	}
 }

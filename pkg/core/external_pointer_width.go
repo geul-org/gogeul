@@ -2,7 +2,7 @@
 //ff:what ExternalPointerWidth — the IMPORT ID width of an EXTERNAL-POINTER scheme (6, 7, 8 → 1, 2, 4)
 package core
 
-// ExternalPointerWidth returns the IMPORT ID width of the Reference scheme (C/5)
+// ExternalPointerWidth returns the IMPORT ID width of the Reference scheme (RefScheme)
 // of EXTERNAL-POINTER-1/2/4WORD: scheme 6 is 1, 7 is 2 and 8 is 4 words. Any
 // other scheme returns 0.
 func ExternalPointerWidth(scheme uint16) int {
