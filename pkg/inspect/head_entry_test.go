@@ -13,9 +13,9 @@ func TestHeadEntry(t *testing.T) {
 	at, _ := core.EncodeRecord(core.EncodePosixSeconds(5))
 	typed := []core.Record{
 		{Kind: core.KindMeta, Codec: core.MetaDefaultLanguage, Payload: lw},
-		{Kind: core.KindMeta, Codec: 0x25, Payload: at},
-		func() core.Record { r, _ := core.EncodeDocID([]core.Word{1}, []core.Word{0, 0, 0, 2}); return r }(),
-		{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0438, 1, 1, 0, 0, 0, 2, 0, 0, 4}},
+		{Kind: core.KindMeta, Codec: core.MetaRecordedAt, Payload: at},
+		func() core.Record { r, _ := core.EncodeDocID([]core.Word{0, 2}, []core.Word{0, 0, 0, 2}); return r }(),
+		{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x0048, 0, 1, 0, 0, 0, 2, 0, 0, 4}},
 	}
 	for _, r := range typed {
 		if e := headEntry(r); e.Data == nil || e.Name == "" {
@@ -25,10 +25,10 @@ func TestHeadEntry(t *testing.T) {
 	if e := headEntry(core.Record{Kind: core.KindMeta, Codec: core.MetaSpecVersion}); e.Data != nil || e.Name != "SPEC-VERSION" {
 		t.Fatalf("malformed: %+v", e)
 	}
-	if e := headEntry(core.Record{Kind: core.KindMeta, Codec: 0x29, Payload: []core.Word{1}}); e.Data != nil || e.Name != "" {
+	if e := headEntry(core.Record{Kind: core.KindMeta, Codec: 0x2A, Payload: []core.Word{1}}); e.Data != nil || e.Name != "" {
 		t.Fatalf("unknown: %+v", e)
 	}
-	src := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: append([]core.Word{0x0088, 1, 0x0088, 0}, at...)}
+	src := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: append([]core.Word{0x0051, 1, 0x0051, 0}, at...)}
 	if e := headEntry(src); e.Data != nil || e.Name != "SOURCE" {
 		t.Fatalf("HEAD SOURCE stays a bare Edge: %+v", e)
 	}

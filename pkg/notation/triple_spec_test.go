@@ -10,7 +10,7 @@ import (
 // tripleSpec declares TRIPLE (0x0A) with a rest field at the end for tests of
 // rest handling when rest is true.
 func tripleSpec(rest bool) codecspec.Spec {
-	pid := core.TargetWord(core.KindReference, core.RefWikidataPID<<3)
+	pid := core.TargetWord(core.KindReference, core.CodecWikidataPID)
 	fields := []codecspec.Field{
 		{Name: "Predicate", Codecs: []core.Word{pid}},
 		{Name: "Subject"},

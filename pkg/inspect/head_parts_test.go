@@ -20,7 +20,7 @@ func TestHeadParts(t *testing.T) {
 	}
 	text, _ := toulmin.EncodeText(toulmin.TextPacket{TID: 1, Bytes: make([]byte, 40)}, testWire)
 	p := headParts(entry(text))
-	if len(p) != 4 || p[1].Name != "LENGTH" || p[2].Name != "ISSUER" || p[3].Name != "FORMAT" || p[3].Words[0] != 0xC001 {
+	if len(p) != 4 || p[1].Name != "LENGTH" || p[2].Name != "ISSUER" || p[3].Name != "FORMAT" || p[3].Words[1] != 0xC001 {
 		t.Fatalf("issuer + length: %+v", p)
 	}
 }

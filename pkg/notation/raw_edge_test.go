@@ -5,10 +5,10 @@ package notation
 import "testing"
 
 func TestRawEdge(t *testing.T) {
-	if e, err := rawEdge("0x1184008800070001"); err != nil || e.Label != "7" || len(e.Rest) != 1 {
+	if e, err := rawEdge("0x0843005100070001"); err != nil || e.Label != "7" || len(e.Rest) != 1 {
 		t.Fatalf("%+v %v", e, err)
 	}
-	for _, s := range []string{"0x1", "0x00880001", "0x110400a0"} {
+	for _, s := range []string{"0x1", "0x00510001", "0x08420141"} {
 		if _, err := rawEdge(s); err == nil {
 			t.Errorf("%s: want error", s)
 		}

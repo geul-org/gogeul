@@ -9,7 +9,7 @@ import (
 )
 
 func TestFormatCoordinate(t *testing.T) {
-	second := core.Record{Kind: core.KindReference, Codec: core.RefWikidataQID << 3, Payload: []core.Word{0x000C, 0xA691}}
+	second := core.Record{Kind: core.KindReference, Codec: core.CodecWikidataQID, Payload: []core.Word{0x000C, 0xA691}}
 	if got, ok := formatCoordinate(core.EncodeCoordinate(core.Coordinate{Lat: -33.5, Lon: 151.25, Uncertainty: 0.1, Unit: &second})); !ok || got != "COORDINATE-EARTH(-33.5, 151.25, 0.1, Q829073)" {
 		t.Fatalf("%q", got)
 	}

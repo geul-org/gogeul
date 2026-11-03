@@ -19,7 +19,7 @@ func TestBodyEntry(t *testing.T) {
 	if e := bodyEntry(r, false, &w); e.Data != nil || e.Name != "" {
 		t.Fatalf("no profile: %+v", e)
 	}
-	if e := bodyEntry(core.Record{Kind: core.KindMeta, Codec: 0x20}, true, &w); e.Data != nil {
+	if e := bodyEntry(core.Record{Kind: core.KindMeta, Codec: core.MetaPrivacy}, true, &w); e.Data != nil {
 		t.Fatalf("not an edge: %+v", e)
 	}
 	if e := bodyEntry(core.Record{Kind: core.KindEdge, Codec: 0x66}, true, &w); e.Name != "" || e.Data != nil {
@@ -32,7 +32,7 @@ func TestBodyEntry(t *testing.T) {
 	q := toulmin.VFix(8000)
 	node, _ := toulmin.EncodeNode(toulmin.NodePacket{TID: 1, Type: toulmin.NodeCase, Flags: toulmin.NodeFlagQual, Qual: &q}, w)
 	rn, _, _ := core.DecodeRecord(node)
-	copy(rn.Payload[3:7], []core.Word{0x0990, 0xFFFF, 0xFFFE, 80})
+	copy(rn.Payload[3:7], []core.Word{0x0483, 0xFFFF, 0xFFFE, 80})
 	if _, err := toulmin.DecodeNode(rn, w); err != nil {
 		t.Fatalf("crafted node must decode: %v", err)
 	}

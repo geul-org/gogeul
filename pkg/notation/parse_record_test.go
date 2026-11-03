@@ -6,7 +6,7 @@ import "testing"
 
 func TestParseRecord(t *testing.T) {
 	ctx := Context{Lookup: fakeLookup}
-	for _, s := range []string{"ABSENT", "UNKNOWN", "NONE", "#3", "Q42", "P31", `"a b"`, `"x"@ko`, "<https://geul.org/>", "1.20", "-3", "0x0000/0x0000000000000806@1", "0x0000/0x0000000000000806#2", "GREGORIAN-DATE(1952-03-11)", "QUANTITY(652, Q828224, ABSENT, ABSENT)", "0x00900005"} {
+	for _, s := range []string{"ABSENT", "UNKNOWN", "NONE", "#3", "Q42", "P31", `"a b"`, `"x"@ko`, "<https://geul.org/>", "1.20", "-3", "0x00000000/0x0000000000000806@1", "0x00000000/0x0000000000000806#2", "GREGORIAN-DATE(1952-03-11)", "QUANTITY(652, Q828224, ABSENT, ABSENT)", "0x00a10005"} {
 		r, err := parseRecord(s, ctx)
 		if err != nil || formatRecord(r) != s {
 			t.Errorf("%s: %s %v", s, formatRecord(r), err)

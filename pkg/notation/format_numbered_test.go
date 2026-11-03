@@ -9,10 +9,10 @@ import (
 )
 
 func TestFormatNumbered(t *testing.T) {
-	if s, _ := formatNumbered(core.RefWikidataPID, []core.Word{31}); s != "P31" {
+	if s, _ := formatNumbered(core.CodecWikidataPID, []core.Word{31}); s != "P31" {
 		t.Fatal(s)
 	}
-	if _, ok := formatNumbered(core.RefLocal, []core.Word{0, 1}); ok {
+	if _, ok := formatNumbered(core.CodecLocal, []core.Word{0, 1}); ok {
 		t.Fatal("non-minimal: want false")
 	}
 }

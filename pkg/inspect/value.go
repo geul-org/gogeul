@@ -18,7 +18,7 @@ import "time"
 // text; empty when left out), and Number a SIGNED-INTEGER (digits, any size)
 // or a FRACTION (n/d as written, not reduced).
 type Value struct {
-	Codec  uint8
+	Codec  uint16
 	Text   string
 	Lang   string
 	Time   time.Time

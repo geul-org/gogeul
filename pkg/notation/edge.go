@@ -10,6 +10,6 @@ import "github.com/geul-org/gogeul/pkg/core"
 // (delta.LocalIDs). Rest is the payload after the Edge Id.
 type Edge struct {
 	Label string
-	Codec uint8
+	Codec uint16
 	Rest  []core.Word
 }

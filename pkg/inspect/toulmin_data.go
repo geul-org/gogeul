@@ -40,6 +40,6 @@ func toulminData(r core.Record, ref toulmin.CodecRef, w *toulmin.Wire) (any, []c
 		enc, _ := toulmin.EncodeEdge(p, *w)
 		return p, enc, err
 	default:
-		return nil, nil, fmt.Errorf("geul/inspect: codec 0x%02X format 0x%04X has no typed form", ref.Codec, ref.Format)
+		return nil, nil, fmt.Errorf("geul/inspect: codec 0x%03X format 0x%08X has no typed form", ref.Codec, ref.Format)
 	}
 }

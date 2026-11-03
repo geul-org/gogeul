@@ -12,7 +12,7 @@ func TestParseFractionPart(t *testing.T) {
 	cases := []struct {
 		arg    string
 		signed bool
-		want   uint8
+		want   uint16
 	}{{"-2", true, core.CodecSignedInteger}, {"3", false, core.CodecUnsignedInteger}, {"23.45", true, core.CodecSignedDecimal}, {"1256.1", false, core.CodecUnsignedDecimal}, {"12e2", false, core.CodecUnsignedDecimal}}
 	for _, c := range cases {
 		if r, err := parseFractionPart(c.arg, c.signed); err != nil || r.Codec != c.want {

@@ -9,7 +9,7 @@ import (
 )
 
 func TestSpecParts(t *testing.T) {
-	r := core.EncodePublication(core.Publication{Codec: core.EdgeTombstone, EdgeID: 3, Issuer: []core.Word{0}, Doc: []core.Word{0, 0, 0, 1}, Version: 1, Reason: 1})
+	r := core.EncodePublication(core.Publication{Codec: core.EdgeTombstone, EdgeID: 3, Issuer: []core.Word{0, 0}, Doc: []core.Word{0, 0, 0, 1}, Version: 1, Reason: 1})
 	fs := tombstoneSpec()[core.TargetWord(core.KindEdge, core.EdgeTombstone)]
 	ps, ok := specParts(Entry{Record: r, Spec: fs})
 	if !ok || len(ps) != 3 || ps[0].Name != "ID" || ps[1].Name != "doc" || !ps[1].Record || ps[2].Name != "reason" || ps[2].Enum != "license" {
@@ -31,7 +31,7 @@ func TestSpecParts(t *testing.T) {
 	if _, ok := specParts(Entry{Record: r, Spec: append(fs, codecspec.Field{Width: 1})}); ok {
 		t.Fatal("short: want false")
 	}
-	v := core.Record{Kind: core.KindMeta, Codec: 0x25, Payload: func() []core.Word { ws, _ := core.EncodeRecord(core.EncodePosixSeconds(5)); return ws }()}
+	v := core.Record{Kind: core.KindMeta, Codec: core.MetaRecordedAt, Payload: func() []core.Word { ws, _ := core.EncodeRecord(core.EncodePosixSeconds(5)); return ws }()}
 	if ps, ok := specParts(Entry{Record: v, Spec: []codecspec.Field{{Name: "at"}}}); !ok || len(ps) != 1 || ps[0].Data == nil {
 		t.Fatalf("meta: %+v %v", ps, ok)
 	}

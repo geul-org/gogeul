@@ -22,7 +22,7 @@ func TestParseValue(t *testing.T) {
 		{core.EncodeBytesValue(core.CodecUTF8TextEven, []byte("abc")), Value{Codec: core.CodecUTF8TextEven | 1, Text: "abc"}},
 		{core.EncodeBytesValue(core.CodecLanguageBCP47Even, []byte("ko")), Value{Codec: core.CodecLanguageBCP47Even, Text: "ko"}},
 		{core.EncodeLanguageText(core.EncodeBytesValue(core.CodecLanguageBCP47Even, []byte("ko")), []byte("우주")), Value{Codec: core.CodecUTF8LanguageTextEven, Text: "우주", Lang: "ko"}},
-		{core.EncodeBytesValue(0x44, []byte("http://x")), Value{Codec: 0x44, Text: "http://x"}},
+		{core.EncodeBytesValue(core.CodecURIEven, []byte("http://x")), Value{Codec: core.CodecURIEven, Text: "http://x"}},
 		{core.EncodeBytesValue(core.CodecEDTFEven, []byte("1974")), Value{Codec: core.CodecEDTFEven, Text: "1974"}},
 		{core.EncodeBytesValue(core.CodecGEDCOMDateEven, []byte("JULIAN 1300")), Value{Codec: core.CodecGEDCOMDateEven | 1, Text: "JULIAN 1300"}},
 		{core.EncodeUintValue(7), Value{Codec: core.CodecUnsignedInteger, Uint: 7}},
@@ -36,14 +36,14 @@ func TestParseValue(t *testing.T) {
 		{core.Record{Kind: core.KindValue, Codec: core.CodecSHA1Digest, Payload: make([]core.Word, 10)}, Value{Codec: core.CodecSHA1Digest, Text: "0x" + strings.Repeat("0", 40)}},
 		{qty, Value{Codec: core.CodecQuantity, Amount: "1.20"}},
 		{core.Record{Kind: core.KindValue, Codec: core.CodecSignedInteger, Payload: []core.Word{0xFFFB}}, Value{Codec: core.CodecSignedInteger, Number: "-5"}},
-		{core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0881, 2, 0x0882, 3}}, Value{Codec: core.CodecFraction, Number: "2/3"}},
+		{core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}}, Value{Codec: core.CodecFraction, Number: "2/3"}},
 	}
 	for _, c := range cases {
 		if got, ok := ParseValue(c.r); !ok || got != c.want {
 			t.Fatalf("got %+v %v want %+v", got, ok, c.want)
 		}
 	}
-	for _, c := range []uint8{0x60, 0x30, 0x42, 0x63} {
+	for _, c := range []uint16{core.CodecUUID, core.CodecLanguageShortCode, 0x1E, 0x2A, 0x3C} {
 		if _, ok := ParseValue(core.Record{Kind: core.KindValue, Codec: c}); ok {
 			t.Fatalf("0x%02X: want not ok", c)
 		}
@@ -54,7 +54,7 @@ func TestParseValue(t *testing.T) {
 	if _, ok := ParseValue(core.Record{Kind: core.KindValue, Codec: core.CodecSHA1Digest, Payload: make([]core.Word, 16)}); ok {
 		t.Fatal("long SHA-1 digest: want not ok")
 	}
-	if _, ok := ParseValue(core.Record{Kind: core.KindValue, Codec: 0x41}); ok {
+	if _, ok := ParseValue(core.Record{Kind: core.KindValue, Codec: core.CodecUTF8TextEven | 1}); ok {
 		t.Fatal("bad odd text: want not ok")
 	}
 	if _, ok := ParseValue(core.Record{Kind: core.KindValue, Codec: core.CodecFraction}); ok {

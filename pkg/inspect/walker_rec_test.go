@@ -9,7 +9,7 @@ import (
 )
 
 func TestWalkerRec(t *testing.T) {
-	w := &walker{ws: []core.Word{0x0088, 7, 0xFFFF}}
+	w := &walker{ws: []core.Word{0x0051, 7, 0xFFFF}}
 	w.rec("ID")
 	if len(w.out) != 1 || !w.out[0].Record || w.pos != 2 || w.bad {
 		t.Fatalf("got %+v", w)

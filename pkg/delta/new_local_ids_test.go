@@ -19,10 +19,10 @@ func TestNewLocalIDs(t *testing.T) {
 	if l, _ := NewLocalIDs(prev, 50); l.Next() != 50 {
 		t.Fatalf("kept next: %d", l.Next())
 	}
-	src := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0088, 12, 0x0088, 0, 0x00A0, 42}}
+	src := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0051, 12, 0x0051, 0, 0x0141, 42}}
 	withHead := encodeDoc([]core.Record{src}, []core.Record{bindOf(1, 9, "a")})
 	l, err := NewLocalIDs(withHead, 0)
-	if err != nil || l.Next() != 13 || l.Edge(core.EdgeSource, []core.Word{0x0088, 0, 0x00A0, 42}) != 12 {
+	if err != nil || l.Next() != 13 || l.Edge(core.EdgeSource, []core.Word{0x0051, 0, 0x0141, 42}) != 12 {
 		t.Fatalf("HEAD SOURCE carried over: %v", err)
 	}
 	if _, err := NewLocalIDs([]byte{1}, 0); err == nil {

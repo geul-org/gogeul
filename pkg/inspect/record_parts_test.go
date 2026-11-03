@@ -9,9 +9,9 @@ import (
 )
 
 func TestRecordParts(t *testing.T) {
-	w := &walker{ws: []core.Word{0x0088, 7, 0x0830, 0x0A7C, 0x0020, 0xC001, 0x0A00, 0x0001}}
+	w := &walker{ws: []core.Word{0x0051, 7, 0x0700, 0x07D6, 0, 7, 0, 0xC001, 0x0A00, 0x0001}}
 	recordParts(w)
-	if len(w.out) != 3 || w.out[0].Name != "LOCAL" || !w.out[0].Record || w.out[1].Name != "record" || w.out[2].Name != "IPV4-ADDRESS" || w.pos != 8 {
+	if len(w.out) != 3 || w.out[0].Name != "LOCAL" || !w.out[0].Record || w.out[1].Name != "record" || w.out[2].Name != "IPV4-ADDRESS" || w.pos != 10 {
 		t.Fatalf("got %+v", w.out)
 	}
 }

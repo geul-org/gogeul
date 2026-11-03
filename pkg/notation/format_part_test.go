@@ -10,7 +10,7 @@ import (
 )
 
 func TestFormatPart(t *testing.T) {
-	if formatPart(inspect.Part{Words: []core.Word{0x0088, 2}, Record: true}) != "#2" || formatPart(inspect.Part{Words: []core.Word{1}, Enum: "normal"}) != "normal" || formatPart(inspect.Part{Words: []core.Word{1}}) != "0x0001" {
+	if formatPart(inspect.Part{Words: []core.Word{0x0051, 2}, Record: true}) != "#2" || formatPart(inspect.Part{Words: []core.Word{1}, Enum: "normal"}) != "normal" || formatPart(inspect.Part{Words: []core.Word{1}}) != "0x0001" {
 		t.Fatal("parts")
 	}
 }

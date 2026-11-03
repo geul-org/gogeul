@@ -10,14 +10,14 @@ import (
 
 func TestParseMeta(t *testing.T) {
 	r, err := ParseMeta(`message "first version"`, Context{})
-	if err != nil || r.Kind != core.KindMeta || r.Codec != 0x38 {
+	if err != nil || r.Kind != core.KindMeta || r.Codec != core.MetaMessage {
 		t.Fatalf("%+v %v", r, err)
 	}
 	sv, _ := core.EncodeRecord(core.EncodeSpecVersion(2))
 	if r, err := ParseMeta(hexToken(sv), Context{}); err != nil || r.Codec != core.MetaSpecVersion {
 		t.Fatalf("raw: %+v %v", r, err)
 	}
-	for _, s := range []string{"", "NOPE 1", "0x00880001", "MESSAGE word", `MESSAGE "open`} {
+	for _, s := range []string{"", "NOPE 1", "0x00510001", "MESSAGE word", `MESSAGE "open`} {
 		if _, err := ParseMeta(s, Context{}); err == nil {
 			t.Errorf("%q: want error", s)
 		}

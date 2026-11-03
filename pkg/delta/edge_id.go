@@ -5,10 +5,10 @@ package delta
 import "github.com/geul-org/gogeul/pkg/core"
 
 // edgeReferenceNode is the REFERENCE-NODE Edge codec (edge/REFERENCE-NODE).
-const edgeReferenceNode uint8 = 0x00
+const edgeReferenceNode uint16 = 0x00
 
 // edgeTriple is the TRIPLE Edge codec (edge/TRIPLE).
-const edgeTriple uint8 = 0x0A
+const edgeTriple uint16 = core.EdgeTriple
 
 // edgeID splits an Edge record into its Edge Id (the leading LOCAL
 // Reference, OVERVIEW Edge) and the rest of its payload.

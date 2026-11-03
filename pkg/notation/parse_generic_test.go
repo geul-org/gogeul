@@ -7,8 +7,8 @@ import (
 )
 
 func TestParseGeneric(t *testing.T) {
-	ws, err := parseGeneric([]string{"#1", "0x0002", "0x0000/0x0000000000000806"}, Context{})
-	if err != nil || len(ws) != 2+1+8 || ws[2] != 2 {
+	ws, err := parseGeneric([]string{"#1", "0x0002", "0x00000000/0x0000000000000806"}, Context{})
+	if err != nil || len(ws) != 2+1+9 || ws[2] != 2 {
 		t.Fatalf("%04X %v", ws, err)
 	}
 	for _, toks := range [][]string{{"0x1"}, {"word"}} {

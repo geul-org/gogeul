@@ -10,10 +10,10 @@ import (
 )
 
 func TestEdgeIDToken(t *testing.T) {
-	if s, ok := edgeIDToken([]inspect.Part{{Words: []core.Word{0x0088, 4}, Record: true}}); !ok || s != "#4" {
+	if s, ok := edgeIDToken([]inspect.Part{{Words: []core.Word{0x0051, 4}, Record: true}}); !ok || s != "#4" {
 		t.Fatal(s)
 	}
-	for _, ps := range [][]inspect.Part{nil, {{Words: []core.Word{4}}}, {{Words: []core.Word{0x00A0, 4}, Record: true}}} {
+	for _, ps := range [][]inspect.Part{nil, {{Words: []core.Word{4}}}, {{Words: []core.Word{0x0141, 4}, Record: true}}} {
 		if _, ok := edgeIDToken(ps); ok {
 			t.Fatalf("%+v: want false", ps)
 		}

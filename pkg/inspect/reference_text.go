@@ -13,7 +13,7 @@ import (
 // codec name and payload hex.
 func referenceText(g core.Record) string {
 	switch {
-	case g.Codec == core.RefWikidataQID<<3 && len(g.Payload) <= 4:
+	case g.Codec == core.CodecWikidataQID && len(g.Payload) <= 4:
 		var n uint64
 		for _, w := range g.Payload {
 			n = n<<16 | uint64(w)

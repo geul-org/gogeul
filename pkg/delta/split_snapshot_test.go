@@ -17,7 +17,7 @@ func TestSplitSnapshot(t *testing.T) {
 	if _, err := splitSnapshot([]byte{1}); err == nil {
 		t.Fatal("odd: want error")
 	}
-	if _, err := splitSnapshot(core.PutWords([]core.Word{0x0088, 0x0001})); err == nil {
+	if _, err := splitSnapshot(core.PutWords([]core.Word{0x0051, 0x0001})); err == nil {
 		t.Fatal("broken: want error")
 	}
 	if _, err := splitSnapshot(encodeDoc(nil, []core.Record{core.EncodeBytesValue(core.CodecUTF8TextEven, []byte("ab"))})); err == nil {

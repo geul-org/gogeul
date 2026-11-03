@@ -11,7 +11,7 @@ import (
 )
 
 func TestRecordField(t *testing.T) {
-	qid := codecspec.Field{Codecs: []core.Word{core.TargetWord(core.KindReference, core.RefWikidataQID<<3)}}
+	qid := codecspec.Field{Codecs: []core.Word{core.TargetWord(core.KindReference, core.CodecWikidataQID)}}
 	if _, err := recordField("Q5", qid, Context{}); err != nil {
 		t.Fatal(err)
 	}

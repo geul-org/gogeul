@@ -13,7 +13,7 @@ func TestRawData(t *testing.T) {
 	if got := rawData([]core.Word{u}, []core.Word{2}); got != (Value{Codec: core.CodecUnsignedInteger, Uint: 2}) {
 		t.Fatalf("uint: %+v", got)
 	}
-	for i, c := range [][]core.Word{nil, {u, u}, {core.TargetWord(core.KindReference, 0x08)}, {0x0F80}} {
+	for i, c := range [][]core.Word{nil, {u, u}, {core.TargetWord(core.KindReference, 0x05)}, {0x040F}} {
 		if got := rawData(c, []core.Word{2}); got != nil {
 			t.Fatalf("case %d: %+v", i, got)
 		}

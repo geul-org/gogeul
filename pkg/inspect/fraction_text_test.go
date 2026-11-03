@@ -12,16 +12,16 @@ func TestFractionText(t *testing.T) {
 	f := func(p ...core.Word) core.Record {
 		return core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: p}
 	}
-	if s, err := fractionText(f(0x0881, 2, 0x0882, 4)); err != nil || s != "2/4" {
+	if s, err := fractionText(f(0x0411, 2, 0x0421, 4)); err != nil || s != "2/4" {
 		t.Fatalf("2/4: %q %v", s, err)
 	}
 	if _, err := fractionText(f()); err == nil {
 		t.Fatal("broken: want error")
 	}
-	if _, err := fractionText(f(0x0901, 0, 2, 0x0882, 4)); err == nil {
+	if _, err := fractionText(f(0x0412, 0, 2, 0x0421, 4)); err == nil {
 		t.Fatal("non-minimal numerator: want error")
 	}
-	if _, err := fractionText(f(0x0881, 2, 0x0902, 0, 4)); err == nil {
+	if _, err := fractionText(f(0x0411, 2, 0x0422, 0, 4)); err == nil {
 		t.Fatal("non-minimal denominator: want error")
 	}
 }

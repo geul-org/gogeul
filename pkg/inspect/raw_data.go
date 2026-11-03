@@ -9,9 +9,10 @@ import "github.com/geul-org/gogeul/pkg/core"
 // the field width): the decoded Value, or nil without a single CODEC or when
 // the target is a wildcard, not a Value, or does not decode.
 func rawData(codecs []core.Word, ws []core.Word) any {
-	if len(codecs) != 1 || codecs[0]&0x0780 != 0 || core.Kind(codecs[0]>>11&3) != core.KindValue {
+	if len(codecs) != 1 || codecs[0]&0xF != 0 || core.KindOf(codecs[0]) != core.KindValue {
 		return nil
 	}
-	r := core.Record{Kind: core.KindValue, Codec: uint8(codecs[0] & 0x7F), Payload: ws}
+	_, c := core.SplitTarget(codecs[0])
+	r := core.Record{Kind: core.KindValue, Codec: c, Payload: ws}
 	return asData(ParseValue(r))
 }

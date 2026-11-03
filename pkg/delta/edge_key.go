@@ -10,6 +10,6 @@ import (
 
 // edgeKey identifies a statement by content: two Edges of the same codec
 // whose payloads match after the Edge Id are the same statement.
-func edgeKey(codec uint8, rest []core.Word) string {
+func edgeKey(codec uint16, rest []core.Word) string {
 	return fmt.Sprintf("%02x:%04x", codec, rest)
 }

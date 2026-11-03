@@ -20,8 +20,8 @@ func TestDecode(t *testing.T) {
 	if _, ok := d.Body[3].Data.(toulmin.NodePacket); !ok || d.Body[3].Name != "CASE-DECLARE" || d.Body[4].ID != 12 {
 		t.Fatalf("body: %+v", d.Body[3:5])
 	}
-	src := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0088, 3, 0x0088, 0, 0x00A0, 42}}
-	tr := core.Record{Kind: core.KindEdge, Codec: core.EdgeTriple, Payload: []core.Word{0x0088, 4}}
+	src := core.Record{Kind: core.KindEdge, Codec: core.EdgeSource, Payload: []core.Word{0x0051, 3, 0x0051, 0, 0x0141, 42}}
+	tr := core.Record{Kind: core.KindEdge, Codec: core.EdgeTriple, Payload: []core.Word{0x0051, 4}}
 	b, _ := core.EncodeDocument([]core.Record{core.EncodeSpecVersion(core.SpecVersion), src}, []core.Record{tr})
 	h, err := Decode(b)
 	if err != nil || len(h.Head) != 2 || h.Head[1].ID != 3 || h.Head[1].Name != "SOURCE" || h.Body[0].ID != 4 || MaxLocalID(h) != 4 {
@@ -30,7 +30,7 @@ func TestDecode(t *testing.T) {
 	if _, err := Decode([]byte{1}); err == nil {
 		t.Fatal("odd bytes: want error")
 	}
-	if _, err := Decode([]byte{0x18, 0x0F}); err == nil {
+	if _, err := Decode([]byte{0x1C, 0x40}); err == nil {
 		t.Fatal("not a document: want error")
 	}
 }

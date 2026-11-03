@@ -9,7 +9,7 @@ import "github.com/geul-org/gogeul/pkg/core"
 // had in the previous version (equal statements in turn, so duplicates keep
 // their order), else a new ID from the auto increment. The caller then
 // writes the Edge with that ID.
-func (l *LocalIDs) Edge(codec uint8, rest []core.Word) uint64 {
+func (l *LocalIDs) Edge(codec uint16, rest []core.Word) uint64 {
 	k := edgeKey(codec, rest)
 	if ids := l.edges[k]; len(ids) > 0 {
 		l.edges[k] = ids[1:]

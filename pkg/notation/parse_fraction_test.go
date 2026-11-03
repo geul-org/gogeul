@@ -11,7 +11,7 @@ import (
 func TestParseFraction(t *testing.T) {
 	r, err := parseFraction([]string{"2", "4"})
 	ws, _ := core.EncodeRecord(r)
-	if err != nil || core.FormatID(ws) != "0x0a07088100020882000"+"4" {
+	if err != nil || core.FormatID(ws) != "0x04740411000204210004" {
 		t.Fatalf("2/4: %s %v", core.FormatID(ws), err)
 	}
 	if _, err := parseFraction([]string{"2"}); err == nil {

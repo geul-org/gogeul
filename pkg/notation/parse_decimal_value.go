@@ -7,7 +7,7 @@ import (
 )
 
 // parseDecimalValue reads arg (parseDecimal) as codec c.
-func parseDecimalValue(c uint8, arg string) (core.Record, error) {
+func parseDecimalValue(c uint16, arg string) (core.Record, error) {
 	e, n, err := parseDecimal(arg)
 	switch {
 	case err != nil:

@@ -10,14 +10,14 @@ import (
 
 func TestNamedLanguage(t *testing.T) {
 	langs := map[string]string{"0x0784": "en", "0x4130": "pt-BR"}
-	short := core.EncodeLanguageText(core.Record{Kind: core.KindValue, Codec: 0x48, Payload: []core.Word{0x4130}}, []byte("Brasil"))
+	short := core.EncodeLanguageText(core.Record{Kind: core.KindValue, Codec: core.CodecLanguageShortCode, Payload: []core.Word{0x4130}}, []byte("Brasil"))
 	if v, ok := namedLanguage(short, nil); !ok || v.Lang != "0x4130" {
 		t.Fatalf("no registry: %+v %v", v, ok)
 	}
 	if v, ok := namedLanguage(short, langs); !ok || v.Lang != "pt-BR" || v.Text != "Brasil" {
 		t.Fatalf("named: %+v %v", v, ok)
 	}
-	unknown := core.EncodeLanguageText(core.Record{Kind: core.KindValue, Codec: 0x48, Payload: []core.Word{0x7000}}, []byte("x"))
+	unknown := core.EncodeLanguageText(core.Record{Kind: core.KindValue, Codec: core.CodecLanguageShortCode, Payload: []core.Word{0x7000}}, []byte("x"))
 	if v, _ := namedLanguage(unknown, langs); v.Lang != "0x7000" {
 		t.Fatalf("unknown code: %q", v.Lang)
 	}

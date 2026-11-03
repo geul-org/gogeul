@@ -12,7 +12,7 @@ import (
 func TestParseFields(t *testing.T) {
 	fields := tripleSpec(false)[core.TargetWord(core.KindEdge, 0x0A)]
 	ws, err := parseFields([]string{"P31", "Q42", "Q5", "preferred"}, fields, Context{})
-	if err != nil || !slices.Equal(ws, []core.Word{0x00A8, 31, 0x00A0, 42, 0x00A0, 5, 1}) {
+	if err != nil || !slices.Equal(ws, []core.Word{0x0191, 31, 0x0141, 42, 0x0141, 5, 1}) {
 		t.Fatalf("%04X %v", ws, err)
 	}
 	withRest := tripleSpec(true)[core.TargetWord(core.KindEdge, 0x0A)]

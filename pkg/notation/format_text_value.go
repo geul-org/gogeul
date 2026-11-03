@@ -9,7 +9,7 @@ import (
 )
 
 // formatTextValue writes a byte-string Value of even codec even holding s.
-func formatTextValue(even uint8, s string) string {
+func formatTextValue(even uint16, s string) string {
 	switch even {
 	case core.CodecUTF8TextEven:
 		return strconv.Quote(s)

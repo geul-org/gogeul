@@ -11,7 +11,7 @@ import (
 
 func TestQuantity(t *testing.T) {
 	absent := core.Record{Kind: core.KindReference}
-	km := core.Record{Kind: core.KindReference, Codec: core.RefWikidataQID << 3, Payload: []core.Word{0x000C, 0xA250}}
+	km := core.Record{Kind: core.KindReference, Codec: core.CodecWikidataQID, Payload: []core.Word{0x000C, 0xA250}}
 	dec := func(e int32, c int64) core.Record { return core.EncodeSignedDecimalBig(e, big.NewInt(c)) }
 	r, _ := core.EncodeQuantity(core.Quantity{Amount: dec(0, 652), Unit: km, Lower: dec(0, 651), Upper: dec(0, 653)})
 	if a, u, l, h, err := quantity(r); err != nil || a != "652" || u != "Q827984" || l != "651" || h != "653" {
@@ -21,7 +21,7 @@ func TestQuantity(t *testing.T) {
 	if a, u, l, h, err := quantity(r); err != nil || a != "1.20" || u != "" || l != "" || h != "" {
 		t.Fatalf("unitless: %q %q %q %q %v", a, u, l, h, err)
 	}
-	frac := core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0881, 2, 0x0882, 3}}
+	frac := core.Record{Kind: core.KindValue, Codec: core.CodecFraction, Payload: []core.Word{0x0411, 2, 0x0421, 3}}
 	one := core.Record{Kind: core.KindValue, Codec: core.CodecSignedInteger, Payload: []core.Word{1}}
 	bf := core.Record{Kind: core.KindValue, Codec: core.CodecBinaryFloat, Payload: []core.Word{0x3C00}}
 	r, _ = core.EncodeQuantity(core.Quantity{Amount: frac, Unit: absent, Lower: one, Upper: bf})

@@ -13,7 +13,7 @@ func TestLanguageText(t *testing.T) {
 	if text, lang, err := languageText(core.EncodeLanguageText(fr, []byte("Paris"))); err != nil || text != "Paris" || lang != "fr" {
 		t.Fatalf("%q %q %v", text, lang, err)
 	}
-	short := core.Record{Kind: core.KindValue, Codec: 0x48, Payload: []core.Word{0x0783}}
+	short := core.Record{Kind: core.KindValue, Codec: core.CodecLanguageShortCode, Payload: []core.Word{0x0783}}
 	if text, lang, err := languageText(core.EncodeLanguageText(short, []byte("DNA"))); err != nil || text != "DNA" || lang != "0x0783" {
 		t.Fatalf("short: %q %q %v", text, lang, err)
 	}

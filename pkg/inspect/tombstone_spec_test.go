@@ -10,6 +10,6 @@ import (
 // tombstoneSpec declares TOMBSTONE for layout tests.
 func tombstoneSpec() codecspec.Spec {
 	return codecspec.Spec{core.TargetWord(core.KindEdge, core.EdgeTombstone): {
-		{Name: "doc", Codecs: []core.Word{core.TargetWord(core.KindReference, core.RefDocPointer<<3)}}, {Name: "reason", Width: 1, Enums: map[string]string{"0x0001": "license"}},
+		{Name: "doc", Codecs: []core.Word{core.TargetWord(core.KindReference, core.CodecDocPointer)}}, {Name: "reason", Width: 1, Enums: map[string]string{"0x0001": "license"}},
 	}}
 }

@@ -11,7 +11,7 @@ import "github.com/geul-org/gogeul/pkg/core"
 // and any other Value are as ParseValue gives them.
 func namedLanguage(r core.Record, langs map[string]string) (Value, bool) {
 	v, ok := ParseValue(r)
-	if !ok || r.Codec&^1 != core.CodecUTF8LanguageTextEven || len(r.Payload) == 0 || r.Payload[0] != 0x08C8 {
+	if !ok || r.Codec&^1 != core.CodecUTF8LanguageTextEven || len(r.Payload) == 0 || r.Payload[0] != core.TargetWord(core.KindValue, core.CodecLanguageShortCode)|1 {
 		return v, ok
 	}
 	if tag, named := langs[v.Lang]; named {

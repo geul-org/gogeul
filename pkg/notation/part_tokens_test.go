@@ -11,13 +11,13 @@ import (
 )
 
 func TestPartTokens(t *testing.T) {
-	if got := partTokens(inspect.Part{Name: "payload", Words: []core.Word{0x0088, 1, 0x0088, 2}}); !slices.Equal(got, []string{"#1", "#2"}) {
+	if got := partTokens(inspect.Part{Name: "payload", Words: []core.Word{0x0051, 1, 0x0051, 2}}); !slices.Equal(got, []string{"#1", "#2"}) {
 		t.Fatal(got)
 	}
-	if got := partTokens(inspect.Part{Name: "payload", Words: []core.Word{0x0088, 1, 0x0001}}); !slices.Equal(got, []string{"0x008800010001"}) {
+	if got := partTokens(inspect.Part{Name: "payload", Words: []core.Word{0x0051, 1, 0x0001}}); !slices.Equal(got, []string{"0x005100010001"}) {
 		t.Fatal(got)
 	}
-	if got := partTokens(inspect.Part{Name: "Rank", Words: []core.Word{0x0088, 1}}); !slices.Equal(got, []string{"0x00880001"}) {
+	if got := partTokens(inspect.Part{Name: "Rank", Words: []core.Word{0x0051, 1}}); !slices.Equal(got, []string{"0x00510001"}) {
 		t.Fatal(got)
 	}
 }

@@ -30,8 +30,12 @@ func ParseValue(r core.Record) (Value, bool) {
 		v.Number, err = numberText(r)
 		return v, err == nil
 	}
+	if r.Codec == core.CodecSHA256Digest || r.Codec == core.CodecSHA1Digest {
+		v.Text = core.FormatID(r.Payload)
+		return v, len(r.Payload) == map[uint16]int{core.CodecSHA256Digest: 16, core.CodecSHA1Digest: 10}[r.Codec]
+	}
 	switch even := r.Codec &^ 1; even {
-	case core.CodecUTF8TextEven, 0x44, core.CodecLanguageBCP47Even, core.CodecEDTFEven, core.CodecGEDCOMDateEven:
+	case core.CodecUTF8TextEven, core.CodecURIEven, core.CodecLanguageBCP47Even, core.CodecEDTFEven, core.CodecGEDCOMDateEven:
 		var b []byte
 		b, err = core.DecodeBytesValue(r, even)
 		v.Text = string(b)
@@ -43,12 +47,6 @@ func ParseValue(r core.Record) (Value, bool) {
 		v.Exp, v.Coef, err = core.DecodeDecimalValue(r)
 	case core.CodecGregorianDate, core.CodecPosixSeconds:
 		v.Time, err = core.DecodeTimeValue(r)
-	case core.CodecSHA256Digest &^ 1:
-		v.Text = core.FormatID(r.Payload)
-		return v, r.Codec == core.CodecSHA256Digest && len(r.Payload) == 16
-	case core.CodecSHA1Digest:
-		v.Text = core.FormatID(r.Payload)
-		return v, r.Codec == core.CodecSHA1Digest && len(r.Payload) == 10
 	default:
 		return Value{}, false
 	}

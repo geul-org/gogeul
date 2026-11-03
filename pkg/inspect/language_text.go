@@ -17,11 +17,11 @@ func languageText(r core.Record) (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-	switch lang.Codec &^ 1 {
-	case core.CodecLanguageBCP47Even:
+	switch {
+	case lang.Codec&^1 == core.CodecLanguageBCP47Even:
 		tag, err := core.DecodeBytesValue(lang, core.CodecLanguageBCP47Even)
 		return string(text), string(tag), err
-	case 0x48:
+	case lang.Codec == core.CodecLanguageShortCode:
 		return string(text), core.FormatID(lang.Payload), nil
 	default:
 		return "", "", errors.New("geul/inspect: UTF8-LANGUAGE-TEXT without a language record")

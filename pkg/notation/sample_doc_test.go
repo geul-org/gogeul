@@ -11,16 +11,16 @@ import (
 // sampleDoc encodes a small Wikidata-like document without codec specs.
 func sampleDoc() []byte {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	q := func(c uint8, n core.Word) core.Record {
-		return core.Record{Kind: core.KindReference, Codec: c << 3, Payload: []core.Word{n}}
+	q := func(c uint16, n core.Word) core.Record {
+		return core.Record{Kind: core.KindReference, Codec: c, Payload: []core.Word{n}}
 	}
 	lang := core.EncodeBytesValue(core.CodecLanguageBCP47Even, []byte("en"))
-	label := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: slices.Concat(enc(core.EncodeLocalRef(1)), enc(q(core.RefWikidataQID, 42)), enc(core.EncodeLanguageText(lang, []byte("Douglas Adams"))))}
-	triple := core.Record{Kind: core.KindEdge, Codec: 0x0A, Payload: append(slices.Concat(enc(core.EncodeLocalRef(2)), enc(q(core.RefWikidataPID, 31)), enc(q(core.RefWikidataQID, 42)), enc(q(core.RefWikidataQID, 5))), 1)}
+	label := core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: slices.Concat(enc(core.EncodeLocalRef(1)), enc(q(core.CodecWikidataQID, 42)), enc(core.EncodeLanguageText(lang, []byte("Douglas Adams"))))}
+	triple := core.Record{Kind: core.KindEdge, Codec: 0x0A, Payload: append(slices.Concat(enc(core.EncodeLocalRef(2)), enc(q(core.CodecWikidataPID, 31)), enc(q(core.CodecWikidataQID, 42)), enc(q(core.CodecWikidataQID, 5))), 1)}
 	in := enc(core.EncodeSpecVersion(2))
-	in = append(in, 0x180E)
+	in = append(in, 0x1C30)
 	for _, r := range []core.Record{label, triple} {
 		in = append(in, enc(r)...)
 	}
-	return core.PutWords(core.WrapDocument(append(in, 0x180F)))
+	return core.PutWords(core.WrapDocument(append(in, 0x1C40)))
 }

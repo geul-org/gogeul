@@ -9,12 +9,12 @@ import (
 )
 
 func TestCoordinate(t *testing.T) {
-	degree := core.Record{Kind: core.KindReference, Codec: core.RefWikidataQID << 3, Payload: []core.Word{28390}}
+	degree := core.Record{Kind: core.KindReference, Codec: core.CodecWikidataQID, Payload: []core.Word{28390}}
 	v, err := coordinate(core.EncodeCoordinate(core.Coordinate{Lat: 52.5, Lon: 13.4, Uncertainty: 0.25, Unit: &degree}))
 	if err != nil || v.Codec != core.CodecCoordinateEarth || v.Lat != 52.5 || v.Lon != 13.4 || v.Float != 0.25 || v.Unit != "Q28390" || v.Globe != "" {
 		t.Fatalf("earth: %+v %v", v, err)
 	}
-	mars := core.Record{Kind: core.KindReference, Codec: core.RefWikidataQID << 3, Payload: []core.Word{111}}
+	mars := core.Record{Kind: core.KindReference, Codec: core.CodecWikidataQID, Payload: []core.Word{111}}
 	if v, err := coordinate(core.EncodeCoordinate(core.Coordinate{Globe: &mars, Lat: 1, Lon: 2})); err != nil || v.Globe != "Q111" || v.Unit != "" {
 		t.Fatalf("mars: %+v %v", v, err)
 	}

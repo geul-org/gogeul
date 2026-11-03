@@ -20,7 +20,7 @@ func parseAddress(tok string, ctx Context) (core.Record, error) {
 	case err != nil:
 		return core.Record{}, err
 	case !isLocal:
-		return core.EncodeDocPointer(k.Issuer, k.Doc, []core.Word{core.Word(k.Version >> 16), core.Word(k.Version)})
+		return core.EncodeTargetPointer(k.Issuer, k.Doc, []core.Word{core.Word(k.Version >> 16), core.Word(k.Version)})
 	case k.Version != 0:
 		return core.Record{}, fmt.Errorf("geul/notation: %q: an Issuer document's LOCAL follows the latest version, no @", tok)
 	}
@@ -28,7 +28,10 @@ func parseAddress(tok string, ctx Context) (core.Record, error) {
 	if err != nil || n == 0 {
 		return core.Record{}, fmt.Errorf("geul/notation: %q needs a LOCAL ID above 0 after #", tok)
 	}
-	cc := map[int]uint8{1: core.RefExternalIssuer1Word, 2: core.RefExternalIssuer2Word, 4: core.RefExternalIssuer4Word, 16: core.RefExternalIssuer16Word}[len(k.Issuer)]
+	cc, ok := map[int]uint16{2: core.CodecExternalIssuer2Word, 4: core.CodecExternalIssuer4Word, 16: core.CodecExternalIssuer16Word}[len(k.Issuer)]
+	if !ok || len(k.Doc) != 4 {
+		return core.Record{}, fmt.Errorf("geul/notation: %q: an EXTERNAL-ISSUER needs a 2/4/16-word Issuer and a document", tok)
+	}
 	payload := append(append(append([]core.Word{}, k.Issuer...), k.Doc...), core.EncodeUintValue(n).Payload...)
-	return core.Record{Kind: core.KindReference, Codec: cc << 3, Payload: payload}, nil
+	return core.Record{Kind: core.KindReference, Codec: cc, Payload: payload}, nil
 }

@@ -9,7 +9,7 @@ import (
 )
 
 func TestParseValueArg(t *testing.T) {
-	cases := map[uint8]string{
+	cases := map[uint16]string{
 		core.CodecLanguageBCP47Even: `"en"`, core.CodecUnsignedDecimal: "1.5", core.CodecUnsignedInteger: "9",
 		core.CodecGregorianDate: "2026-10-27", core.CodecPosixSeconds: "100", core.CodecSHA256Digest: "0x" + "00000000000000000000000000000000000000000000000000000000000000ab",
 	}

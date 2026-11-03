@@ -10,7 +10,7 @@ import (
 
 // recordTokens decodes ws record by record. It is false when a record does
 // not decode, would be written as raw words (formatRecord) or is a slot marker
-// (Reference Codec 0000: only a declared field that names it takes one), so a
+// (Reference C < 3: only a declared field that names it takes one), so a
 // part is never split into raw pieces.
 func recordTokens(ws []core.Word) ([]string, bool) {
 	var out []string
@@ -20,7 +20,7 @@ func recordTokens(ws []core.Word) ([]string, bool) {
 			return nil, false
 		}
 		s := formatRecord(r)
-		if strings.HasPrefix(s, "0x") && !strings.Contains(s, "/") || r.Kind == core.KindReference && r.Codec>>3 == 0 {
+		if strings.HasPrefix(s, "0x") && !strings.Contains(s, "/") || r.Kind == core.KindReference && core.IsSlotMarkerCodec(r.Codec) {
 			return nil, false
 		}
 		out = append(out, s)

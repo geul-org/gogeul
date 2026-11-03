@@ -11,7 +11,7 @@ import (
 func fakeLookup(addr string) (resolve.Key, error) {
 	switch addr {
 	case "geul.org/quantity":
-		return resolve.Key{Issuer: []core.Word{0}, Doc: []core.Word{0, 0, 0, 0x806}}, nil
+		return resolve.Key{Issuer: []core.Word{0, 0}, Doc: []core.Word{0, 0, 0, 0x806}}, nil
 	case "self/0x0000000000000000", "self/0x0000000000000001":
 		is := make([]core.Word, 16)
 		is[0] = 1

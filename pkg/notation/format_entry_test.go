@@ -18,12 +18,12 @@ func TestFormatEntry(t *testing.T) {
 	if got := FormatEntry(doc.Body[0]); got != `#1 LABEL Q42 "Douglas Adams"@en` {
 		t.Fatal(got)
 	}
-	if got := FormatEntry(doc.Body[1]); got != "#2 TRIPLE 0x00a8001f00a0002a00a000050001" {
+	if got := FormatEntry(doc.Body[1]); got != "#2 TRIPLE 0x0191001f0141002a014100050001" {
 		t.Fatal(got)
 	}
 	unnamed := doc.Body[0]
 	unnamed.Name = ""
-	noID := inspect.Entry{Record: core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x00A0, 42}}, Words: []core.Word{0x1204, 0x00A0, 42}, Name: "LABEL"}
+	noID := inspect.Entry{Record: core.Record{Kind: core.KindEdge, Codec: 0x04, Payload: []core.Word{0x0141, 42}}, Words: []core.Word{0x0842, 0x0141, 42}, Name: "LABEL"}
 	issued := doc.Head[0]
 	issued.Record.Format = 1
 	for _, e := range []inspect.Entry{unnamed, noID, issued} {

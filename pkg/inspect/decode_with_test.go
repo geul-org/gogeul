@@ -10,16 +10,16 @@ import (
 
 func TestDecodeWith(t *testing.T) {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	tomb := core.EncodePublication(core.Publication{Codec: core.EdgeTombstone, EdgeID: 3, Issuer: []core.Word{0}, Doc: []core.Word{0, 0, 0, 1}, Version: 1, Reason: 1})
-	in := slices.Concat([]core.Word{0x180E}, enc(tomb), []core.Word{0x180F})
+	tomb := core.EncodePublication(core.Publication{Codec: core.EdgeTombstone, EdgeID: 3, Issuer: []core.Word{0, 0}, Doc: []core.Word{0, 0, 0, 1}, Version: 1, Reason: 1})
+	in := slices.Concat([]core.Word{0x1C30}, enc(tomb), []core.Word{0x1C40})
 	d, err := DecodeWith(core.PutWords(core.WrapDocument(in)), tombstoneSpec())
 	if err != nil || len(Layout(d.Body[0])) != 4 || d.Body[0].ID != 3 {
 		t.Fatalf("given: %+v %v", d.Body, err)
 	}
-	own := slices.Concat([]core.Word{0x180E}, enc(tomb),
+	own := slices.Concat([]core.Word{0x1C30}, enc(tomb),
 		enc(core.EncodeDeclare(core.Declare{EdgeID: 5, Target: core.TargetWord(core.KindEdge, core.EdgeTombstone)})),
 		enc(core.EncodeFieldDecl(core.FieldDecl{EdgeID: 4, Declare: 5, Width: 7})),
-		[]core.Word{0x180F})
+		[]core.Word{0x1C40})
 	d, _ = DecodeWith(core.PutWords(core.WrapDocument(own)), tombstoneSpec())
 	if len(d.Body[0].Spec) != 1 {
 		t.Fatalf("own spec: %+v", d.Body[0].Spec)

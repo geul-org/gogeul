@@ -10,10 +10,10 @@ import (
 )
 
 func TestShortLanguage(t *testing.T) {
-	ctx := Context{Spec: codecspec.Spec{0x0848: {{Name: "code", Width: 1, Enums: map[string]string{"0x404c": "zh-Hans", "0x0784": "en", "0x0038": "ach"}}}}}
+	ctx := Context{Spec: codecspec.Spec{0x05A0: {{Name: "code", Width: 1, Enums: map[string]string{"0x404c": "zh-Hans", "0x0784": "en", "0x0038": "ach"}}}}}
 	for in, want := range map[string]core.Word{"zh-hans": 0x404C, "EN": 0x0784, "0x0038": 0x0038} {
 		r, err := shortLanguage(in, ctx)
-		if err != nil || r.Kind != core.KindValue || r.Codec != 0x48 || len(r.Payload) != 1 || r.Payload[0] != want {
+		if err != nil || r.Kind != core.KindValue || r.Codec != core.CodecLanguageShortCode || len(r.Payload) != 1 || r.Payload[0] != want {
 			t.Errorf("%s: %+v %v", in, r, err)
 		}
 	}

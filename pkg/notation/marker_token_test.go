@@ -15,7 +15,7 @@ func TestMarkerToken(t *testing.T) {
 			t.Fatalf("0x%04X: %q %v", w, got, ok)
 		}
 	}
-	reserved, _, _ := core.DecodeRecord([]core.Word{0x0007})
+	reserved, _, _ := core.DecodeRecord([]core.Word{0x0011, 7})
 	if _, ok := markerToken(reserved); ok {
 		t.Fatal("reserved marker: want false")
 	}

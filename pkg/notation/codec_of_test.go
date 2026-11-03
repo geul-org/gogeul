@@ -18,7 +18,7 @@ func TestCodecOf(t *testing.T) {
 	if c, ok := codecOf(core.KindValue, "UTF8-TEXT"); !ok || c != core.CodecUTF8TextEven {
 		t.Fatal("UTF8-TEXT")
 	}
-	if c, ok := codecOf(core.KindReference, "DOC-POINTER"); !ok || c != core.RefDocPointer<<3 {
+	if c, ok := codecOf(core.KindReference, "DOC-POINTER"); !ok || c != core.CodecDocPointer {
 		t.Fatal("DOC-POINTER")
 	}
 	if _, ok := codecOf(core.KindEdge, ""); ok {

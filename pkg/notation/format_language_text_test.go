@@ -9,7 +9,7 @@ import (
 )
 
 func TestFormatLanguageText(t *testing.T) {
-	short := core.Record{Kind: core.KindValue, Codec: 0x48, Payload: []core.Word{0x0038}}
+	short := core.Record{Kind: core.KindValue, Codec: core.CodecLanguageShortCode, Payload: []core.Word{0x0038}}
 	if s, ok := formatLanguageText(core.EncodeLanguageText(short, []byte("x"))); !ok || s != `"x"@@0x0038` {
 		t.Fatalf("short code: %s %v", s, ok)
 	}

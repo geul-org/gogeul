@@ -11,7 +11,7 @@ import (
 
 func TestMentions(t *testing.T) {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	q := core.Record{Kind: core.KindReference, Codec: core.RefWikidataPID << 3, Payload: []core.Word{580}}
+	q := core.Record{Kind: core.KindReference, Codec: core.CodecWikidataPID, Payload: []core.Word{580}}
 	qual := core.Record{Kind: core.KindEdge, Codec: 0x0B, Payload: slices.Concat(enc(core.EncodeLocalRef(4)), enc(q), enc(core.EncodeLocalRef(2)), enc(core.EncodeLocalRef(3)))}
 	if got := Mentions(newEntry(qual)); !slices.Equal(got, []uint64{2, 3}) {
 		t.Fatal(got)

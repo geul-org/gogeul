@@ -9,7 +9,7 @@ import (
 )
 
 func TestNumberText(t *testing.T) {
-	v := func(c uint8, p ...core.Word) core.Record {
+	v := func(c uint16, p ...core.Word) core.Record {
 		return core.Record{Kind: core.KindValue, Codec: c, Payload: p}
 	}
 	cases := map[string]core.Record{
@@ -18,7 +18,7 @@ func TestNumberText(t *testing.T) {
 		"1.20":                 v(core.CodecSignedDecimal, 0xFFFF, 0xFFFE, 120),
 		"1256.1":               v(core.CodecUnsignedDecimal, 0xFFFF, 0xFFFF, 0x3111),
 		"1":                    v(core.CodecBinaryFloat, 0x3C00),
-		"23.45/1256.1":         v(core.CodecFraction, 0x0990, 0xFFFF, 0xFFFE, 0x0929, 0x0991, 0xFFFF, 0xFFFF, 0x3111),
+		"23.45/1256.1":         v(core.CodecFraction, 0x0483, 0xFFFF, 0xFFFE, 0x0929, 0x0493, 0xFFFF, 0xFFFF, 0x3111),
 	}
 	for want, r := range cases {
 		if got, err := numberText(r); err != nil || got != want {

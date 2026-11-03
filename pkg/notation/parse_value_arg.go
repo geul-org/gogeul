@@ -11,7 +11,7 @@ import (
 )
 
 // parseValueArg encodes arg as a Value of codec c.
-func parseValueArg(c uint8, arg string) (core.Record, error) {
+func parseValueArg(c uint16, arg string) (core.Record, error) {
 	switch even := c &^ 1; {
 	case even == core.CodecUTF8TextEven || even == codecURIEven || even == core.CodecEDTFEven || even == core.CodecGEDCOMDateEven || even == core.CodecLanguageBCP47Even:
 		s, err := strconv.Unquote(arg)

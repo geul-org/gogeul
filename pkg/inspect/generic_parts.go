@@ -14,7 +14,7 @@ func genericParts(e Entry) []Part {
 	w := &walker{ws: e.Record.Payload}
 	r, _, err := core.DecodeRecord(w.ws)
 	switch {
-	case err == nil && e.Record.Kind == core.KindEdge && r.Kind == core.KindReference && r.Codec == core.CodecLocalIdentified:
+	case err == nil && e.Record.Kind == core.KindEdge && r.Kind == core.KindReference && r.Codec == core.CodecLocal:
 		w.rec("ID")
 	case err == nil && e.Record.Kind == core.KindMeta && r.Kind == core.KindValue:
 		w.rec("value")

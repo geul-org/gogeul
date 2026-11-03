@@ -12,11 +12,11 @@ import (
 func TestLocalIDs(t *testing.T) {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
 	doc := func(body ...core.Record) []byte {
-		in := append(enc(core.EncodeSpecVersion(core.SpecVersion)), 0x180E)
+		in := append(enc(core.EncodeSpecVersion(core.SpecVersion)), 0x1C30)
 		for _, r := range body {
 			in = append(in, enc(r)...)
 		}
-		return core.PutWords(core.WrapDocument(append(in, 0x180F)))
+		return core.PutWords(core.WrapDocument(append(in, 0x1C40)))
 	}
 	bind := func(id, subject uint64) core.Record {
 		p := slices.Concat(enc(core.EncodeLocalRef(id)), enc(core.EncodeLocalRef(subject)), enc(core.EncodeBytesValue(core.CodecUTF8TextEven, []byte("x"))))

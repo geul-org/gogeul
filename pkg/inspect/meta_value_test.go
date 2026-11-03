@@ -16,7 +16,7 @@ func TestMetaValue(t *testing.T) {
 	if _, ok := metaValue(core.Record{Payload: append(vw, 0)}); ok {
 		t.Fatal("trailing word: want not ok")
 	}
-	if _, ok := metaValue(core.Record{Payload: []core.Word{0x180F}}); ok {
+	if _, ok := metaValue(core.Record{Payload: []core.Word{0x1C40}}); ok {
 		t.Fatal("non-Value: want not ok")
 	}
 	if _, ok := metaValue(core.Record{}); ok {

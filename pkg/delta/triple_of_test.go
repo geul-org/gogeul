@@ -11,6 +11,6 @@ import (
 // tripleOf is TRIPLE(#id, P pid, subject, "text", normal) for tests.
 func tripleOf(id uint64, pid core.Word, subject core.Record, text string) core.Record {
 	enc := func(r core.Record) []core.Word { ws, _ := core.EncodeRecord(r); return ws }
-	p := slices.Concat(enc(core.EncodeLocalRef(id)), []core.Word{0x00A8, pid}, enc(subject), enc(core.EncodeBytesValue(core.CodecUTF8TextEven, []byte(text))), []core.Word{0})
+	p := slices.Concat(enc(core.EncodeLocalRef(id)), []core.Word{0x0191, pid}, enc(subject), enc(core.EncodeBytesValue(core.CodecUTF8TextEven, []byte(text))), []core.Word{0})
 	return core.Record{Kind: core.KindEdge, Codec: edgeTriple, Payload: p}
 }

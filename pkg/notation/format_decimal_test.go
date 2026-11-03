@@ -17,7 +17,7 @@ func TestFormatDecimal(t *testing.T) {
 	if s, ok := formatDecimal(ud); !ok || s != "UNSIGNED-DECIMAL(7)" {
 		t.Fatal(s)
 	}
-	for _, c := range []uint8{core.CodecSignedDecimal, core.CodecUnsignedDecimal} {
+	for _, c := range []uint16{core.CodecSignedDecimal, core.CodecUnsignedDecimal} {
 		if _, ok := formatDecimal(core.Record{Kind: core.KindValue, Codec: c, Payload: []core.Word{0}}); ok {
 			t.Fatal("broken: want false")
 		}

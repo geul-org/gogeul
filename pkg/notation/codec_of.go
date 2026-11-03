@@ -9,18 +9,16 @@ import (
 )
 
 // codecOf looks name up among the core codec names of kind (core.CodecName).
-// ISSUER codecs, which need an Issuer, are not direct and are skipped.
-func codecOf(kind core.Kind, name string) (uint8, bool) {
+// ISSUER codecs, which need an Issuer, are not direct and are skipped. A
+// Reference scheme name gives the scheme's Identified head (the first C of
+// the name), so a Quantifier other than Identified stays raw.
+func codecOf(kind core.Kind, name string) (uint16, bool) {
 	if name == "" {
 		return 0, false
 	}
 	up := strings.ToUpper(name)
-	for c := 0; c < 128; c++ {
-		codec := uint8(c)
-		if kind == core.KindReference {
-			codec = uint8(c) << 3
-		}
-		if core.IssuerWidth(kind, codec) == 0 && core.CodecName(kind, codec) == up && (kind != core.KindReference || c < 16) {
+	for codec := uint16(0); codec <= core.CodecMax(kind); codec++ {
+		if core.IssuerWidth(kind, codec) == 0 && core.CodecName(kind, codec) == up {
 			return codec, true
 		}
 	}
