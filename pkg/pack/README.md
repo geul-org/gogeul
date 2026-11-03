@@ -10,10 +10,10 @@
 |---|---|---|
 | P | `<I>/docs/<D>/<V>.geul`, `<I>/docs/<D>/versions.geul` | `Stream.Put(issuer, doc, slot, r)`(slot 0 = versions.geul) |
 | H | `<I>/hashes/<H>.geul` | 문서와 같은 바이트, 주인 Issuer는 세트의 유일 Issuer 또는 문서의 DOC-ID·버전 목록 포인터 |
-| 이름 | `issuers/…`, `<I>/docs/<V>.geul`·`versions.geul`(문서 목록), `<I>/codecs/…`(코덱 목록·코덱) | `Stream.PutNamed`, `Writer.Put` |
+| 이름 | `issuers/<V>.geul`·`versions.geul`(Issuer 목록), `<I>/codecs/<C>/<V>.geul`·`versions.geul`(코덱) | `Stream.PutNamed`, `Writer.Put` |
 
 - `<I>`는 8·16·64자리 0 채움 표기를 같은 Issuer로 읽고, 쓸 때는 발급 폭 자릿수로 정규화한다. `<D>` 16자리, `<V>`·`<C>` 8자리, 소문자 16진만 받는다.
-- `latest.geul`은 저장하지 않는다(별칭, `resolve.FetchAddr`). 목록 예약 문서 ID(`core.IsListDocID`)는 `<I>/docs/<D>/` 꼴로 저장하지 않는다.
+- `latest.geul`은 저장하지 않는다(별칭, `resolve.FetchAddr`). Issuer 목록 예약 문서 ID(`core.DocIDIssuers`)는 `<I>/docs/<D>/` 꼴로 저장하지 않는다. `<I>/docs/<V>.geul`·`<I>/codecs/<V>.geul`(옛 문서·코덱 목록)은 형식 밖이다(§1.1 101).
 
 ## 약속
 

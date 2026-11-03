@@ -8,7 +8,7 @@
 - TAG WORD `000K KKCC CCCC LLLL`(migration1): Kind는 KKK 표(`KindOf`: 000 Reference, 001 Value, 010~110 Edge, 111 Meta), Codec은 영역 안 번호(`Record.Codec uint16`; Reference·Value·Meta `0x00`~`0x3F`, Edge `0x00`~`0x13F`), `TargetWord`/`SplitTarget`이 (Kind, Codec) ↔ CODEC 대상 WORD를 바꾼다.
 - ISSUER 코드는 영역마다 마지막 셋(2/4/16 WORD, `IssuerWidth`). Value·Edge는 TAG 뒤 Issuer + 코덱 번호 2 WORD(`Record.Format uint32`, `FormatWords`), Reference의 REFERENCE-ISSUER는 Payload가 Issuer의 것이다. Issuer는 2/4/16 WORD 정규형(`IssuerCanonical`), 더 넓은 0 채움은 같은 Issuer(`IssuerNormal`).
 - Reference C: 자리 표지 0~2, ISSUER-POINTER 3, DOC-POINTER 4, 5Q 체계 `0x05`~`0x3B`(`RefScheme`·`RefQuantifier`), CODEC-POINTER `0x3C`, REFERENCE-ISSUER `0x3D`~`0x3F`.
-- 목록 예약 문서 ID: `DocIDIssuers`·`DocIDDocs`·`DocIDCodecs`(`IsListDocID`).
+- 목록 예약 문서 ID: `DocIDIssuers`(Issuer 목록 `issuers/` 하나, §1.1 101).
 - 문서 구조: `DOC-*`, HEAD(Meta, 문서 전체 SOURCE와 그 QUALIFIER — `HeadEdge`), BODY, `END`. 필드 폭은 Codec과 Length가 정한다(문서 단위 폭 선언 없음).
 - 모델: Reference, Value, Edge, Meta. 모르는 레코드는 원본 WORD를 그대로 보존한다.
 - 읽기: `Decode(bytes) → Doc, warns, err`

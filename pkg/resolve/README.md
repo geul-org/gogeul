@@ -45,21 +45,19 @@
 
 ID는 소문자 `0x` + 소문자 hex, 자릿수 = 폭 × 4다. 문서 ID는 16자리, 코덱 ID는 8자리, 버전 ID는 8자리다. 쓸 때 Issuer는 발급 폭 자릿수(2 WORD 8자리, 4 WORD 16자리, 16 WORD 64자리)로 쓰고, 읽을 때는 8·16·64자리 0 채움 표기를 같은 Issuer로 받는다(`ParseAddr`가 정규화).
 
-주소는 다음 16가지뿐이다(`<기준>/.well-known/geul/` 아래). 그 밖의 꼴, 이름 주소(`geul.org/triple`), 도메인 정규화는 공표 주소가 아니다(`ParseAddr` 오류, 조회 404). 이름은 CLI·해석기가 목록의 `BIND`로 ID로 바꾼다(`Dir.Find`).
+주소는 다음 10가지뿐이다(`<기준>/.well-known/geul/` 아래). 그 밖의 꼴(`<I>/docs/`·`<I>/codecs/` 목록 포함, §1.1 101), 이름 주소(`geul.org/triple`), 도메인 정규화는 공표 주소가 아니다(`ParseAddr` 오류, 조회 404). Issuer 이름은 CLI·해석기가 Issuer 목록의 `BIND`로 ID로 바꾼다(`Dir.Find`, `Dir.Lookup`). 문서 이름 색인은 없다(문서·코덱은 ID로만 찾는다).
 
 | 대상 | 최신 | 버전 | 버전 목록 | 함수 |
 |---|---|---|---|---|
 | Issuer 목록 | `issuers/latest.geul` | `issuers/<V>.geul` | `issuers/versions.geul` | `Issuers`, `IssuersVersions` |
-| 코덱 목록 | `<I>/codecs/latest.geul` | `<I>/codecs/<V>.geul` | `<I>/codecs/versions.geul` | `Codecs`, `CodecsVersions` |
-| 문서 목록 | `<I>/docs/latest.geul` | `<I>/docs/<V>.geul` | `<I>/docs/versions.geul` | `Docs`, `DocsVersions` |
 | 코덱 | `<I>/codecs/<C>/latest.geul` | `<I>/codecs/<C>/<V>.geul` | `<I>/codecs/<C>/versions.geul` | `Codec`, `CodecVersions` |
 | 문서 | `<I>/docs/<D>/latest.geul` | `<I>/docs/<D>/<V>.geul` | `<I>/docs/<D>/versions.geul` | `Doc`, `DocVersions` |
 | 내용 해시 | | `<I>/hashes/<H>.geul` | | `Hash` |
 
 - `ParseAddr`는 `file://…`, `https://…`, `.well-known/geul/…`, 맨 경로를 받아 `Addr`로, `Addr.Path()`는 저장 경로로 바꾼다. `Fetch(ctx, src, 주소 문자열)`·`FetchAddr`가 바이트를 낸다.
-- `latest.geul`은 저장하지 않는 별칭이다. 문서·코덱·목록 모두 `versions.geul`에서 폐기 권고·삭제가 아닌 가장 높은 버전을 찾아 그 바이트를 낸다(리다이렉트 없음).
-- 목록은 버전 1부터이고 예약 문서 ID로 버전 목록을 갖는다: `issuers` `0xffffffffffffffff`(Issuer `0x00000000`), `docs` `0xfffffffffffffffe`, `codecs` `0xfffffffffffffffd`(`core.DocIDIssuers`·`DocIDDocs`·`DocIDCodecs`). 목록 `versions.geul`의 `PUBLICATION`은 `DOC-POINTER(Issuer, 예약 ID, 버전)`다. 예약 ID는 `<I>/docs/<D>/` 주소로 받지 않는다. 공표는 `Dir.PublishList`, 문서 목록의 이름 묶기는 `Dir.Name`이 새 버전을 낸다.
-- 코덱 문서의 `DOC-ID`는 `CODEC-POINTER(Issuer, 코덱 ID, 버전 0)`이고 `<I>/codecs/<C>/`에 놓인다(`Dir.PublishCodec`). 코덱 목록 `<I>/codecs/` 자체는 아직 만들지 않는다(변환 도구 몫).
+- `latest.geul`은 저장하지 않는 별칭이다. 문서·코덱·Issuer 목록 모두 `versions.geul`에서 폐기 권고·삭제가 아닌 가장 높은 버전을 찾아 그 바이트를 낸다(리다이렉트 없음).
+- 목록은 `issuers/` 하나다. 버전 1부터이고 예약 문서 ID `0xffffffffffffffff`(Issuer `0x00000000`, `core.DocIDIssuers`)로 버전 목록을 갖는다. `versions.geul`의 `PUBLICATION`은 `DOC-POINTER(0x00000000, 예약 ID, 버전)`다. 예약 ID는 `<I>/docs/<D>/` 주소로 받지 않는다. 공표는 `Dir.PublishList`다. `<I>/docs/`·`<I>/codecs/` 목록은 없다(§1.1 101). `Dir.Documents`는 저장 폴더(pack 인벤토리)에서 문서·코덱 ID를 나열한다.
+- 코덱 문서의 `DOC-ID`는 `CODEC-POINTER(Issuer, 코덱 ID, 버전 0)`이고 `<I>/codecs/<C>/`에 놓인다(`Dir.PublishCodec`).
 - 옛 경로(`issuers.geul`, `documents.geul`, `h/`, `<I>/<문서 ID>/`, `<I>/<문서 ID>.geul`)는 읽지도 쓰지도 않는다.
 
 ## 설정
@@ -253,6 +251,6 @@ geul.org가 서비스되기 전까지 geul.org 웹사이트 저장소의 `artifa
 - 잠금 기록의 형식과 위치. 작업공간 파일 옆에 둘지, 사용자 설정 파일의 위치와 함께 정한다. 텍스트 한 줄 `<Issuer>/<문서 ID> <버전 ID> <내용 해시>`(Go `go.sum`)로 둘지, GEUL 문서로 둘지.
 - geul.org 등록부 조회 API(Issuer ID → 기준 주소).
 - 위치 제공 Issuer를 HEAD에 적는 Meta(서명키 조회처와 같은 방식).
-- Issuer·문서 이름 레이블과 alias, 도메인 이름 주소(GEUL-ORG 도메인 이름)를 Key로 바꾸는 입력을 받을지.
+- Issuer 이름 레이블과 alias, 도메인 이름 주소(GEUL-ORG 도메인 이름)를 Key로 바꾸는 입력을 받을지.
 - 텍스트 표현과 콘텐츠 협상(`Accept`에 따라 바이너리, 텍스트, HTML 보기).
 - 덤프 주기와 형식.
