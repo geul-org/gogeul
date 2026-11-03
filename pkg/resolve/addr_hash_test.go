@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=helper control=iteration dimension=1
-//ff:what TestAddrHash — a 64-digit lowercase hash file is AddrHash with its bytes; other names are bad
+//ff:what TestAddrHash — a 64-digit hash file (either case) is AddrHash with its bytes; other names are bad
 package resolve
 
 import (

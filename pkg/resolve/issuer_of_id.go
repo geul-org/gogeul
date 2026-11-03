@@ -8,7 +8,7 @@ import (
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// issuerOfID reads s as an Issuer ID of 8, 16 or 64 lowercase hex digits and
+// issuerOfID reads s as an Issuer ID of 8, 16 or 64 hex digits and
 // returns it in canonical width (normalIssuer). A name or any other spelling is
 // ErrNotFound.
 func issuerOfID(s string) ([]core.Word, error) {

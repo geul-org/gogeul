@@ -18,7 +18,7 @@ func checkSpecVersion(r rec) []Fact {
 		return []Fact{factAt("M4", Error, r, "Payload", "가장 짧은 폭의 unsigned 정수 (v1 = 0x0001)", fmtWords(len(r.R.Payload)))}
 	}
 	if v != core.SpecVersion {
-		return []Fact{factAt("M4", Warn, r, "Payload", fmt.Sprintf("0x%04x", core.SpecVersion), fmt.Sprintf("0x%04x (모르는 명세 판)", v))}
+		return []Fact{factAt("M4", Warn, r, "Payload", fmt.Sprintf("0x%04X", core.SpecVersion), fmt.Sprintf("0x%04X (모르는 명세 판)", v))}
 	}
 	return nil
 }

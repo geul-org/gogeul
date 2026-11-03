@@ -13,7 +13,7 @@ import (
 
 func TestDirFindForms(t *testing.T) {
 	tree := formsTree(t)
-	const id, gone, other = "0x00000000/docs/0xffff000000000007", "0x00000000/docs/0xffff000000000008", "0x00000002/docs/0x0000000000000005"
+	const id, gone, other = "0x00000000/docs/0xFFFF000000000007", "0x00000000/docs/0xFFFF000000000008", "0x00000002/docs/0x0000000000000005"
 	v1, err := tree.Find(id + "/0x00000001.geul")
 	if err != nil {
 		t.Fatal(err)
@@ -27,11 +27,11 @@ func TestDirFindForms(t *testing.T) {
 	ows, _ := core.ReadWords(od)
 	osum, _ := core.ContentHash(ows)
 	addrs := []string{"issuers/latest.geul", "/.well-known/geul/issuers/0x00000001.geul",
-		id + "/latest.geul", "geul.org/docs/0xffff000000000007/latest.geul", id + "/0x00000001.geul", id + "/0x00000002",
+		id + "/latest.geul", "geul.org/docs/0xFFFF000000000007/latest.geul", id + "/0x00000001.geul", id + "/0x00000002",
 		id + "/versions.geul", gone + "/versions.geul",
 		other + "/latest.geul", other + "/0x00000001.geul", other + "/versions.geul", "other.example/docs/0x0000000000000005/latest.geul",
 		hashPath(geulIssuer, sum), hashPath("0x00000002", osum)}
-	missing := []string{id + "/0x00000009.geul", gone + "/0x00000001.geul", gone + "/latest.geul", "0x00000000/docs/0xffff000000000009/latest.geul",
+	missing := []string{id + "/0x00000009.geul", gone + "/0x00000001.geul", gone + "/latest.geul", "0x00000000/docs/0xFFFF000000000009/latest.geul",
 		"0x00000009/docs/0x0000000000000001/versions.geul", "0x00000009/docs/latest.geul", "geul.org/docs/nothing/latest.geul", "nobody.example/docs/seven/latest.geul",
 		"0x00000000/docs/latest.geul", "geul.org/docs/latest.geul", "geul.org/docs/seven/latest.geul", "0x00000000/codecs/versions.geul",
 		"h/0x" + strings.Repeat("0", 64) + ".geul", "issuers.geul", "0x00000000/documents.geul", hashPath("0x00000002", sum)}
@@ -43,6 +43,9 @@ func TestDirFindForms(t *testing.T) {
 			}
 			if b, err := f.dir.Find(a); err != nil || !bytes.Equal(b, want) {
 				t.Fatalf("%s: %s: %d bytes, %v", f.name, a, len(b), err)
+			}
+			if b, err := f.dir.Find(strings.ToLower(a)); err != nil || !bytes.Equal(b, want) {
+				t.Fatalf("%s: lower case %s: %d bytes, %v", f.name, a, len(b), err)
 			}
 		}
 		for _, a := range missing {

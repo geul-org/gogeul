@@ -11,6 +11,9 @@ func (w *writer) deleteEntry(path string) {
 	case spaceH:
 		w.inv.deleted = append(w.inv.deleted, ref.hash)
 	default:
+		if ref.space == spaceNamed {
+			path = ref.path
+		}
 		w.inv.entries = append(w.inv.entries, invEntry{kind: invNamedDel, ref: uint32(len(w.inv.paths))})
 		w.inv.paths = append(w.inv.paths, path)
 	}

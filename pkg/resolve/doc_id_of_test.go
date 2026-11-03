@@ -10,7 +10,7 @@ import (
 
 func TestDocIDOf(t *testing.T) {
 	doc, _ := inspect.Decode(sampleDoc(2, "x"))
-	if n, ok := docIDOf(doc); !ok || core.FormatID(n.Doc) != "0xffff000000000002" {
+	if n, ok := docIDOf(doc); !ok || core.FormatID(n.Doc) != "0xFFFF000000000002" {
 		t.Fatalf("named: %+v %v", n, ok)
 	}
 	if _, ok := docIDOf(inspect.Document{}); ok {

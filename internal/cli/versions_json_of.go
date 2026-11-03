@@ -3,7 +3,7 @@
 package cli
 
 import (
-	"encoding/hex"
+	"fmt"
 	"strings"
 
 	"github.com/geul-org/gogeul/pkg/resolve"
@@ -15,7 +15,7 @@ func versionsJSONOf(h resolve.History) versionsJSON {
 	out := versionsJSON{Versions: []versionJSON{}, NextLocalID: h.Next}
 	for _, e := range h.Entries {
 		at := strings.TrimPrefix(versionTime(e.At), "-")
-		out.Versions = append(out.Versions, versionJSON{Version: e.Version, At: at, Hash: "0x" + hex.EncodeToString(e.Hash[:]), State: strings.TrimPrefix(stateOf(e.VersionEntry), "\t")})
+		out.Versions = append(out.Versions, versionJSON{Version: e.Version, At: at, Hash: fmt.Sprintf("0x%X", e.Hash[:]), State: strings.TrimPrefix(stateOf(e.VersionEntry), "\t")})
 	}
 	return out
 }

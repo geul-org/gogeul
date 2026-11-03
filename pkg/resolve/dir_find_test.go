@@ -19,13 +19,13 @@ func TestDirFind(t *testing.T) {
 	ws, _ := core.ReadWords(v1)
 	sum, _ := core.ContentHash(ws)
 	h := hashPath(geulIssuer, sum)
-	const id = "0x00000000/docs/0xffff000000000007"
+	const id = "0x00000000/docs/0xFFFF000000000007"
 	for addr, want := range map[string][]byte{
 		"issuers/latest.geul":                                    issuers,
 		"/.well-known/geul/issuers/0x00000001.geul":              issuers,
 		id + "/latest.geul":                                      v2,
-		"geul.org/docs/0xffff000000000007/latest.geul":           v2,
-		"0x0000000000000000/docs/0xffff000000000007/latest.geul": v2,
+		"geul.org/docs/0xFFFF000000000007/latest.geul":           v2,
+		"0x0000000000000000/docs/0xFFFF000000000007/latest.geul": v2,
 		"/.well-known/geul/" + id + "/latest.geul":               v2,
 		id + "/0x00000001.geul":                                  v1,
 		id + "/0x00000001":                                       v1,
@@ -39,11 +39,11 @@ func TestDirFind(t *testing.T) {
 		}
 	}
 	for _, addr := range []string{"seven", "", "issuers.geul", "h/0x12", id + "/1", id + "@1", id + "/0x00000001/x", id + "/0x00000000.geul",
-		"0x00000000/0xffff000000000007/0x00000001.geul", "0x00000000/documents.geul", "nobody/docs/seven/latest.geul", id + "/",
-		id + "/0x00000009.geul", "0x00000000/docs/0xffff000000000009/latest.geul", "0x00000002/docs/latest.geul",
+		"0x00000000/0xFFFF000000000007/0x00000001.geul", "0x00000000/documents.geul", "nobody/docs/seven/latest.geul", id + "/",
+		id + "/0x00000009.geul", "0x00000000/docs/0xFFFF000000000009/latest.geul", "0x00000002/docs/latest.geul",
 		"geul.org/docs/nothing/latest.geul", "geul.org/docs/seven/latest.geul", "0x00000000/docs/latest.geul", "geul.org/docs/latest",
 		"0x00000000/docs/versions.geul", "0x00000000/docs/0x00000001.geul", "0x00000000/codecs/latest.geul", "0x00000000/codecs/versions.geul",
-		"0x00000000/docs/0xffffffffffffffff/versions.geul", "0x00000000/hashes/0x" + string(bytes.Repeat([]byte("0"), 64)) + ".geul"} {
+		"0x00000000/docs/0xFFFFFFFFFFFFFFFF/versions.geul", "0x00000000/hashes/0x" + string(bytes.Repeat([]byte("0"), 64)) + ".geul"} {
 		if _, err := d.Find(addr); !errors.Is(err, ErrNotFound) {
 			t.Fatalf("%q: %v", addr, err)
 		}

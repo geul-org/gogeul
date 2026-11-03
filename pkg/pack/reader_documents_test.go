@@ -14,7 +14,7 @@ func TestReaderDocuments(t *testing.T) {
 	_, out := built(t, small())
 	r := opened(t, out)
 	got, err := r.Documents(ctx, "0x00000000")
-	want := []string{"0x0000000000000008", "0x0000000000000845", "0x0000000000000860", "0x000000000000180e"}
+	want := []string{"0x0000000000000008", "0x0000000000000845", "0x0000000000000860", "0x000000000000180E"}
 	if err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatal(got, err)
 	}

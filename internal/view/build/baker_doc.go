@@ -9,8 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/geul-org/gogeul/internal/view/server"
 )
 
 // doc copies the document rel (relative to the tree, ending in .geul) and
@@ -25,7 +23,7 @@ func (b *baker) doc(rel string) error {
 		return err
 	}
 	u := wellKnown + strings.TrimSuffix(rel, ".geul")
-	err = writeFile(strings.TrimSuffix(to, ".geul"), func(w io.Writer) error { return server.PageHTML(w, b.tree, u, data, b.spec) })
+	err = writeFile(strings.TrimSuffix(to, ".geul"), func(w io.Writer) error { return pageHTML(w, b.tree, u, data, b.spec) })
 	if err != nil {
 		return fmt.Errorf("%s: %w", rel, err)
 	}

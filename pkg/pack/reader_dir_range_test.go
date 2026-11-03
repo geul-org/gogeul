@@ -22,11 +22,15 @@ func TestReaderDirRange(t *testing.T) {
 	if !ok || kr.lo != pKey(3, 8, 0) || kr.hi != pKey(3, 9, 0) {
 		t.Fatalf("document: %+v", kr)
 	}
-	kr, ok = r.dirRange("0x00000000/docs/0xffffffffffffffff")
+	kr, ok = r.dirRange("0x00000000/docs/0xFFFFFFFFFFFFFFFF")
 	if !ok || kr.lo != pKey(3, ^uint64(0), 0) || kr.hi != pKey(4, 0, 0) {
 		t.Fatalf("last document: %+v", kr)
 	}
-	for _, name := range []string{"0x00000001", "0x00000001/docs/0x0000000000000008", "0x00000000/zz", "0x00000000/docs/0x000000000000000A",
+	kr, ok = r.dirRange("0x00000000/docs/0x000000000000000a")
+	if !ok || kr.lo != pKey(3, 10, 0) || kr.hi != pKey(3, 11, 0) {
+		t.Fatalf("lower case document: %+v", kr)
+	}
+	for _, name := range []string{"0x00000001", "0x00000001/docs/0x0000000000000008", "0x00000000/zz", "0x00000000/docs/0X000000000000000A",
 		"0x00000000/docs/0x0000000000000008/versions.geul", "issuers", "0x00000000/codecs", "h"} {
 		if _, ok := r.dirRange(name); ok {
 			t.Fatal(name)

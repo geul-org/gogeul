@@ -15,7 +15,7 @@ func TestRecordsText(t *testing.T) {
 	if got := recordsText(slices.Concat(a, b)); got != `https://x "v1"` {
 		t.Fatalf("got %q", got)
 	}
-	if got := recordsText([]core.Word{0xFFFF}); got != "0xffff" {
+	if got := recordsText([]core.Word{0xFFFF}); got != "0xFFFF" {
 		t.Fatalf("bad: %q", got)
 	}
 }

@@ -9,7 +9,7 @@ import (
 
 // readRecord returns p's stored form.
 func (w *writer) readRecord(p *put) (encoded, error) {
-	data, err := w.b.Get(p.path)
+	data, err := w.b.Get(p.src)
 	if err == nil && sha256.Sum256(data) != p.sum {
 		err = fmt.Errorf("geul/pack: %s changed while writing", p.path)
 	}

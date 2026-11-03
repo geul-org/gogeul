@@ -5,7 +5,7 @@ package resolve
 import "testing"
 
 func TestIssuersKey(t *testing.T) {
-	if k := issuersKey(); k != (DocKey{Issuer: "0x00000000", Doc: "0xffffffffffffffff"}) || docFolder(k) != "issuers" {
+	if k := issuersKey(); k != (DocKey{Issuer: "0x00000000", Doc: "0xFFFFFFFFFFFFFFFF"}) || docFolder(k) != "issuers" {
 		t.Fatal(k)
 	}
 }

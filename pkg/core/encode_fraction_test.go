@@ -19,7 +19,7 @@ func TestEncodeFraction(t *testing.T) {
 	ud, _ := EncodeDecimalBig(false, -1, big.NewInt(12561))
 	r, _ = EncodeFraction(Fraction{Numerator: sd, Denominator: ud})
 	ws, _ = EncodeRecord(r)
-	if FormatID(ws) != "0x06780683fffffffe09290693ffffffff3111" {
+	if FormatID(ws) != "0x06780683FFFFFFFE09290693FFFFFFFF3111" {
 		t.Fatalf("23.45/1256.1: %s", FormatID(ws))
 	}
 	if _, err := EncodeFraction(Fraction{Numerator: Record{Kind: KindValue, Codec: CodecValueIssuer2Word}, Denominator: d}); err == nil {

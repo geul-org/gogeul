@@ -22,7 +22,7 @@ func TestNewGetCmd(t *testing.T) {
 	v2, _ := os.ReadFile(filepath.Join(folder, "0x00000002.geul"))
 	list, _ := os.ReadFile(filepath.Join(folder, "versions.geul"))
 	rel := strings.TrimPrefix(folder, filepath.Join(h.data, ".well-known", "geul")+"/")
-	for a, want := range map[string][]byte{rel + "/latest.geul": v2, rel + "/0x00000002.geul": v2, rel + "/0x00000001.geul": v1, rel + "/versions.geul": list} {
+	for a, want := range map[string][]byte{rel + "/latest.geul": v2, rel + "/0x00000002.geul": v2, rel + "/0x00000001.geul": v1, rel + "/versions.geul": list, strings.ToLower(rel) + "/0x00000002.geul": v2, strings.ToLower(rel) + "/latest.geul": v2} {
 		if out := h.must("get", base+a); out != string(want) || len(want) == 0 {
 			t.Fatalf("%s: %d bytes, want %d", a, len(out), len(want))
 		}

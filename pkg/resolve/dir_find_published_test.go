@@ -37,7 +37,7 @@ func TestDirFindPublished(t *testing.T) {
 	remote := Dir{Store: s}
 	var addrs, missing []string
 	if geulErr == nil {
-		codec := "0x00000000/codecs/0x00000b80"
+		codec := "0x00000000/codecs/0x00000B80"
 		v1, err := local.Find(codec + "/0x00000001.geul")
 		if err != nil {
 			t.Fatal(err)
@@ -45,13 +45,13 @@ func TestDirFindPublished(t *testing.T) {
 		ws, _ := core.ReadWords(v1)
 		sum, _ := core.ContentHash(ws)
 		addrs = append(addrs, "issuers/latest.geul", codec+"/latest.geul", codec+"/0x00000001.geul", codec+"/versions.geul", hashPath(geulIssuer, sum))
-		missing = append(missing, "0x00000000/codecs/0x0000fff0/latest.geul", "0x00000000/hashes/0x"+strings.Repeat("0", 64)+".geul",
+		missing = append(missing, "0x00000000/codecs/0x0000FFF0/latest.geul", "0x00000000/hashes/0x"+strings.Repeat("0", 64)+".geul",
 			"0x00000000/docs/latest.geul", "0x00000000/docs/versions.geul", "0x00000000/codecs/latest.geul", "0x00000000/codecs/versions.geul")
 	}
 	if wikiErr == nil {
-		item := "0x00000001/docs/0x510000000000002a"
-		addrs = append(addrs, item+"/latest.geul", item+"/0x00000001.geul", item+"/versions.geul", "0x0000000000000001/docs/0x510000000000002a/latest.geul")
-		missing = append(missing, "0x00000001/docs/0x51000000ffffffff/latest.geul")
+		item := "0x00000001/docs/0x510000000000002A"
+		addrs = append(addrs, item+"/latest.geul", item+"/0x00000001.geul", item+"/versions.geul", "0x0000000000000001/docs/0x510000000000002A/latest.geul")
+		missing = append(missing, "0x00000001/docs/0x51000000FFFFFFFF/latest.geul")
 	}
 	for _, a := range addrs {
 		want, err := local.Find(a)

@@ -9,7 +9,7 @@ import (
 )
 
 // Write copies the embedded vendor files into dir, creating it, so a static
-// copy of the tree serves them at Prefix as the server does (build).
+// copy of the tree serves them at `_static/`, where the page loads them (build).
 func Write(dir string) error {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err

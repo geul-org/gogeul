@@ -20,7 +20,7 @@ func (s *Stream) Put(issuer []core.Word, doc uint64, slot uint32, r StreamRecord
 		issuer = n
 	}
 	if doc == core.DocIDIssuers {
-		return fmt.Errorf("geul/pack: 0x%016x is the reserved Issuer list ID (PutNamed `issuers/…`)", doc)
+		return fmt.Errorf("geul/pack: 0x%016X is the reserved Issuer list ID (PutNamed `issuers/…`)", doc)
 	}
 	num, ok := s.inum[core.FormatID(issuer)]
 	if !ok {
@@ -31,7 +31,7 @@ func (s *Stream) Put(issuer []core.Word, doc uint64, slot uint32, r StreamRecord
 		return s.closedPut(key)
 	}
 	if s.st.Count > 0 && key <= s.st.Last {
-		return fmt.Errorf("geul/pack: %s/0x%016x slot %d is not after the previous record", core.FormatID(issuer), doc, slot)
+		return fmt.Errorf("geul/pack: %s/0x%016X slot %d is not after the previous record", core.FormatID(issuer), doc, slot)
 	}
 	if len(s.st.PLeaf) == s.o.Build.PLeaf {
 		if err := s.flushLeaf(); err != nil {

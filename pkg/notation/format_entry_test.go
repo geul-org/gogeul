@@ -18,7 +18,7 @@ func TestFormatEntry(t *testing.T) {
 	if got := FormatEntry(doc.Body[0]); got != `#1 LABEL Q42 "Douglas Adams"@en` {
 		t.Fatal(got)
 	}
-	if got := FormatEntry(doc.Body[1]); got != "#2 TRIPLE 0x0191001f0141002a014100050001" {
+	if got := FormatEntry(doc.Body[1]); got != "#2 TRIPLE 0x0191001F0141002A014100050001" {
 		t.Fatal(got)
 	}
 	unnamed := doc.Body[0]

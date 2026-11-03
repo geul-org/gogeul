@@ -10,7 +10,7 @@ import (
 )
 
 func TestParseHex(t *testing.T) {
-	if ws, err := parseHex("0x0B86ffff"); err != nil || !slices.Equal(ws, []core.Word{0x0B86, 0xFFFF}) {
+	if ws, err := parseHex("0x0B86FFFF"); err != nil || !slices.Equal(ws, []core.Word{0x0B86, 0xFFFF}) {
 		t.Fatalf("%v %v", ws, err)
 	}
 	for _, s := range []string{"0B86", "0x", "0x123", "0xzzzz"} {

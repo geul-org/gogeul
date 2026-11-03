@@ -30,7 +30,7 @@ func recordText(r core.Record) string {
 	v, ok := inspect.ParseValue(r)
 	name := core.RecordName(r)
 	if name == "" {
-		name = fmt.Sprintf("codec 0x%02x", r.Codec)
+		name = fmt.Sprintf("codec 0x%02X", r.Codec)
 	}
 	switch {
 	case r.Kind == core.KindValue && ok:

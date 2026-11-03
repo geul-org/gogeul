@@ -20,7 +20,7 @@ func TestReaderAnyLive(t *testing.T) {
 	if ok, err := s.r.anyLive(ctx, kr, gone); err != nil || ok {
 		t.Fatal(ok, err)
 	}
-	empty, _ := s.r.dirRange("0x00000000/docs/0x00000000000000ff")
+	empty, _ := s.r.dirRange("0x00000000/docs/0x00000000000000FF")
 	if ok, err := s.r.anyLive(ctx, empty, nil); err != nil || ok {
 		t.Fatal(ok, err)
 	}

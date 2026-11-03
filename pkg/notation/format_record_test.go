@@ -12,7 +12,7 @@ func TestFormatRecord(t *testing.T) {
 	if formatRecord(absent()) != "ABSENT" || formatRecord(core.EncodeLocalRef(3)) != "#3" || formatRecord(core.EncodeUintValue(2)) != "UNSIGNED-INTEGER(2)" {
 		t.Fatal("short forms")
 	}
-	if got := formatRecord(core.Record{Kind: core.KindReference, Codec: core.CodecGeul, Payload: []core.Word{5}}); got != "0x00a10005" {
+	if got := formatRecord(core.Record{Kind: core.KindReference, Codec: core.CodecGeul, Payload: []core.Word{5}}); got != "0x00A10005" {
 		t.Fatal(got)
 	}
 	if got := formatRecord(core.Record{Kind: core.KindValue, Codec: core.CodecBinaryFloat, Payload: []core.Word{0}}); len(got) < 3 || got[:2] != "0x" {

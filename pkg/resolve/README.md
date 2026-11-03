@@ -43,7 +43,7 @@
 
 ### 공표 주소 (migration.md §3.13)
 
-ID는 소문자 `0x` + 소문자 hex, 자릿수 = 폭 × 4다. 문서 ID는 16자리, 코덱 ID는 8자리, 버전 ID는 8자리다. 쓸 때 Issuer는 발급 폭 자릿수(2 WORD 8자리, 4 WORD 16자리, 16 WORD 64자리)로 쓰고, 읽을 때는 8·16·64자리 0 채움 표기를 같은 Issuer로 받는다(`ParseAddr`가 정규화).
+ID는 소문자 `0x` + A-F 대문자 hex로 쓰고(§1.1 120), 자릿수 = 폭 × 4다. 주소 입력(`ParseAddr`, `Dir.Find`, `Dir.Lookup`)은 소문자·섞인 표기도 받아 대문자로 정규화해 찾는다(§1.1 122). 문서 ID는 16자리, 코덱 ID는 8자리, 버전 ID는 8자리다. 쓸 때 Issuer는 발급 폭 자릿수(2 WORD 8자리, 4 WORD 16자리, 16 WORD 64자리)로 쓰고, 읽을 때는 8·16·64자리 0 채움 표기를 같은 Issuer로 받는다(`ParseAddr`가 정규화).
 
 주소는 다음 10가지뿐이다(`<기준>/.well-known/geul/` 아래). 그 밖의 꼴(`<I>/docs/`·`<I>/codecs/` 목록 포함, §1.1 101), 이름 주소(`geul.org/triple`), 도메인 정규화는 공표 주소가 아니다(`ParseAddr` 오류, 조회 404). Issuer 이름은 CLI·해석기가 Issuer 목록의 `BIND`로 ID로 바꾼다(`Dir.Find`, `Dir.Lookup`). 문서 이름 색인은 없다(문서·코덱은 ID로만 찾는다).
 
@@ -56,7 +56,7 @@ ID는 소문자 `0x` + 소문자 hex, 자릿수 = 폭 × 4다. 문서 ID는 16�
 
 - `ParseAddr`는 `file://…`, `https://…`, `.well-known/geul/…`, 맨 경로를 받아 `Addr`로, `Addr.Path()`는 저장 경로로 바꾼다. `Fetch(ctx, src, 주소 문자열)`·`FetchAddr`가 바이트를 낸다.
 - `latest.geul`은 저장하지 않는 별칭이다. 문서·코덱·Issuer 목록 모두 `versions.geul`에서 폐기 권고·삭제가 아닌 가장 높은 버전을 찾아 그 바이트를 낸다(리다이렉트 없음).
-- 목록은 `issuers/` 하나다. 버전 1부터이고 예약 문서 ID `0xffffffffffffffff`(Issuer `0x00000000`, `core.DocIDIssuers`)로 버전 목록을 갖는다. `versions.geul`의 `PUBLICATION`은 `DOC-POINTER(0x00000000, 예약 ID, 버전)`다. 예약 ID는 `<I>/docs/<D>/` 주소로 받지 않는다. 공표는 `Dir.PublishList`다. `<I>/docs/`·`<I>/codecs/` 목록은 없다(§1.1 101). `Dir.Documents`는 저장 폴더(pack 인벤토리)에서 문서·코덱 ID를 나열한다.
+- 목록은 `issuers/` 하나다. 버전 1부터이고 예약 문서 ID `0xFFFFFFFFFFFFFFFF`(Issuer `0x00000000`, `core.DocIDIssuers`)로 버전 목록을 갖는다. `versions.geul`의 `PUBLICATION`은 `DOC-POINTER(0x00000000, 예약 ID, 버전)`다. 이 예약 ID는 모든 Issuer에서 `<I>/docs/<D>/` 주소로 받지 않고(404) 일반 문서로 공표하지 않는다. 문서 ID `0x0000000000000000`도 모든 Issuer의 예약 ID로, 용어 정의 색인 자리(`core.DocIDTermIndex`)이며 보통 문서처럼 공표·조회한다(§1.1 121). 공표는 `Dir.PublishList`다. `<I>/docs/`·`<I>/codecs/` 목록은 없다(§1.1 101). `Dir.Documents`는 저장 폴더(pack 인벤토리)에서 문서·코덱 ID를 나열한다.
 - 코덱 문서의 `DOC-ID`는 `CODEC-POINTER(Issuer, 코덱 ID, 버전 0)`이고 `<I>/codecs/<C>/`에 놓인다(`Dir.PublishCodec`).
 - Issuer는 코덱 ID를 Kind와 상관없이 자기 `codecs/` 안에서 겹치지 않게 배정한다(§1.1 103). 그래서 두 가지를 기계로 검사한다. 해석: 레코드로 찾은 코덱 문서의 `DECLARE` 대상 Kind가 레코드 Kind와 다르면 오류(`checkDeclareKind`, `Dir.CodecSpecs`·`Resolver.CodecSpecs`). 공표: 같은 Issuer·같은 코덱 ID에 이미 있는(삭제되지 않은) 버전과 `DECLARE` 대상 TAG가 다르면 거부(`Dir.sameCodec`, `Publish`·`PublishCodec`).
 - 옛 경로(`issuers.geul`, `documents.geul`, `h/`, `<I>/<문서 ID>/`, `<I>/<문서 ID>.geul`)는 읽지도 쓰지도 않는다.

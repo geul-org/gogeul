@@ -11,7 +11,7 @@ func TestArchiveBatches(t *testing.T) {
 	ctx := context.Background()
 	a, _ := testArchive(t)
 	a.WriteFile("0x00000002/docs/0x0000000000000001/versions.geul", []byte("v"))
-	a.WriteFile("0x00000000/hashes/0xabababababababababababababababababababababababababababababababab.geul", []byte("h"))
+	a.WriteFile("0x00000000/hashes/0xABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB.geul", []byte("h"))
 	a.Remove("issuers/0x00000001.geul")
 	bs, err := a.batches(ctx)
 	if err != nil || len(bs) != 2 {
@@ -25,7 +25,7 @@ func TestArchiveBatches(t *testing.T) {
 	if len(b0.Delete) != 1 || len(b0.Put) != 1 {
 		t.Fatal(b0)
 	}
-	if got, err := b0.Get("0x00000000/hashes/0xabababababababababababababababababababababababababababababababab.geul"); err != nil || string(got) != "h" {
+	if got, err := b0.Get("0x00000000/hashes/0xABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB.geul"); err != nil || string(got) != "h" {
 		t.Fatal(err)
 	}
 	a.find("0x00000000").r.m.pLayers = []layer{{blk: block{kind: blkPInner, keys: []string{pKey(0, 0, 0)}, locs: []Loc{{Obj: 99}}}}}

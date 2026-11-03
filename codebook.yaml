@@ -10,7 +10,6 @@ required:
     notation: "텍스트 표기 — 레코드 한 줄 ↔ GEUL 레코드(geul CLI show·add·meta). 짧은 형식이 없으면 날 WORD로 써서 왕복 보장"
     cli: "geul 명령줄 도구 — cobra 명령 정의, 인자 해석과 출력만(로직은 pkg)"
     page: "뷰어 페이지 — inspect.Document → 페이지 모델(HEAD·BODY 행, 필드, 참조·역참조, SOURCE 구간, 그래프) → HTML"
-    server: "뷰어 HTTP 서버(geul serve) — 요청마다 .geul을 읽어 페이지(브라우저)나 바이트(Accept application/vnd.geul)·목록으로 응답"
     build: "정적 굽기(geul build) — 트리를 원본·뷰어 페이지·목록·스크립트 파일로 써서 웹 호스트(S3+CloudFront)에 올린다"
     pack: "pack 저장 포맷 — 아카이브(경로 → 바이트)를 내용 해시 이름의 불변 객체(매니페스트·색인·데이터 pack)로 담고 로컬 pread·HTTP Range로 읽고 세대로 쓴다 (geul-dev files/pack/README.md)"
     config: "geul CLI 설정 — 플래그·환경변수(GEUL…)·설정 파일·데이터 폴더 탐색의 우선순위 해석"

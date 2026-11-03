@@ -4,7 +4,7 @@ package pack
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// normalIssuer reads s, `0x` + 8, 16 or 64 lowercase hex digits, and returns
+// normalIssuer reads s, `0x` + 8, 16 or 64 hex digits, and returns
 // the canonical hex of that Issuer (core.IssuerNormal), the form the Issuer
 // table and the stored paths use.
 func normalIssuer(s string) (string, bool) {

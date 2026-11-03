@@ -9,8 +9,10 @@ import (
 func TestParsePattern(t *testing.T) {
 	cases := map[string]Pattern{
 		"0x00001234":                    {Issuer: "0x00001234"},
-		"0x00001234/0x00000000000000ab": {Issuer: "0x00001234", Doc: "0x00000000000000ab"},
+		"0x00001234/0x00000000000000AB": {Issuer: "0x00001234", Doc: "0x00000000000000AB"},
 		"0x00001234/*":                  {Issuer: "0x00001234"},
+		"0x00001234/0x00000000000000ab": {Issuer: "0x00001234", Doc: "0x00000000000000AB"},
+		"0x0000000000001234":            {Issuer: "0x00001234"},
 		"*":                             {Issuer: "*"},
 	}
 	for s, want := range cases {
@@ -18,7 +20,7 @@ func TestParsePattern(t *testing.T) {
 			t.Fatalf("%q: %+v %v", s, p, err)
 		}
 	}
-	for _, s := range []string{"0x123", "0x0001", "0x00001234/0xab", "0x00001234/0x00000000000000AB"} {
+	for _, s := range []string{"0x123", "0x0001", "0x00001234/0xAB", "0x00001234/0X00000000000000AB"} {
 		if _, err := parsePattern(s); err == nil {
 			t.Fatalf("%q: want error", s)
 		}

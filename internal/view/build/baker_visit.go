@@ -8,7 +8,7 @@ import (
 )
 
 // visit is the WalkDir callback: a directory gets its listing, a .geul file
-// its copy and page, and other files are skipped (serve does not answer them).
+// its copy and page, and other files are skipped.
 func (b *baker) visit(p string, d fs.DirEntry, err error) error {
 	rel := p
 	switch {

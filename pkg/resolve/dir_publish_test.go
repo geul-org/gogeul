@@ -40,6 +40,17 @@ func TestDirPublish(t *testing.T) {
 	if _, err := d.Publish(core.PutWords(core.WrapDocument(append(enc(listID), 0x1C30, 0x1C40)))); err == nil {
 		t.Fatal("reserved Issuer list ID: want error")
 	}
+	otherList, _ := core.EncodeDocID([]core.Word{0, 1}, []core.Word{0xffff, 0xffff, 0xffff, 0xffff})
+	if _, err := d.Publish(core.PutWords(core.WrapDocument(append(enc(otherList), 0x1C30, 0x1C40)))); err == nil {
+		t.Fatal("reserved ID 0xFFFFFFFFFFFFFFFF under another Issuer: want error")
+	}
+	termIndex, _ := core.EncodeDocID([]core.Word{0, 1}, []core.Word{0, 0, 0, 0})
+	if e, err := d.Publish(core.PutWords(core.WrapDocument(append(enc(termIndex), 0x1C30, 0x1C40)))); err != nil || e.Version != 1 {
+		t.Fatalf("term definition index 0x0000000000000000 is published: %+v %v", e, err)
+	}
+	if _, err := d.Find("0x00000001/docs/0x0000000000000000/latest.geul"); err != nil {
+		t.Fatalf("term definition index is read: %v", err)
+	}
 	if _, err := d.Publish(core.PutWords(core.WrapDocument([]core.Word{0x1C30}))); err == nil {
 		t.Fatal("no END: want error")
 	}

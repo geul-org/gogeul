@@ -57,10 +57,9 @@ geul show me/docs/0x0000000000000001/latest.geul
 
 Codec names and fields (`LABEL`, `TRIPLE`, `normal`, ...) come from the codec spec documents of the GEUL Issuer (`0x00000000`, geul.org) in the data folder. Without them, `add` cannot read such lines and `show` prints those records as raw words.
 
-View it in a browser, or bake it for a static host:
+Bake it into viewer pages for a static host:
 
 ```sh
-geul serve                               # prints a local URL
 geul build -o site                       # writes site/.well-known/geul/
 ```
 
@@ -141,7 +140,7 @@ The CLI lives in `cmd/geul` and `internal/`.
 | Edit a draft file | `new`, `open`, `add`, `def`, `set`, `rm [--force]`, `meta [--unset]` |
 | Publish | `publish [--amend]`, `delta`, `deprecate`, `tombstone` |
 | Issuers and settings | `issuer new\|ls\|show`, `env [-w\|-u]` |
-| Viewer | `serve`, `build` |
+| Viewer | `build` |
 | Pack archives | `pack build [--single]`, `pack unpack`, `pack verify`, `pack compact` |
 
 Changes are compared by Edge Id, not by line. Run `geul <command> --help` for details. Global flags: `--data`, `--config`, `--format text|json`.
@@ -159,7 +158,7 @@ A data folder's `.well-known/geul/` is stored in one of two formats. Both are re
   | document | `<I>/docs/<D>/latest.geul` | `<I>/docs/<D>/<V>.geul` | `<I>/docs/<D>/versions.geul` |
   | content hash | | `<I>/hashes/<H>.geul` | |
 
-  `<I>` is the Issuer in 8, 16 or 64 lowercase hex digits (written at its issued width; zero-padded wider spellings read as the same Issuer), `<D>` 16 digits, `<C>` and `<V>` 8 digits, `<H>` 64 digits. `latest.geul` is never stored: it is the newest version in `versions.geul` that is neither deprecated nor deleted. The Issuer list is the one list: a versioned document of Issuer `0x00000000` under the reserved document ID `0xffffffffffffffff`. There is no `<I>/docs/` or `<I>/codecs/` list. Any other path is refused (404).
+  `<I>` is the Issuer in 8, 16 or 64 hex digits (written at its issued width; zero-padded wider spellings read as the same Issuer), `<D>` 16 digits, `<C>` and `<V>` 8 digits, `<H>` 64 digits. Hex is written with A-F upper case after a lower-case `0x`; an address is also read with lower-case or mixed-case digits and finds the same document (`0X` is not hex). `latest.geul` is never stored: it is the newest version in `versions.geul` that is neither deprecated nor deleted. The Issuer list is the one list: a versioned document of Issuer `0x00000000` under the reserved document ID `0xFFFFFFFFFFFFFFFF`, which every Issuer reserves (404 under `<I>/docs/`); document ID `0x0000000000000000` is reserved for the Issuer's term definition index and is published and read as usual. There is no `<I>/docs/` or `<I>/codecs/` list. Any other path is refused (404).
 - **Pack archive**: immutable content-named objects (`m/<sha256>.gpm` manifests, `o/<sha256>.gpx` indexes, `o/<sha256>.gpk` data packs) and `latest.txt`, the only mutable file. There is one set per Issuer (`<Issuer>/latest.txt`), or one set at the top (`pack build --single`). The same objects can be read from a local folder or a CDN with one HTTP Range request per read.
 
 A new, empty data folder is written as a pack archive; a directory archive that already has files stays a directory archive. Commands that write to a pack archive add a new generation per changed set after the command succeeds.
@@ -203,14 +202,12 @@ Records in a pack archive are stored raw or as zstd frames ([klauspost/compress]
 ## Viewer
 
 ```
-geul serve [--addr host:port] [FILE.geul|DIR]
 geul build -o OUT [DIR]
 ```
 
-Without an argument both use the data folder.
+Without an argument it uses the data folder.
 
-- `serve` listens on `127.0.0.1` with a free port unless `--addr` is given, and re-reads files on every request. Documents are served at their public paths under `/.well-known/geul/`. `<path>.geul` is always the bytes (`application/vnd.geul`); `<path>` is the bytes when `Accept` asks for `application/vnd.geul`, and the viewer page otherwise (`Vary: Accept`). Directories are listed, with `index.json` for the same listing as JSON. A path starting with an Issuer name (`geul.org/…`) redirects to the Issuer ID path; documents have no names. Listings name Issuers at the top of the tree and show document and codec folders by ID (from the stored folders or pack inventory).
-- `build` writes the same pages as static files to `OUT/.well-known/geul/`: `<path>.geul`, the page at `<path>`, `index.html` and `index.json` per directory, and the scripts under `_static/`. The web host must serve `<path>.geul` for `<path>` when `Accept` asks for `application/vnd.geul`, and send `Vary: Accept`. `build` refuses an output inside the source tree and stops at a document that does not decode.
+- `build` writes the viewer as static files to `OUT/.well-known/geul/`: `<path>.geul` (the bytes), the viewer page at `<path>`, `index.html` and `index.json` per directory, and the scripts under `_static/`. Listings name Issuers at the top of the tree and show document and codec folders by ID. `build` refuses an output inside the source tree and stops at a document that does not decode.
 - The viewer makes no external network requests. The graph view embeds Cytoscape.js, dagre and cytoscape-dagre (MIT).
 
 ## Requirements

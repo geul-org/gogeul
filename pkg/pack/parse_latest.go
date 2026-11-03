@@ -13,7 +13,7 @@ func parseLatest(b []byte) (uint64, string, error) {
 	var gen uint64
 	var name string
 	_, err := fmt.Sscanf(strings.TrimSuffix(string(b), "\n"), "%d %s", &gen, &name)
-	_, hexOK := parseHex("0x"+name, 64)
+	_, hexOK := parseHashHex(name)
 	if err != nil || gen == 0 || !hexOK || fmt.Sprintf("%d %s\n", gen, name) != string(b) {
 		return 0, "", corrupt("latest.txt")
 	}

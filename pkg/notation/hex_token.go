@@ -1,5 +1,5 @@
 //ff:func feature=notation type=decoder control=iteration dimension=1
-//ff:what hexToken — words as one token: 0x and four lowercase hex digits per word
+//ff:what hexToken — words as one token: 0x and four upper-case hex digits per word
 package notation
 
 import (
@@ -14,7 +14,7 @@ func hexToken(ws []core.Word) string {
 	var b strings.Builder
 	b.WriteString("0x")
 	for _, w := range ws {
-		fmt.Fprintf(&b, "%04x", uint16(w))
+		fmt.Fprintf(&b, "%04X", uint16(w))
 	}
 	return b.String()
 }

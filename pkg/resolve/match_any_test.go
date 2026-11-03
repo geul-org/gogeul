@@ -7,7 +7,7 @@ import (
 )
 
 func TestMatchAny(t *testing.T) {
-	d := DocKey{Issuer: "0x00000000", Doc: "0xffff000000000001"}
+	d := DocKey{Issuer: "0x00000000", Doc: "0xFFFF000000000001"}
 	if !matchAny([]Pattern{{Issuer: "0x00000002"}, {Issuer: "0x00000000"}}, d) {
 		t.Fatal("want match")
 	}

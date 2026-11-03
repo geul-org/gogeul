@@ -14,23 +14,25 @@ import (
 func TestFetchAddr(t *testing.T) {
 	ctx := context.Background()
 	tree := formsTree(t)
-	v2, _ := tree.Find("0x00000000/docs/0xffff000000000007/0x00000002.geul")
+	v2, _ := tree.Find("0x00000000/docs/0xFFFF000000000007/0x00000002.geul")
 	got := map[string][]byte{
-		"0x00000000/docs/0xffff000000000007/latest.geul":                            v2,
-		"0x0000000000000000/docs/0xffff000000000007/latest.geul":                    v2,
-		"0x" + strings.Repeat("0", 64) + "/docs/0xffff000000000007/0x00000002.geul": v2,
+		"0x00000000/docs/0xFFFF000000000007/latest.geul":                            v2,
+		"0x0000000000000000/docs/0xFFFF000000000007/latest.geul":                    v2,
+		"0x" + strings.Repeat("0", 64) + "/docs/0xFFFF000000000007/0x00000002.geul": v2,
+		"0x00000000/docs/0xfFfF000000000007/0x00000002.geul":                        v2,
 	}
-	addrs := []string{"issuers/latest.geul", "issuers/versions.geul", "0x00000000/docs/0xffff000000000007/versions.geul", "0x00000000/docs/0xffff000000000007/0x00000001.geul",
-		"0x00000002/docs/0x0000000000000005/latest.geul", "0x00000000/docs/0xffff000000000008/versions.geul"}
+	addrs := []string{"issuers/latest.geul", "issuers/versions.geul", "0x00000000/docs/0xFFFF000000000007/versions.geul", "0x00000000/docs/0xFFFF000000000007/0x00000001.geul",
+		"0x00000002/docs/0x0000000000000005/latest.geul", "0x00000000/docs/0xFFFF000000000008/versions.geul"}
 	for _, a := range addrs {
 		b, err := tree.Find(a)
 		if err != nil {
 			t.Fatal(a, err)
 		}
 		got[a] = b
+		got[strings.ToLower(a)] = b
 	}
-	missing := []string{"0x00000000/docs/0xffff000000000008/latest.geul", "0x00000000/docs/0xffff000000000008/0x00000001.geul", "0x00000000/docs/0xfffffffffffffffe/latest.geul", "0x00000000/docs/0xffffffffffffffff/versions.geul",
-		"0x00000000/codecs/latest.geul", "0x00000009/docs/latest.geul", "0x00000000/docs/latest.geul", "0x00000000/docs/versions.geul", "0x00000000/docs/0x00000001.geul", "0x00000000/docs/0xffff000000000009/versions.geul"}
+	missing := []string{"0x00000000/docs/0xFFFF000000000008/latest.geul", "0x00000000/docs/0xFFFF000000000008/0x00000001.geul", "0x00000000/docs/0xFFFFFFFFFFFFFFFE/latest.geul", "0x00000000/docs/0xFFFFFFFFFFFFFFFF/versions.geul", "0x00000000/docs/0xffffffffffffffff/versions.geul",
+		"0x00000000/codecs/latest.geul", "0x00000009/docs/latest.geul", "0x00000000/docs/latest.geul", "0x00000000/docs/versions.geul", "0x00000000/docs/0x00000001.geul", "0x00000000/docs/0xFFFF000000000009/versions.geul"}
 	for _, f := range formsOf(t, tree) {
 		checkAddrs(t, f, got, missing)
 	}

@@ -10,7 +10,7 @@ import (
 func TestHashPath(t *testing.T) {
 	var h [32]byte
 	h[31] = 0xAB
-	if p := hashPath(geulIssuer, h); p != "0x00000000/hashes/0x"+strings.Repeat("0", 62)+"ab.geul" {
+	if p := hashPath(geulIssuer, h); p != "0x00000000/hashes/0x"+strings.Repeat("0", 62)+"AB.geul" {
 		t.Fatalf("got %q", p)
 	}
 }

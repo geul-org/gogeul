@@ -8,7 +8,7 @@ import (
 )
 
 // storedTail reports whether name is versions.geul or `<버전 ID>.geul` (8
-// lowercase hex digits, not 0). latest.geul is not stored.
+// hex digits, not 0). latest.geul is not stored.
 func storedTail(name string) bool {
 	if name == listFile {
 		return true

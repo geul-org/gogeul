@@ -8,7 +8,7 @@ import (
 )
 
 // addrTail sets a's version from the file name: `latest.geul` (Latest),
-// `versions.geul` (Versions) or `<버전 ID>.geul`, 8 lowercase hex digits and
+// `versions.geul` (Versions) or `<버전 ID>.geul`, 8 hex digits and
 // not 0. Anything else is bad.
 func addrTail(a Addr, name string, bad error) (Addr, error) {
 	switch name {

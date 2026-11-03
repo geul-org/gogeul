@@ -15,13 +15,13 @@ import (
 // 형식 지정), for a plain web host:
 //
 //	<path>.geul       the document's bytes (application/vnd.geul)
-//	<path>            its viewer page (text/html; the host picks by Accept)
+//	<path>            its viewer page (text/html)
 //	<dir>/index.html  the directory listing
 //	<dir>/index.json  the listing for the tree browser
 //	_static/          the graph scripts
 //
-// The pages are the ones serve answers. The codec specs come from the tree;
-// a tree whose specs do not read lays records out generically, as serve does.
+// The codec specs come from the tree;
+// a tree whose specs do not read lays records out generically.
 // A document that does not decode stops the build. dst must not be src or
 // inside it.
 func TreeFrom(t resolve.Store, src, dst string) (Count, error) {

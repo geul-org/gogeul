@@ -44,7 +44,7 @@ func TestAppDocSpec(t *testing.T) {
 	if len(a.docSpec(make([]byte, 8))) != 0 {
 		t.Fatal("not a document: want empty")
 	}
-	list := filepath.Join(h.data, ".well-known", "geul", "0x00000000", "codecs", "0x00000aa0", "versions.geul")
+	list := filepath.Join(h.data, ".well-known", "geul", "0x00000000", "codecs", "0x00000AA0", "versions.geul")
 	os.WriteFile(list, []byte{1}, 0o644)
 	if len(a.docSpec(b)) != 0 {
 		t.Fatal("broken spec: want empty")

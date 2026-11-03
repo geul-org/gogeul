@@ -3,7 +3,6 @@
 package cli
 
 import (
-	"encoding/hex"
 	"fmt"
 )
 
@@ -27,7 +26,7 @@ func (a *app) versions(addr string) error {
 		return err
 	}
 	for _, e := range h.Entries {
-		fmt.Fprintf(a.out, "%d\t%s\t0x%s%s\n", e.Version, versionTime(e.At), hex.EncodeToString(e.Hash[:]), stateOf(e.VersionEntry))
+		fmt.Fprintf(a.out, "%d\t%s\t0x%X%s\n", e.Version, versionTime(e.At), e.Hash[:], stateOf(e.VersionEntry))
 	}
 	fmt.Fprintf(a.out, "NEXT-LOCAL-ID %d\n", h.Next)
 	return nil

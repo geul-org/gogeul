@@ -17,7 +17,7 @@ import (
 // same bytes again is the version already there.
 func (d Dir) PublishList(issuer []core.Word, list uint64, b []byte) (VersionEntry, error) {
 	if list != core.DocIDIssuers || !slices.Equal(issuer, []core.Word{0, 0}) {
-		return VersionEntry{}, fmt.Errorf("geul/resolve: 0x%016x of %s is not a list document", list, core.FormatID(issuer))
+		return VersionEntry{}, fmt.Errorf("geul/resolve: 0x%016X of %s is not a list document", list, core.FormatID(issuer))
 	}
 	ws, err := core.ReadWords(b)
 	if err != nil {

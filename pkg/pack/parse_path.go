@@ -11,11 +11,12 @@ import "strings"
 // served by reading the version list, never stored, and every other spelling
 // is outside the forms — `<I>/docs/<V>.geul` and `<I>/codecs/<V>.geul` too,
 // as there is no document or codec list (§1.1 101): all are spaceNone.
-// The Issuer may be zero-padded; ref.issuer and ref.path are canonical.
+// The Issuer may be zero-padded and the hex digits of any case (§1.1 122);
+// ref.issuer and ref.path are canonical (A-F upper case, §1.1 120).
 func parsePath(p string) pathRef {
-	seg := strings.Split(p, "/")
+	seg := canonSegs(strings.Split(p, "/"))
 	if len(seg) == 2 && seg[0] == issuersDir && storedTail(seg[1]) {
-		return pathRef{space: spaceNamed, path: p}
+		return pathRef{space: spaceNamed, path: strings.Join(seg, "/")}
 	}
 	if len(seg) < 3 {
 		return pathRef{}

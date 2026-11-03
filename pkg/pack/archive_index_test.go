@@ -12,7 +12,7 @@ func TestArchiveIndex(t *testing.T) {
 	a.puts["issuers/0x00000002.geul"] = nil
 	a.dels["issuers/0x00000001.geul"] = true
 	idx, err := a.index()
-	if err != nil || len(idx) != 18 || idx[len(idx)-1] != "issuers/0x00000002.geul" || idx[len(idx)-2] != "0x00000000/hashes/0xfd6c8b66528778724a2acde087cf312f9abcfc402f8c9d2bb3a177e1cbd683b6.geul" || idx[0] != "0x00000000/codecs/0x00000420/0x00000001.geul" {
+	if err != nil || len(idx) != 18 || idx[len(idx)-1] != "issuers/0x00000002.geul" || idx[len(idx)-2] != "0x00000000/hashes/0xFD6C8B66528778724A2ACDE087CF312F9ABCFC402F8C9D2BB3A177E1CBD683B6.geul" || idx[0] != "0x00000000/codecs/0x00000420/0x00000001.geul" {
 		t.Fatal(idx, err)
 	}
 	if again, _ := a.index(); &again[0] != &idx[0] {

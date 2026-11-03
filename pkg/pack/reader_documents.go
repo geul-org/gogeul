@@ -20,7 +20,7 @@ func (r *Reader) Documents(ctx context.Context, issuer string) ([]string, error)
 	var out []string
 	for _, k := range sortedKeys(s) {
 		_, d, _ := splitPKey(k)
-		id := fmt.Sprintf("0x%016x", d)
+		id := fmt.Sprintf("0x%016X", d)
 		if len(out) == 0 || out[len(out)-1] != id {
 			out = append(out, id)
 		}

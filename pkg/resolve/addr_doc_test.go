@@ -13,12 +13,12 @@ func TestAddrDoc(t *testing.T) {
 	if err != nil || a.Kind != AddrDoc || a.ID[3] != 7 || !a.Versions {
 		t.Fatal(a, err)
 	}
-	for _, id := range []string{"seven", "0x00000007", "0xffffffffffffffff", "0x0000000000000007/x"} {
+	for _, id := range []string{"seven", "0x00000007", "0xFFFFFFFFFFFFFFFF", "0xffffffffffffffff", "0x0000000000000007/x"} {
 		if _, err := addrDoc(Addr{}, id, "latest.geul", bad); err != bad {
 			t.Fatal(id, err)
 		}
 	}
-	for _, id := range []string{"0xfffffffffffffffe", "0xfffffffffffffffd"} {
+	for _, id := range []string{"0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFD", "0x0000000000000000"} {
 		if a, err := addrDoc(Addr{}, id, "0x00000001.geul", bad); err != nil || a.Kind != AddrDoc || a.Version != 1 {
 			t.Fatal(id, a, err)
 		}

@@ -21,7 +21,7 @@ func shortLanguage(s string, ctx Context) (core.Record, error) {
 		ws, err := parseHex(s)
 		_, assigned := langs[core.FormatID(ws)]
 		if err != nil || len(ws) != 1 || ws[0] == 0 || ws[0] == 0xFFFF || langs != nil && !assigned {
-			return core.Record{}, fmt.Errorf("geul/notation: %q is not an assigned LANGUAGE-SHORT-CODE (1 WORD in the GEUL Language Registry, never 0x0000 or 0xffff)", s)
+			return core.Record{}, fmt.Errorf("geul/notation: %q is not an assigned LANGUAGE-SHORT-CODE (1 WORD in the GEUL Language Registry, never 0x0000 or 0xFFFF)", s)
 		}
 		return core.Record{Kind: core.KindValue, Codec: codecLanguageShort, Payload: ws}, nil
 	}

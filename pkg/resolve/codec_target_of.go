@@ -4,12 +4,12 @@ package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// codecTargetOf reads a codec ID in canonical hex (8 digits) and returns its
+// codecTargetOf reads a codec ID in canonical hex (8 digits, A-F upper case as stored) and returns its
 // target word when it is a GEUL direct codec ID (codecDocID): high word 0, then
 // a TAG of prefix 000 with LLLL 0000 that is not a slot marker (0x0000,
 // 0x0010, 0x0020 have no codec document).
 func codecTargetOf(idHex string) (core.Word, bool) {
-	b, ok := parseHexID(idHex, 2)
+	b, ok := storedHexID(idHex, 2)
 	if !ok {
 		return 0, false
 	}

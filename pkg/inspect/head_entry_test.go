@@ -19,7 +19,7 @@ func TestHeadEntry(t *testing.T) {
 	}
 	for _, r := range typed {
 		if e := headEntry(r); e.Data == nil || e.Name == "" {
-			t.Fatalf("0x%02x: %+v", r.Codec, e)
+			t.Fatalf("0x%02X: %+v", r.Codec, e)
 		}
 	}
 	if e := headEntry(core.Record{Kind: core.KindMeta, Codec: core.MetaSpecVersion}); e.Data != nil || e.Name != "SPEC-VERSION" {

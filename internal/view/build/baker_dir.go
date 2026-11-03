@@ -6,8 +6,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-
-	"github.com/geul-org/gogeul/internal/view/server"
 )
 
 // dir writes index.html and index.json for the tree directory rel (relative to
@@ -18,8 +16,8 @@ func (b *baker) dir(rel string) error {
 		return err
 	}
 	u := wellKnown + rel
-	if err := writeFile(filepath.Join(dir, "index.html"), func(w io.Writer) error { return server.IndexHTML(w, b.tree, u) }); err != nil {
+	if err := writeFile(filepath.Join(dir, "index.html"), func(w io.Writer) error { return indexHTML(w, b.tree, u) }); err != nil {
 		return err
 	}
-	return writeFile(filepath.Join(dir, "index.json"), func(w io.Writer) error { return server.IndexJSON(w, b.tree, u) })
+	return writeFile(filepath.Join(dir, "index.json"), func(w io.Writer) error { return indexJSON(w, b.tree, u) })
 }

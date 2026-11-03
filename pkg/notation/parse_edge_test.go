@@ -18,7 +18,7 @@ func TestParseEdge(t *testing.T) {
 	if e, err := ParseEdge(`label Q42 "x"`, ctx); err != nil || e.Label != "" || e.Codec != 0x04 {
 		t.Fatalf("%+v %v", e, err)
 	}
-	if e, err := ParseEdge("0x0a43005100070001", ctx); err != nil || e.Label != "7" || e.Codec != 0x04 {
+	if e, err := ParseEdge("0x0A43005100070001", ctx); err != nil || e.Label != "7" || e.Codec != 0x04 {
 		t.Fatalf("raw: %+v %v", e, err)
 	}
 	if e, err := ParseEdge("#edu TRIPLE P31 Q42 Q5 preferred", ctx); err != nil || e.Label != "edu" {

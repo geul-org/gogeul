@@ -4,7 +4,7 @@ package resolve
 
 import "github.com/geul-org/gogeul/pkg/core"
 
-// addrDoc reads `<문서 ID>/<name>`: the 4-word document ID (16 lowercase hex
+// addrDoc reads `<문서 ID>/<name>`: the 4-word document ID (16 hex
 // digits), the name as addrTail. The reserved Issuer list ID
 // (core.DocIDIssuers) is not a document address.
 func addrDoc(a Addr, id, name string, bad error) (Addr, error) {

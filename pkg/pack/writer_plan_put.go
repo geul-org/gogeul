@@ -16,7 +16,8 @@ func (w *writer) planPut(path string) (*put, error) {
 	if ref.space == spaceNone || len(path) > 0xFFFF {
 		return nil, fmt.Errorf("geul/pack: %q is not a stored 공표 주소", path)
 	}
-	data, err := w.b.Get(path)
+	src := path
+	data, err := w.b.Get(src)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +32,7 @@ func (w *writer) planPut(path string) (*put, error) {
 			return nil, nil
 		}
 	}
-	pu := &put{path: path, ref: ref, sum: w.sums[path], n: len(data)}
+	pu := &put{path: path, src: src, ref: ref, sum: w.sums[path], n: len(data)}
 	pu.ch, pu.chOK = contentHash(data)
 	return pu, nil
 }

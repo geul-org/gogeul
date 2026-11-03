@@ -3,7 +3,6 @@
 package cli
 
 import (
-	"encoding/hex"
 	"fmt"
 	"os"
 
@@ -42,6 +41,6 @@ func (a *app) publish(path string, amend bool) error {
 	if !amend && seen[e.Hash] {
 		note = " (already published; nothing written)"
 	}
-	fmt.Fprintf(a.out, "%d 0x%s%s\n", e.Version, hex.EncodeToString(e.Hash[:]), note)
+	fmt.Fprintf(a.out, "%d 0x%X%s\n", e.Version, e.Hash[:], note)
 	return nil
 }

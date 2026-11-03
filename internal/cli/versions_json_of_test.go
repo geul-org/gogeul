@@ -16,7 +16,7 @@ func TestVersionsJSONOf(t *testing.T) {
 	}}
 	got := versionsJSONOf(h)
 	v := got.Versions
-	if got.NextLocalID != 5 || len(v) != 2 || v[0].Hash[:6] != "0xab00" || len(v[0].Hash) != 66 || v[0].At != "1970-01-01T00:00:00Z" || v[0].State != "deprecated" {
+	if got.NextLocalID != 5 || len(v) != 2 || v[0].Hash[:6] != "0xAB00" || len(v[0].Hash) != 66 || v[0].At != "1970-01-01T00:00:00Z" || v[0].State != "deprecated" {
 		t.Fatalf("%+v", got)
 	}
 	if v[1].At != "" || v[1].State != "" {

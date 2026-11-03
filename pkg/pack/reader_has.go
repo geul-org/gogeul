@@ -22,6 +22,7 @@ func (r *Reader) Has(ctx context.Context, path string) (bool, error) {
 	case spaceH:
 		_, err = r.find(ctx, r.m.hLayers, ref.hash, path)
 	default:
+		path = ref.path
 		i := sort.Search(len(r.m.named), func(i int) bool { return r.m.named[i].path >= path })
 		return i < len(r.m.named) && r.m.named[i].path == path, nil
 	}

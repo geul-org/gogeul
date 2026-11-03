@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-// parseVersion reads s as a decimal version ID or as `0x` + 8 lowercase hex
+// parseVersion reads s as a decimal version ID or as `0x` + 8 hex
 // digits (FormatVersion).
 func parseVersion(s string) (uint32, error) {
 	if b, ok := parseHexID(s, 2); ok {

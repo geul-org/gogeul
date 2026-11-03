@@ -26,7 +26,7 @@ func TestParseAddress(t *testing.T) {
 	if r.Codec != core.CodecExternalIssuer16Word {
 		t.Fatalf("%+v", r)
 	}
-	for _, s := range []string{"nobody/x", "0x00000000/0x0000000000000806@2#1", "geul.org/0x0000000000000806#0", "geul.org/0x0000000000000806#x", "0x00000000/0x00000b80#1"} {
+	for _, s := range []string{"nobody/x", "0x00000000/0x0000000000000806@2#1", "geul.org/0x0000000000000806#0", "geul.org/0x0000000000000806#x", "0x00000000/0x00000B80#1"} {
 		if _, err := parseAddress(s, ctx); err == nil {
 			t.Errorf("%s: want error", s)
 		}

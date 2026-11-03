@@ -11,7 +11,7 @@ func (w *writer) samples() ([][]byte, [][]byte, error) {
 		if i >= DefaultDictSamples || nTrain >= dictTrainBytes {
 			break
 		}
-		b, err := w.b.Get(p.path)
+		b, err := w.b.Get(p.src)
 		if err != nil {
 			return nil, nil, err
 		}

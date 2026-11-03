@@ -4,7 +4,6 @@ package cli
 
 import (
 	"crypto/ed25519"
-	"encoding/hex"
 	"fmt"
 
 	"github.com/geul-org/gogeul/pkg/core"
@@ -18,7 +17,7 @@ func (a *app) issuerShow(s string) error {
 	}
 	for _, k := range keys {
 		if k.Name == s || core.FormatID(k.Issuer) == s {
-			fmt.Fprintf(a.out, "name %s\nissuer %s\nalgorithm Ed25519 (0x0001)\npublic-key 0x%s\n", k.Name, core.FormatID(k.Issuer), hex.EncodeToString(k.Key.Public().(ed25519.PublicKey)))
+			fmt.Fprintf(a.out, "name %s\nissuer %s\nalgorithm Ed25519 (0x0001)\npublic-key 0x%X\n", k.Name, core.FormatID(k.Issuer), []byte(k.Key.Public().(ed25519.PublicKey)))
 			return nil
 		}
 	}

@@ -7,10 +7,10 @@ import "testing"
 func TestDocFolder(t *testing.T) {
 	for want, k := range map[string]DocKey{
 		"0x00000000/docs/0x0000000000000007": {Issuer: geulIssuer, Doc: "0x0000000000000007"},
-		"0x00000000/codecs/0x00000b80":       {Issuer: geulIssuer, Doc: "0x00000b80"},
-		"issuers":                            {Issuer: geulIssuer, Doc: "0xffffffffffffffff"},
-		"0x00000002/docs/0xfffffffffffffffe": {Issuer: "0x00000002", Doc: "0xfffffffffffffffe"},
-		"0x00000002/docs/0xfffffffffffffffd": {Issuer: "0x00000002", Doc: "0xfffffffffffffffd"},
+		"0x00000000/codecs/0x00000B80":       {Issuer: geulIssuer, Doc: "0x00000B80"},
+		"issuers":                            {Issuer: geulIssuer, Doc: "0xFFFFFFFFFFFFFFFF"},
+		"0x00000002/docs/0xFFFFFFFFFFFFFFFE": {Issuer: "0x00000002", Doc: "0xFFFFFFFFFFFFFFFE"},
+		"0x00000002/docs/0xFFFFFFFFFFFFFFFD": {Issuer: "0x00000002", Doc: "0xFFFFFFFFFFFFFFFD"},
 	} {
 		if got := docFolder(k); got != want {
 			t.Fatal(got, want)

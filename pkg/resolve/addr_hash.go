@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=helper control=sequence
-//ff:what addrHash — `<내용 해시>.geul` (0x + 64 lowercase hex digits) under an Issuer's hashes/
+//ff:what addrHash — `<내용 해시>.geul` (0x + 64 hex digits) under an Issuer's hashes/
 package resolve
 
 import "strings"

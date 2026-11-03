@@ -3,7 +3,6 @@
 package cli
 
 import (
-	"encoding/hex"
 	"fmt"
 
 	"github.com/geul-org/gogeul/pkg/core"
@@ -24,6 +23,6 @@ func (a *app) hash(arg string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintln(a.out, "0x"+hex.EncodeToString(h[:]))
+	fmt.Fprintf(a.out, "0x%X\n", h[:])
 	return nil
 }

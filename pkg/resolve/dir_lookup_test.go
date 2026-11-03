@@ -10,16 +10,16 @@ import (
 
 func TestDirLookup(t *testing.T) {
 	d := issuersFixture(t)
-	for s, v := range map[string]uint32{"geul.org/0xffff000000000007": 0, "0x00000000/0xffff000000000007@2": 2, "0x0000000000000000/0xffff000000000007": 0, "geul.org/0xffff000000000007@0x00000003": 3} {
+	for s, v := range map[string]uint32{"geul.org/0xFFFF000000000007": 0, "0x00000000/0xFFFF000000000007@2": 2, "0x0000000000000000/0xFFFF000000000007": 0, "geul.org/0xFFFF000000000007@0x00000003": 3, "0x00000000/0xffff000000000007@0x00000003": 3, "0x0000000000000000/0xFfFf000000000007": 0} {
 		k, err := d.Lookup(s)
-		if err != nil || core.FormatID(k.Doc) != "0xffff000000000007" || core.FormatID(k.Issuer) != "0x00000000" || k.Version != v {
+		if err != nil || core.FormatID(k.Doc) != "0xFFFF000000000007" || core.FormatID(k.Issuer) != "0x00000000" || k.Version != v {
 			t.Fatalf("%s: %+v %v", s, k, err)
 		}
 	}
-	if k, err := d.Lookup("geul.org/0x00000b80@1"); err != nil || core.FormatID(k.Doc) != "0x00000b80" || k.Version != 1 {
+	if k, err := d.Lookup("geul.org/0x00000B80@1"); err != nil || core.FormatID(k.Doc) != "0x00000B80" || k.Version != 1 {
 		t.Fatalf("codec: %+v %v", k, err)
 	}
-	for _, s := range []string{"seven", "geul.org/seven", "geul.org/0xffff000000000007@x", "nobody/seven", "geul.org/nothing", "0x00000000/0xFFFF000000000007", "0x0000/0xffff000000000007"} {
+	for _, s := range []string{"seven", "geul.org/seven", "geul.org/0xFFFF000000000007@x", "nobody/seven", "geul.org/nothing", "0x00000000/0XFFFF000000000007", "0x0000/0xFFFF000000000007"} {
 		if _, err := d.Lookup(s); err == nil {
 			t.Fatalf("%s: want error", s)
 		}

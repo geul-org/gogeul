@@ -9,14 +9,14 @@ import (
 
 func TestAddrCodec(t *testing.T) {
 	bad := errors.New("bad")
-	a, err := addrCodec(Addr{}, "0x00000b80", "0x00000002.geul", bad)
+	a, err := addrCodec(Addr{}, "0x00000B80", "0x00000002.geul", bad)
 	if err != nil || a.Kind != AddrCodec || a.ID[1] != 0x0B80 || a.Version != 2 {
 		t.Fatal(a, err)
 	}
 	if _, err := addrCodec(Addr{}, "0x0000000000000980", "latest.geul", bad); err != bad {
 		t.Fatal(err)
 	}
-	if _, err := addrCodec(Addr{}, "0x00000b80", "0x00000000.geul", bad); err != bad {
+	if _, err := addrCodec(Addr{}, "0x00000B80", "0x00000000.geul", bad); err != bad {
 		t.Fatal(err)
 	}
 }

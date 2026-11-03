@@ -8,7 +8,7 @@ func TestParseVersion(t *testing.T) {
 	if v, err := parseVersion("12"); err != nil || v != 12 {
 		t.Fatal("decimal")
 	}
-	if v, err := parseVersion("0x0000000c"); err != nil || v != 12 {
+	if v, err := parseVersion("0x0000000C"); err != nil || v != 12 {
 		t.Fatal("hex")
 	}
 	for _, s := range []string{"x", "4294967296", "0xC"} {

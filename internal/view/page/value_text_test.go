@@ -25,9 +25,9 @@ func TestValueText(t *testing.T) {
 		"750 (75e1)":           {Codec: core.CodecUnsignedDecimal, Coef: 75, Exp: 1},
 		"1970-01-02":           {Codec: core.CodecGregorianDate, Time: time.Unix(86400, 0).UTC()},
 		"1970-01-02T00:00:00Z": {Codec: core.CodecPosixSeconds, Time: time.Unix(86400, 0).UTC()},
-		"0x00ff":               {Codec: core.CodecSHA256Digest, Text: "0x00ff"},
+		"0x00FF":               {Codec: core.CodecSHA256Digest, Text: "0x00FF"},
 		"652 Q1 [651, 653]":    {Codec: core.CodecQuantity, Amount: "652", Unit: "Q1", Lower: "651", Upper: "653"},
-		"0x01ff":               {Codec: core.CodecSHA1Digest, Text: "0x01ff"},
+		"0x01FF":               {Codec: core.CodecSHA1Digest, Text: "0x01FF"},
 		"-5":                   {Codec: core.CodecSignedInteger, Number: "-5"},
 		"23.45/1256.1":         {Codec: core.CodecFraction, Number: "23.45/1256.1"},
 	}

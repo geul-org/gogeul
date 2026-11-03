@@ -7,7 +7,7 @@ import "fmt"
 // pPath is the path of (issuer, doc, slot) relative to `.well-known/geul/`.
 func pPath(issuer string, d uint64, s uint32) string {
 	if s == 0 {
-		return fmt.Sprintf("%s/%s/0x%016x/%s", issuer, docsDir, d, listFile)
+		return fmt.Sprintf("%s/%s/0x%016X/%s", issuer, docsDir, d, listFile)
 	}
-	return fmt.Sprintf("%s/%s/0x%016x/0x%08x.geul", issuer, docsDir, d, s)
+	return fmt.Sprintf("%s/%s/0x%016X/0x%08X.geul", issuer, docsDir, d, s)
 }

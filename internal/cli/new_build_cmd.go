@@ -13,9 +13,7 @@ func newBuildCmd(a *app) *cobra.Command {
 		Long: `build writes a static copy of the tree DIR (the data folder when omitted)
 holds, or is, to <OUT>/.well-known/geul/ at the public paths: each <path>.geul
 is copied and gets its viewer page at <path>, each directory gets index.html
-and index.json, and the graph scripts go to _static/. The host serves <path>
-to a browser and <path>.geul to a request whose Accept asks for
-application/vnd.geul.`,
+and index.json, and the graph scripts go to _static/.`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(_ *cobra.Command, args []string) error {
 			target, err := a.target(args)

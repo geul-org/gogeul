@@ -8,11 +8,11 @@ import (
 )
 
 func TestListRecord(t *testing.T) {
-	st := &listState{doc: "0xffff000000000002", docs: map[string]*docVersions{}}
+	st := &listState{doc: "0xFFFF000000000002", docs: map[string]*docVersions{}}
 	if fs := listRecord(st, 0, recOf(edgeOf(core.EdgePublication, 1, append([]core.Word{0x0418, 0, 0, 0xffff, 0, 0, 2, 0, 1}, make([]core.Word, 16)...)...))); fs != nil {
 		t.Fatalf("publication: %+v", fs)
 	}
-	if st.docs["0xffff000000000002"] == nil {
+	if st.docs["0xFFFF000000000002"] == nil {
 		t.Fatalf("publication not applied: %+v", st.docs)
 	}
 	if fs := listRecord(st, 1, recOf(bindOf(2, subjectOf(2, 0), "sample"))); rulesOf(fs) != "P1" {

@@ -14,7 +14,7 @@ func FormatID(ws []Word) string {
 	var b strings.Builder
 	b.WriteString("0x")
 	for _, w := range ws {
-		fmt.Fprintf(&b, "%04x", uint16(w))
+		fmt.Fprintf(&b, "%04X", uint16(w))
 	}
 	return b.String()
 }

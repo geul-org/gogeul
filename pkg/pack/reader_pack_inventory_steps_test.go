@@ -32,7 +32,7 @@ func TestReaderPackInventorySteps(t *testing.T) {
 		}
 	}
 	slices.Sort(deleted)
-	want := []string{pPath("0x00000001", 3, 1), docHPath(streamTestDoc(4, 1)), "issuers/0x0000000b.geul"}
+	want := []string{pPath("0x00000001", 3, 1), docHPath(streamTestDoc(4, 1)), "issuers/0x0000000B.geul"}
 	slices.Sort(want)
 	if !slices.Equal(deleted, want) || len(hashOnly) != 1 {
 		t.Fatal(deleted, hashOnly)

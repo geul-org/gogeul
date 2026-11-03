@@ -9,7 +9,7 @@ func (d Dir) namedIn(dir string, words int) []Named {
 	ents, _ := d.store().ReadDir(dir)
 	var out []Named
 	for _, e := range ents {
-		if _, ok := parseHexID(e.Name(), words); ok && e.IsDir() {
+		if _, ok := storedHexID(e.Name(), words); ok && e.IsDir() {
 			out = append(out, Named{ID: e.Name()})
 		}
 	}

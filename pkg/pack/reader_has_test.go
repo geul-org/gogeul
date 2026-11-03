@@ -12,7 +12,7 @@ func TestReaderHas(t *testing.T) {
 	ctx := context.Background()
 	_, out := built(t, small())
 	r := opened(t, out)
-	for _, p := range []string{"0x00000000/docs/0x0000000000000845/versions.geul", "0x00000000/hashes/0x33be25e73766f819226dd801db778f61c503843d0e3a10ccb67258cd4108fe51.geul", "issuers/0x00000001.geul"} {
+	for _, p := range []string{"0x00000000/docs/0x0000000000000845/versions.geul", "0x00000000/hashes/0x33BE25E73766F819226DD801DB778F61C503843D0E3A10CCB67258CD4108FE51.geul", "issuers/0x00000001.geul"} {
 		if ok, err := r.Has(ctx, p); !ok || err != nil {
 			t.Fatal(p, err)
 		}

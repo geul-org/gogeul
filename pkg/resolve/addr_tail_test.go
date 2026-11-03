@@ -15,10 +15,13 @@ func TestAddrTail(t *testing.T) {
 	if a, err := addrTail(Addr{}, "versions.geul", bad); err != nil || !a.Versions {
 		t.Fatal(a, err)
 	}
-	if a, err := addrTail(Addr{}, "0x0000000a.geul", bad); err != nil || a.Version != 10 {
+	if a, err := addrTail(Addr{}, "0x0000000A.geul", bad); err != nil || a.Version != 10 {
 		t.Fatal(a, err)
 	}
-	for _, n := range []string{"0x00000000.geul", "0x0000000A.geul", "0x0000000a", "0x000a.geul", "latest"} {
+	if a, err := addrTail(Addr{}, "0x0000000a.geul", bad); err != nil || a.Version != 10 {
+		t.Fatal("lower case:", a, err)
+	}
+	for _, n := range []string{"0x00000000.geul", "0X0000000A.geul", "0x0000000A", "0x000A.geul", "latest"} {
 		if _, err := addrTail(Addr{}, n, bad); err != bad {
 			t.Fatal(n, err)
 		}

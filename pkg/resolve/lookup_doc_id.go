@@ -9,7 +9,7 @@ import (
 )
 
 // lookupDocID reads s, the document part of `<Issuer>/<문서>`, as a 4-word
-// document ID (16 lowercase hex digits) or a 2-word codec ID (8 digits).
+// document ID (16 hex digits) or a 2-word codec ID (8 digits).
 // Anything else is ErrNotFound: documents have no names (§1.1 101). issuer
 // only names the Issuer in the error.
 func lookupDocID(issuer []core.Word, s string) ([]core.Word, error) {

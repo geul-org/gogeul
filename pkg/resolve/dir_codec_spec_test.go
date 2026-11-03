@@ -11,7 +11,7 @@ func TestDirCodecSpec(t *testing.T) {
 	d.PublishCodec(codecDocOf(0x0B80, 4, 2))
 	d.PublishCodec(codecDocOf(0x0BA0, 4))
 	d.write("0x00000000/junk/versions.geul", []byte("x"))
-	d.write("0x00000000/docs/0xffff000000000001/versions.geul", []byte("x"))
+	d.write("0x00000000/docs/0xFFFF000000000001/versions.geul", []byte("x"))
 	d.write(versionPath(codecKey(0x0BC0), 1), []byte("no list"))
 	s, err := d.CodecSpec()
 	if err != nil || len(s) != 2 || len(s[0x0B80]) != 2 {

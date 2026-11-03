@@ -14,7 +14,7 @@ func checkIsDir(t *testing.T, a *Archive, stage string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	names := []string{"zz", "0x00000002", "0x00000002/docs", "h/zz", "0x00000000/zz", "0x00000000/docs/0x00000000000000ff", "0x00000000/docs/0x0000000000000008/zz", "0x00000000/hashes", "issuers", "stage"}
+	names := []string{"zz", "0x00000002", "0x00000002/docs", "h/zz", "0x00000000/zz", "0x00000000/docs/0x00000000000000FF", "0x00000000/docs/0x0000000000000008/zz", "0x00000000/hashes", "issuers", "stage"}
 	for _, p := range ps {
 		names = append(names, p, path.Dir(p), path.Dir(path.Dir(p)))
 	}

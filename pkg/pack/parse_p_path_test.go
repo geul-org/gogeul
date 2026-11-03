@@ -9,15 +9,15 @@ func TestParsePPath(t *testing.T) {
 	if r := parsePPath(ref, "0x0000000000000008", "versions.geul"); r.space != spaceP || r.slot != 0 || r.doc != 8 {
 		t.Fatal(r)
 	}
-	if r := parsePPath(ref, "0x0000000000000008", "0x0000000a.geul"); r.space != spaceP || r.slot != 10 {
+	if r := parsePPath(ref, "0x0000000000000008", "0x0000000A.geul"); r.space != spaceP || r.slot != 10 {
 		t.Fatal(r)
 	}
-	for _, id := range []string{"0xfffffffffffffffe", "0xfffffffffffffffd"} {
+	for _, id := range []string{"0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFD"} {
 		if r := parsePPath(ref, id, "0x00000001.geul"); r.space != spaceP || r.slot != 1 {
 			t.Fatal(id, r)
 		}
 	}
-	for _, c := range [][2]string{{"0x08", "versions.geul"}, {"0xffffffffffffffff", "versions.geul"}, {"0x0000000000000008", "0x00000000.geul"},
+	for _, c := range [][2]string{{"0x08", "versions.geul"}, {"0xFFFFFFFFFFFFFFFF", "versions.geul"}, {"0x0000000000000008", "0x00000000.geul"},
 		{"0x0000000000000008", "0x00000001.txt"}, {"0x0000000000000008", "x.geul"}, {"0x0000000000000008", "latest.geul"}} {
 		if r := parsePPath(ref, c[0], c[1]); r.space != spaceNone {
 			t.Fatal(c)

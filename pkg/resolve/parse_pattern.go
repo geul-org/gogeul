@@ -7,7 +7,8 @@ import (
 	"strings"
 )
 
-// parsePattern reads one pattern. Each segment is a canonical ID or `*`.
+// parsePattern reads one pattern. Each segment is an ID or `*`; IDs are kept
+// canonical (the Issuer at its width, A-F upper case, §1.1 122) to match DocKey.
 func parsePattern(s string) (Pattern, error) {
 	issuer, doc, _ := strings.Cut(s, "/")
 	if doc == "*" {
@@ -16,6 +17,12 @@ func parsePattern(s string) (Pattern, error) {
 	_, docOK := parseHexID(doc, 4)
 	if (issuer != "*" && !isIssuerID(issuer)) || (doc != "" && !docOK) {
 		return Pattern{}, fmt.Errorf("geul/resolve: bad pattern %q", s)
+	}
+	if is, ok := normalIssuer(issuer); ok {
+		issuer = is
+	}
+	if strings.HasPrefix(doc, "0x") {
+		doc = "0x" + strings.ToUpper(doc[2:])
 	}
 	return Pattern{Issuer: issuer, Doc: doc}, nil
 }

@@ -12,7 +12,7 @@ func TestAppShowSpecSource(t *testing.T) {
 	h := newHarness(t)
 	addr, _ := h.doc()
 	with := h.must("show", docsAddr(addr)+"/latest")
-	const rel = ".well-known/geul/0x00000000/codecs/0x00000aa0"
+	const rel = ".well-known/geul/0x00000000/codecs/0x00000AA0"
 	other := t.TempDir()
 	os.MkdirAll(filepath.Dir(filepath.Join(other, rel)), 0o755)
 	if err := os.Rename(filepath.Join(h.data, rel), filepath.Join(other, rel)); err != nil {

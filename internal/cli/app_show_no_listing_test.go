@@ -20,7 +20,7 @@ func TestAppShowNoListing(t *testing.T) {
 	addr, draft := h.doc()
 	wk := filepath.Join(h.data, ".well-known", "geul", "0x00000000")
 	for i := range 300 {
-		f := filepath.Join(wk, "docs", fmt.Sprintf("0x00001000%08x", i), "versions.geul")
+		f := filepath.Join(wk, "docs", fmt.Sprintf("0x00001000%08X", i), "versions.geul")
 		os.MkdirAll(filepath.Dir(f), 0o755)
 		os.WriteFile(f, []byte{0, 0}, 0o644)
 	}
