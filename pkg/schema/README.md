@@ -74,6 +74,7 @@
 | E7 | TRIPLE·QUALIFIER의 Predicate·Subject(Property·Target)에는 Reference Codec `0000`(자리 표지)이 오지 않고, Object(Value)에는 `0x0001` UNKNOWN-VALUE·`0x0002` NO-VALUE만 온다(ABSENT·예약 표지·Payload 있는 Codec `0000`은 Error). 두 Codec의 필드는 문법이 고정하므로 1층에서 본다. 다른 Codec 필드의 표지 수용은 규격 문서(2층) 몫이다. |
 | E8 | 근거 Edge `SOURCE`(`0x20`, edge/SOURCE): Edge Id 뒤에 대상·원천 레코드 둘뿐이다. 대상은 LOCAL Reference이고 `0`(문서 전체)이거나 BODY의 Edge Id다. 원천은 Reference이고, 자리 표지는 `0x0000` ABSENT와 `0x0001` UNKNOWN-VALUE만 받는다(Value·NO-VALUE·예약 표지는 Error). 대상이 `0`인 `SOURCE`와 HEAD `SOURCE`를 대상으로 하는 `QUALIFIER`가 BODY에 있으면 Error다(HEAD에 둔다). 레이아웃을 문법이 고정하므로 1층에서 본다. |
 | E9 | ENUM(edge/ENUM)의 필드는 같은 문서의 날값 FIELD(폭 ≥ 1)이고, 코드값은 정확히 그 폭이며, 한 필드에서 같은 코드값을 두 번 선언하지 않는다. 디코딩되지 않는 ENUM은 E4다. |
+| E10 | TRIPLE·QUALIFIER(문법 0x0AAL·0x0ABL)는 Edge Id 뒤 완전한 레코드 셋이다. TRIPLE의 Predicate·Subject는 Reference이고 Object 뒤에 Rank가 정확히 1 WORD이며 `0`(normal)·`1`(preferred)·`2`(deprecated)뿐이다. QUALIFIER의 Target은 LOCAL Reference이고 Value를 읽은 커서가 Edge 끝과 맞는다. Object·Value는 Reference 또는 Value 레코드다(자리 표지는 E7). QUALIFIER Property의 Kind는 보지 않는다(문법 본문은 Reference, 필드 표는 자리 표지 말고 아무 레코드). |
 
 ### M Meta (OVERVIEW Meta)
 

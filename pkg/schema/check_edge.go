@@ -1,9 +1,9 @@
 //ff:func feature=schema type=rule control=sequence
-//ff:what checkEdge — E1 and E4 for one Edge record
+//ff:what checkEdge — E1, E4 and E10 for one Edge record
 package schema
 
-// checkEdge applies E1 (leading LOCAL Edge Id, not 0) and E4 (layout of the
-// core-embedded codecs). An unassigned Edge code is not reported (the
+// checkEdge applies E1 (leading LOCAL Edge Id, not 0), E4 (layout of the
+// core-embedded codecs) and E10 (TRIPLE and QUALIFIER layout). An unassigned Edge code is not reported (the
 // reserved-code Warn E3 was removed, migration.md §1.1 112).
 func checkEdge(r rec) []Fact {
 	var fs []Fact
@@ -15,5 +15,5 @@ func checkEdge(r rec) []Fact {
 	if want, err := builtinLayout(r.R); err != nil {
 		fs = append(fs, factAt("E4", Error, r, "Payload", want, err.Error()))
 	}
-	return fs
+	return append(fs, statementLayout(r)...)
 }
