@@ -5,7 +5,7 @@ package pack
 import "testing"
 
 func TestOwnerOf(t *testing.T) {
-	if ownerOf("0x0000/documents.geul") != "0x0000" || ownerOf("issuers.geul") != "" || ownerOf("h/x.geul") != "" || ownerOf("0x0000") != "" {
+	if ownerOf("0x00000000/docs/0x00000001.geul") != "0x00000000" || ownerOf("issuers/0x00000001.geul") != "" || ownerOf("h/x.geul") != "" || ownerOf("0x00000000") != "" {
 		t.Fatal("ownerOf")
 	}
 }

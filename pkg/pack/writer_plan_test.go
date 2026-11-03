@@ -10,16 +10,16 @@ import (
 
 func TestWriterPlan(t *testing.T) {
 	_, out := built(t, small())
-	get := memGet(map[string][]byte{"issuers.geul": fixtureFile(t, "issuers.geul"), "x": {1}})
-	w := testWriter(t, out, Batch{Put: []string{"x", "issuers.geul", "x"}, Get: get})
-	if err := w.plan(); err != nil || len(w.puts) != 1 || w.puts[0].path != "x" || len(w.sums) != 2 {
+	get := memGet(map[string][]byte{"issuers/0x00000001.geul": fixtureFile(t, "issuers/0x00000001.geul"), "issuers/0x00000002.geul": {1}})
+	w := testWriter(t, out, Batch{Put: []string{"issuers/0x00000002.geul", "issuers/0x00000001.geul", "issuers/0x00000002.geul"}, Get: get})
+	if err := w.plan(); err != nil || len(w.puts) != 1 || w.puts[0].path != "issuers/0x00000002.geul" || len(w.sums) != 2 {
 		t.Fatal(err, w.puts)
 	}
 	w = testWriter(t, out, Batch{Put: []string{"y"}, Get: get})
 	if err := w.plan(); err == nil {
 		t.Fatal("get")
 	}
-	h := "h/0x" + strings.Repeat("0", 64) + ".geul"
+	h := "0x00000000/hashes/0x" + strings.Repeat("0", 64) + ".geul"
 	w = testWriter(t, out, Batch{Put: []string{h}, Get: memGet(map[string][]byte{h: {1, 2}})})
 	if err := w.plan(); !errors.Is(err, ErrCorrupt) {
 		t.Fatal(err)

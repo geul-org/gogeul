@@ -1,5 +1,5 @@
-//ff:func feature=pack type=encoder control=sequence
-//ff:what TestHPath — h/0x + 64 hex + .geul, the inverse of parsePath for H
+//ff:func feature=pack type=helper control=sequence
+//ff:what TestHPath — `<Issuer>/hashes/0x<hex>.geul` and parsePath reads back the Issuer and the 32 hash bytes
 package pack
 
 import (
@@ -9,8 +9,8 @@ import (
 
 func TestHPath(t *testing.T) {
 	k := strings.Repeat("\x01", 32)
-	p := hPath(k)
-	if p != "h/0x"+strings.Repeat("01", 32)+".geul" || parsePath(p).hash != k {
+	p := hPath("0x00000001", k)
+	if p != "0x00000001/hashes/0x"+strings.Repeat("01", 32)+".geul" || parsePath(p).hash != k || parsePath(p).issuer != "0x00000001" {
 		t.Fatal(p)
 	}
 }

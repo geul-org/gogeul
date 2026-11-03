@@ -6,9 +6,9 @@ import "testing"
 
 func TestArchiveSets(t *testing.T) {
 	a, _ := testArchive(t)
-	a.set("0x0001")
+	a.set("0x00000002")
 	s := a.Sets()
-	if len(s) != 1 || s[0].Name != "0x0000" || s[0].Generation != 1 || s[0].Objects != 2 || len(s[0].Manifest) != 64 {
+	if len(s) != 1 || s[0].Name != "0x00000000" || s[0].Generation != 1 || s[0].Objects != 2 || len(s[0].Manifest) != 64 {
 		t.Fatal(s)
 	}
 }

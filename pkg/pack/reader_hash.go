@@ -7,10 +7,12 @@ import (
 	"fmt"
 )
 
-// Hash reads the record served at h/<h>.geul and verifies its GEUL content
-// hash; a mismatch wraps both ErrCorrupt and ErrVerify.
-func (r *Reader) Hash(ctx context.Context, h [32]byte) ([]byte, error) {
-	path := hPath(string(h[:]))
+// Hash reads the record served at `<issuer>/hashes/<h>.geul` and verifies its
+// GEUL content hash; a mismatch wraps both ErrCorrupt and ErrVerify. A record
+// whose Issuer (hashOwner) is not issuer is not there: the hashes of one
+// Issuer do not serve another's documents.
+func (r *Reader) Hash(ctx context.Context, issuer string, h [32]byte) ([]byte, error) {
+	path := hPath(issuer, string(h[:]))
 	l, err := r.find(ctx, r.m.hLayers, string(h[:]), path)
 	if err != nil {
 		return nil, err
@@ -21,6 +23,9 @@ func (r *Reader) Hash(ctx context.Context, h [32]byte) ([]byte, error) {
 	}
 	if got, ok := contentHash(b); !ok || got != h {
 		return nil, fmt.Errorf("%w: %s content hash mismatch (%w)", ErrCorrupt, path, ErrVerify)
+	}
+	if r.hashOwner(b) != issuer {
+		return nil, notFound(path)
 	}
 	return b, nil
 }

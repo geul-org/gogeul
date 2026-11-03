@@ -20,7 +20,7 @@ func TestWriterVerify(t *testing.T) {
 	if err := w.verify("nonexistent"); err == nil {
 		t.Fatal("open")
 	}
-	w.sums = map[string][32]byte{"issuers.geul": {}}
+	w.sums = map[string][32]byte{"issuers/0x00000001.geul": {}}
 	if err := w.verify(name); !errors.Is(err, ErrCorrupt) {
 		t.Fatal(err)
 	}

@@ -13,12 +13,12 @@ func TestArchiveWriteFile(t *testing.T) {
 	a, _ := testArchive(t)
 	a.index()
 	b := []byte("x")
-	a.Remove("issuers.geul")
-	if err := a.WriteFile("issuers.geul", b); err != nil || a.dels["issuers.geul"] {
+	a.Remove("issuers/0x00000001.geul")
+	if err := a.WriteFile("issuers/0x00000001.geul", b); err != nil || a.dels["issuers/0x00000001.geul"] {
 		t.Fatal(err)
 	}
 	b[0] = 'y'
-	if got, _ := a.ReadFile("issuers.geul"); string(got) != "x" {
+	if got, _ := a.ReadFile("issuers/0x00000001.geul"); string(got) != "x" {
 		t.Fatal(string(got))
 	}
 	if err := a.WriteFile("0x0001/a.geul", b); err != nil || !hasPrefix(a.idx, "0x0001/") {

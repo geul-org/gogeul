@@ -8,7 +8,7 @@ import "sort"
 func (w *writer) assignIssuers() {
 	var add []string
 	for _, p := range w.puts {
-		if _, ok := w.inum[p.ref.issuer]; p.ref.space == spaceP && !ok {
+		if _, ok := w.inum[p.ref.issuer]; p.ref.issuer != "" && !ok {
 			w.inum[p.ref.issuer] = 0
 			add = append(add, p.ref.issuer)
 		}

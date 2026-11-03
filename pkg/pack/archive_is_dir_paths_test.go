@@ -10,8 +10,8 @@ import (
 func TestArchiveIsDirPaths(t *testing.T) {
 	a, _ := testArchive(t)
 	checkIsDir(t, a, "opened")
-	doc := "0x0000/0x0000000000000008"
-	a.WriteFile("stage/sub/new.geul", []byte("n"))
+	doc := "0x00000000/docs/0x0000000000000008"
+	a.WriteFile("0x00000002/docs/0x0000000000000003/versions.geul", []byte("n"))
 	a.Remove(doc + "/0x00000001.geul")
 	checkIsDir(t, a, "staged")
 	a.Remove(doc + "/versions.geul")

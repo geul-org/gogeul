@@ -16,7 +16,7 @@ func TestArchiveReadFileNoListing(t *testing.T) {
 	ctx := context.Background()
 	root := fixture(t)
 	for i := range 200 {
-		ballast(t, root, fmt.Sprintf("0x0000/0x00001000%08x/versions.geul", i))
+		ballast(t, root, fmt.Sprintf("0x00000000/docs/0x00001000%08x/versions.geul", i))
 	}
 	out := t.TempDir()
 	if _, err := Build(ctx, root, out, small()); err != nil {
@@ -26,7 +26,7 @@ func TestArchiveReadFileNoListing(t *testing.T) {
 	if _, err := full.a.Paths(); err != nil || full.m.reads <= 10*budget {
 		t.Fatalf("the meter does not see a listing: %d reads, %v", full.m.reads, err)
 	}
-	for _, name := range []string{"0x0000/0x0000ffff00000000/versions.geul", "0x0000/0x0000000000000008/0x00000063.geul", "0x0001/0x0000000000000001/versions.geul", "h/0x" + strings.Repeat("0", 64) + ".geul", "none"} {
+	for _, name := range []string{"0x00000000/docs/0x0000ffff00000000/versions.geul", "0x00000000/docs/0x0000000000000008/0x00000063.geul", "0x00000002/docs/0x0000000000000001/versions.geul", "0x00000000/hashes/0x" + strings.Repeat("0", 64) + ".geul", "none"} {
 		o := openMetered(t, out)
 		if _, err := o.a.ReadFile(name); !errors.Is(err, fs.ErrNotExist) {
 			t.Fatal(name, err)
@@ -36,7 +36,7 @@ func TestArchiveReadFileNoListing(t *testing.T) {
 		}
 	}
 	o := openMetered(t, out)
-	if !o.a.isDir("0x0000") || !o.a.isDir("h") || !o.a.isDir("0x0000/0x0000000000000008") || o.m.reads > budget || o.a.idx != nil {
+	if !o.a.isDir("0x00000000") || !o.a.isDir("0x00000000/docs") || !o.a.isDir("0x00000000/docs/0x0000000000000008") || o.m.reads > budget || o.a.idx != nil {
 		t.Fatalf("isDir: %d reads", o.m.reads)
 	}
 }

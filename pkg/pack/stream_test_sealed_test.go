@@ -17,12 +17,12 @@ func streamTestSealed(t *testing.T) (*Stream, string, []streamSnap) {
 	t.Helper()
 	s := streamTestNew(t, nil)
 	r, _ := s.Encode([]byte("q1 0x5100000000000001\n"))
-	s.PutNamed("0x00010000/documents.geul", r)
+	s.PutNamed("0x00000001/docs/0x00000001.geul", r)
 	var snaps []streamSnap
 	for i := uint64(2); s.st.Data.Num == 0; i++ {
 		snaps = append(snaps, streamSnap{open: s.st.Data, inv: slices.Clone(s.st.Inv), paths: slices.Clone(s.st.Paths)})
 		r, _ := s.Encode(streamTestDoc(i/2, uint32(i%2)))
-		if err := s.Put([]core.Word{1, 0}, 0x5100000000000000|i/2, uint32(i%2), r); err != nil {
+		if err := s.Put([]core.Word{0, 1}, 0x5100000000000000|i/2, uint32(i%2), r); err != nil {
 			t.Fatal(err)
 		}
 	}

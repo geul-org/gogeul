@@ -9,7 +9,7 @@ import (
 
 func TestListTree(t *testing.T) {
 	ps, err := listTree("testdata/archive")
-	if err != nil || len(ps) != 18 || !sort.StringsAreSorted(ps) || ps[len(ps)-1] != "issuers.geul" {
+	if err != nil || len(ps) != 18 || !sort.StringsAreSorted(ps) || ps[len(ps)-1] != "issuers/0x00000001.geul" {
 		t.Fatal(ps, err)
 	}
 	if _, err := listTree(t.TempDir()); err == nil {

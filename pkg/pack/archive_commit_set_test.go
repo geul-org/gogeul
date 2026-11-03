@@ -12,14 +12,14 @@ func TestArchiveCommitSet(t *testing.T) {
 	a, _ := testArchive(t)
 	s := a.sets[0]
 	old := s.r
-	get := memGet(map[string][]byte{"x": []byte("x"), "issuers.geul": fixtureFile(t, "issuers.geul")})
-	if res, err := a.commitSet(ctx, s, &Batch{Put: []string{"issuers.geul"}, Get: get}); err != nil || res.Changed || s.r != old {
+	get := memGet(map[string][]byte{"issuers/0x00000002.geul": []byte("x"), "issuers/0x00000001.geul": fixtureFile(t, "issuers/0x00000001.geul")})
+	if res, err := a.commitSet(ctx, s, &Batch{Put: []string{"issuers/0x00000001.geul"}, Get: get}); err != nil || res.Changed || s.r != old {
 		t.Fatal(res, err)
 	}
-	if res, err := a.commitSet(ctx, s, &Batch{Put: []string{"x"}, Get: get}); err != nil || s.r.Generation() != 2 {
+	if res, err := a.commitSet(ctx, s, &Batch{Put: []string{"issuers/0x00000002.geul"}, Get: get}); err != nil || s.r.Generation() != 2 {
 		t.Fatal(res, err)
 	}
-	if _, err := a.commitSet(ctx, s, &Batch{Put: []string{"y"}, Get: get}); err == nil {
+	if _, err := a.commitSet(ctx, s, &Batch{Put: []string{"issuers/0x00000003.geul"}, Get: get}); err == nil {
 		t.Fatal("get")
 	}
 	if _, err := (&Archive{}).commitSet(ctx, s, &Batch{}); err == nil {

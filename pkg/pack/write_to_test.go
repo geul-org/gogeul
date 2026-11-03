@@ -19,7 +19,7 @@ func TestWriteTo(t *testing.T) {
 	if err != nil || res.Changed || res.Generation != 1 {
 		t.Fatal(res, err)
 	}
-	b := Batch{Put: []string{"n.geul"}, Get: memGet(map[string][]byte{"n.geul": {1}})}
+	b := Batch{Put: []string{"issuers/0x00000001.geul"}, Get: memGet(map[string][]byte{"issuers/0x00000001.geul": {1}})}
 	for i, fs := range []*fsFuncs{{mkdir: 0, create: -1, rename: -1}, {mkdir: 1, create: -1, rename: -1}, {mkdir: -1, create: 0, rename: -1}, {mkdir: -1, create: 1, rename: -1}} {
 		if _, err := writeTo(ctx, out, b, small(), fs); err == nil {
 			t.Fatal(i)

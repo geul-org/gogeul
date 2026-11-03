@@ -20,7 +20,7 @@ func TestReaderFetch(t *testing.T) {
 			t.Fatal(p, err)
 		}
 	}
-	for _, p := range []string{"0x0000/0x0000000000000009/versions.geul", "h/0x" + string(bytes.Repeat([]byte("0"), 64)) + ".geul", "none.geul"} {
+	for _, p := range []string{"0x00000000/docs/0x0000000000000009/versions.geul", "0x00000000/hashes/0x" + string(bytes.Repeat([]byte("0"), 64)) + ".geul", "none.geul"} {
 		if _, err := r.Fetch(ctx, p); !errors.Is(err, ErrNotFound) {
 			t.Fatal(p, err)
 		}

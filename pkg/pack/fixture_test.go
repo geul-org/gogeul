@@ -1,5 +1,5 @@
 //ff:func feature=pack type=helper control=iteration dimension=1
-//ff:what fixture — a writable copy of testdata/archive (4 spec documents, their h/ copies, documents.geul, issuers.geul)
+//ff:what fixture — a writable copy of testdata/archive (4 documents, their hashes/ copies, the document list docs/ and the Issuer list issuers/)
 package pack
 
 import (

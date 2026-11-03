@@ -10,19 +10,16 @@ import (
 )
 
 // Split writes the archive directory root (resolve.Dir layout) as Issuer
-// sets under wk: each Issuer's paths, the h/ copies of its documents, and
-// paths outside every Issuer (issuers.geul, other h/ files) with Issuer
-// 0x0000 (or the first Issuer). A set that exists gets its next generation.
+// sets under wk: each Issuer's paths (its hashes/ copies included), and
+// paths outside every Issuer (the Issuer list `issuers/`) with Issuer
+// 0x00000000 (or the first Issuer). A set that exists gets its next generation.
 func Split(ctx context.Context, root, wk string, o BuildOptions) ([]BuildResult, error) {
 	paths, err := listTree(root)
 	if err != nil {
 		return nil, err
 	}
 	base := filepath.Join(root, ".well-known", "geul")
-	groups, err := splitPaths(base, paths)
-	if err != nil {
-		return nil, err
-	}
+	groups := splitPaths(paths)
 	names := make([]string, 0, len(groups))
 	for n := range groups {
 		names = append(names, n)

@@ -5,12 +5,12 @@ package pack
 import "testing"
 
 // streamCrashRest puts what follows the checkpoint: documents 26–40 and
-// 0x00010000/documents.geul.
+// 0x00010000/docs/0x00000001.geul.
 func streamCrashRest(t *testing.T, s *Stream) {
 	t.Helper()
 	streamTestPut(t, s, 26, 40)
 	r, _ := s.Encode([]byte("q1 0x5100000000000001\n"))
-	if err := s.PutNamed("0x00010000/documents.geul", r); err != nil {
+	if err := s.PutNamed("0x00000001/docs/0x00000001.geul", r); err != nil {
 		t.Fatal(err)
 	}
 }

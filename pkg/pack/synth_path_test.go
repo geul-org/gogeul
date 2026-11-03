@@ -6,5 +6,5 @@ import "fmt"
 
 // synthPath names record i as synth does.
 func synthPath(i int) string {
-	return fmt.Sprintf("n/%04d.geul", i)
+	return fmt.Sprintf("issuers/0x%08x.geul", i+1)
 }

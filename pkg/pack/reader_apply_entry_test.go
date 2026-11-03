@@ -10,10 +10,10 @@ import (
 
 func TestReaderApplyEntry(t *testing.T) {
 	ctx := context.Background()
-	doc := fixtureFile(t, "0x0000/0x0000000000000845/0x00000001.geul")
+	doc := fixtureFile(t, "0x00000000/docs/0x0000000000000845/0x00000001.geul")
 	obj, o := objBytes(kindData, doc, nil)
 	r := newReader(memStore{objectName(o): obj}, Options{}, &manifest{objects: []object{o}}, "")
-	inv := inventory{issuers: []string{"0x0000"}, paths: []string{"a.geul"}}
+	inv := inventory{issuers: []string{"0x00000000"}, paths: []string{"a.geul"}}
 	n := uint32(len(doc))
 	st := map[string]Loc{}
 	h, _ := contentHash(doc)
@@ -23,7 +23,7 @@ func TestReaderApplyEntry(t *testing.T) {
 			t.Fatal(e, err)
 		}
 	}
-	if len(st) != 3 || st[hPath(string(h[:]))].Len != uint64(n) {
+	if len(st) != 3 || st[hPath("0x00000000", string(h[:]))].Len != uint64(n) {
 		t.Fatal(st)
 	}
 	for _, e := range []invEntry{{kind: invPDel, doc: 8, slot: 1}, {kind: invNamedDel}} {

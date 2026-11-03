@@ -5,8 +5,8 @@ package pack
 import "testing"
 
 func TestWriterEntryOf(t *testing.T) {
-	w := &writer{inum: map[string]uint32{"0x0000": 0, "0x0001": 1}}
-	e := w.entryOf(&put{ref: parsePath("0x0001/0x0000000000000008/0x00000002.geul"), share: "h", loc: Loc{Off: 70, Len: 3}})
+	w := &writer{inum: map[string]uint32{"0x00000000": 0, "0x00000002": 1}}
+	e := w.entryOf(&put{ref: parsePath("0x00000002/docs/0x0000000000000008/0x00000002.geul"), share: "h", loc: Loc{Off: 70, Len: 3}})
 	if e.kind != invP || e.ref != 1 || e.doc != 8 || e.slot != 2 || e.flags != flagHash || e.off != 70 || e.n != 3 {
 		t.Fatal(e)
 	}

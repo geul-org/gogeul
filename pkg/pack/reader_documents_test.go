@@ -13,7 +13,7 @@ func TestReaderDocuments(t *testing.T) {
 	ctx := context.Background()
 	_, out := built(t, small())
 	r := opened(t, out)
-	got, err := r.Documents(ctx, "0x0000")
+	got, err := r.Documents(ctx, "0x00000000")
 	want := []string{"0x0000000000000008", "0x0000000000000845", "0x0000000000000860", "0x000000000000180e"}
 	if err != nil || !reflect.DeepEqual(got, want) {
 		t.Fatal(got, err)
@@ -22,7 +22,7 @@ func TestReaderDocuments(t *testing.T) {
 		t.Fatal(got, err)
 	}
 	r.m.pLayers = []layer{{blk: block{kind: blkPInner, keys: []string{pKey(0, 0, 0)}, locs: []Loc{{Obj: 99}}}}}
-	if _, err := r.Documents(ctx, "0x0000"); !errors.Is(err, ErrCorrupt) {
+	if _, err := r.Documents(ctx, "0x00000000"); !errors.Is(err, ErrCorrupt) {
 		t.Fatal(err)
 	}
 }

@@ -13,7 +13,7 @@ func TestOpenRemote(t *testing.T) {
 	if err != nil || len(a.sets) != 1 || a.dir != "" {
 		t.Fatal(err)
 	}
-	if b, err := a.ReadFile("issuers.geul"); err != nil || len(b) == 0 {
+	if b, err := a.ReadFile("issuers/0x00000001.geul"); err != nil || len(b) == 0 {
 		t.Fatal(err)
 	}
 	if _, err := OpenRemote(context.Background(), FileStore{Root: t.TempDir()}, Options{}); err == nil {

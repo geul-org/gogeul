@@ -8,11 +8,11 @@ import (
 
 func TestArchiveIndex(t *testing.T) {
 	a, _ := testArchive(t)
-	a.sets = append(a.sets, &packSet{name: "0x0009"})
-	a.puts["a.geul"] = nil
-	a.dels["issuers.geul"] = true
+	a.sets = append(a.sets, &packSet{name: "0x00000009"})
+	a.puts["issuers/0x00000002.geul"] = nil
+	a.dels["issuers/0x00000001.geul"] = true
 	idx, err := a.index()
-	if err != nil || len(idx) != 18 || idx[len(idx)-1] != "h/0xe12a5f337013cbb5a3c5e4ba8381e114965f925a721124033a9c20dffde9d925.geul" || idx[0] != "0x0000/0x0000000000000008/0x00000001.geul" {
+	if err != nil || len(idx) != 18 || idx[len(idx)-1] != "issuers/0x00000002.geul" || idx[len(idx)-2] != "0x00000000/hashes/0x9d3f9bab24c1341fa82a4f9dacbdbe1b1cff8929f08e9547b31994a71b8e6180.geul" || idx[0] != "0x00000000/docs/0x0000000000000008/0x00000001.geul" {
 		t.Fatal(idx, err)
 	}
 	if again, _ := a.index(); &again[0] != &idx[0] {

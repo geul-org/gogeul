@@ -1,13 +1,11 @@
-//ff:func feature=pack type=rule control=sequence
-//ff:what isIssuer — whether s is a canonical Issuer ID of 1, 2, 4 or 16 words
+//ff:func feature=pack type=helper control=sequence
+//ff:what isIssuer — whether s is an Issuer ID as an address writes it: 8, 16 or 64 hex digits
 package pack
 
-// isIssuer reports whether s is canonical Issuer hex: 4, 8, 16 or 64 digits.
+// isIssuer reports whether s is an Issuer ID of 8, 16 or 64 lowercase hex
+// digits (2, 4 or 16 words). A zero-padded wider spelling is the same Issuer
+// (normalIssuer).
 func isIssuer(s string) bool {
-	n := len(s) - 2
-	if n != 4 && n != 8 && n != 16 && n != 64 {
-		return false
-	}
-	_, ok := parseHex(s, n)
+	_, ok := normalIssuer(s)
 	return ok
 }

@@ -6,7 +6,8 @@ import (
 	"context"
 )
 
-// HashPath reads the record at l and names it by its content hash.
+// HashPath reads the record at l and names it by its content hash under its
+// Issuer (hashOwner).
 func (r *Reader) HashPath(ctx context.Context, l Loc) (string, error) {
 	b, err := r.Record(ctx, l)
 	if err != nil {
@@ -14,7 +15,7 @@ func (r *Reader) HashPath(ctx context.Context, l Loc) (string, error) {
 	}
 	h, ok := contentHash(b)
 	if !ok {
-		return "", corrupt("h/ record is not a GEUL document")
+		return "", corrupt("hashes/ record is not a GEUL document")
 	}
-	return hPath(string(h[:])), nil
+	return hPath(r.hashOwner(b), string(h[:])), nil
 }

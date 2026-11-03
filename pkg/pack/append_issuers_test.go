@@ -9,9 +9,9 @@ import (
 )
 
 func TestAppendIssuers(t *testing.T) {
-	ids := []string{"0x0000", "0x00010000"}
+	ids := []string{"0x00000000", "0x00000001"}
 	b := appendIssuers(nil, ids)
-	if !bytes.Equal(b, []byte{2, 0, 0, 0, 1, 0, 0, 2, 0, 1, 0, 0}) {
+	if !bytes.Equal(b, []byte{2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 1}) {
 		t.Fatalf("%x", b)
 	}
 	got, err := parseIssuers(&cursor{b: b})

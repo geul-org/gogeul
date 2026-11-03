@@ -13,18 +13,18 @@ func TestReaderLookup(t *testing.T) {
 	ctx := context.Background()
 	_, out := built(t, small())
 	r := opened(t, out)
-	b, err := r.Lookup(ctx, "0x0000", 0x845, 0)
-	if err != nil || !bytes.Equal(b, fixtureFile(t, "0x0000/0x0000000000000845/versions.geul")) {
+	b, err := r.Lookup(ctx, "0x00000000", 0x845, 0)
+	if err != nil || !bytes.Equal(b, fixtureFile(t, "0x00000000/docs/0x0000000000000845/versions.geul")) {
 		t.Fatal(err)
 	}
-	if _, err := r.Lookup(ctx, "0x0001", 0x845, 0); !errors.Is(err, ErrNotFound) {
+	if _, err := r.Lookup(ctx, "0x00000002", 0x845, 0); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
-	if _, err := r.Lookup(ctx, "0x0000", 0x846, 0); !errors.Is(err, ErrNotFound) {
+	if _, err := r.Lookup(ctx, "0x00000000", 0x846, 0); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
 	r.m.pLayers = []layer{{blk: block{kind: blkPLeaf, keys: []string{pKey(0, 1, 0)}, locs: []Loc{{Obj: 99}}}}}
-	if _, err := r.Lookup(ctx, "0x0000", 1, 0); !errors.Is(err, ErrCorrupt) {
+	if _, err := r.Lookup(ctx, "0x00000000", 1, 0); !errors.Is(err, ErrCorrupt) {
 		t.Fatal(err)
 	}
 }

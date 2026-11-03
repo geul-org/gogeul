@@ -11,10 +11,10 @@ import (
 func TestArchiveReadDir(t *testing.T) {
 	a, _ := testArchive(t)
 	top, err := fs.ReadDir(a, ".")
-	if err != nil || len(top) != 3 || top[0].Name() != "0x0000" || !top[0].IsDir() || top[2].Name() != "issuers.geul" {
+	if err != nil || len(top) != 2 || top[0].Name() != "0x00000000" || !top[0].IsDir() || top[1].Name() != "issuers" || !top[1].IsDir() {
 		t.Fatal(top, err)
 	}
-	if es, err := a.ReadDir("0x0000"); err != nil || len(es) != 5 {
+	if es, err := a.ReadDir("0x00000000"); err != nil || len(es) != 2 {
 		t.Fatal(es, err)
 	}
 	if _, err := a.ReadDir("none"); !errors.Is(err, fs.ErrNotExist) {

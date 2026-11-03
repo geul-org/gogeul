@@ -7,9 +7,9 @@ import (
 )
 
 func TestContentHash(t *testing.T) {
-	b := fixtureFile(t, "0x0000/0x0000000000000845/0x00000001.geul")
+	b := fixtureFile(t, "0x00000000/docs/0x0000000000000845/0x00000001.geul")
 	h, ok := contentHash(b)
-	if !ok || parsePath(hPath(string(h[:]))).space != spaceH {
+	if !ok || parsePath(hPath("0x00000000", string(h[:]))).space != spaceH {
 		t.Fatal(ok)
 	}
 	if _, ok := contentHash([]byte{1}); ok {

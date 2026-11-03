@@ -10,8 +10,8 @@ import (
 
 func TestWriterPlanPut(t *testing.T) {
 	_, out := built(t, small())
-	doc := fixtureFile(t, "issuers.geul")
-	get := memGet(map[string][]byte{"issuers.geul": doc, "0x0000/documents.geul": {1, 2}})
+	doc := fixtureFile(t, "issuers/0x00000001.geul")
+	get := memGet(map[string][]byte{"issuers/0x00000001.geul": doc, "0x00000000/docs/0x00000001.geul": {1, 2}})
 	w := testWriter(t, out, Batch{Get: get})
 	w.sums = map[string][32]byte{}
 	for _, p := range []string{"", strings.Repeat("a", 0x10000), "none"} {
@@ -19,15 +19,15 @@ func TestWriterPlanPut(t *testing.T) {
 			t.Fatal(len(p))
 		}
 	}
-	if pu, err := w.planPut("issuers.geul"); pu != nil || err != nil {
+	if pu, err := w.planPut("issuers/0x00000001.geul"); pu != nil || err != nil {
 		t.Fatal(pu, err)
 	}
-	pu, err := w.planPut("0x0000/documents.geul")
+	pu, err := w.planPut("0x00000000/docs/0x00000001.geul")
 	if err != nil || pu == nil || pu.chOK || pu.ref.space != spaceNamed {
 		t.Fatal(pu, err)
 	}
 	os.Remove(objPath(t, w.prev, out, kindData))
-	if _, err := w.planPut("issuers.geul"); err == nil {
+	if _, err := w.planPut("issuers/0x00000001.geul"); err == nil {
 		t.Fatal("unreadable previous record")
 	}
 }

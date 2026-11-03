@@ -33,7 +33,7 @@ func (r *Reader) PackInventory(ctx context.Context, obj uint32, fn func(Inventor
 		}
 	}
 	for _, h := range inv.deleted {
-		if err := fn(InventoryEntry{Path: hPath(h), Deleted: true}); err != nil {
+		if err := fn(InventoryEntry{Path: hPath(r.hashOwner(nil), h), Deleted: true}); err != nil {
 			return err
 		}
 	}

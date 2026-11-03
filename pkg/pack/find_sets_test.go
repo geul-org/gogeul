@@ -10,12 +10,12 @@ import (
 
 func TestFindSets(t *testing.T) {
 	wk := t.TempDir()
-	for _, d := range []string{"", "0x00010000", "0x0000", "zz"} {
+	for _, d := range []string{"", "0x00000001", "0x00000000", "zz"} {
 		os.MkdirAll(filepath.Join(wk, d), 0o755)
 		os.WriteFile(filepath.Join(wk, d, latestFile), nil, 0o644)
 	}
 	sets, err := findSets(wk)
-	if err != nil || len(sets) != 3 || sets[0].name != "" || sets[1].name != "0x0000" || sets[2].name != "0x00010000" {
+	if err != nil || len(sets) != 3 || sets[0].name != "" || sets[1].name != "0x00000000" || sets[2].name != "0x00000001" {
 		t.Fatal(sets, err)
 	}
 	if sets, err := findSets(filepath.Join(wk, "none")); err != nil || sets != nil {

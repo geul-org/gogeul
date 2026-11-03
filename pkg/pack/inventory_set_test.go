@@ -15,12 +15,12 @@ import (
 func inventorySet(t *testing.T, c Codec) (string, map[string][]byte) {
 	t.Helper()
 	ctx := context.Background()
-	docs := map[string][]byte{"n/a.geul": streamTestDoc(20, 1), "n/b.geul": streamTestDoc(21, 1)}
-	put := []string{"n/a.geul", "n/b.geul"}
+	docs := map[string][]byte{"issuers/0x0000000a.geul": streamTestDoc(20, 1), "issuers/0x0000000b.geul": streamTestDoc(21, 1)}
+	put := []string{"issuers/0x0000000a.geul", "issuers/0x0000000b.geul"}
 	for d := uint64(1); d <= 6; d++ {
 		doc := streamTestDoc(d, 1)
-		docs[pPath("0x00010000", d, 1)], docs[docHPath(doc)] = doc, doc
-		put = append(put, pPath("0x00010000", d, 1), docHPath(doc))
+		docs[pPath("0x00000001", d, 1)], docs[docHPath(doc)] = doc, doc
+		put = append(put, pPath("0x00000001", d, 1), docHPath(doc))
 	}
 	out := filepath.Join(t.TempDir(), "set")
 	o := small()
@@ -29,9 +29,9 @@ func inventorySet(t *testing.T, c Codec) (string, map[string][]byte) {
 		t.Fatal(err)
 	}
 	only := streamTestDoc(7, 1)
-	docs[pPath("0x00010000", 2, 1)], docs[docHPath(only)] = streamTestDoc(2, 2), only
-	put = []string{pPath("0x00010000", 2, 1), docHPath(only)}
-	del := []string{pPath("0x00010000", 3, 1), "n/b.geul", docHPath(streamTestDoc(4, 1))}
+	docs[pPath("0x00000001", 2, 1)], docs[docHPath(only)] = streamTestDoc(2, 2), only
+	put = []string{pPath("0x00000001", 2, 1), docHPath(only)}
+	del := []string{pPath("0x00000001", 3, 1), "issuers/0x0000000b.geul", docHPath(streamTestDoc(4, 1))}
 	if _, err := Write(ctx, out, Batch{Put: put, Delete: del, Get: memGet(docs)}, o); err != nil {
 		t.Fatal(err)
 	}

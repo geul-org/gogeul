@@ -11,12 +11,12 @@ import (
 
 func TestReaderIssuers(t *testing.T) {
 	ctx := context.Background()
-	m := &manifest{issuers: []string{"0x00010000", "0x0000", "0x0001", "0x0002"},
+	m := &manifest{issuers: []string{"0x00000001", "0x00000000", "0x00000002", "0x00000003"},
 		pLayers: []layer{{blk: block{kind: blkPLeaf, keys: []string{pKey(0, 1, 0), pKey(1, 1, 0)}, locs: []Loc{{Off: 64}, {Off: 64}}}}},
-		named:   []namedEntry{{"0x0001/documents.geul", Loc{}}}}
+		named:   []namedEntry{{"0x00000002/docs/0x00000001.geul", Loc{}}}}
 	r := newReader(memStore{}, Options{}, m, "")
 	got, err := r.Issuers(ctx)
-	if err != nil || !reflect.DeepEqual(got, []string{"0x0000", "0x0001", "0x00010000"}) {
+	if err != nil || !reflect.DeepEqual(got, []string{"0x00000000", "0x00000001", "0x00000002"}) {
 		t.Fatal(got, err)
 	}
 	r.m.pLayers = []layer{{blk: block{kind: blkPInner, keys: []string{pKey(0, 0, 0)}, locs: []Loc{{Obj: 9}}}}}

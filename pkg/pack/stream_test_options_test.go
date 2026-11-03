@@ -10,5 +10,5 @@ func streamTestOptions() StreamOptions {
 		samples = append(samples, streamTestDoc(i, 1))
 	}
 	return StreamOptions{Build: BuildOptions{PackSize: 3000, PLeaf: 5, HLeaf: 4, HFanout: 3, HRoot: 3},
-		Issuers: []string{"0x00010000"}, Samples: samples, RunEntries: 7, Created: 1_800_000_000}
+		Issuers: []string{"0x00000001"}, Samples: samples, RunEntries: 7, Created: 1_800_000_000}
 }

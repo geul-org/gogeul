@@ -10,10 +10,10 @@ import (
 
 func TestArchiveStat(t *testing.T) {
 	a, _ := testArchive(t)
-	if fi, err := a.Stat("issuers.geul"); err != nil || fi.Size() != int64(len(fixtureFile(t, "issuers.geul"))) {
+	if fi, err := a.Stat("issuers/0x00000001.geul"); err != nil || fi.Size() != int64(len(fixtureFile(t, "issuers/0x00000001.geul"))) {
 		t.Fatal(err)
 	}
-	if fi, err := fs.Stat(a, "0x0000"); err != nil || !fi.IsDir() {
+	if fi, err := fs.Stat(a, "0x00000000"); err != nil || !fi.IsDir() {
 		t.Fatal(err)
 	}
 	if _, err := a.Stat("none"); !errors.Is(err, fs.ErrNotExist) {

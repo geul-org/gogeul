@@ -5,8 +5,8 @@ package pack
 import "testing"
 
 func TestIssuerIndex(t *testing.T) {
-	m := issuerIndex([]string{"0x0000", "0x00010000"})
-	if m["0x00010000"] != 1 || len(m) != 2 {
+	m := issuerIndex([]string{"0x00000000", "0x00000001"})
+	if m["0x00000001"] != 1 || len(m) != 2 {
 		t.Fatal(m)
 	}
 }

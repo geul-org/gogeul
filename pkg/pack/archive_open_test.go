@@ -11,7 +11,7 @@ import (
 
 func TestArchiveOpen(t *testing.T) {
 	a, _ := testArchive(t)
-	if err := fstest.TestFS(a, "issuers.geul", "0x0000/0x0000000000000845/versions.geul"); err != nil {
+	if err := fstest.TestFS(a, "issuers/0x00000001.geul", "0x00000000/docs/0x0000000000000845/versions.geul"); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := a.Open("/x"); !errors.Is(err, fs.ErrInvalid) {

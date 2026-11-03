@@ -4,8 +4,9 @@ package pack
 
 import "fmt"
 
-// share links each h/ put to a P or named put with the same bytes whose
-// content hash names it (flags bit0). An unlinked h/ put becomes its own
+// share links each `<Issuer>/hashes/` put to a P or named put with the same bytes whose
+// content hash names it under the same Issuer (flags bit0). An unlinked hashes/
+// put becomes its own
 // record and its name must be its content hash.
 func (w *writer) share() error {
 	hs := map[string]*put{}
@@ -15,7 +16,7 @@ func (w *writer) share() error {
 		}
 	}
 	for _, p := range w.puts {
-		h, ok := hs[hPath(string(p.ch[:]))]
+		h, ok := hs[hPath(p.ref.issuer, string(p.ch[:]))]
 		if p.ref.space != spaceH && p.chOK && ok && h.via == nil && h.sum == p.sum {
 			p.share, h.via = h.path, p
 			w.res.Shared++

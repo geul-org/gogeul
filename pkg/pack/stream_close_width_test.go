@@ -25,7 +25,7 @@ func TestStreamCloseWidth(t *testing.T) {
 	if !maps.Equal(streamTestTree(t, out), ref) || asked < 2 {
 		t.Fatalf("files differ, width asked %d times", asked)
 	}
-	o := StreamOptions{Build: BuildOptions{Codec: Stored{}}, Issuers: []string{"0x00010000"}, RunEntries: 2, Created: 1_800_000_000, MergeWidth: func() int { return 4 }}
+	o := StreamOptions{Build: BuildOptions{Codec: Stored{}}, Issuers: []string{"0x00000001"}, RunEntries: 2, Created: 1_800_000_000, MergeWidth: func() int { return 4 }}
 	n, err := NewStream(filepath.Join(t.TempDir(), "set"), o)
 	if err != nil {
 		t.Fatal(err)

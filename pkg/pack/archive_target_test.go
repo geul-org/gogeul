@@ -16,11 +16,11 @@ func TestArchiveTarget(t *testing.T) {
 		only *packSet
 		want string
 	}{
-		{"issuers.geul", nil, "0x0000"},
-		{"0x0000/0x0000000000000001/versions.geul", nil, "0x0000"},
-		{"0x0001/0x0000000000000001/versions.geul", nil, "0x0001"},
-		{"h/new.geul", i0, "0x0000"},
-		{"other.geul", nil, "0x0000"},
+		{"issuers/0x00000001.geul", nil, "0x00000000"},
+		{"0x00000000/docs/0x0000000000000001/versions.geul", nil, "0x00000000"},
+		{"0x00000002/docs/0x0000000000000001/versions.geul", nil, "0x00000002"},
+		{"0x00000000/hashes/new.geul", i0, "0x00000000"},
+		{"other.geul", nil, "0x00000000"},
 	}
 	for _, c := range cases {
 		s, err := a.target(ctx, c.name, c.only)
@@ -29,12 +29,12 @@ func TestArchiveTarget(t *testing.T) {
 		}
 	}
 	top := a.set("")
-	if s, _ := a.target(ctx, "0x0002/0x0000000000000001/versions.geul", nil); s != top {
+	if s, _ := a.target(ctx, "0x00000003/docs/0x0000000000000001/versions.geul", nil); s != top {
 		t.Fatal("top")
 	}
 	_ = wk
 	i0.r.m.pLayers = []layer{{blk: block{kind: blkPInner, keys: []string{pKey(0, 0, 0)}, locs: []Loc{{Obj: 99}}}}}
-	if _, err := a.target(ctx, "0x0000/0x0000000000000008/versions.geul", nil); err == nil {
+	if _, err := a.target(ctx, "0x00000000/docs/0x0000000000000008/versions.geul", nil); err == nil {
 		t.Fatal("broken")
 	}
 }

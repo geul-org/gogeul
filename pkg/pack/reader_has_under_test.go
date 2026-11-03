@@ -11,12 +11,12 @@ func TestReaderHasUnder(t *testing.T) {
 	ctx := context.Background()
 	a, _ := testArchive(t)
 	r := a.sets[0].r
-	for _, n := range []string{"0x0000", "0x0000/0x0000000000000008", "h"} {
+	for _, n := range []string{"0x00000000", "0x00000000/docs/0x0000000000000008", "0x00000000/docs", "0x00000000/hashes"} {
 		if ok, err := r.hasUnder(ctx, n, nil); err != nil || !ok {
 			t.Fatal(n, ok, err)
 		}
 	}
-	for _, n := range []string{"issuers.geul", "zz", "0x0000/documents.geul"} {
+	for _, n := range []string{"issuers/0x00000001.geul", "zz", "0x00000000/docs/0x00000001.geul"} {
 		if ok, err := r.hasUnder(ctx, n, nil); err != nil || ok {
 			t.Fatal(n, ok, err)
 		}

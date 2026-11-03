@@ -5,8 +5,8 @@ package pack
 import "testing"
 
 func TestReaderHasNamedUnder(t *testing.T) {
-	r := newReader(memStore{}, Options{}, &manifest{named: []namedEntry{{"0x0000/documents.geul", Loc{}}, {"issuers.geul", Loc{}}}}, "")
-	if !r.hasNamedUnder("0x0000/") || r.hasNamedUnder("0x0001/") || r.hasNamedUnder("z") {
+	r := newReader(memStore{}, Options{}, &manifest{named: []namedEntry{{"0x00000000/docs/0x00000001.geul", Loc{}}, {"issuers/0x00000001.geul", Loc{}}}}, "")
+	if !r.hasNamedUnder("0x00000000/") || r.hasNamedUnder("0x0001/") || r.hasNamedUnder("z") {
 		t.Fatal("hasNamedUnder")
 	}
 }

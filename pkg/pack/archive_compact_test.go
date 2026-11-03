@@ -12,7 +12,7 @@ import (
 func TestArchiveCompact(t *testing.T) {
 	ctx := context.Background()
 	a, _ := testArchive(t)
-	a.set("0x0001")
+	a.set("0x00000002")
 	before, _ := a.Paths()
 	rs, err := a.Compact(ctx)
 	after, _ := a.Paths()

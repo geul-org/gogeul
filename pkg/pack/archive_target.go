@@ -24,8 +24,5 @@ func (a *Archive) target(ctx context.Context, name string, only *packSet) (*pack
 		}
 		return a.set(first), nil
 	}
-	if strings.HasPrefix(name, "h/") && only != nil {
-		return only, nil
-	}
 	return a.home(), nil
 }

@@ -19,31 +19,31 @@ func TestStreamPut(t *testing.T) {
 	if err := s.Put([]core.Word{9}, 0x5100000000000007, 0, StreamRecord{}); err == nil {
 		t.Fatal("unknown Issuer: want error")
 	}
-	if err := s.Put([]core.Word{1, 0}, 0x5100000000000006, 1, StreamRecord{}); err == nil {
+	if err := s.Put([]core.Word{0, 1}, 0x5100000000000006, 1, StreamRecord{}); err == nil {
 		t.Fatal("same key: want error")
 	}
-	if err := s.Put([]core.Word{1, 0}, 0x5100000000000007, 0, StreamRecord{Bytes: []byte("x")}); err != nil || len(s.hbuf) != 5 {
+	if err := s.Put([]core.Word{0, 1}, 0x5100000000000007, 0, StreamRecord{Bytes: []byte("x")}); err != nil || len(s.hbuf) != 5 {
 		t.Fatalf("no hash: %v", err)
 	}
 	s.data.Close()
-	if err := s.Put([]core.Word{1, 0}, 0x5100000000000007, 1, StreamRecord{Bytes: []byte("x")}); err == nil {
+	if err := s.Put([]core.Word{0, 1}, 0x5100000000000007, 1, StreamRecord{Bytes: []byte("x")}); err == nil {
 		t.Fatal("place failure: want error")
 	}
 	full := streamTestNew(t, nil)
 	streamTestPut(t, full, 1, 2) // leaf of 4, one short of full
 	r, _ := full.Encode(streamTestDoc(3, 0))
-	full.Put([]core.Word{1, 0}, 0x5100000000000003, 0, r)
+	full.Put([]core.Word{0, 1}, 0x5100000000000003, 0, r)
 	os.RemoveAll(filepath.Join(full.out, streamDir))
-	if err := full.Put([]core.Word{1, 0}, 0x5100000000000003, 1, r); err == nil {
+	if err := full.Put([]core.Word{0, 1}, 0x5100000000000003, 1, r); err == nil {
 		t.Fatal("leaf write failure: want error")
 	}
 	cl := streamTestNew(t, nil)
 	streamTestPut(t, cl, 1, 2)
 	cl.st.Close.Phase = closeStarted
-	if err := cl.Put([]core.Word{1, 0}, 0x5100000000000001, 1, StreamRecord{}); err != nil || cl.Count() != 4 {
+	if err := cl.Put([]core.Word{0, 1}, 0x5100000000000001, 1, StreamRecord{}); err != nil || cl.Count() != 4 {
 		t.Fatalf("closing, earlier key: %v", err)
 	}
-	if err := cl.Put([]core.Word{1, 0}, 0x5100000000000003, 0, StreamRecord{}); err == nil {
+	if err := cl.Put([]core.Word{0, 1}, 0x5100000000000003, 0, StreamRecord{}); err == nil {
 		t.Fatal("closing, later key: want error")
 	}
 	sp := streamTestNew(t, nil)
@@ -53,7 +53,7 @@ func TestStreamPut(t *testing.T) {
 	sp.data.Close()
 	sp.st.Data.Num = -1
 	sp.data = nil
-	if err := sp.Put([]core.Word{1, 0}, 0x5100000000000004, 0, r); err == nil {
+	if err := sp.Put([]core.Word{0, 1}, 0x5100000000000004, 0, r); err == nil {
 		t.Fatal("spill failure: want error")
 	}
 }

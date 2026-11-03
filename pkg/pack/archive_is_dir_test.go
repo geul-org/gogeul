@@ -6,7 +6,7 @@ import "testing"
 
 func TestArchiveIsDir(t *testing.T) {
 	a, _ := testArchive(t)
-	if !a.isDir(".") || !a.isDir("0x0000") || !a.isDir("h") || a.isDir("issuers.geul") || a.isDir("zz") {
+	if !a.isDir(".") || !a.isDir("0x00000000") || !a.isDir("0x00000000/hashes") || !a.isDir("issuers") || a.isDir("h") || a.isDir("issuers/0x00000001.geul") || a.isDir("zz") {
 		t.Fatal("isDir")
 	}
 }

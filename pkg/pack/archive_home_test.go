@@ -9,11 +9,11 @@ func TestArchiveHome(t *testing.T) {
 	if h := a.home(); h.name != "" || len(a.sets) != 1 {
 		t.Fatal(h)
 	}
-	a = &Archive{sets: []*packSet{{name: "0x0000"}, {name: "0x0001"}}}
+	a = &Archive{sets: []*packSet{{name: "0x00000000"}, {name: "0x00000002"}}}
 	if a.home() != a.sets[0] {
-		t.Fatal("0x0000")
+		t.Fatal("0x00000000")
 	}
-	a = &Archive{sets: []*packSet{{name: "0x0001"}}}
+	a = &Archive{sets: []*packSet{{name: "0x00000002"}}}
 	if a.home() != a.sets[0] {
 		t.Fatal("first")
 	}

@@ -23,7 +23,7 @@ func (r *Reader) entries(ctx context.Context) (map[string]Loc, error) {
 		out[pPath(r.m.issuers[i], d, s)] = l
 	}
 	for k, l := range hs {
-		out[hPath(k)] = l
+		out[hPath(r.hashOwner(nil), k)] = l
 	}
 	for _, n := range r.m.named {
 		out[n.path] = n.loc

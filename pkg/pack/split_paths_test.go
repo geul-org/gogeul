@@ -1,27 +1,16 @@
 //ff:func feature=pack type=writer control=sequence
-//ff:what TestSplitPaths — Issuer paths and their h/ copies go to the Issuer, other paths home; with no Issuer everything goes to the top set; read errors fail
+//ff:what TestSplitPaths — Issuer paths (hashes/ included) go to their Issuer, a zero-padded Issuer to the same set, the Issuer list to the home set
 package pack
 
-import (
-	"os"
-	"path/filepath"
-	"testing"
-)
+import "testing"
 
 func TestSplitPaths(t *testing.T) {
-	root := fixture(t)
-	base := filepath.Join(root, ".well-known", "geul")
-	os.WriteFile(filepath.Join(base, "h", "0x"+"ff"+"00000000000000000000000000000000000000000000000000000000000000.geul"), []byte{1}, 0o644)
-	paths, _ := listTree(root)
-	g, err := splitPaths(base, paths)
-	if err != nil || len(g) != 1 || len(g["0x0000"]) != 19 {
-		t.Fatal(g, err)
+	g := splitPaths([]string{"0x00000000/docs/0x0000000000000001/versions.geul", "0x0000000000000000/hashes/0x" + "ab" + "00000000000000000000000000000000000000000000000000000000000000.geul",
+		"0x00000001/docs/0x0000000000000002/0x00000001.geul", "issuers/0x00000001.geul"})
+	if len(g) != 2 || len(g["0x00000000"]) != 3 || len(g["0x00000001"]) != 1 {
+		t.Fatal(g)
 	}
-	top, _ := splitPaths(base, []string{"issuers.geul"})
-	if len(top[""]) != 1 {
+	if top := splitPaths([]string{"issuers/0x00000001.geul"}); len(top[""]) != 1 {
 		t.Fatal(top)
-	}
-	if _, err := splitPaths(base, []string{"0x0000/none.geul"}); err == nil {
-		t.Fatal("unreadable")
 	}
 }

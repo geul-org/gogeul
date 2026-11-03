@@ -10,11 +10,14 @@ import (
 
 // Put stores r as the P record (issuer, doc, slot) — slot 0 is versions.geul,
 // v ≥ 1 version v (§3.4) — and, when r is a document, under
-// `h/<r.Hash>.geul` too (flags bit0: the bytes are shared, never copied).
+// `<Issuer>/hashes/<r.Hash>.geul` too (flags bit0: the bytes are shared, never copied).
 // Keys must come in strictly ascending order (Issuer number, document ID,
 // slot) and the Issuer must be one of StreamOptions.Issuers. Once Close has
 // begun (a resumed stream whose Close stopped) closedPut answers instead.
 func (s *Stream) Put(issuer []core.Word, doc uint64, slot uint32, r StreamRecord) error {
+	if n, ok := core.IssuerNormal(issuer); ok {
+		issuer = n
+	}
 	num, ok := s.inum[core.FormatID(issuer)]
 	if !ok {
 		return fmt.Errorf("geul/pack: Issuer %s is not one of the stream's", core.FormatID(issuer))

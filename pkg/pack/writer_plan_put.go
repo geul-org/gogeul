@@ -8,15 +8,19 @@ import (
 	"fmt"
 )
 
-// planPut returns the put for path or nil when unchanged.
+// planPut returns the put for path or nil when unchanged. A path outside the
+// 공표 주소 forms (§3.13), latest.geul included, is refused: it is never
+// stored. A zero-padded Issuer is stored under its canonical spelling.
 func (w *writer) planPut(path string) (*put, error) {
-	if path == "" || len(path) > 0xFFFF {
-		return nil, fmt.Errorf("geul/pack: invalid path %q", path)
+	ref := parsePath(path)
+	if ref.space == spaceNone || len(path) > 0xFFFF {
+		return nil, fmt.Errorf("geul/pack: %q is not a stored 공표 주소", path)
 	}
 	data, err := w.b.Get(path)
 	if err != nil {
 		return nil, err
 	}
+	path = ref.path
 	w.sums[path] = sha256.Sum256(data)
 	if l, ok := w.base[path]; ok {
 		old, err := w.prev.Record(w.ctx, l)
@@ -27,7 +31,7 @@ func (w *writer) planPut(path string) (*put, error) {
 			return nil, nil
 		}
 	}
-	pu := &put{path: path, ref: parsePath(path), sum: w.sums[path], n: len(data)}
+	pu := &put{path: path, ref: ref, sum: w.sums[path], n: len(data)}
 	pu.ch, pu.chOK = contentHash(data)
 	return pu, nil
 }

@@ -36,21 +36,21 @@ func TestBuild(t *testing.T) {
 		t.Fatal("GETs", c.gets)
 	}
 	base := filepath.Join(root, ".well-known", "geul")
-	v1 := "0x0000/0x0000000000000845/0x00000001.geul"
-	os.WriteFile(filepath.Join(base, "issuers.geul"), []byte("changed"), 0o644)
+	v1 := "0x00000000/docs/0x0000000000000845/0x00000001.geul"
+	os.WriteFile(filepath.Join(base, "issuers/0x00000001.geul"), []byte("changed"), 0o644)
 	os.Remove(filepath.Join(base, v1))
 	res, err := Build(ctx, root, out, small())
 	if err != nil || res.Generation != 2 || res.Records != 1 || res.Deleted != 1 {
 		t.Fatal(res, err)
 	}
 	r := opened(t, out)
-	if b, _ := r.Fetch(ctx, "issuers.geul"); string(b) != "changed" {
+	if b, _ := r.Fetch(ctx, "issuers/0x00000001.geul"); string(b) != "changed" {
 		t.Fatal(string(b))
 	}
 	if _, err := r.Fetch(ctx, v1); !errors.Is(err, ErrNotFound) {
 		t.Fatal(err)
 	}
-	if b, err := r.Fetch(ctx, "0x0000/0x0000000000000860/0x00000001.geul"); err != nil || !bytes.Equal(b, fixtureFile(t, "0x0000/0x0000000000000860/0x00000001.geul")) {
+	if b, err := r.Fetch(ctx, "0x00000000/docs/0x0000000000000860/0x00000001.geul"); err != nil || !bytes.Equal(b, fixtureFile(t, "0x00000000/docs/0x0000000000000860/0x00000001.geul")) {
 		t.Fatal(err)
 	}
 	if r.Verify(ctx) != nil || len(r.m.hLayers) != 1 {

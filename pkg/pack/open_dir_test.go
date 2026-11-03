@@ -18,7 +18,7 @@ func TestOpenDir(t *testing.T) {
 	if a, err := OpenDir(ctx, t.TempDir(), BuildOptions{}); err != nil || len(a.sets) != 0 {
 		t.Fatal(err)
 	}
-	os.WriteFile(filepath.Join(wk, "0x0000", latestFile), []byte("x"), 0o644)
+	os.WriteFile(filepath.Join(wk, "0x00000000", latestFile), []byte("x"), 0o644)
 	if _, err := OpenDir(ctx, wk, BuildOptions{}); err == nil {
 		t.Fatal("broken set")
 	}

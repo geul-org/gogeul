@@ -26,7 +26,7 @@ func TestWriterVerifyPaths(t *testing.T) {
 		t.Fatal(err)
 	}
 	w.b.Full = true
-	w.sums["issuers.geul"] = [32]byte{}
+	w.sums["issuers/0x00000001.geul"] = [32]byte{}
 	if err := w.verifyPaths(r); !errors.Is(err, ErrCorrupt) {
 		t.Fatal(err)
 	}
@@ -38,7 +38,7 @@ func TestWriterVerifyPaths(t *testing.T) {
 	if err := w.verifyPaths(r); !errors.Is(err, ErrCorrupt) {
 		t.Fatal("short set", err)
 	}
-	w.dels = []string{"issuers.geul"}
+	w.dels = []string{"issuers/0x00000001.geul"}
 	if err := w.verifyPaths(r); !errors.Is(err, ErrCorrupt) {
 		t.Fatal("live deletion", err)
 	}

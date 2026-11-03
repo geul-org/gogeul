@@ -15,7 +15,7 @@ func streamTestPut(t *testing.T, s *Stream, from, to uint64) {
 	for i := 2 * from; i < 2*to+2; i++ {
 		r, err := s.Encode(streamTestDoc(i/2, uint32(i%2)))
 		if err == nil {
-			err = s.Put([]core.Word{1, 0}, 0x5100000000000000|i/2, uint32(i%2), r)
+			err = s.Put([]core.Word{0, 1}, 0x5100000000000000|i/2, uint32(i%2), r)
 		}
 		if err != nil {
 			t.Fatal(err)

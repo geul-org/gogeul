@@ -1,18 +1,12 @@
 //ff:func feature=pack type=writer control=iteration dimension=1
-//ff:what splitPaths — group an archive's paths into Issuer sets: Issuer paths by Issuer, h/ copies with the Issuer of the document they copy, the rest home
+//ff:what splitPaths — assign every archive path to the set of its Issuer; paths outside every Issuer (the Issuer list) go to the home set
 package pack
 
 // splitPaths assigns every path to a set name (Issuer hex, or "" when the
-// archive has no Issuer paths).
-func splitPaths(base string, paths []string) (map[string][]string, error) {
-	hs, err := hashOwners(base, paths)
-	if err != nil {
-		return nil, err
-	}
+// archive has no Issuer paths). `<Issuer>/…` paths, `hashes/` included, go to
+// that Issuer's set; the rest (`issuers/`) to the home set (splitHome).
+func splitPaths(paths []string) map[string][]string {
 	seen := map[string]bool{}
-	for _, owner := range hs {
-		seen[owner] = true
-	}
 	for _, p := range paths {
 		if o := ownerOf(p); o != "" {
 			seen[o] = true
@@ -22,13 +16,10 @@ func splitPaths(base string, paths []string) (map[string][]string, error) {
 	out := map[string][]string{}
 	for _, p := range paths {
 		owner := ownerOf(p)
-		if ref := parsePath(p); owner == "" && ref.space == spaceH {
-			owner = hs[ref.hash]
-		}
 		if owner == "" {
 			owner = home
 		}
 		out[owner] = append(out[owner], p)
 	}
-	return out, nil
+	return out
 }

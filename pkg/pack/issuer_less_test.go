@@ -5,7 +5,7 @@ package pack
 import "testing"
 
 func TestIssuerLess(t *testing.T) {
-	if !issuerLess("0xffff", "0x00000000") || !issuerLess("0x0000", "0x0001") || issuerLess("0x0001", "0x0000") {
+	if !issuerLess("0xffff", "0x00000000") || !issuerLess("0x00000000", "0x00000002") || issuerLess("0x00000002", "0x00000000") {
 		t.Fatal("issuerLess")
 	}
 }

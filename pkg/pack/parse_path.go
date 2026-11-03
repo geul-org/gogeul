@@ -1,23 +1,40 @@
-//ff:func feature=pack type=decoder control=sequence
-//ff:what parsePath — map an archive path to P, H or the named space (§3.4); non-canonical forms are named
+//ff:func feature=pack type=helper control=selection
+//ff:what parsePath — a 공표 주소 path into its key space: P (docs versions and version lists), H (hashes), named (lists and codecs), none otherwise
 package pack
 
-import (
-	"strings"
-)
+import "strings"
 
-// parsePath maps `<I>/<D>/<V>.geul` and `<I>/<D>/versions.geul` to P,
-// `h/0x<H>.geul` to H and everything else, including non-canonical spellings,
-// to the named space.
+// parsePath maps a path relative to `.well-known/geul/` (§3.13 공표 주소) to
+// its key space: `<I>/docs/<D>/<V>.geul` and `<I>/docs/<D>/versions.geul` to
+// P, `<I>/hashes/<H>.geul` to H, the lists (`issuers/`, `<I>/docs/`,
+// `<I>/codecs/`) and the codecs (`<I>/codecs/<C>/`) to the named space.
+// latest.geul is a reserved name served by reading the version list, never
+// stored, and every other spelling is outside the forms: both are spaceNone.
+// The Issuer may be zero-padded; ref.issuer and ref.path are canonical.
 func parsePath(p string) pathRef {
-	if h, ok := strings.CutPrefix(p, "h/"); ok {
-		if b, ok := parseHex(strings.TrimSuffix(h, ".geul"), 64); ok && strings.HasSuffix(h, ".geul") {
-			return pathRef{space: spaceH, hash: string(b)}
-		}
+	seg := strings.Split(p, "/")
+	if len(seg) == 2 && seg[0] == issuersDir && storedTail(seg[1]) {
+		return pathRef{space: spaceNamed, path: p}
 	}
-	parts := strings.Split(p, "/")
-	if len(parts) != 3 || !isIssuer(parts[0]) {
+	if len(seg) < 3 {
 		return pathRef{}
 	}
-	return parsePPath(parts)
+	is, ok := normalIssuer(seg[0])
+	if !ok {
+		return pathRef{}
+	}
+	seg[0] = is
+	ref := pathRef{issuer: is, path: strings.Join(seg, "/")}
+	switch {
+	case seg[1] == hashesDir && len(seg) == 3:
+		return parseHPath(ref, seg[2])
+	case seg[1] == docsDir && len(seg) == 4:
+		return parsePPath(ref, seg[2], seg[3])
+	case (seg[1] == docsDir || seg[1] == codecsDir) && len(seg) == 3 && storedTail(seg[2]),
+		seg[1] == codecsDir && len(seg) == 4 && isHex(seg[2], 8) && storedTail(seg[3]):
+		ref.space = spaceNamed
+		return ref
+	default:
+		return pathRef{}
+	}
 }

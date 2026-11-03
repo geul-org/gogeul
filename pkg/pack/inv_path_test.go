@@ -8,11 +8,11 @@ import (
 )
 
 func TestInvPath(t *testing.T) {
-	inv := inventory{issuers: []string{"0x0000"}, paths: []string{"issuers.geul"}}
-	if p, err := invPath(inv, invEntry{kind: invPDel, doc: 8}); err != nil || p != "0x0000/0x0000000000000008/versions.geul" {
+	inv := inventory{issuers: []string{"0x00000000"}, paths: []string{"issuers/0x00000001.geul"}}
+	if p, err := invPath(inv, invEntry{kind: invPDel, doc: 8}); err != nil || p != "0x00000000/docs/0x0000000000000008/versions.geul" {
 		t.Fatal(p, err)
 	}
-	if p, err := invPath(inv, invEntry{kind: invNamed}); err != nil || p != "issuers.geul" {
+	if p, err := invPath(inv, invEntry{kind: invNamed}); err != nil || p != "issuers/0x00000001.geul" {
 		t.Fatal(p, err)
 	}
 	for _, e := range []invEntry{{kind: invP, ref: 1}, {kind: invNamedDel, ref: 1}} {

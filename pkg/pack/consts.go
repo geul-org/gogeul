@@ -37,11 +37,18 @@ const (
 	invPDel     = 5 // P deletion
 	invNamedDel = 6 // named deletion
 
-	flagHash = 1 // the record also serves `h/<content hash>.geul`
+	flagHash = 1 // the record also serves `<Issuer>/hashes/<content hash>.geul`
 
-	spaceNamed = 0
+	spaceNone  = 0 // outside the 공표 주소 forms, or latest.geul: never stored
 	spaceP     = 1
 	spaceH     = 2
+	spaceNamed = 3
+
+	docsDir    = "docs"    // <Issuer>/docs/: documents and the document list
+	codecsDir  = "codecs"  // <Issuer>/codecs/: codec documents and the codec list
+	hashesDir  = "hashes"  // <Issuer>/hashes/: documents by content hash
+	issuersDir = "issuers" // issuers/: the Issuer list
+	listFile   = "versions.geul"
 
 	latestFile = "latest.txt"
 	maxDepth   = 16        // directory depth guard against cycles

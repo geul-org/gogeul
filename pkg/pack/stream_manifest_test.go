@@ -8,7 +8,7 @@ func TestStreamManifest(t *testing.T) {
 	s := streamTestNew(t, nil)
 	s.st.Objects = []streamObject{{Kind: kindData, Size: 9}}
 	m := s.manifest([]namedEntry{{path: "a"}}, []layer{{count: 1}}, nil)
-	if m.gen != 1 || m.created != 1_800_000_000 || len(m.objects) != 1 || m.objects[0].size != 9 || m.issuers[0] != "0x00010000" || len(m.named) != 1 || len(m.pLayers) != 1 || m.dicts != nil {
+	if m.gen != 1 || m.created != 1_800_000_000 || len(m.objects) != 1 || m.objects[0].size != 9 || m.issuers[0] != "0x00000001" || len(m.named) != 1 || len(m.pLayers) != 1 || m.dicts != nil {
 		t.Fatalf("%+v", m)
 	}
 	s.st.Dict = streamDict{ID: FirstDictID}

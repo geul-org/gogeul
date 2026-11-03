@@ -6,8 +6,8 @@ import "sort"
 
 // splitHome picks the home set among the Issuers seen.
 func splitHome(owners map[string]bool) string {
-	if owners["0x0000"] {
-		return "0x0000"
+	if owners["0x00000000"] {
+		return "0x00000000"
 	}
 	ids := make([]string, 0, len(owners))
 	for id := range owners {

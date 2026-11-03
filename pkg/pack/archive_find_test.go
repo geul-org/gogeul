@@ -5,8 +5,8 @@ package pack
 import "testing"
 
 func TestArchiveFind(t *testing.T) {
-	a := &Archive{sets: []*packSet{{name: "0x0000"}}}
-	if a.find("0x0000") != a.sets[0] || a.find("") != nil {
+	a := &Archive{sets: []*packSet{{name: "0x00000000"}}}
+	if a.find("0x00000000") != a.sets[0] || a.find("") != nil {
 		t.Fatal("find")
 	}
 }

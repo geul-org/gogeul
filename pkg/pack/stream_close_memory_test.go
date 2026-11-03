@@ -9,7 +9,7 @@ import (
 
 func TestStreamCloseMemory(t *testing.T) {
 	peakOf := func(docs uint64, merge int) uint64 {
-		o := StreamOptions{Build: BuildOptions{Codec: Stored{}}, Issuers: []string{"0x00010000"}, RunEntries: 2, Created: 1_800_000_000, MergeRuns: merge}
+		o := StreamOptions{Build: BuildOptions{Codec: Stored{}}, Issuers: []string{"0x00000001"}, RunEntries: 2, Created: 1_800_000_000, MergeRuns: merge}
 		s, err := NewStream(filepath.Join(t.TempDir(), "set"), o)
 		if err != nil {
 			t.Fatal(err)

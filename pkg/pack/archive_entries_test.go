@@ -7,12 +7,15 @@ import "testing"
 func TestArchiveEntries(t *testing.T) {
 	a, _ := testArchive(t)
 	idx, _ := a.index()
-	es := a.entries(idx, ".")
-	if len(es) != 3 || es[2].path != "issuers.geul" || es[2].a != a {
+	if top := a.entries(idx, "."); len(top) != 2 || top[1].path != "issuers" || !top[1].IsDir() {
+		t.Fatal(top)
+	}
+	es := a.entries(idx, "issuers")
+	if len(es) != 1 || es[0].path != "issuers/0x00000001.geul" || es[0].a != a {
 		t.Fatal(es)
 	}
-	fi, err := es[2].Info()
-	if err != nil || fi.Size() != int64(len(fixtureFile(t, "issuers.geul"))) {
+	fi, err := es[0].Info()
+	if err != nil || fi.Size() != int64(len(fixtureFile(t, "issuers/0x00000001.geul"))) {
 		t.Fatal(err)
 	}
 }

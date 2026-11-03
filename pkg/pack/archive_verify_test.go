@@ -11,12 +11,12 @@ import (
 func TestArchiveVerify(t *testing.T) {
 	ctx := context.Background()
 	a, _ := testArchive(t)
-	a.set("0x0001")
+	a.set("0x00000002")
 	if err := a.Verify(ctx); err != nil {
 		t.Fatal(err)
 	}
 	flip(t, objPath(t, a.sets[0].r, a.sets[0].dir, kindData), 200)
-	if err := a.Verify(ctx); err == nil || !strings.Contains(err.Error(), `"0x0000"`) {
+	if err := a.Verify(ctx); err == nil || !strings.Contains(err.Error(), `"0x00000000"`) {
 		t.Fatal(err)
 	}
 }

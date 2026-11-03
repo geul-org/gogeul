@@ -7,8 +7,8 @@ import "strings"
 // ownerOf returns the Issuer of `<Issuer>/…` paths, else "".
 func ownerOf(p string) string {
 	first, _, nested := strings.Cut(p, "/")
-	if nested && isIssuer(first) {
-		return first
+	if is, ok := normalIssuer(first); nested && ok {
+		return is
 	}
 	return ""
 }

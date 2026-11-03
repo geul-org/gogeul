@@ -10,7 +10,7 @@ import (
 
 func TestReaderApplyShare(t *testing.T) {
 	ctx := context.Background()
-	doc := fixtureFile(t, "0x0000/0x0000000000000845/0x00000001.geul")
+	doc := fixtureFile(t, "0x00000000/docs/0x0000000000000845/0x00000001.geul")
 	obj, o := objBytes(kindData, doc, nil)
 	r := newReader(memStore{objectName(o): obj}, Options{}, &manifest{objects: []object{o}}, "")
 	st := map[string]Loc{}

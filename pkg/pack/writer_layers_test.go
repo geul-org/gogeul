@@ -9,12 +9,12 @@ import (
 
 func TestWriterLayers(t *testing.T) {
 	_, out := built(t, small())
-	doc := fixtureFile(t, "0x0000/0x0000000000000845/0x00000001.geul")
+	doc := fixtureFile(t, "0x00000000/docs/0x0000000000000845/0x00000001.geul")
 	h, _ := contentHash(doc)
-	get := memGet(map[string][]byte{"0x0000/0x0000000000000001/0x00000001.geul": doc, hPath(string(h[:])): doc})
-	h2, _ := contentHash(fixtureFile(t, "0x0000/0x0000000000000860/0x00000001.geul"))
+	get := memGet(map[string][]byte{"0x00000000/docs/0x0000000000000001/0x00000001.geul": doc, hPath("0x00000000", string(h[:])): doc})
+	h2, _ := contentHash(fixtureFile(t, "0x00000000/docs/0x0000000000000860/0x00000001.geul"))
 	mk := func(dels ...string) *writer {
-		w := testWriter(t, out, Batch{Put: []string{"0x0000/0x0000000000000001/0x00000001.geul"}, Delete: append(dels, hPath(string(h[:]))), Get: get})
+		w := testWriter(t, out, Batch{Put: []string{"0x00000000/docs/0x0000000000000001/0x00000001.geul"}, Delete: append(dels, hPath("0x00000000", string(h[:]))), Get: get})
 		w.plan()
 		w.writeData()
 		return w
@@ -35,7 +35,7 @@ func TestWriterLayers(t *testing.T) {
 	if _, _, _, err := w.layers(); err == nil {
 		t.Fatal("close")
 	}
-	w = mk(hPath(string(h2[:])))
+	w = mk(hPath("0x00000000", string(h2[:])))
 	w.o.PLeaf, w.o.HLeaf = 100, 1
 	w.fs = &fsFuncs{create: 0}
 	if _, _, _, err := w.layers(); err == nil {

@@ -14,8 +14,10 @@ func (r *Reader) Fetch(ctx context.Context, path string) ([]byte, error) {
 	case spaceH:
 		var h [32]byte
 		copy(h[:], ref.hash)
-		return r.Hash(ctx, h)
+		return r.Hash(ctx, ref.issuer, h)
+	case spaceNamed:
+		return r.named(ctx, ref.path)
 	default:
-		return r.named(ctx, path)
+		return nil, notFound(path)
 	}
 }

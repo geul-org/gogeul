@@ -24,7 +24,7 @@ func TestReaderPackInventorySteps(t *testing.T) {
 			deleted = append(deleted, e.Path)
 		case e.Path == "" && e.Hashed:
 			hashOnly = append(hashOnly, e.Loc)
-		case e.Path == pPath("0x00010000", 2, 1):
+		case e.Path == pPath("0x00000001", 2, 1):
 			replaced = append(replaced, e.Loc)
 		}
 		if e.Path != "" && e.Hashed {
@@ -32,7 +32,7 @@ func TestReaderPackInventorySteps(t *testing.T) {
 		}
 	}
 	slices.Sort(deleted)
-	want := []string{pPath("0x00010000", 3, 1), docHPath(streamTestDoc(4, 1)), "n/b.geul"}
+	want := []string{pPath("0x00000001", 3, 1), docHPath(streamTestDoc(4, 1)), "issuers/0x0000000b.geul"}
 	slices.Sort(want)
 	if !slices.Equal(deleted, want) || len(hashOnly) != 1 {
 		t.Fatal(deleted, hashOnly)

@@ -12,7 +12,7 @@ func TestReaderAnyLive(t *testing.T) {
 	ctx := context.Background()
 	a, _ := testArchive(t)
 	s := a.sets[0]
-	kr, _ := s.r.dirRange("0x0000/0x0000000000000008")
+	kr, _ := s.r.dirRange("0x00000000/docs/0x0000000000000008")
 	if ok, err := s.r.anyLive(ctx, kr, nil); err != nil || !ok {
 		t.Fatal(ok, err)
 	}
@@ -20,7 +20,7 @@ func TestReaderAnyLive(t *testing.T) {
 	if ok, err := s.r.anyLive(ctx, kr, gone); err != nil || ok {
 		t.Fatal(ok, err)
 	}
-	empty, _ := s.r.dirRange("0x0000/0x00000000000000ff")
+	empty, _ := s.r.dirRange("0x00000000/docs/0x00000000000000ff")
 	if ok, err := s.r.anyLive(ctx, empty, nil); err != nil || ok {
 		t.Fatal(ok, err)
 	}

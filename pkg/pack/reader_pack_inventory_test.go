@@ -27,10 +27,10 @@ func TestReaderPackInventory(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := []InventoryEntry{
-		{Path: pPath("0x0000", 8, 1), Loc: Loc{Obj: 1, Off: 64, Len: 3}, Hashed: true},
-		{Path: "issuers.geul", Loc: Loc{Obj: 1, Off: 67, Len: 2}},
-		{Path: pPath("0x0000", 9, 0), Deleted: true},
-		{Path: hPath(strings.Repeat("d", 32)), Deleted: true},
+		{Path: pPath("0x00000000", 8, 1), Loc: Loc{Obj: 1, Off: 64, Len: 3}, Hashed: true},
+		{Path: "issuers/0x00000001.geul", Loc: Loc{Obj: 1, Off: 67, Len: 2}},
+		{Path: pPath("0x00000000", 9, 0), Deleted: true},
+		{Path: hPath("0x00000000", strings.Repeat("d", 32)), Deleted: true},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("%+v", got)

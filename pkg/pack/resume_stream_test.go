@@ -16,7 +16,7 @@ func TestResumeStream(t *testing.T) {
 	os.WriteFile(filepath.Join(out, ".tmp-1"), nil, 0o644)
 	os.WriteFile(filepath.Join(out, "m", ".tmp-2"), nil, 0o644)
 	r, err := ResumeStream(out, streamTestOptions())
-	if err != nil || r.Count() != 6 || string(r.Meta()) != "three" || r.dict == nil || r.data == nil || r.index == nil || r.inum["0x00010000"] != 0 {
+	if err != nil || r.Count() != 6 || string(r.Meta()) != "three" || r.dict == nil || r.data == nil || r.index == nil || r.inum["0x00000001"] != 0 {
 		t.Fatalf("%v", err)
 	}
 	for _, p := range []string{".tmp-1", "m/.tmp-2"} {

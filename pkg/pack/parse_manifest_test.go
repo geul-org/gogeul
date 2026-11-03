@@ -21,7 +21,7 @@ func TestParseManifest(t *testing.T) {
 		}
 	}
 	m := sampleManifest()
-	m.issuers = []string{"0x0000", "0x0000"}
+	m.issuers = []string{"0x00000000", "0x00000000"}
 	if _, err := parseManifest(encodeManifest(m)); !errors.Is(err, ErrCorrupt) {
 		t.Fatal("issuers")
 	}
@@ -33,7 +33,7 @@ func TestParseManifest(t *testing.T) {
 		t.Fatal("objects")
 	}
 	m = sampleManifest()
-	m.issuers = append(m.issuers, "0x0001")
+	m.issuers = append(m.issuers, "0x00000002")
 	b = encodeManifest(m)
 	b[64+24*1+16]++ // ISSUERS length one longer: trailing byte
 	if _, err := parseManifest(b); !errors.Is(err, ErrCorrupt) {

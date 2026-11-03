@@ -1,23 +1,21 @@
-//ff:func feature=pack type=decoder control=iteration dimension=1
-//ff:what TestParsePPath — versions.geul is slot 0; version 0, short IDs and other names are named
+//ff:func feature=pack type=helper control=iteration dimension=1
+//ff:what TestParsePPath — versions.geul is slot 0, a non-zero 8-digit version is its slot; other spellings, latest.geul included, are outside the forms
 package pack
 
-import (
-	"strings"
-	"testing"
-)
+import "testing"
 
 func TestParsePPath(t *testing.T) {
-	if r := parsePPath(strings.Split("0x0000/0x0000000000000008/versions.geul", "/")); r.space != spaceP || r.slot != 0 || r.doc != 8 {
+	ref := pathRef{issuer: "0x00000000"}
+	if r := parsePPath(ref, "0x0000000000000008", "versions.geul"); r.space != spaceP || r.slot != 0 || r.doc != 8 {
 		t.Fatal(r)
 	}
-	if r := parsePPath(strings.Split("0x0000/0x0000000000000008/0x0000000a.geul", "/")); r.space != spaceP || r.slot != 10 {
+	if r := parsePPath(ref, "0x0000000000000008", "0x0000000a.geul"); r.space != spaceP || r.slot != 10 {
 		t.Fatal(r)
 	}
-	for _, p := range []string{"0x0000/0x08/versions.geul", "0x0000/0x0000000000000008/0x00000000.geul",
-		"0x0000/0x0000000000000008/0x00000001.txt", "0x0000/0x0000000000000008/x.geul"} {
-		if r := parsePPath(strings.Split(p, "/")); r.space != spaceNamed {
-			t.Fatal(p)
+	for _, c := range [][2]string{{"0x08", "versions.geul"}, {"0x0000000000000008", "0x00000000.geul"},
+		{"0x0000000000000008", "0x00000001.txt"}, {"0x0000000000000008", "x.geul"}, {"0x0000000000000008", "latest.geul"}} {
+		if r := parsePPath(ref, c[0], c[1]); r.space != spaceNone {
+			t.Fatal(c)
 		}
 	}
 }

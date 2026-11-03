@@ -13,7 +13,7 @@ func TestReaderCheckLive(t *testing.T) {
 	ctx := context.Background()
 	a, _ := testArchive(t)
 	s := a.sets[0]
-	kr, _ := s.r.dirRange("0x0000/0x0000000000000008")
+	kr, _ := s.r.dirRange("0x00000000/docs/0x0000000000000008")
 	k, p := kr.lo, kr.path(kr.lo)
 	if err := s.r.checkLive(ctx, kr, nil, k, Loc{}); !errors.Is(err, errLiveKey) {
 		t.Fatal(err)

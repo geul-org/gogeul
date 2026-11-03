@@ -8,8 +8,8 @@ import (
 
 func TestWriterWriteData(t *testing.T) {
 	out := t.TempDir()
-	get := memGet(map[string][]byte{"a": make([]byte, 100), "b": make([]byte, 10), "c": make([]byte, 10)})
-	w := testWriter(t, out, Batch{Put: []string{"a", "b", "c"}, Get: get})
+	get := memGet(map[string][]byte{"issuers/0x0000000a.geul": make([]byte, 100), "issuers/0x0000000b.geul": make([]byte, 10), "issuers/0x0000000c.geul": make([]byte, 10)})
+	w := testWriter(t, out, Batch{Put: []string{"issuers/0x0000000a.geul", "issuers/0x0000000b.geul", "issuers/0x0000000c.geul"}, Get: get})
 	w.o.PackSize = 64 + 30
 	if err := w.plan(); err != nil {
 		t.Fatal(err)
@@ -18,7 +18,7 @@ func TestWriterWriteData(t *testing.T) {
 	if err := w.writeData(); err != nil || len(w.objs) != 2 || w.res.Records != 3 {
 		t.Fatal(err, len(w.objs))
 	}
-	w = testWriter(t, out, Batch{Put: []string{"a"}, Get: get})
+	w = testWriter(t, out, Batch{Put: []string{"issuers/0x0000000a.geul"}, Get: get})
 	w.plan()
 	w.b.Get = memGet(nil)
 	if err := w.writeData(); err == nil {

@@ -16,7 +16,7 @@ func (r *Reader) applyPack(ctx context.Context, st map[string]Loc, obj uint32) e
 		}
 	}
 	for _, h := range inv.deleted {
-		delete(st, hPath(h))
+		delete(st, hPath(r.hashOwner(nil), h))
 	}
 	return nil
 }

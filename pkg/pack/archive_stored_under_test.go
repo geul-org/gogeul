@@ -12,7 +12,7 @@ func TestArchiveStoredUnder(t *testing.T) {
 	ctx := context.Background()
 	a, _ := testArchive(t)
 	a.sets = append([]*packSet{{}}, a.sets...)
-	if !a.storedUnder(ctx, "0x0000") || a.storedUnder(ctx, "zz") {
+	if !a.storedUnder(ctx, "0x00000000") || a.storedUnder(ctx, "zz") {
 		t.Fatal("storedUnder")
 	}
 	s := a.sets[1]
