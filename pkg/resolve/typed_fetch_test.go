@@ -18,7 +18,7 @@ func TestTypedFetch(t *testing.T) {
 	d.PublishCodec(codecDocOf(0x0980, 4))
 	d.Name([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}, "seven")
 	issuers, _ := namesDoc(nil, nil, core.Bind{EdgeID: 1, Subject: func() core.Record { r, _ := core.EncodeIssuerPointer([]core.Word{0, 0}); return r }(), Name: []byte("geul.org")})
-	d.write(issuersPath(), issuers)
+	d.PublishList([]core.Word{0, 0}, core.DocIDIssuers, issuers)
 	g, pad := []core.Word{0, 0}, []core.Word{0, 0, 0, 0}
 	v7 := edgeDoc(7, "a")
 	ws, _ := core.ReadWords(v7)
@@ -45,10 +45,14 @@ func TestTypedFetch(t *testing.T) {
 	ok("CodecVersions", b, err, clist)
 	b, err = Hash(ctx, d, g, h)
 	ok("Hash", b, err, v7)
+	ilist, _ := d.Fetch(ctx, listPath(issuersKey()))
+	b, err = IssuersVersions(ctx, d)
+	ok("IssuersVersions", b, err, ilist)
+	dlist, _ := d.Fetch(ctx, listPath(namesKey(geulIssuer)))
+	b, err = DocsVersions(ctx, d, g)
+	ok("DocsVersions", b, err, dlist)
 	for name, f := range map[string]func() ([]byte, error){
-		"IssuersVersions": func() ([]byte, error) { return IssuersVersions(ctx, d) },
 		"CodecsVersions":  func() ([]byte, error) { return CodecsVersions(ctx, d, g) },
-		"DocsVersions":    func() ([]byte, error) { return DocsVersions(ctx, d, g) },
 		"Codecs":          func() ([]byte, error) { return Codecs(ctx, d, g, Latest) },
 		"Hash of another": func() ([]byte, error) { return Hash(ctx, d, []core.Word{0, 1}, h) },
 		"1-word Issuer":   func() ([]byte, error) { return Doc(ctx, d, []core.Word{0}, 0xffff000000000007, Latest) },

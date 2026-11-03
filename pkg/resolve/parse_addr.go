@@ -1,4 +1,4 @@
-//ff:func feature=resolve type=helper control=selection
+//ff:func feature=resolve type=helper control=sequence
 //ff:what ParseAddr — a 공표 주소 (file://, https:// or a path under .well-known/geul/) as an Addr; the sixteen forms only, else ErrNotFound
 package resolve
 

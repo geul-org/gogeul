@@ -10,7 +10,7 @@ import (
 )
 
 // Name binds name to document doc of issuer in the Issuer's document list
-// (`<Issuer>/docs/`, namesPath; GEUL-ORG 문서 이름): a BIND whose Subject is
+// (`<Issuer>/docs/`, namesKey; GEUL-ORG 문서 이름): a BIND whose Subject is
 // DOC-POINTER(issuer, doc, 0) (CODEC-POINTER for a codec) is appended. Names are only bound to published
 // documents, one name to one document; an old name keeps pointing at its
 // document and the last BIND is the main name. Binding a name the document
@@ -27,8 +27,7 @@ func (d Dir) Name(issuer, doc []core.Word, name string) error {
 	case len(lg.Entries) == 0:
 		return errors.New("geul/resolve: a name is only bound to a published document")
 	}
-	path := namesPath(k.Issuer)
-	head, body, names, err := d.namesOf(path)
+	head, body, names, err := d.namesOf(namesKey(k.Issuer))
 	if err != nil {
 		return err
 	}
@@ -40,5 +39,6 @@ func (d Dir) Name(issuer, doc []core.Word, name string) error {
 	}
 	subj, _ := core.EncodeTargetPointer(issuer, doc, []core.Word{0, 0})
 	b, _ := namesDoc(head, body, core.Bind{EdgeID: 1, Subject: subj, Name: []byte(name)})
-	return d.write(path, b)
+	_, err = d.PublishList(issuer, core.DocIDDocs, b)
+	return err
 }

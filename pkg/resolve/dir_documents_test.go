@@ -19,7 +19,7 @@ func TestDirDocuments(t *testing.T) {
 	if _, err := d.Documents([]core.Word{0, 1}); err == nil {
 		t.Fatal("missing Issuer: want error")
 	}
-	d.write(namesPath(geulIssuer), []byte{1})
+	d.write(listPath(namesKey(geulIssuer)), []byte{1})
 	if _, err := d.Documents([]core.Word{0, 0}); err == nil {
 		t.Fatal("broken index: want error")
 	}

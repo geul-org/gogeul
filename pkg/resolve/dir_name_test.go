@@ -32,7 +32,7 @@ func TestDirName(t *testing.T) {
 	if err := d.Name(issuer, b, "Bad Name"); err == nil {
 		t.Fatal("bad name: want error")
 	}
-	d.write(namesPath(geulIssuer), []byte{1})
+	d.write(listPath(namesKey(geulIssuer)), []byte{1})
 	if err := d.Name(issuer, b, "beta"); err == nil {
 		t.Fatal("broken index: want error")
 	}

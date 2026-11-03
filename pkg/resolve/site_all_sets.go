@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"slices"
+	"strings"
 )
 
 // allSets lists the top set, the GEUL Issuer's (which holds paths outside
@@ -22,8 +23,8 @@ func (s *site) allSets(ctx context.Context, path string) ([]string, error) {
 			return nil, err
 		}
 		more = append(more, ids...)
-	case path != issuersPath():
-		b, err := s.Fetch(ctx, issuersPath())
+	case !strings.HasPrefix(path, issuersDir+"/"):
+		b, err := FetchAddr(ctx, s, Addr{Kind: AddrIssuers})
 		if err != nil && !errors.Is(err, ErrNotFound) {
 			return nil, err
 		}

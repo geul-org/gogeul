@@ -1,4 +1,4 @@
-//ff:func feature=resolve type=helper control=selection
+//ff:func feature=resolve type=helper control=sequence
 //ff:what sourceOfBase — the Source an address base reads from: file://<dir> (files or pack sets), https://<host> (HTTP, Range on pack sets)
 package resolve
 

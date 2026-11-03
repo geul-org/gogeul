@@ -3,7 +3,6 @@
 package resolve
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/geul-org/gogeul/pkg/core"
@@ -17,7 +16,7 @@ func (d Dir) issuerOfName(s string) ([]core.Word, error) {
 		b, _ := parseHexID(c, (len(c)-2)/4)
 		return hexWords(b), nil
 	}
-	b, err := d.Fetch(context.Background(), issuersPath())
+	b, err := d.latest(issuersKey())
 	if err != nil {
 		return nil, fmt.Errorf("geul/resolve: Issuer name %q: %w", s, err)
 	}

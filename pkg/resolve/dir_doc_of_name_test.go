@@ -20,7 +20,7 @@ func TestDirDocOfName(t *testing.T) {
 	if _, err := d.docOfName(issuer, "eight"); err == nil {
 		t.Fatal("unknown: want error")
 	}
-	d.write(namesPath(geulIssuer), []byte{1})
+	d.write(listPath(namesKey(geulIssuer)), []byte{1})
 	if _, err := d.docOfName(issuer, "seven"); err == nil {
 		t.Fatal("broken index: want error")
 	}

@@ -19,7 +19,7 @@ func formsTree(t *testing.T) Dir {
 	ws, _ := core.ReadWords(b)
 	names, _ := core.SplitDocument(ws)
 	b, _ = namesDoc(names.Head, names.Body, core.Bind{EdgeID: 2, Subject: s1, Name: []byte("other.example")})
-	if err := d.write(issuersPath(), b); err != nil {
+	if _, err := d.PublishList([]core.Word{0, 0}, core.DocIDIssuers, b); err != nil {
 		t.Fatal(err)
 	}
 	long := strings.Repeat("글은 언어가 아니라 글자다 ", 200)

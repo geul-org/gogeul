@@ -22,6 +22,11 @@ const (
 	docsDir   = "docs"
 	codecsDir = "codecs"
 	hashesDir = "hashes"
+	// listIDIssuers, listIDDocs and listIDCodecs are the reserved list document
+	// IDs (core.DocIDIssuers, DocIDDocs, DocIDCodecs) in canonical hex.
+	listIDIssuers = "0xffffffffffffffff"
+	listIDDocs    = "0xfffffffffffffffe"
+	listIDCodecs  = "0xfffffffffffffffd"
 	// geulIssuer is the GEUL Issuer, whose folder holds the paths outside every
 	// Issuer when an archive is kept as one set per Issuer (pack.Split).
 	geulIssuer = "0x00000000"

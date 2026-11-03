@@ -3,16 +3,15 @@
 package resolve
 
 import (
-	"context"
 	"errors"
 
 	"github.com/geul-org/gogeul/pkg/core"
 )
 
-// namesOf reads the name index at path. A missing index gives nil records
-// and an empty map; one that does not split is an error.
-func (d Dir) namesOf(path string) ([]core.Record, []core.Record, map[string]DocKey, error) {
-	b, err := d.Fetch(context.Background(), path)
+// namesOf reads the newest version of the name list k (latest). A missing
+// list gives nil records and an empty map; one that does not split is an error.
+func (d Dir) namesOf(k DocKey) ([]core.Record, []core.Record, map[string]DocKey, error) {
+	b, err := d.latest(k)
 	if errors.Is(err, ErrNotFound) {
 		return nil, nil, map[string]DocKey{}, nil
 	}

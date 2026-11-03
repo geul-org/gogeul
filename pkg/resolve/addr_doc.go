@@ -6,13 +6,14 @@ import "github.com/geul-org/gogeul/pkg/core"
 
 // addrDoc reads `<문서 ID>/<name>`: docOf gives the 4-word document ID (16
 // lowercase hex digits; Dir.Find also takes a document name), the name as
-// addrTail.
+// addrTail. A reserved list document ID (core.IsListDocID) is not a
+// document address.
 func addrDoc(a Addr, id, name string, docOf func([]core.Word, string) ([]core.Word, error), bad error) (Addr, error) {
 	doc, err := docOf(a.Issuer, id)
 	if err != nil {
 		return Addr{}, err
 	}
-	if len(doc) != 4 {
+	if len(doc) != 4 || core.IsListDocID(wordsUint(doc)) {
 		return Addr{}, bad
 	}
 	a.Kind, a.ID = AddrDoc, doc

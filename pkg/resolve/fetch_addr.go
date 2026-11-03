@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=selection
-//ff:what FetchAddr — the bytes of an address from a Source: stored paths as they are, latest.geul through the version list (or version 1 of a list)
+//ff:what FetchAddr — the bytes of an address from a Source: stored paths as they are, latest.geul through the version list of the document, codec or list
 package resolve
 
 import (
@@ -8,22 +8,24 @@ import (
 )
 
 // FetchAddr reads a from src. A version, versions.geul and a hash are stored
-// paths. latest.geul is a reserved name, not stored: for a codec or document
-// it is the newest live version the version list names, returned as it is
-// (no redirect); for a list document (issuers/, codecs/, docs/) it is its only
-// version, 1 (listDocPath). A missing address is ErrNotFound.
+// paths. latest.geul is a reserved alias, not stored: for a document, a codec
+// and a list (issuers/, codecs/, docs/ under their reserved IDs, listKey)
+// alike it is the newest version the version list names that is neither
+// deprecated nor deleted, returned as it is (no redirect). A missing address
+// is ErrNotFound.
 func FetchAddr(ctx context.Context, src Source, a Addr) ([]byte, error) {
 	switch {
 	case a.Kind == AddrHash || a.Versions || a.Version != Latest:
 		return src.Fetch(ctx, a.Path())
-	case a.Kind != AddrCodec && a.Kind != AddrDoc:
-		return src.Fetch(ctx, listDocPath(a.folder()))
 	}
-	b, err := src.Fetch(ctx, a.folder()+"/"+listFile)
+	k := listKey(a)
+	if a.Kind == AddrCodec || a.Kind == AddrDoc {
+		k = Key{Issuer: a.Issuer, Doc: a.ID}.DocKey()
+	}
+	b, err := src.Fetch(ctx, listPath(k))
 	if err != nil {
 		return nil, err
 	}
-	k := Key{Issuer: a.Issuer, Doc: a.ID}.DocKey()
 	lg, err := decodeVersionList(b, k.Doc)
 	if err != nil {
 		return nil, err

@@ -3,7 +3,6 @@
 package resolve
 
 import (
-	"context"
 	"sort"
 )
 
@@ -14,7 +13,7 @@ func (d Dir) Issuers() ([]Named, error) {
 	if err != nil {
 		return nil, err
 	}
-	b, _ := d.Fetch(context.Background(), issuersPath())
+	b, _ := d.latest(issuersKey())
 	names, _ := ParseIssuerNames(b)
 	var out []Named
 	for _, e := range ents {
