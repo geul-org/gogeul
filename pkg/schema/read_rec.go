@@ -16,9 +16,7 @@ func readRec(ws []core.Word, at, index int) (rec, []Fact, bool) {
 	tag := ws[at]
 	r := rec{Index: index, Word: at}
 	var fs []Fact
-	if p := tag >> 13; p == 1 {
-		fs = append(fs, factAt("F4", Warn, r, "TAG WORD", "접두사 000 (Proposal)", "001 (Standard, 미배정)"))
-	} else if p != 0 {
+	if p := tag >> 13; p != 0 {
 		fs = append(fs, factAt("F4", Error, r, "TAG WORD", "접두사 000", fmt.Sprintf("%03b", p)))
 	}
 	total, head, canonical, ok := readLength(ws, at)

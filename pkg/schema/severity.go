@@ -3,6 +3,6 @@
 package schema
 
 // Severity grades a Fact. Error is a spec violation. Warn marks what may be
-// valid under a newer spec (reserved codes, the unassigned Standard prefix);
+// valid under a newer spec;
 // Options.Strict turns every Warn into Error.
 type Severity int

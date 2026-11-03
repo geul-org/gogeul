@@ -12,7 +12,7 @@ func TestReadRec(t *testing.T) {
 	if r, fs, ok := readRec([]core.Word{0x0621, 5}, 0, 0); !ok || fs != nil || r.Total != 2 || r.R.Payload[0] != 5 {
 		t.Fatalf("plain: %+v %v %v", r, fs, ok)
 	}
-	if _, fs, _ := readRec([]core.Word{0x2421, 5}, 0, 0); rulesOf(fs) != "F4" || fs[0].Severity != Warn {
+	if _, fs, _ := readRec([]core.Word{0x2421, 5}, 0, 0); rulesOf(fs) != "F4" || fs[0].Severity != Error {
 		t.Fatalf("001: %+v", fs)
 	}
 	if _, fs, _ := readRec([]core.Word{0x4421, 5}, 0, 0); rulesOf(fs) != "F4" || fs[0].Severity != Error {

@@ -24,7 +24,7 @@
 | F1 | 바이트 수가 짝수다(WORD 정렬). |
 | F2 | Length가 레코드의 전체 WORD 수와 같고, 레코드가 입력 안에 들어간다. |
 | F3 | 1~14 WORD는 직접 길이, 15~65535는 `1110`, 그 위는 `1111`이다. 더 넓은 표현은 비정규로 거부한다. |
-| F4 | TAG WORD 접두사가 `000`(Proposal)이다. `001`(Standard)은 아직 배정이 없어 Warn, 그 밖은 Error다. |
+| F4 | TAG WORD 접두사가 `000`이다. 그 밖은 Error다(v1 디코더는 `000`이 아닌 TAG WORD를 거부한다, 문법 overview). |
 | F5 | Codec이 ISSUER-2/4/16WORD(Value TAG `0x09DL`~`0x09FL`, Edge TAG `0x1BDL`~`0x1BFL`)면 TAG 뒤에 그 폭의 Issuer와 코덱 번호 2 WORD가 있다. Issuer는 값이 들어가는 가장 짧은 폭이다. Reference의 REFERENCE-ISSUER(TAG `0x05DL`~`0x05FL`)는 Payload가 그 Issuer의 것이다. |
 
 ### D 문서 구조 (OVERVIEW 구조)
