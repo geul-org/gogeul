@@ -23,7 +23,7 @@
 | `wrap_document.go`, `split_document.go` | DOC 컨테이너: 가장 좁은 DOC-* 로 감싸기, HEAD/BODY/END 나누기와 배치 검사 |
 | `*_value.go`, `*_language_text.go`, `*_coordinate.go`, `encode_posix_seconds.go` | Value: 바이트 Value(UTF8-TEXT·URI·BCP47 등 홀짝 쌍), UNSIGNED-INTEGER, SIGNED-/UNSIGNED-DECIMAL, GREGORIAN-DATE·POSIX-TIMESTAMP-SECONDS, UTF8-LANGUAGE-TEXT, COORDINATE-EARTH·GEO |
 | `*_doc_pointer.go`, `*_issuer_pointer.go`, `*_codec_pointer.go`, `*_target_pointer.go`, `encode_doc_id*.go`, `decode_doc_id_codec.go`, `*_spec_version.go` | DOC-·ISSUER-·CODEC-POINTER Reference, 문서·코덱 대상 포인터, Meta DOC-ID(코덱 문서는 CODEC-POINTER)·SPEC-VERSION |
-| `*_publication.go`, `publication_tail.go`, `*_bind.go` | 버전 목록 Edge(PUBLICATION·DEPRECATION·TOMBSTONE), BIND |
+| `*_publication.go`, `publication_tail.go`, `*_bind.go` | 버전 목록 Edge(PUBLICATION·DEPRECATION·TOMBSTONE), BIND(Issuer 목록·코덱 규격의 이름. 버전 목록에는 없다, §1.1 102) |
 | `*_declare.go`, `*_field_decl.go`, `*_enum_decl.go`, `*_codec_decl.go`, `codec_matches.go` | Codec 규격 어휘 DECLARE·FIELD·ENUM·CODEC, CODEC 대상 대조 |
 | `encode_id.go`, `decode_id.go`, `width*.go`, `min_width.go` | 고정 폭(1/2/4/8 WORD) 필드와 폭 코드 (DOC-* 길이, TOULMIN SPAN) |
 | `ref_codec.go`, `encode_local_ref.go`, `decode_local_ref.go` | Reference Codec, LOCAL Reference (Edge Id·문서 안 언급) |

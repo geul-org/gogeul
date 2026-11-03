@@ -1,5 +1,5 @@
-//ff:func feature=schema type=rule control=iteration dimension=1
-//ff:what TestCheckDocIDCodec — M2 takes a codec document's CODEC-POINTER DOC-ID; IMPORT-DOC and BIND Subjects take CODEC-POINTER too
+//ff:func feature=schema type=rule control=sequence
+//ff:what TestCheckDocIDCodec — M2 takes a codec document's CODEC-POINTER DOC-ID; IMPORT-DOC takes CODEC-POINTER too
 package schema
 
 import (
@@ -20,11 +20,5 @@ func TestCheckDocIDCodec(t *testing.T) {
 	imp := recOf(core.Record{Kind: core.KindMeta, Codec: core.MetaImportDoc, Payload: []core.Word{0x03C6, 0, 0, 0, 0x0980, 0, 1, 3}})
 	if fs := checkImportDoc(imp); fs != nil {
 		t.Fatalf("IMPORT-DOC of a codec: %+v", fs)
-	}
-	subj := core.Record{Kind: core.KindReference, Codec: core.CodecCodecPointer, Payload: []core.Word{0, 0, 0, 0x0980, 0, 0}}
-	for _, c := range []core.Record{subj} {
-		if d, ok := bindDoc(c); !ok || d != "0x00000980" {
-			t.Fatalf("BIND codec Subject: %q %v", d, ok)
-		}
 	}
 }

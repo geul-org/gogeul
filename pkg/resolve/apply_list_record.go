@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=rule control=selection
-//ff:what applyListRecord — one version list BODY record: PUBLICATION, DEPRECATION, TOMBSTONE or BIND
+//ff:what applyListRecord — one version list BODY record: PUBLICATION, DEPRECATION or TOMBSTONE
 package resolve
 
 import (
@@ -9,12 +9,9 @@ import (
 )
 
 // applyListRecord applies one BODY record of the version list of document doc
-// (canonical hex). BIND (document names) is kept but changes no version. A
-// record of another document, or any other record, is an error.
+// (canonical hex). A record of another document, or any other record (a BIND
+// included: a version list names no document, §1.1 102), is an error.
 func applyListRecord(lg *versionLog, r core.Record, doc string) error {
-	if r.Kind == core.KindEdge && r.Codec == core.EdgeBind {
-		return nil
-	}
 	p, err := core.DecodePublication(r)
 	if err != nil {
 		return err

@@ -95,11 +95,10 @@
 
 | 규칙 | 내용 |
 |---|---|
-| P1 | `IMPORT-DOC`이 없고, BODY에는 그 문서의 `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`과 `BIND`만 있다. |
+| P1 | `IMPORT-DOC`이 없고, BODY에는 그 문서의 `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`만 있다. `BIND`(문서 이름)도 P1 위반이다(문서 이름 없음, migration.md §1.1 102). |
 | P2 | Edge Id는 1부터 이어지는 순번이다. |
 | P3 | 문서 ID마다 PUBLICATION의 버전 ID가 1부터 빠짐없이 오름차순이고, 같은 내용 해시를 다시 공표하지 않는다. |
 | P4 | DEPRECATION·TOMBSTONE은 앞에 나온 PUBLICATION을 가리킨다. |
-| P5 | `BIND`(문서 이름): Subject는 `DOC-POINTER`(Issuer, 그 문서 ID, 버전 `0`)이고, 그 문서는 앞에 공표되었으며, 이름은 소문자 ASCII 슬러그다. Issuer 안 이름의 유일성은 목록 하나로 확인할 수 없어 1층 밖이다. |
 
 - 1층은 서명을 확인하지 않는다. 서명 검증과 `PARENT` 사슬 확인은 resolve와 검증기(ISSUER 서명 절)의 일이다.
 

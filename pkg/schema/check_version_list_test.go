@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=sequence
-//ff:what TestCheckVersionList — IMPORT-DOC, a foreign record, Edge Id order and a valid list
+//ff:what TestCheckVersionList — IMPORT-DOC, a foreign record, a BIND (§1.1 102), Edge Id order and a valid list
 package schema
 
 import (
@@ -16,6 +16,9 @@ func TestCheckVersionList(t *testing.T) {
 	}
 	if fs := checkVersionList(docParts{Head: []rec{imp}, Body: []rec{p1, recOf(core.EncodeUintValue(1))}}); rulesOf(fs) != "P1,P1" {
 		t.Fatalf("foreign: %+v", fs)
+	}
+	if fs := checkVersionList(docParts{Body: []rec{p1, recOf(bindOf(2, subjectOf(2, 0), "sample"))}}); rulesOf(fs) != "P1" {
+		t.Fatalf("bind: %+v", fs)
 	}
 	if fs := checkVersionList(docParts{Body: []rec{p1}}); fs != nil {
 		t.Fatalf("ok: %+v", fs)

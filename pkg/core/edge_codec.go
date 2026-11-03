@@ -6,7 +6,8 @@ package core
 // direct codes keep their 7-bit numbers (TAG 0x0800 + Codec<<4 + L).
 const (
 	// EdgeBind binds a machine-matched name to a Subject Reference (서술 0x03).
-	// Version list documents name documents with it (edge/BIND, edge/PUBLICATION).
+	// The Issuer list (`issuers/`) names Issuers with it; a version list holds
+	// no BIND (§1.1 102).
 	EdgeBind uint16 = 0x03
 	// EdgeTriple is one statement: Edge Id, Predicate, Subject, Object, Rank
 	// (edge/TRIPLE). Its Object may be a slot marker UNKNOWN-VALUE or NO-VALUE.

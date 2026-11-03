@@ -214,7 +214,7 @@ func (g *Graph) Target(from *Node, ref core.Record) (*Node, inspect.Entry, error
 | 됨 | 파일 |
 |---|---|
 | Key, DocKey, 주소(`versionPath`, `listPath`, `hashPath`, `FormatVersion`) | `key*.go`, `doc_key.go`, `*_path.go`, `format_version.go` |
-| 버전 목록 문서(edge/PUBLICATION): 읽기·쓰기, DEPRECATION·TOMBSTONE 반영 | `version_entry.go`, `version_log.go`, `decode_version_list.go`, `encode_version_list.go`, `apply_list_record.go`, `add_publication.go`, `mark_version.go`, `pick_version.go` |
+| 버전 목록 문서(edge/PUBLICATION): 읽기·쓰기, DEPRECATION·TOMBSTONE 반영(BODY는 이 셋만. `BIND`는 오류, §1.1 102) | `version_entry.go`, `version_log.go`, `decode_version_list.go`, `encode_version_list.go`, `apply_list_record.go`, `add_publication.go`, `mark_version.go`, `pick_version.go` |
 | Source: `Memory`, `Dir`(+`Publish`), `HTTP`, `Registry`(빈 구현) | `memory*.go`, `dir*.go`, `http*.go`, `registry*.go` |
 | 저장 형태 판별: 세트를 열며 찾는 `site`, Store 옆의 낱개 파일 `overlay` | `site*.go`, `local_site.go`, `remote_site.go`, `sub_store*.go`, `overlay*.go` |
 | 설정: `ConfigFromEnv`(GEULPROXY 기본 `https://geul.org,registry`, GEULPRIVATE), `Pattern` | `config*.go`, `parse_entry.go`, `parse_proxy.go`, `*pattern*.go` |
