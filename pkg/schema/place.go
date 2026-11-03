@@ -6,8 +6,10 @@ import "github.com/geul-org/gogeul/pkg/core"
 
 // place applies one record after the DOC record to st and parts (D2~D4).
 // Before BODY, Meta and the HEAD Edges (a SOURCE on the whole document and
-// the QUALIFIERs on it, headEdgeRec) go to the HEAD. Misplaced records are
-// reported and still kept so their own rules are checked.
+// the QUALIFIERs on it, headEdgeRec) go to the HEAD. A BODY after an empty
+// HEAD is not the canonical form: an empty HEAD omits BODY (document.md, 0x1C3L
+// BODY). Misplaced records are reported and still kept so their own rules are
+// checked.
 func place(st *placeState, parts *docParts, r rec) []Fact {
 	meta := r.R.Kind == core.KindMeta
 	switch {
@@ -18,6 +20,9 @@ func place(st *placeState, parts *docParts, r rec) []Fact {
 		return checkOneWord(r, "END")
 	case meta && r.R.Codec == core.MetaBody && st.inBody:
 		return append(checkOneWord(r, "BODY"), factAt("D3", Error, r, "", "BODY 한 번", "BODY 중복 또는 BODY 레코드 뒤"))
+	case meta && r.R.Codec == core.MetaBody && len(parts.Head) == 0:
+		st.inBody = true
+		return append(checkOneWord(r, "BODY"), factAt("D3", Error, r, "", "HEAD가 비면 BODY 생략(정규형)", "빈 HEAD 뒤 BODY"))
 	case meta && r.R.Codec == core.MetaBody:
 		st.inBody = true
 		return checkOneWord(r, "BODY")

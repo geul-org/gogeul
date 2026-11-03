@@ -23,7 +23,7 @@ func TestAppDiff(t *testing.T) {
 	if _, err := h.run("", "diff", addr+"@1", "@9"); err == nil {
 		t.Fatal("missing: want error")
 	}
-	odd, _ := core.EncodeDocument(nil, []core.Record{core.EncodeSpecVersion(2)})
+	odd, _ := core.EncodeDocument(nil, []core.Record{core.EncodeUintValue(2)})
 	f := filepath.Join(h.data, "odd.geul")
 	os.WriteFile(f, odd, 0o644)
 	if _, err := h.run("", "diff", f, f); err == nil {

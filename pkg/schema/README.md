@@ -33,7 +33,7 @@
 |---|---|
 | D1 | 첫 레코드가 `DOC-1WORD/2WORD/4WORD`이고, 그 길이가 입력 전체와 같으며, 값이 들어가는 가장 좁은 폭이다. |
 | D2 | `END`가 마지막 레코드다. 뒤에 아무것도 없다. |
-| D3 | HEAD에는 Meta와 HEAD Edge(대상이 `0`(문서 전체)인 `SOURCE`, HEAD `SOURCE`를 대상으로 하는 `QUALIFIER`)만, BODY에는 Meta가 아닌 레코드만 둔다. `BODY`는 한 번만 둔다. HEAD 레코드 뒤에 그 밖의 레코드가 오면 BODY 누락이다. |
+| D3 | HEAD에는 Meta와 HEAD Edge(대상이 `0`(문서 전체)인 `SOURCE`, HEAD `SOURCE`를 대상으로 하는 `QUALIFIER`)만, BODY에는 Meta가 아닌 레코드만 둔다. `BODY`는 한 번만 둔다. HEAD 레코드 뒤에 그 밖의 레코드가 오면 BODY 누락이다. HEAD가 비면 `BODY`를 생략한다(빈 HEAD 뒤 `BODY`는 정규형이 아니다, 문법 document.md·0x1C3L). |
 | D4 | `BODY`·`END`는 Payload가 없는 1 WORD다. 문서 안에 `DOC-*`가 다시 나오지 않는다. |
 
 ### R Reference (OVERVIEW Reference)

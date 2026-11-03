@@ -28,7 +28,7 @@ func TestChanges(t *testing.T) {
 			t.Fatalf("%d: %+v", i, cs[i])
 		}
 	}
-	bad := encodeDoc(nil, []core.Record{core.EncodeSpecVersion(2)})
+	bad := encodeDoc(nil, []core.Record{core.EncodeUintValue(2)})
 	if _, err := Changes(bad, next); err == nil {
 		t.Fatal("bad base: want error")
 	}

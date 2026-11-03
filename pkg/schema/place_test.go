@@ -15,6 +15,10 @@ func TestPlace(t *testing.T) {
 		t.Fatalf("implicit body: %+v", fs)
 	}
 	st, parts = &placeState{}, &docParts{}
+	if got := rulesOf(place(st, parts, meta(core.MetaBody))); got != "D3" || !st.inBody {
+		t.Fatalf("BODY after an empty HEAD: %q", got)
+	}
+	st, parts = &placeState{}, &docParts{}
 	steps := []struct {
 		r    rec
 		want string
