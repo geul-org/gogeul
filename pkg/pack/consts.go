@@ -79,8 +79,10 @@ const (
 	DefaultDictSize = 110 << 10
 	// DefaultDictSamples is how many records a dictionary is trained and tried on.
 	DefaultDictSamples = 4096
-	// DefaultWorkers is how many records a writer compresses at once (each
-	// best-level worker holds about 250 MB with a dictionary).
+	// DefaultWorkers is how many records a writer compresses at once when
+	// Zstd.Workers is 0, or GOMAXPROCS when that is smaller (each best-level
+	// encoder holds about 250 MB with a dictionary). Set Zstd.Workers (or
+	// call SetWorkers) for more; StreamOptions.Build.Codec carries the Zstd.
 	DefaultWorkers = 4
 	// FirstDictID is the first zstd dictionary ID a writer gives (§4.6: 32768 ≤ ID < 2^31).
 	FirstDictID = 1 << 15
