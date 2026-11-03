@@ -1,5 +1,5 @@
 //ff:func feature=resolve type=resolver control=sequence
-//ff:what TestDirDocOfName — an ID as is, a name by documents.geul; an unknown name and a broken index fail
+//ff:what TestDirDocOfName — a document or codec ID as is, a name by the document list; an unknown name and a broken index fail
 package resolve
 
 import (
@@ -16,6 +16,9 @@ func TestDirDocOfName(t *testing.T) {
 	}
 	if got, err := d.docOfName(issuer, "0x0000000000000009"); err != nil || got[3] != 9 {
 		t.Fatalf("id: %v", err)
+	}
+	if got, err := d.docOfName(issuer, "0x00000980"); err != nil || len(got) != 2 || got[1] != 0x0980 {
+		t.Fatalf("codec id: %v %v", got, err)
 	}
 	if _, err := d.docOfName(issuer, "eight"); err == nil {
 		t.Fatal("unknown: want error")

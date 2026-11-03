@@ -4,8 +4,11 @@ package resolve
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"testing"
+
+	"github.com/geul-org/gogeul/pkg/core"
 )
 
 func TestFetchAddr(t *testing.T) {
@@ -33,5 +36,15 @@ func TestFetchAddr(t *testing.T) {
 		"0x00000000/codecs/latest.geul", "0x00000009/docs/latest.geul", "0x00000000/docs/0xffff000000000009/versions.geul"}
 	for _, f := range formsOf(t, tree) {
 		checkAddrs(t, f, got, missing)
+	}
+	d := Dir{Root: t.TempDir()}
+	d.Publish(edgeDoc(7, "a"))
+	d.Deprecate([]core.Word{0, 0}, []core.Word{0xffff, 0, 0, 7}, 1)
+	if _, err := FetchAddr(ctx, d, Addr{Kind: AddrDoc, Issuer: []core.Word{0, 0}, ID: []core.Word{0xffff, 0, 0, 7}}); !errors.Is(err, ErrNotFound) {
+		t.Fatal("only a deprecated version: want ErrNotFound,", err)
+	}
+	d.write(listPath(sampleKeyOf(7)), []byte{1})
+	if _, err := FetchAddr(ctx, d, Addr{Kind: AddrDoc, Issuer: []core.Word{0, 0}, ID: []core.Word{0xffff, 0, 0, 7}}); err == nil {
+		t.Fatal("broken version list: want error")
 	}
 }

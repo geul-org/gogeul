@@ -20,7 +20,7 @@ func TestListParent(t *testing.T) {
 	if _, ok := listParent(nil); ok {
 		t.Fatal("none: want false")
 	}
-	bad := core.Record{Kind: core.KindMeta, Codec: 0x30, Payload: []core.Word{0x0080}}
+	bad := core.Record{Kind: core.KindMeta, Codec: core.MetaParent, Payload: []core.Word{0x0080}}
 	if _, ok := listParent([]core.Record{bad}); ok {
 		t.Fatal("malformed: want false")
 	}
