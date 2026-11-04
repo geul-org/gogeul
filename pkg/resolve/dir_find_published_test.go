@@ -19,12 +19,12 @@ import (
 // (migration.md §6.2). Single addresses only; no set is listed or walked. It is
 // skipped when this module is checked out without geul-dev draft/ around it.
 func TestDirFindPublished(t *testing.T) {
-	root, _ := filepath.Abs("../../../geul-org/artifacts/geul")
+	root, _ := filepath.Abs("../../..")
 	wk := filepath.Join(root, ".well-known", "geul")
 	_, geulErr := os.Stat(filepath.Join(wk, "0x00000000", "latest.txt"))
 	_, wikiErr := os.Stat(filepath.Join(wk, "0x00000001", "latest.txt"))
 	if geulErr != nil && wikiErr != nil {
-		t.Skip("geul-org/artifacts/geul/.well-known/geul holds neither 0x00000000 nor 0x00000001 yet")
+		t.Skip("draft/.well-known/geul holds neither 0x00000000 nor 0x00000001 yet")
 	}
 	c, err := ConfigFromEnv(func(k string) string {
 		return map[string]string{"GEULPROXY": "file://" + root + ",off"}[k]
