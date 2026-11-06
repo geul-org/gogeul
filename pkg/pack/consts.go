@@ -1,8 +1,8 @@
 // Package pack stores a GEUL archive (`.well-known/geul/` paths → bytes) as
 // immutable content-named objects: a manifest (`m/<sha256>.gpm`), index
 // objects (`o/<sha256>.gpx`) and data packs (`o/<sha256>.gpk`), with
-// `latest.txt` the only mutable file (geul-dev files/pack/README.md). The same
-// objects serve a local directory (pread) and a CDN (one HTTP Range per read).
+// `latest.txt` the only mutable file. The same objects serve a local
+// directory (pread) and a CDN (one HTTP Range per read).
 package pack
 
 const (

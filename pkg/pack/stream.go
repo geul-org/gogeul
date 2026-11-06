@@ -9,12 +9,12 @@ import (
 
 // Stream writes the first generation of a pack set from P records fed in
 // ascending key order (Put) and a few named records (PutNamed), for archives
-// too big to stage as a directory tree (geul-dev files/pack/README.md §6,
-// "대량 쓰기"). Data packs are cut at PackSize as records arrive; P leaf
-// blocks are written as soon as they fill (keys arrive sorted); H keys, which
-// arrive in random order, are spilled to sorted run files and merged when
-// the stream closes. Memory therefore holds one P leaf, one H run, one data
-// pack's inventory and the first keys of the written blocks, not the records.
+// too big to stage as a directory tree. Data packs are cut at PackSize as
+// records arrive; P leaf blocks are written as soon as they fill (keys
+// arrive sorted); H keys, which arrive in random order, are spilled to
+// sorted run files and merged when the stream closes. Memory therefore
+// holds one P leaf, one H run, one data pack's inventory and the first keys
+// of the written blocks, not the records.
 // Checkpoint saves everything needed to go on (ResumeStream) after a crash;
 // the bytes written do not depend on when checkpoints happen. Close saves
 // its own progress the same way, so a stopped Close goes on after
