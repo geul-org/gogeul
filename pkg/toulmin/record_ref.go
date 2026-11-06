@@ -9,8 +9,8 @@ import (
 )
 
 // RecordRef returns the CodecRef of r. TANGEUL records are direct Edge records;
-// an EDGE-ISSUER record is not one (its former GEUL formats are direct codes,
-// migration.md §3.14).
+// an EDGE-ISSUER record is not one (its former GEUL formats are direct
+// codes).
 func RecordRef(r core.Record) (CodecRef, error) {
 	if r.Kind != core.KindEdge {
 		return CodecRef{}, fmt.Errorf("geul/toulmin: expected an Edge record, got kind %d", r.Kind)

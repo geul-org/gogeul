@@ -11,8 +11,7 @@ import (
 
 // PublishList publishes b as the next version of the list list of issuer: the
 // version file in the list's folder, its hashes/ copy and a new versions.geul
-// whose PUBLICATION is DOC-POINTER(issuer, list, version) (migration.md §1.1
-// 95, 96). The one list is the Issuer list (core.DocIDIssuers) of geul.org
+// whose PUBLICATION is DOC-POINTER(issuer, list, version). The one list is the Issuer list (core.DocIDIssuers) of geul.org
 // 0x00000000; there is no document or codec list (§1.1 101). Publishing the
 // same bytes again is the version already there.
 func (d Dir) PublishList(issuer []core.Word, list uint64, b []byte) (VersionEntry, error) {

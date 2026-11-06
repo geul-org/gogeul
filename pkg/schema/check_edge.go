@@ -4,7 +4,7 @@ package schema
 
 // checkEdge applies E1 (leading LOCAL Edge Id, not 0), E4 (layout of the
 // core-embedded codecs) and E10 (TRIPLE and QUALIFIER layout). An unassigned Edge code is not reported (the
-// reserved-code Warn E3 was removed, migration.md §1.1 112).
+// reserved-code Warn E3 was removed).
 func checkEdge(r rec) []Fact {
 	var fs []Fact
 	if id, ok := edgeID(r); !ok {

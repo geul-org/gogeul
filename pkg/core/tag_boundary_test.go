@@ -1,5 +1,5 @@
 //ff:func feature=core type=decoder control=iteration dimension=1
-//ff:what TestTagBoundary — migration.md §7.3 plan2 boundaries by TAG ID: Kind, Codec, ISSUER width and core name at the Kind, Reference section, Value and Edge edges
+//ff:what TestTagBoundary — plan2 boundaries by TAG ID: Kind, Codec, ISSUER width and core name at the Kind, Reference section, Value and Edge edges
 package core
 
 import "testing"

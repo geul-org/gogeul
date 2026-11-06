@@ -3,7 +3,7 @@ package core
 // valueIssuerFormatNames maps the Value ISSUER formats of 2-WORD Issuers
 // (grammar Value ISSUER 형식) to their spec names, keyed by Issuer<<32 | codec
 // number. The GEUL Issuer has none: its former formats are direct codes
-// (migration.md §3.14; OPAQUE-BYTES, BIT-VECTOR, DURATION-NANOSECONDS and the
+// (OPAQUE-BYTES, BIT-VECTOR, DURATION-NANOSECONDS and the
 // TOULMIN 0x120L~0x134L Edges).
 var valueIssuerFormatNames = map[uint64]string{
 	0x00000002_00000000: "BFLOAT16",                    // ADHOC

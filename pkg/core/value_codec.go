@@ -59,8 +59,7 @@ const (
 	// CodecSHA1Digest is SHA1-DIGEST (0x07DL).
 	CodecSHA1Digest uint16 = 0x1D
 	// CodecOpaqueBytesEven is OPAQUE-BYTES, even byte count (0x07EL; odd
-	// 0x07FL). Formerly the GEUL Issuer's ISSUER formats 0xC000/0xC001
-	// (migration.md §3.14).
+	// 0x07FL). Formerly the GEUL Issuer's ISSUER formats 0xC000/0xC001.
 	CodecOpaqueBytesEven uint16 = 0x1E
 	// CodecBitVector is BIT-VECTOR (0x080L): a 2-word bit count N, then
 	// ceil(N/16) words MSB-first. Formerly GEUL ISSUER format 0xC002 (§3.14).

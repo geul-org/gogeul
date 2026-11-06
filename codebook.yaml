@@ -2,7 +2,7 @@ required:
   feature:
     core: "프레이밍·인코딩·정규화·버전 ID·서명 — 엔진 내장 규칙. 외부 의존·네트워크 없음"
     resolve: "IMPORT 의존성 해석 — Resolver 주입(로컬 아카이브·HTTP·메모리), 명시적 단계"
-    toulmin: "TOULMIN 코덱 — 판정·실행 그래프 레코드(NODE·LINK·제어·TEXT·SOURCE), 코덱·형식 번호표, 판정값·게이트·SPAN (명세 TOULMIN.md)"
+    toulmin: "TOULMIN 코덱 — 판정·실행 그래프 레코드(NODE·LINK·제어·TEXT·SOURCE), 코덱·형식 번호표, 판정값·게이트·SPAN"
     inspect: "GEUL → 해석된 문서 모델 — 레코드별 스펙 이름·디코드 내용·Edge Id·참조. 재인코딩이 같을 때만 타입 내용, 아니면 원본 레코드 (뷰어·텍스트 표현의 공통 기반)"
     codecspec: "Codec 규격 — DECLARE·FIELD·ENUM·BIND로 쓴 규격 문서를 Codec별 필드 목록으로 모은다 (명세 edge/DECLARE)"
     schema: "형식 검증 — 0층 규칙(프레이밍·구조·Kind), Codec 규격 레이아웃, 격틀·선택 제약"

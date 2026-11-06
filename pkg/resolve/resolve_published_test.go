@@ -15,8 +15,8 @@ import (
 // draft/.well-known/geul/0x00000000/ (the geul.org
 // set, the stand-in for geul.org/.well-known/geul/): a root document imports
 // the PUBLICATION codec (latest) and pins the FIELD codec at version 1, both by
-// CODEC-POINTER. It is skipped while that set has no `latest.txt` (migration.md
-// §6.2: the set appears at §7.1 step 5) or when this module is checked out
+// CODEC-POINTER. It is skipped while that set has no `latest.txt` or when
+// this module is checked out
 // without geul-dev draft/ around it. Only those two codecs are read.
 func TestResolvePublished(t *testing.T) {
 	ctx := context.Background()

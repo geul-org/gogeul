@@ -1,5 +1,5 @@
 //ff:type feature=core type=model
-//ff:what s314Row — one row of testdata/migration1/s314_p2.tsv (migration.md §3.14): a former GEUL ISSUER format and its new direct TAG
+//ff:what s314Row — one row of testdata/migration1/s314_p2.tsv: a former GEUL ISSUER format and its new direct TAG
 package core
 
 // s314Row is a former GEUL Issuer ISSUER format (Kind, format number, name)

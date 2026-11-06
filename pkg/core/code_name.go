@@ -11,7 +11,7 @@ var quantifierCodeNames = [...]string{"IDENTIFIED", "GENERIC", "FREE-CHOICE", "U
 var pairCodeSuffix = [...]string{"-EVEN", "-ODD"}
 
 // CodeName returns the name the codec document of code k/codec gives its
-// DECLARE (migration.md §1.1 124): each 5Q code is its scheme and Quantifier
+// DECLARE: each 5Q code is its scheme and Quantifier
 // (LOCAL-GENERIC, EXTERNAL-POINTER-1WORD-VARIABLE), each code of an even/odd
 // Value pair (two codes CodecName names alike) the pair name with -EVEN or
 // -ODD (UTF8-TEXT-ODD), a slot marker its marker name (ABSENT), a TOULMIN

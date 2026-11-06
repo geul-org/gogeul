@@ -9,7 +9,7 @@ import "fmt"
 // Issuer and codec number (2 words) of the Issuer codec it declares. An ISSUER
 // target with nothing after it declares the ISSUER code itself, as GEUL's own
 // codec document of that code does (grammar 0x0BBL 유효성 "ISSUER 코드도 그
-// 코드 그대로다", migration.md §1.1 127); its Issuer is empty. Nothing else
+// 코드 그대로다"); its Issuer is empty. Nothing else
 // may follow. The target is a codec: prefix 000 and LLLL 0000 (grammar 0x0BBL
 // "대상은 Codec 자리만", like a CODEC's exact target).
 func DecodeDeclare(r Record) (Declare, error) {

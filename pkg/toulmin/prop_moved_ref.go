@@ -5,8 +5,7 @@ package toulmin
 import "fmt"
 
 // propMovedRef maps the relations outside the TOULMIN 0x100L~0x11BL codes to
-// their direct codes 0x12BL~0x134L (formerly GEUL ISSUER formats, migration.md
-// §3.14).
+// their direct codes 0x12BL~0x134L (formerly GEUL ISSUER formats).
 func propMovedRef(p PropCode) (CodecRef, error) {
 	switch p {
 	case PropRequires:

@@ -40,11 +40,11 @@
 
 | 규칙 | 내용 |
 |---|---|
-| R1 | Reference TAG `0x000L`~`0x002L`은 자리 표지 ABSENT·UNKNOWN-VALUE·NO-VALUE(WORD `0x0000`·`0x0010`·`0x0020`)다. 레코드 자리(HEAD·BODY)의 자리 표지는 Error다(표지는 그것을 받는 레코드 필드 안에서만 쓴다). Payload가 있는 표지 C와 빈칸(`0x003L`·`0x004L`, `0x01EL`·`0x01FL`, `0x03EL`·`0x03FL`, `0x043L`~`0x05CL`)은 보지 않는다(migration.md §1.1 112). 5Q 체계는 섹션 0 `0x005L`~`0x01DL`(체계 C/5)과 섹션 1 `0x020L`~`0x03DL`(체계 6 + C/5)이고 Quantifier는 C%5다(C는 섹션 안 5비트 오프셋). |
+| R1 | Reference TAG `0x000L`~`0x002L`은 자리 표지 ABSENT·UNKNOWN-VALUE·NO-VALUE(WORD `0x0000`·`0x0010`·`0x0020`)다. 레코드 자리(HEAD·BODY)의 자리 표지는 Error다(표지는 그것을 받는 레코드 필드 안에서만 쓴다). Payload가 있는 표지 C와 빈칸(`0x003L`·`0x004L`, `0x01EL`·`0x01FL`, `0x03EL`·`0x03FL`, `0x043L`~`0x05CL`)은 보지 않는다. 5Q 체계는 섹션 0 `0x005L`~`0x01DL`(체계 C/5)과 섹션 1 `0x020L`~`0x03DL`(체계 6 + C/5)이고 Quantifier는 C%5다(C는 섹션 안 5비트 오프셋). |
 | R2 | 대상 ID는 가장 짧은 폭이다. 값 0은 `0x0000` 1 WORD이고, 그 밖에는 선행 `0x0000` WORD가 없다. |
 | R3 | `EXTERNAL-POINTER-*`: IMPORT ID가 들어가는 가장 좁은 Codec이고, 그 IMPORT ID를 배정한 `IMPORT-DOC`이 HEAD에 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). |
 | R4 | `EXTERNAL-ISSUER-*`(체계 9~11, 2/4/16 WORD): Issuer 폭이 체계와 맞고 값이 들어가는 가장 짧은 폭이며, 문서 ID 4 WORD 뒤에 대상 ID가 1 WORD 이상 있다. 대상 ID는 `0`이 아니다(문서 자신은 `DOC-POINTER`). 문서 ID `0`은 Issuer의 용어 정의 색인 문서다. |
-| R5 | `ISSUER-POINTER`(`0x040L`)·`DOC-POINTER`(`0x041L`)·`CODEC-POINTER`(`0x042L`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`는 Issuer 목록(`issuers/`) 예약 ID이고 Issuer `0x00000000`만 쓴다(docs·codecs 목록은 없다, migration.md §1.1 101, 문법 0x041L). |
+| R5 | `ISSUER-POINTER`(`0x040L`)·`DOC-POINTER`(`0x041L`)·`CODEC-POINTER`(`0x042L`): Issuer 폭(Length에서 고정 필드 — DOC-POINTER 문서 ID 4 + 버전 ID 2, CODEC-POINTER 코덱 ID 2 + 버전 ID 2 — 를 뺀 나머지)은 2·4·16 WORD 중 값이 들어가는 가장 짧은 폭이다. 문서 ID `0`은 Issuer의 용어 정의 색인 문서, `0xFFFFFFFFFFFFFFFF`는 Issuer 목록(`issuers/`) 예약 ID이고 Issuer `0x00000000`만 쓴다(docs·codecs 목록은 없다, 문법 0x041L). |
 
 ### V Value (OVERVIEW Value)
 
@@ -96,7 +96,7 @@
 
 | 규칙 | 내용 |
 |---|---|
-| P1 | `IMPORT-DOC`이 없고, BODY에는 그 문서(같은 Issuer·문서 ID)의 `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`만 있다. `BIND`(문서 이름)도 P1 위반이다(문서 이름 없음, migration.md §1.1 102). |
+| P1 | `IMPORT-DOC`이 없고, BODY에는 그 문서(같은 Issuer·문서 ID)의 `PUBLICATION`·`DEPRECATION`·`TOMBSTONE`만 있다. `BIND`(문서 이름)도 P1 위반이다(문서 이름 없음). |
 | P2 | Edge Id는 1부터 이어지는 순번이다. |
 | P3 | 문서 ID마다 PUBLICATION의 버전 ID가 1부터 빠짐없이 오름차순이고, 같은 내용 해시를 다시 공표하지 않는다. |
 | P4 | DEPRECATION·TOMBSTONE은 앞에 나온 PUBLICATION을 가리킨다. |
@@ -136,7 +136,7 @@ type Options struct {
 ```
 
 - Error가 하나라도 있으면 Fail, Warn만 있으면 Review, 없으면 Pass다.
-- Warn은 경고 규칙(M4 모르는 SPEC-VERSION, E6 NO-VALUE 모순)이 낸다. F4는 Error뿐이다. `Strict`이면 Error다. 배정되지 않은 코드를 예약(Warn)으로 보고하던 규칙(V1, E3, M1, R1의 빈칸과 Payload 있는 표지)은 지웠다(migration.md §1.1 112). 빈 코드는 코덱 조회(404)에서 드러나고, 변환 검증은 migvalid `new-unassigned`가 맡는다.
+- Warn은 경고 규칙(M4 모르는 SPEC-VERSION, E6 NO-VALUE 모순)이 낸다. F4는 Error뿐이다. `Strict`이면 Error다. 배정되지 않은 코드를 예약(Warn)으로 보고하던 규칙(V1, E3, M1, R1의 빈칸과 Payload 있는 표지)은 지웠다. 빈 코드는 코덱 조회(404)에서 드러나고, 변환 검증은 migvalid `new-unassigned`가 맡는다.
 
 ## 원칙
 

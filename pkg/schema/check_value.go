@@ -1,5 +1,5 @@
 //ff:func feature=schema type=rule control=selection
-//ff:what checkValue — V2~V10 for one Value record; an unassigned direct code passes (migration.md §1.1 112)
+//ff:what checkValue — V2~V10 for one Value record; an unassigned direct code passes
 package schema
 
 import "github.com/geul-org/gogeul/pkg/core"
@@ -7,7 +7,7 @@ import "github.com/geul-org/gogeul/pkg/core"
 // checkValue applies the Value rules to a direct-code Value. ISSUER formats are
 // left to layer 2 (F5 already checked their extension TAG). A code with no
 // rule here (unassigned) is not reported: the reserved-code Warn V1 was
-// removed (migration.md §1.1 112); an unassigned code shows in codec lookup.
+// removed; an unassigned code shows in codec lookup.
 func checkValue(r rec) []Fact {
 	c := r.R.Codec
 	switch {

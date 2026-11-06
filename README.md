@@ -41,7 +41,7 @@ geul show versions geul.org/0x0000000000000001              # versions: number, 
 geul get https://geul.org/.well-known/geul/0x00000000/docs/0x0000000000000001/latest.geul > d.geul  # raw bytes of a 공표 주소
 ```
 
-An Issuer name (`geul.org`) is resolved by the CLI through the `BIND` records of the Issuer list; it is not a 공표 주소. Documents and codecs are named by ID only: there is no document name index and no per-Issuer document or codec list (migration.md §1.1 101). `geul get` takes only the 10 address forms below.
+An Issuer name (`geul.org`) is resolved by the CLI through the `BIND` records of the Issuer list; it is not a 공표 주소. Documents and codecs are named by ID only: there is no document name index and no per-Issuer document or codec list. `geul get` takes only the 10 address forms below.
 
 Write and publish a document under a self-issued Issuer:
 

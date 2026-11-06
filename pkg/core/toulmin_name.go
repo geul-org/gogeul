@@ -4,7 +4,7 @@ package core
 
 // toulminNames are the names of the TOULMIN direct Edge codes (Edge Codec =
 // code - 0xA0): section 8 TOULMIN 0x100L~0x119L and section 9 TOULMIN 형식
-// 0x120L~0x134L (grammar README 코드 색인, codes.md; migration.md §3.14).
+// 0x120L~0x134L (grammar README 코드 색인, codes.md).
 // SUPERSEDE-CHAIN, VERDICT and EVIDENCE have names and DECLARE-only codec
 // documents though their layouts are not set yet. Section 9's SOURCE, FIELD,
 // ALIAS and LABEL share their names with the core codes 0x0C0L, 0x0BCL,

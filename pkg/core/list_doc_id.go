@@ -1,6 +1,6 @@
 package core
 
-// Reserved document IDs (4 words) of every Issuer (migration.md §1.1 121): the
+// Reserved document IDs (4 words) of every Issuer: the
 // bottom and the top one.
 //
 // DocIDIssuers is used only by geul.org (0x00000000) for its Issuer list

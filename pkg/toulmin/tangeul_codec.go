@@ -25,8 +25,7 @@ const (
 )
 
 // TOULMIN record types formerly written as GEUL ISSUER formats 0xC000~0xC029,
-// now direct Edge codes in their old number order (migration.md §3.14; TAG
-// 0x120L~0x134L, Edge Codec = code - 0xA0): section 9, TOULMIN 형식 (grammar
+// now direct Edge codes in their old number order (TAG 0x120L~0x134L, Edge Codec = code - 0xA0): section 9, TOULMIN 형식 (grammar
 // codes.md, edge.md).
 const (
 	CodecSource       uint16 = 0x80

@@ -14,9 +14,8 @@ import (
 )
 
 // TestDirFindPublished reads the stand-in for geul.org/.well-known/geul/: the
-// geul.org set 0x00000000 (codec documents, §7.1 step 5) and the Wikidata set
-// 0x00000001 (§7.1 step 12), each only when its own `latest.txt` is there
-// (migration.md §6.2). Single addresses only; no set is listed or walked. It is
+// geul.org set 0x00000000 (codec documents) and the Wikidata set 0x00000001,
+// each only when its own `latest.txt` is there. Single addresses only; no set is listed or walked. It is
 // skipped when this module is checked out without geul-dev draft/ around it.
 func TestDirFindPublished(t *testing.T) {
 	root, _ := filepath.Abs("../../..")

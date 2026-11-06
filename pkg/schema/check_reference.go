@@ -8,7 +8,7 @@ import "github.com/geul-org/gogeul/pkg/core"
 // record (checkSlotMarker), the ISSUER-, DOC- and CODEC-POINTER layouts (R5),
 // the REFERENCE-ISSUER codes (their Payload is the Issuer's; F5 checked the
 // extension), an empty code (C 0x03·0x04, 0x1E·0x1F, 0x3E·0x3F, 0x43~0x5C:
-// not reported, the reserved-code Warn was removed, migration.md §1.1 112)
+// not reported, the reserved-code Warn was removed)
 // and by scheme (core.RefScheme) the EXTERNAL-ISSUER (R4),
 // EXTERNAL-POINTER (R3) and direct target (R2) forms.
 func checkReference(r rec, imports map[uint64]bool) []Fact {

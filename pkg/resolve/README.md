@@ -41,7 +41,7 @@
 - `EXTERNAL-ISSUER-*`는 BODY의 독립 Reference일 수도, Edge Payload에 내장된 Reference일 수도 있다. 독립 레코드는 코덱북 없이 모은다. 내장된 것은 `inspect.Layout`이 Record로 표시한 부분 중 Kind가 Reference인 것을 모은다. 레이아웃을 모르는 Edge 안의 참조는 찾지 못하며 미해결 목록에 그 Edge를 남긴다.
 - Quantifier가 Variable이면 대상은 그 문서의 LOCAL 변수다. 해석 방법은 같다.
 
-### 공표 주소 (migration.md §3.13)
+### 공표 주소
 
 ID는 소문자 `0x` + A-F 대문자 hex로 쓰고(§1.1 120), 자릿수 = 폭 × 4다. 주소 입력(`ParseAddr`, `Dir.Find`, `Dir.Lookup`)은 소문자·섞인 표기도 받아 대문자로 정규화해 찾는다(§1.1 122). 문서 ID는 16자리, 코덱 ID는 8자리, 버전 ID는 8자리다. 쓸 때 Issuer는 발급 폭 자릿수(2 WORD 8자리, 4 WORD 16자리, 16 WORD 64자리)로 쓰고, 읽을 때는 8·16·64자리 0 채움 표기를 같은 Issuer로 받는다(`ParseAddr`가 정규화).
 

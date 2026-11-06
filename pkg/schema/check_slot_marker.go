@@ -12,8 +12,7 @@ import (
 // standing as a HEAD or BODY record. A slot marker (ABSENT, UNKNOWN-VALUE,
 // NO-VALUE; WORD 0x0000, 0x0010, 0x0020) is valid only inside a record field
 // that names it (reference/slot-marker), so here it is an Error. A marker C
-// with a payload is not reported (the reserved Warn was removed, migration.md
-// §1.1 112).
+// with a payload is not reported (the reserved Warn was removed).
 func checkSlotMarker(r rec) []Fact {
 	if core.IsSlotMarker(r.R) {
 		name := core.SlotMarkerName(r.R.Codec)

@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// edgeTableCodes reads the name table of layout2.md (migration.md §3.15) and
+// edgeTableCodes reads the name table of layout2.md and
 // keeps the Edge rows (TAG 0x0A0L~0x1BFL) as Edge Codec (code - 0xA0) → true
 // for an assigned code, false for Reserved.
 func edgeTableCodes(t *testing.T) map[uint16]bool {
