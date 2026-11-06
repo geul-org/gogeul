@@ -16,14 +16,14 @@ import (
 // TestDirFindPublished reads the stand-in for geul.org/.well-known/geul/: the
 // geul.org set 0x00000000 (codec documents) and the Wikidata set 0x00000001,
 // each only when its own `latest.txt` is there. Single addresses only; no set is listed or walked. It is
-// skipped when this module is checked out without geul-dev draft/ around it.
+// skipped when this module is checked out without geul-dev repos/ around it.
 func TestDirFindPublished(t *testing.T) {
 	root, _ := filepath.Abs("../../..")
 	wk := filepath.Join(root, ".well-known", "geul")
 	_, geulErr := os.Stat(filepath.Join(wk, "0x00000000", "latest.txt"))
 	_, wikiErr := os.Stat(filepath.Join(wk, "0x00000001", "latest.txt"))
 	if geulErr != nil && wikiErr != nil {
-		t.Skip("draft/.well-known/geul holds neither 0x00000000 nor 0x00000001 yet")
+		t.Skip("repos/.well-known/geul holds neither 0x00000000 nor 0x00000001 yet")
 	}
 	c, err := ConfigFromEnv(func(k string) string {
 		return map[string]string{"GEULPROXY": "file://" + root + ",off"}[k]

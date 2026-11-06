@@ -12,17 +12,17 @@ import (
 )
 
 // TestResolvePublished reads the codec documents published at geul-dev
-// draft/.well-known/geul/0x00000000/ (the geul.org
+// repos/.well-known/geul/0x00000000/ (the geul.org
 // set, the stand-in for geul.org/.well-known/geul/): a root document imports
 // the PUBLICATION codec (latest) and pins the FIELD codec at version 1, both by
 // CODEC-POINTER. It is skipped while that set has no `latest.txt` or when
 // this module is checked out
-// without geul-dev draft/ around it. Only those two codecs are read.
+// without geul-dev repos/ around it. Only those two codecs are read.
 func TestResolvePublished(t *testing.T) {
 	ctx := context.Background()
 	root, _ := filepath.Abs("../../..")
 	if _, err := os.Stat(filepath.Join(root, ".well-known", "geul", "0x00000000", "latest.txt")); err != nil {
-		t.Skip("draft/.well-known/geul/0x00000000 holds no pack set yet")
+		t.Skip("repos/.well-known/geul/0x00000000 holds no pack set yet")
 	}
 	c, err := ConfigFromEnv(func(k string) string {
 		return map[string]string{"GEULPROXY": "file://" + root + ",off"}[k]

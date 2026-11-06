@@ -235,11 +235,11 @@ func (g *Graph) Target(from *Node, ref core.Record) (*Node, inspect.Entry, error
 
 ## 임시 공표 위치
 
-geul.org가 서비스되기 전까지 geul-dev의 `draft/.well-known/geul/`을 공표 트리로 쓴다. `GEULPROXY=file://<geul-dev>/draft,off`로 가리킨다. 기본값은 그대로 `https://geul.org`다.
+geul.org가 서비스되기 전까지 geul-dev의 `repos/.well-known/geul/`을 공표 트리로 쓴다. `GEULPROXY=file://<geul-dev>/repos,off`로 가리킨다. 기본값은 그대로 `https://geul.org`다.
 
 - migration1 뒤에는 Issuer `0x00000000`(geul.org)의 규격 세트와 Issuer `0x00000001`(wikidata.geul.org)의 위키데이터 세트가 Issuer별 pack 세트로 들어간다(5·6단계 변환 산출물).
 - `TestResolvePublished`, `TestDirFindPublished`가 이 트리를 `GEULPROXY`로 읽는다(뒤의 것은 같은 트리를 HTTP Range로도 읽어 대조한다). 이 모듈만 따로 받았거나 `0x00000000/latest.txt`(뒤의 것은 `0x00000001/latest.txt`도)가 없으면 건너뛴다. 전체 세트를 훑지 않고 점 조회만 한다.
-- 공표는 이 트리를 데이터 폴더로 한 `geul publish`, 또는 `resolve.Dir{Root: "<geul-dev>/draft", Store: <pack.OpenDir로 연 세트>}.Publish(bytes)`로 한다.
+- 공표는 이 트리를 데이터 폴더로 한 `geul publish`, 또는 `resolve.Dir{Root: "<geul-dev>/repos", Store: <pack.OpenDir로 연 세트>}.Publish(bytes)`로 한다.
 
 ## 범위 밖
 

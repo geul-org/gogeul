@@ -32,7 +32,7 @@
 | `testdata/migration1/` | plan2 기준 표(`vector2.tsv`, `s314_p2.tsv`, `p1_to_p2.tsv`, `layout2.md`, 예시 문서 `example2.json`). 시험 기대값은 코드 상수가 아니라 이 표에서 온다 |
 | `content_hash.go`, `strip_validation.go` | 내용 해시: 검증 클래스 Meta를 빼고 DOC-* 길이를 다시 계산한 뒤 END 직전까지의 SHA-256 |
 
-- toulmin(`draft/toulmin`, 브랜치 `geul-t002`)이 이 패키지를 import해 `.geul`을 읽고 쓴다.
+- toulmin(`repos/toulmin`, 브랜치 `geul-t002`)이 이 패키지를 import해 `.geul`을 읽고 쓴다.
 - 아직 없는 것: EXTERNAL-ISSUER·EXTERNAL-POINTER 인코딩, EDTF·GEDCOM-DATE 해석(바이트 Value로만 다룬다), 정규형 전체 규칙, 서명.
 
 ## 원칙
